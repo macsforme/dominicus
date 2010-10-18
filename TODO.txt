@@ -1,0 +1,24 @@
+SHORT TERM:
+* pull "generic" opengl state code out of rendering master constructor (if possible)
+* check rotateMatrix() code... possible bug
+* before configuring source control, go through and delete stray tabs
+* fix opengl version test in compatibility.cpp
+* should probably go through ALL files (especially Texture.cpp) and replace LOG_FATAL with LOG_INTERNALERROR as needed (or disable LOG_INTERNALERROR entirely?)
+* go through source and determine where uint8_t stuff should be replaced
+
+LONG TERM:
+* screen/windowing/text/drawing code needs to be refactored so it doesn't all need to be regenerated when the resolution changes
+* make the renderer use VBOs rather than individual commands
+* does the model viewer assume that no vertex/normal/texcoord specifications will be re-used with the same index?
+* set up GUI boxes with persistant dimensions and blending
+* fix height in fontmanager... does the carriage return have a y-advance?
+* possible memory leak in Window.cpp by failing to delete *surface
+
+CONTEMPLATIONS:
+* using unsigned short ints in texture.cpp is still too long... can we use chars?
+* do we need LOG_INTERNALERROR at all? maybe better just to crash... lots of unused code
+* consider going through all code and changing widths, heights to vector2's
+* GUI text arrangement needs to be re-thought out
+* look into freetype glyph vertical orientation... is it read upside-down necessitating a vertical flip?
+
+

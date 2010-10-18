@@ -7,6 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		030F8DE41264BFAA00190225 /* TODO.txt in Resources */ = {isa = PBXBuildFile; fileRef = 030F8DE31264BFAA00190225 /* TODO.txt */; };
+		030F8DEE1264C00100190225 /* shaders in Resources */ = {isa = PBXBuildFile; fileRef = 030F8DEC1264C00100190225 /* shaders */; };
+		030F8E021264C01100190225 /* data in Resources */ = {isa = PBXBuildFile; fileRef = 030F8DEF1264C01100190225 /* data */; };
+		030F8E161264C0FF00190225 /* dominicusMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 030F8E101264C0FF00190225 /* dominicusMain.cpp */; };
+		030F8E171264C0FF00190225 /* SDLMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 030F8E151264C0FF00190225 /* SDLMain.m */; };
+		030F8E1D1264C1F800190225 /* GamePrefs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 030F8E1B1264C1F800190225 /* GamePrefs.cpp */; };
+		030F8E1F1264C3E800190225 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 030F8E1E1264C3E800190225 /* main.cpp */; };
+		030F8E6B1264CB9400190225 /* SystemInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 030F8E691264CB9400190225 /* SystemInfo.cpp */; };
+		030F8E7C1264CC2D00190225 /* ProgramLog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 030F8E7A1264CC2D00190225 /* ProgramLog.cpp */; };
+		030F8E8D1264CD8D00190225 /* Platform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 030F8E8C1264CD8D00190225 /* Platform.cpp */; };
+		030F8EBA1264D05800190225 /* BMPImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 030F8EB61264D05800190225 /* BMPImage.cpp */; };
+		030F8EBB1264D05800190225 /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 030F8EB81264D05800190225 /* Texture.cpp */; };
+		030F8ECF1264D82200190225 /* FontManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 030F8ECD1264D82200190225 /* FontManager.cpp */; };
+		030F8F011264DBF300190225 /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 030F8F001264DBF300190225 /* libfreetype.a */; };
+		030F8F301264DC2200190225 /* libz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 030F8F2F1264DC2200190225 /* libz.a */; };
+		030F8F3E1264DD1300190225 /* Keyboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 030F8F3C1264DD1300190225 /* Keyboard.cpp */; };
+		030F8F6F1264E10500190225 /* Screen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 030F8F6D1264E10500190225 /* Screen.cpp */; };
+		030F91981265152000190225 /* RenderingMaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 030F91911265152000190225 /* RenderingMaster.cpp */; };
+		030F91991265152000190225 /* ShaderTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 030F91931265152000190225 /* ShaderTools.cpp */; };
 		032B8AD212639A4600DDE564 /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 032B8AD112639A4600DDE564 /* SDL.framework */; };
 		032B8AE312639AC300DDE564 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 032B8AE212639AC300DDE564 /* Cocoa.framework */; };
 		032B8B1612639AED00DDE564 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 032B8B1512639AED00DDE564 /* OpenGL.framework */; };
@@ -18,12 +37,54 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		030F8DE31264BFAA00190225 /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO.txt; sourceTree = "<group>"; };
+		030F8DEC1264C00100190225 /* shaders */ = {isa = PBXFileReference; lastKnownFileType = folder; path = shaders; sourceTree = "<group>"; };
+		030F8DEF1264C01100190225 /* data */ = {isa = PBXFileReference; lastKnownFileType = folder; path = data; sourceTree = "<group>"; };
+		030F8E101264C0FF00190225 /* dominicusMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = dominicusMain.cpp; sourceTree = "<group>"; };
+		030F8E111264C0FF00190225 /* dominicusMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dominicusMain.h; sourceTree = "<group>"; };
+		030F8E141264C0FF00190225 /* SDLMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDLMain.h; sourceTree = "<group>"; };
+		030F8E151264C0FF00190225 /* SDLMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDLMain.m; sourceTree = "<group>"; };
+		030F8E1B1264C1F800190225 /* GamePrefs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GamePrefs.cpp; sourceTree = "<group>"; };
+		030F8E1C1264C1F800190225 /* GamePrefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GamePrefs.h; sourceTree = "<group>"; };
+		030F8E1E1264C3E800190225 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		030F8E691264CB9400190225 /* SystemInfo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SystemInfo.cpp; sourceTree = "<group>"; };
+		030F8E6A1264CB9400190225 /* SystemInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystemInfo.h; sourceTree = "<group>"; };
+		030F8E7A1264CC2D00190225 /* ProgramLog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProgramLog.cpp; sourceTree = "<group>"; };
+		030F8E7B1264CC2D00190225 /* ProgramLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgramLog.h; sourceTree = "<group>"; };
+		030F8E8B1264CD7700190225 /* Platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Platform.h; sourceTree = "<group>"; };
+		030F8E8C1264CD8D00190225 /* Platform.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Platform.cpp; sourceTree = "<group>"; };
+		030F8EAF1264CFFC00190225 /* MatrixMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MatrixMath.h; sourceTree = "<group>"; };
+		030F8EB01264CFFC00190225 /* ScalarMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScalarMath.h; sourceTree = "<group>"; };
+		030F8EB11264CFFC00190225 /* VectorMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VectorMath.h; sourceTree = "<group>"; };
+		030F8EB61264D05800190225 /* BMPImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BMPImage.cpp; sourceTree = "<group>"; };
+		030F8EB71264D05800190225 /* BMPImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMPImage.h; sourceTree = "<group>"; };
+		030F8EB81264D05800190225 /* Texture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Texture.cpp; sourceTree = "<group>"; };
+		030F8EB91264D05800190225 /* Texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Texture.h; sourceTree = "<group>"; };
+		030F8EC51264D4BC00190225 /* Mesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mesh.h; sourceTree = "<group>"; };
+		030F8ECD1264D82200190225 /* FontManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FontManager.cpp; sourceTree = "<group>"; };
+		030F8ECE1264D82200190225 /* FontManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FontManager.h; sourceTree = "<group>"; };
+		030F8F001264DBF300190225 /* libfreetype.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfreetype.a; path = /usr/local/lib/libfreetype.a; sourceTree = "<absolute>"; };
+		030F8F2F1264DC2200190225 /* libz.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libz.a; path = /usr/local/lib/libz.a; sourceTree = "<absolute>"; };
+		030F8F3C1264DD1300190225 /* Keyboard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Keyboard.cpp; sourceTree = "<group>"; };
+		030F8F3D1264DD1300190225 /* Keyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Keyboard.h; sourceTree = "<group>"; };
+		030F8F6D1264E10500190225 /* Screen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Screen.cpp; sourceTree = "<group>"; };
+		030F8F6E1264E10500190225 /* Screen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Screen.h; sourceTree = "<group>"; };
+		030F91911265152000190225 /* RenderingMaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RenderingMaster.cpp; sourceTree = "<group>"; };
+		030F91921265152000190225 /* RenderingMaster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderingMaster.h; sourceTree = "<group>"; };
+		030F91931265152000190225 /* ShaderTools.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShaderTools.cpp; sourceTree = "<group>"; };
+		030F91941265152000190225 /* ShaderTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShaderTools.h; sourceTree = "<group>"; };
 		032B8AB21263982C00DDE564 /* dominicus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = dominicus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		032B8AD112639A4600DDE564 /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = Library/Frameworks/SDL.framework; sourceTree = SDKROOT; };
 		032B8AE212639AC300DDE564 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		032B8B1512639AED00DDE564 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		032B8B341263DF5900DDE564 /* CODEFORMATTING.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CODEFORMATTING.txt; sourceTree = "<group>"; };
 		032B8B351263DF5900DDE564 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
+		03403575126529EC004FB921 /* ConsoleRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConsoleRenderer.cpp; sourceTree = "<group>"; };
+		03403576126529EC004FB921 /* ConsoleRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConsoleRenderer.h; sourceTree = "<group>"; };
+		03403577126529EC004FB921 /* HUDRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HUDRenderer.cpp; sourceTree = "<group>"; };
+		03403578126529EC004FB921 /* HUDRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUDRenderer.h; sourceTree = "<group>"; };
+		0340357A126529EC004FB921 /* SubjectRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SubjectRenderer.cpp; sourceTree = "<group>"; };
+		0340357B126529EC004FB921 /* SubjectRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubjectRenderer.h; sourceTree = "<group>"; };
 		03D47B7D1263E27F001755A6 /* dominicus.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = dominicus.icns; sourceTree = "<group>"; };
 		03D8C0781264BEBA00F26DC9 /* licenses */ = {isa = PBXFileReference; lastKnownFileType = folder; path = licenses; sourceTree = "<group>"; };
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -38,31 +99,186 @@
 				032B8AD212639A4600DDE564 /* SDL.framework in Frameworks */,
 				032B8AE312639AC300DDE564 /* Cocoa.framework in Frameworks */,
 				032B8B1612639AED00DDE564 /* OpenGL.framework in Frameworks */,
+				030F8F011264DBF300190225 /* libfreetype.a in Frameworks */,
+				030F8F301264DC2200190225 /* libz.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		030F8E0F1264C0FF00190225 /* core */ = {
+			isa = PBXGroup;
+			children = (
+				030F8E111264C0FF00190225 /* dominicusMain.h */,
+				030F8E101264C0FF00190225 /* dominicusMain.cpp */,
+				030F8E7B1264CC2D00190225 /* ProgramLog.h */,
+				030F8E7A1264CC2D00190225 /* ProgramLog.cpp */,
+				030F8E6A1264CB9400190225 /* SystemInfo.h */,
+				030F8E691264CB9400190225 /* SystemInfo.cpp */,
+				030F8E1C1264C1F800190225 /* GamePrefs.h */,
+				030F8E1B1264C1F800190225 /* GamePrefs.cpp */,
+			);
+			name = core;
+			path = src/core;
+			sourceTree = "<group>";
+		};
+		030F8E121264C0FF00190225 /* platform */ = {
+			isa = PBXGroup;
+			children = (
+				030F8E8B1264CD7700190225 /* Platform.h */,
+				030F8E131264C0FF00190225 /* macosx */,
+			);
+			name = platform;
+			path = src/platform;
+			sourceTree = "<group>";
+		};
+		030F8E131264C0FF00190225 /* macosx */ = {
+			isa = PBXGroup;
+			children = (
+				030F8E1E1264C3E800190225 /* main.cpp */,
+				030F8E8C1264CD8D00190225 /* Platform.cpp */,
+				030F8E141264C0FF00190225 /* SDLMain.h */,
+				030F8E151264C0FF00190225 /* SDLMain.m */,
+			);
+			path = macosx;
+			sourceTree = "<group>";
+		};
+		030F8EAE1264CFFC00190225 /* math */ = {
+			isa = PBXGroup;
+			children = (
+				030F8EAF1264CFFC00190225 /* MatrixMath.h */,
+				030F8EB01264CFFC00190225 /* ScalarMath.h */,
+				030F8EB11264CFFC00190225 /* VectorMath.h */,
+			);
+			name = math;
+			path = src/math;
+			sourceTree = "<group>";
+		};
+		030F8EB41264D05800190225 /* drawing */ = {
+			isa = PBXGroup;
+			children = (
+				030F91921265152000190225 /* RenderingMaster.h */,
+				030F91911265152000190225 /* RenderingMaster.cpp */,
+				030F91941265152000190225 /* ShaderTools.h */,
+				030F91931265152000190225 /* ShaderTools.cpp */,
+				03403573126529EC004FB921 /* renderers */,
+				030F8EB51264D05800190225 /* texture */,
+				030F8ECC1264D82200190225 /* text */,
+			);
+			name = drawing;
+			path = src/drawing;
+			sourceTree = "<group>";
+		};
+		030F8EB51264D05800190225 /* texture */ = {
+			isa = PBXGroup;
+			children = (
+				030F8EB91264D05800190225 /* Texture.h */,
+				030F8EB81264D05800190225 /* Texture.cpp */,
+				030F8EB71264D05800190225 /* BMPImage.h */,
+				030F8EB61264D05800190225 /* BMPImage.cpp */,
+			);
+			path = texture;
+			sourceTree = "<group>";
+		};
+		030F8EC41264D4BC00190225 /* geometry */ = {
+			isa = PBXGroup;
+			children = (
+				030F8EC51264D4BC00190225 /* Mesh.h */,
+			);
+			name = geometry;
+			path = src/geometry;
+			sourceTree = "<group>";
+		};
+		030F8ECC1264D82200190225 /* text */ = {
+			isa = PBXGroup;
+			children = (
+				030F8ECE1264D82200190225 /* FontManager.h */,
+				030F8ECD1264D82200190225 /* FontManager.cpp */,
+			);
+			path = text;
+			sourceTree = "<group>";
+		};
+		030F8F3B1264DD1300190225 /* input */ = {
+			isa = PBXGroup;
+			children = (
+				030F8F3D1264DD1300190225 /* Keyboard.h */,
+				030F8F3C1264DD1300190225 /* Keyboard.cpp */,
+			);
+			name = input;
+			path = src/input;
+			sourceTree = "<group>";
+		};
+		030F8F6C1264E10500190225 /* windowing */ = {
+			isa = PBXGroup;
+			children = (
+				030F8F6E1264E10500190225 /* Screen.h */,
+				030F8F6D1264E10500190225 /* Screen.cpp */,
+			);
+			name = windowing;
+			path = src/windowing;
+			sourceTree = "<group>";
+		};
 		032B8AE812639AC900DDE564 /* frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				032B8AE212639AC300DDE564 /* Cocoa.framework */,
 				032B8B1512639AED00DDE564 /* OpenGL.framework */,
 				032B8AD112639A4600DDE564 /* SDL.framework */,
+				030F8F001264DBF300190225 /* libfreetype.a */,
+				030F8F2F1264DC2200190225 /* libz.a */,
 			);
 			name = frameworks;
+			sourceTree = "<group>";
+		};
+		03403573126529EC004FB921 /* renderers */ = {
+			isa = PBXGroup;
+			children = (
+				03403579126529EC004FB921 /* ship */,
+				03403574126529EC004FB921 /* HUD */,
+			);
+			path = renderers;
+			sourceTree = "<group>";
+		};
+		03403574126529EC004FB921 /* HUD */ = {
+			isa = PBXGroup;
+			children = (
+				03403575126529EC004FB921 /* ConsoleRenderer.cpp */,
+				03403576126529EC004FB921 /* ConsoleRenderer.h */,
+				03403577126529EC004FB921 /* HUDRenderer.cpp */,
+				03403578126529EC004FB921 /* HUDRenderer.h */,
+			);
+			path = HUD;
+			sourceTree = "<group>";
+		};
+		03403579126529EC004FB921 /* ship */ = {
+			isa = PBXGroup;
+			children = (
+				0340357A126529EC004FB921 /* SubjectRenderer.cpp */,
+				0340357B126529EC004FB921 /* SubjectRenderer.h */,
+			);
+			path = ship;
 			sourceTree = "<group>";
 		};
 		29B97314FDCFA39411CA2CEA /* dominicus */ = {
 			isa = PBXGroup;
 			children = (
+				030F8E0F1264C0FF00190225 /* core */,
+				030F8E121264C0FF00190225 /* platform */,
+				030F8EAE1264CFFC00190225 /* math */,
+				030F8EC41264D4BC00190225 /* geometry */,
+				030F8F6C1264E10500190225 /* windowing */,
+				030F8F3B1264DD1300190225 /* input */,
+				030F8EB41264D05800190225 /* drawing */,
 				032B8B351263DF5900DDE564 /* README.txt */,
+				030F8DE31264BFAA00190225 /* TODO.txt */,
 				032B8B341263DF5900DDE564 /* CODEFORMATTING.txt */,
 				8D1107310486CEB800E47090 /* dominicus-Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				03D47B7D1263E27F001755A6 /* dominicus.icns */,
 				03D8C0781264BEBA00F26DC9 /* licenses */,
+				030F8DEC1264C00100190225 /* shaders */,
+				030F8DEF1264C01100190225 /* data */,
 				032B8AE812639AC900DDE564 /* frameworks */,
 				032B8AB21263982C00DDE564 /* dominicus.app */,
 			);
@@ -121,6 +337,9 @@
 				032B8B371263DF5900DDE564 /* README.txt in Resources */,
 				03D47B7E1263E27F001755A6 /* dominicus.icns in Resources */,
 				03D8C07D1264BEBA00F26DC9 /* licenses in Resources */,
+				030F8DE41264BFAA00190225 /* TODO.txt in Resources */,
+				030F8DEE1264C00100190225 /* shaders in Resources */,
+				030F8E021264C01100190225 /* data in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -131,6 +350,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				030F8E161264C0FF00190225 /* dominicusMain.cpp in Sources */,
+				030F8E171264C0FF00190225 /* SDLMain.m in Sources */,
+				030F8E1D1264C1F800190225 /* GamePrefs.cpp in Sources */,
+				030F8E1F1264C3E800190225 /* main.cpp in Sources */,
+				030F8E6B1264CB9400190225 /* SystemInfo.cpp in Sources */,
+				030F8E7C1264CC2D00190225 /* ProgramLog.cpp in Sources */,
+				030F8E8D1264CD8D00190225 /* Platform.cpp in Sources */,
+				030F8EBA1264D05800190225 /* BMPImage.cpp in Sources */,
+				030F8EBB1264D05800190225 /* Texture.cpp in Sources */,
+				030F8ECF1264D82200190225 /* FontManager.cpp in Sources */,
+				030F8F3E1264DD1300190225 /* Keyboard.cpp in Sources */,
+				030F8F6F1264E10500190225 /* Screen.cpp in Sources */,
+				030F91981265152000190225 /* RenderingMaster.cpp in Sources */,
+				030F91991265152000190225 /* ShaderTools.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -159,8 +392,10 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
+				HEADER_SEARCH_PATHS = "/usr/local/include/**";
 				INFOPLIST_FILE = "dominicus-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				PRODUCT_NAME = dominicus;
 			};
 			name = Debug;
@@ -173,8 +408,10 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
+				HEADER_SEARCH_PATHS = "/usr/local/include/**";
 				INFOPLIST_FILE = "dominicus-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				PRODUCT_NAME = dominicus;
 			};
 			name = Release;
