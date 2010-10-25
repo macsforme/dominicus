@@ -302,5 +302,3 @@ void ConsoleRenderer::render() {
 	drawBorder(Vector2(0.8f, 0.0f), Vector2(0.1f, 0.5f), 0);
 	drawCurve(Vector2(0.80f, 0.3f), Vector2(0.1f, 0.1f), 0);
 }
-
-

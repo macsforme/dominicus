@@ -342,5 +342,3 @@ void HUDRenderer::render() {
 		penX = CONSOLE_BORDER;
 	}
 }
-
-

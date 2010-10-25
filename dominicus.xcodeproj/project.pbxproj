@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		030DEC00126CDD1B000D87ED /* DiamondSquare.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 030DEBFF126CDD1B000D87ED /* DiamondSquare.cpp */; };
 		030F8DE41264BFAA00190225 /* TODO.txt in Resources */ = {isa = PBXBuildFile; fileRef = 030F8DE31264BFAA00190225 /* TODO.txt */; };
 		030F8DEE1264C00100190225 /* shaders in Resources */ = {isa = PBXBuildFile; fileRef = 030F8DEC1264C00100190225 /* shaders */; };
 		030F8E021264C01100190225 /* data in Resources */ = {isa = PBXBuildFile; fileRef = 030F8DEF1264C01100190225 /* data */; };
@@ -31,12 +32,15 @@
 		032B8B1612639AED00DDE564 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 032B8B1512639AED00DDE564 /* OpenGL.framework */; };
 		032B8B361263DF5900DDE564 /* CODEFORMATTING.txt in Resources */ = {isa = PBXBuildFile; fileRef = 032B8B341263DF5900DDE564 /* CODEFORMATTING.txt */; };
 		032B8B371263DF5900DDE564 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 032B8B351263DF5900DDE564 /* README.txt */; };
+		035AAAB21274F8B5006257C1 /* TerrainDevelopment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 035AAAB11274F8B5006257C1 /* TerrainDevelopment.cpp */; };
 		03D47B7E1263E27F001755A6 /* dominicus.icns in Resources */ = {isa = PBXBuildFile; fileRef = 03D47B7D1263E27F001755A6 /* dominicus.icns */; };
 		03D8C07D1264BEBA00F26DC9 /* licenses in Resources */ = {isa = PBXBuildFile; fileRef = 03D8C0781264BEBA00F26DC9 /* licenses */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		030DEBFE126CDD1B000D87ED /* DiamondSquare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiamondSquare.h; sourceTree = "<group>"; };
+		030DEBFF126CDD1B000D87ED /* DiamondSquare.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DiamondSquare.cpp; sourceTree = "<group>"; };
 		030F8DE31264BFAA00190225 /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO.txt; sourceTree = "<group>"; };
 		030F8DEC1264C00100190225 /* shaders */ = {isa = PBXFileReference; lastKnownFileType = folder; path = shaders; sourceTree = "<group>"; };
 		030F8DEF1264C01100190225 /* data */ = {isa = PBXFileReference; lastKnownFileType = folder; path = data; sourceTree = "<group>"; };
@@ -85,6 +89,12 @@
 		03403578126529EC004FB921 /* HUDRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUDRenderer.h; sourceTree = "<group>"; };
 		0340357A126529EC004FB921 /* SubjectRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SubjectRenderer.cpp; sourceTree = "<group>"; };
 		0340357B126529EC004FB921 /* SubjectRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubjectRenderer.h; sourceTree = "<group>"; };
+		035AAAB01274F8B5006257C1 /* TerrainDevelopment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TerrainDevelopment.h; path = testing/TerrainDevelopment.h; sourceTree = "<group>"; };
+		035AAAB11274F8B5006257C1 /* TerrainDevelopment.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TerrainDevelopment.cpp; path = testing/TerrainDevelopment.cpp; sourceTree = "<group>"; };
+		036A4D2112757E5F00CEED79 /* Console.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Console.cpp; sourceTree = "<group>"; };
+		036A4D2212757E5F00CEED79 /* Console.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Console.h; sourceTree = "<group>"; };
+		036A4D2D12757EB900CEED79 /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
+		036A4D2E12757EB900CEED79 /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
 		03D47B7D1263E27F001755A6 /* dominicus.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = dominicus.icns; sourceTree = "<group>"; };
 		03D8C0781264BEBA00F26DC9 /* licenses */ = {isa = PBXFileReference; lastKnownFileType = folder; path = licenses; sourceTree = "<group>"; };
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -185,6 +195,8 @@
 			isa = PBXGroup;
 			children = (
 				030F8EC51264D4BC00190225 /* Mesh.h */,
+				030DEBFE126CDD1B000D87ED /* DiamondSquare.h */,
+				030DEBFF126CDD1B000D87ED /* DiamondSquare.cpp */,
 			);
 			name = geometry;
 			path = src/geometry;
@@ -236,6 +248,7 @@
 			children = (
 				03403579126529EC004FB921 /* ship */,
 				03403574126529EC004FB921 /* HUD */,
+				035AAAAF1274F88A006257C1 /* testing */,
 			);
 			path = renderers;
 			sourceTree = "<group>";
@@ -260,6 +273,42 @@
 			path = ship;
 			sourceTree = "<group>";
 		};
+		035AAAAF1274F88A006257C1 /* testing */ = {
+			isa = PBXGroup;
+			children = (
+				035AAAB01274F8B5006257C1 /* TerrainDevelopment.h */,
+				035AAAB11274F8B5006257C1 /* TerrainDevelopment.cpp */,
+			);
+			name = testing;
+			sourceTree = "<group>";
+		};
+		035AB02F127577B1006257C1 /* state */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = state;
+			sourceTree = "<group>";
+		};
+		036A4D2012757E5F00CEED79 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				036A4D2112757E5F00CEED79 /* Console.cpp */,
+				036A4D2212757E5F00CEED79 /* Console.h */,
+			);
+			name = UI;
+			path = src/UI;
+			sourceTree = "<group>";
+		};
+		036A4D2C12757EB900CEED79 /* controllers */ = {
+			isa = PBXGroup;
+			children = (
+				036A4D2D12757EB900CEED79 /* Camera.cpp */,
+				036A4D2E12757EB900CEED79 /* Camera.h */,
+			);
+			name = controllers;
+			path = src/controllers;
+			sourceTree = "<group>";
+		};
 		29B97314FDCFA39411CA2CEA /* dominicus */ = {
 			isa = PBXGroup;
 			children = (
@@ -267,8 +316,11 @@
 				030F8E121264C0FF00190225 /* platform */,
 				030F8EAE1264CFFC00190225 /* math */,
 				030F8EC41264D4BC00190225 /* geometry */,
+				035AB02F127577B1006257C1 /* state */,
+				036A4D2C12757EB900CEED79 /* controllers */,
 				030F8F6C1264E10500190225 /* windowing */,
 				030F8F3B1264DD1300190225 /* input */,
+				036A4D2012757E5F00CEED79 /* UI */,
 				030F8EB41264D05800190225 /* drawing */,
 				032B8B351263DF5900DDE564 /* README.txt */,
 				030F8DE31264BFAA00190225 /* TODO.txt */,
@@ -364,6 +416,8 @@
 				030F8F6F1264E10500190225 /* Screen.cpp in Sources */,
 				030F91981265152000190225 /* RenderingMaster.cpp in Sources */,
 				030F91991265152000190225 /* ShaderTools.cpp in Sources */,
+				030DEC00126CDD1B000D87ED /* DiamondSquare.cpp in Sources */,
+				035AAAB21274F8B5006257C1 /* TerrainDevelopment.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

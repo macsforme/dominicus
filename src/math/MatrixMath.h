@@ -209,5 +209,3 @@ inline void translateMatrix(float x, float y, float z, Matrix4& mat) {
 }
 
 #endif
-
-

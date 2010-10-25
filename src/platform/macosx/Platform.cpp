@@ -12,6 +12,7 @@
 // platform-dependent includes
 #include "CoreFoundation/CoreFoundation.h"
 #include <mach/mach_time.h>
+#include <time.h>
 
 Platform::Platform() {
 	// determine the resource directory path
@@ -25,6 +26,9 @@ Platform::Platform() {
 	CFRelease(resources);
 
 	dataPath = detectedDataPath;
+
+	// initialize the random number generator
+	srand(time(NULL));
 }
 
 unsigned int Platform::getExecutionTimeMicros() {
@@ -46,5 +50,3 @@ void Platform::sleepMicros(unsigned int micros) {
 	delayTime.tv_nsec = micros * 1000;
 	nanosleep(&delayTime, NULL);
 }
-
-

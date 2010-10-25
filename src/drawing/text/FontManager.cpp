@@ -275,5 +275,3 @@ void FontManager::populateCommonChars(unsigned int size) {
 	for(char i = ' '; i < '~'; ++i)
 		buildChar(i, size);
 }
-
-

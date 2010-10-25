@@ -14,5 +14,3 @@
 @end
 
 #endif /* _SDLMain_h_ */
-
-

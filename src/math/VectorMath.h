@@ -66,6 +66,11 @@ inline float distance(Vector2& vec1, Vector2& vec2) {
 
 	return sqrt(distX * distX + distY * distY);
 }
+inline float mag(Vector2& vec) {
+	Vector2 midPoint(0.0f, 0.0f);
+
+	return absolute(distance(midPoint, vec));
+}
 
 class Vector3 {
 public:
@@ -122,6 +127,11 @@ inline float distance(Vector3& vec1, Vector3& vec2) {
 	float distZ = vec1.z - vec2.z;
 
 	return sqrt(distX * distX + distY * distY + distZ * distZ);
+}
+inline float mag(Vector3& vec) {
+	Vector3 midPoint(0.0f, 0.0f, 0.0f);
+
+	return absolute(distance(midPoint, vec));
 }
 
 class Vector4 {
@@ -183,7 +193,10 @@ inline float distance(Vector4& vec1, Vector4& vec2) {
 
 	return sqrt(distX * distX + distY * distY + distZ * distZ + distW * distW);
 }
+inline float mag(Vector4& vec) {
+	Vector4 midPoint(0.0f, 0.0f, 0.0f, 0.0f);
+
+	return absolute(distance(midPoint, vec));
+}
 
 #endif
-
-

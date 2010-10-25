@@ -42,5 +42,3 @@ Screen::Screen(bool fullScreen) : fullScreen(fullScreen) {
 	if(! fullScreen)
 		SDL_WM_SetCaption("dominicus", NULL);
 }
-
-

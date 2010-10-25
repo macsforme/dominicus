@@ -1,6 +1,6 @@
 /*
  *  Console.cpp
- *  ModelViewer
+ *  dominicus
  *
  *  Created by Joshua Bodine on 10/7/10.
  *  Copyright 2010 Joshua Bodine. All rights reserved.
@@ -135,5 +135,3 @@ void Console::changeLineContents(std::string newContents, unsigned int lineNumbe
 	// not found
 	ProgramLog::report(LOG_INTERNALERROR, "Line change on non-existant tab name requested.");
 }
-
-

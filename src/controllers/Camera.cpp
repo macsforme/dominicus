@@ -1,6 +1,6 @@
 /*
  *  Camera.cpp
- *  ModelViewer
+ *  dominicus
  *
  *  Created by Joshua Bodine on 8/23/10.
  *  Copyright 2010 Joshua Bodine. All rights reserved.
@@ -59,5 +59,3 @@ void Camera::update() {
 		rotateMatrix(Vector3(0.0f, 0.0f, 1.0f), -ANGLE_FACTOR / (float) LOOP_FREQUENCY, currentRotate);
 	}
 }
-
-

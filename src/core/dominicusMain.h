@@ -21,5 +21,3 @@
 int dominicusMain(int argc, char* argv[]);
 
 #endif
-
-

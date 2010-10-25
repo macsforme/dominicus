@@ -91,5 +91,3 @@ void SystemInfo::check() {
 			);
 	}
 }
-
-

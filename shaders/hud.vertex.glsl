@@ -9,4 +9,3 @@ void main() {
     gl_Position = vec4(position, -0.8, 1.0);
 	colorInterpol = color;
 }
-

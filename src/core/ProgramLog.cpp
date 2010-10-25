@@ -28,4 +28,3 @@ void ProgramLog::report(LogDetail detail, const char* report) {
 	}
 }
 
-

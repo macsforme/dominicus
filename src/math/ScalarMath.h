@@ -30,5 +30,3 @@ inline float absolute(float num) {
 }
 
 #endif
-
-

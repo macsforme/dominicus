@@ -261,5 +261,3 @@ BMPImage::BMPImage(const char* filename) {
 	width = fileDIBHeader.imageWidth;
 	height = fileDIBHeader.imageHeight;
 }
-
-

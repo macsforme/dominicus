@@ -17,4 +17,3 @@ void main() {
 	gl_Position.x -= normal.x;
     texCoordInterpol = texCoord;
 }
-

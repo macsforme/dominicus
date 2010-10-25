@@ -138,5 +138,3 @@ GLuint ShaderTools::makeProgram(std::vector<GLuint> shaders) {
 
 	return program;
 }
-
-

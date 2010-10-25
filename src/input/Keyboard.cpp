@@ -58,5 +58,3 @@ unsigned long int Keyboard::loop() {
 
 	return sleepMicros;
 }
-
-
