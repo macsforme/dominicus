@@ -35,6 +35,8 @@
 		035AAAB21274F8B5006257C1 /* TerrainDevelopment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 035AAAB11274F8B5006257C1 /* TerrainDevelopment.cpp */; };
 		03D47B7E1263E27F001755A6 /* dominicus.icns in Resources */ = {isa = PBXBuildFile; fileRef = 03D47B7D1263E27F001755A6 /* dominicus.icns */; };
 		03D8C07D1264BEBA00F26DC9 /* licenses in Resources */ = {isa = PBXBuildFile; fileRef = 03D8C0781264BEBA00F26DC9 /* licenses */; };
+		03DF59F01279786E003C2134 /* ConsoleRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03DF59EC1279786E003C2134 /* ConsoleRenderer.cpp */; };
+		03DF59F11279786E003C2134 /* HUDRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03DF59EE1279786E003C2134 /* HUDRenderer.cpp */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 /* End PBXBuildFile section */
 
@@ -83,10 +85,6 @@
 		032B8B1512639AED00DDE564 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		032B8B341263DF5900DDE564 /* CODEFORMATTING.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CODEFORMATTING.txt; sourceTree = "<group>"; };
 		032B8B351263DF5900DDE564 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
-		03403575126529EC004FB921 /* ConsoleRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConsoleRenderer.cpp; sourceTree = "<group>"; };
-		03403576126529EC004FB921 /* ConsoleRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConsoleRenderer.h; sourceTree = "<group>"; };
-		03403577126529EC004FB921 /* HUDRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HUDRenderer.cpp; sourceTree = "<group>"; };
-		03403578126529EC004FB921 /* HUDRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUDRenderer.h; sourceTree = "<group>"; };
 		0340357A126529EC004FB921 /* SubjectRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SubjectRenderer.cpp; sourceTree = "<group>"; };
 		0340357B126529EC004FB921 /* SubjectRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubjectRenderer.h; sourceTree = "<group>"; };
 		035AAAB01274F8B5006257C1 /* TerrainDevelopment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TerrainDevelopment.h; path = testing/TerrainDevelopment.h; sourceTree = "<group>"; };
@@ -97,6 +95,10 @@
 		036A4D2E12757EB900CEED79 /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
 		03D47B7D1263E27F001755A6 /* dominicus.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = dominicus.icns; sourceTree = "<group>"; };
 		03D8C0781264BEBA00F26DC9 /* licenses */ = {isa = PBXFileReference; lastKnownFileType = folder; path = licenses; sourceTree = "<group>"; };
+		03DF59EC1279786E003C2134 /* ConsoleRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConsoleRenderer.cpp; sourceTree = "<group>"; };
+		03DF59ED1279786E003C2134 /* ConsoleRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConsoleRenderer.h; sourceTree = "<group>"; };
+		03DF59EE1279786E003C2134 /* HUDRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HUDRenderer.cpp; sourceTree = "<group>"; };
+		03DF59EF1279786E003C2134 /* HUDRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUDRenderer.h; sourceTree = "<group>"; };
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* dominicus-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "dominicus-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -172,6 +174,7 @@
 				030F91911265152000190225 /* RenderingMaster.cpp */,
 				030F91941265152000190225 /* ShaderTools.h */,
 				030F91931265152000190225 /* ShaderTools.cpp */,
+				03DF59EB1279786E003C2134 /* HUD */,
 				03403573126529EC004FB921 /* renderers */,
 				030F8EB51264D05800190225 /* texture */,
 				030F8ECC1264D82200190225 /* text */,
@@ -247,21 +250,9 @@
 			isa = PBXGroup;
 			children = (
 				03403579126529EC004FB921 /* ship */,
-				03403574126529EC004FB921 /* HUD */,
 				035AAAAF1274F88A006257C1 /* testing */,
 			);
 			path = renderers;
-			sourceTree = "<group>";
-		};
-		03403574126529EC004FB921 /* HUD */ = {
-			isa = PBXGroup;
-			children = (
-				03403575126529EC004FB921 /* ConsoleRenderer.cpp */,
-				03403576126529EC004FB921 /* ConsoleRenderer.h */,
-				03403577126529EC004FB921 /* HUDRenderer.cpp */,
-				03403578126529EC004FB921 /* HUDRenderer.h */,
-			);
-			path = HUD;
 			sourceTree = "<group>";
 		};
 		03403579126529EC004FB921 /* ship */ = {
@@ -307,6 +298,17 @@
 			);
 			name = controllers;
 			path = src/controllers;
+			sourceTree = "<group>";
+		};
+		03DF59EB1279786E003C2134 /* HUD */ = {
+			isa = PBXGroup;
+			children = (
+				03DF59EC1279786E003C2134 /* ConsoleRenderer.cpp */,
+				03DF59ED1279786E003C2134 /* ConsoleRenderer.h */,
+				03DF59EE1279786E003C2134 /* HUDRenderer.cpp */,
+				03DF59EF1279786E003C2134 /* HUDRenderer.h */,
+			);
+			path = HUD;
 			sourceTree = "<group>";
 		};
 		29B97314FDCFA39411CA2CEA /* dominicus */ = {
@@ -418,6 +420,8 @@
 				030F91991265152000190225 /* ShaderTools.cpp in Sources */,
 				030DEC00126CDD1B000D87ED /* DiamondSquare.cpp in Sources */,
 				035AAAB21274F8B5006257C1 /* TerrainDevelopment.cpp in Sources */,
+				03DF59F01279786E003C2134 /* ConsoleRenderer.cpp in Sources */,
+				03DF59F11279786E003C2134 /* HUDRenderer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
