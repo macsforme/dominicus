@@ -1,5 +1,5 @@
 /*
- *  RenderingMaster.cpp
+ *  DrawingMaster.cpp
  *  dominicus
  *
  *  Created by Joshua Bodine on 7/7/10.
@@ -7,11 +7,32 @@
  *
  */
 
-#include "RenderingMaster.h"
+#include "DrawingMaster.h"
 
-RenderingMaster::RenderingMaster() {
-	// set common OpenGL state
-	glEnable(GL_TEXTURE_2D);
+DrawingMaster::DrawingMaster() {
+	// initial OpenGL commands
+	if(gamePrefs.getBool("windowStartFullScreen"))
+		setViewPortSize(systemInfo.screenWidth, systemInfo.screenHeight);
+	else
+		setViewPortSize(gamePrefs.getInt("windowWidth"), gamePrefs.getInt("windowHeight"));
+}
+
+DrawingMaster::~DrawingMaster() {
+	// any OpenGL commands to run upon context destruction
+}
+
+void DrawingMaster::setViewPortSize(unsigned short int width, unsigned short int height) {
+	// set the viewport size in GL
+	glViewport(
+			0,
+			0,
+			width,
+			height
+		);
+}
+
+void DrawingMaster::preFrame() {
+	// complete any pre-frame operations
 	glEnable(GL_DEPTH_TEST);
 
 	glEnable(GL_CULL_FACE);
@@ -22,39 +43,17 @@ RenderingMaster::RenderingMaster() {
 
 	glClearColor(0.447058823529412f, 0.407843137254902f, 0.298039215686275f, 1.0f);
 
-	if(gamePrefs.getBool("windowStartFullScreen"))
-		setViewPortSize(systemInfo.screenWidth, systemInfo.screenHeight);
-	else
-		setViewPortSize(gamePrefs.getInt("windowWidth"), gamePrefs.getInt("windowHeight"));
-}
-
-RenderingMaster::~RenderingMaster() {
-	// undo common OpenGL state
-	glDisable(GL_BLEND);
-	glDisable(GL_TEXTURE_2D);
-	glDisable(GL_DEPTH_TEST);
-	glDisable(GL_CULL_FACE);
-}
-
-void RenderingMaster::setViewPortSize(unsigned short int width, unsigned short int height) {
-	// set the viewport size in GL
-	glViewport(
-			0,
-			0,
-			width,
-			height
-		);
-}
-
-void RenderingMaster::preFrame() {
-	// complete any pre-frame operations
-
 	// clear the screen
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void RenderingMaster::postFrame() {
+void DrawingMaster::postFrame() {
 	// complete any post-frame operations
+	glDisable(GL_BLEND);
+
+	glDisable(GL_CULL_FACE);
+
+	glDisable(GL_DEPTH_TEST);
 
 	// swap buffers
 	SDL_GL_SwapBuffers();
@@ -72,7 +71,7 @@ void RenderingMaster::postFrame() {
 	}
 }
 
-unsigned long int RenderingMaster::loop() {
+unsigned long int DrawingMaster::loop() {
 	// execute pre-frame instructions
 	preFrame();
 
@@ -99,4 +98,3 @@ unsigned long int RenderingMaster::loop() {
 
 	return sleepMicros;
 }
-

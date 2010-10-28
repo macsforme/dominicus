@@ -1,5 +1,5 @@
 /*
- *  RenderingMaster.h
+ *  DrawingMaster.h
  *  dominicus
  *
  *  Created by Joshua Bodine on 7/7/10.
@@ -7,10 +7,10 @@
  *
  */
 
-#ifndef RENDERINGSETUP_H
-#define RENDERINGSETUP_H
+#ifndef DRAWINGMASTER_H
+#define DRAWINGMASTER_H
 
-// game headers
+// program headers
 #include "GamePrefs.h"
 #include "Platform.h"
 #include "ProgramLog.h"
@@ -26,10 +26,10 @@ extern SystemInfo systemInfo;
 extern GamePrefs gamePrefs;
 extern Platform platform;
 
-class RenderingMaster {
+class DrawingMaster {
 public:
-	RenderingMaster();
-	~RenderingMaster();
+	DrawingMaster();
+	~DrawingMaster();
 
 	void setViewPortSize(unsigned short int width, unsigned short int height);
 
@@ -40,5 +40,3 @@ public:
 };
 
 #endif
-
-

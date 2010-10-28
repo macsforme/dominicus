@@ -26,14 +26,14 @@ int dominicusMain(int argc, char* argv[]) {
 	// initialize stuff
 	Screen* screen = new Screen(gamePrefs.getBool("windowStartFullScreen") ? true : false);
 	Keyboard* keyboard = new Keyboard(&screen);
-	RenderingMaster* renderingMaster = new RenderingMaster();
+	DrawingMaster* drawingMaster = new DrawingMaster();
 
 	// with the graphics context initialized, check for a compatible system
 	SystemInfo::check();
 
 	// keep a timer for each module we loop over
 	unsigned long int keyboardTimer = 0;
-	unsigned long int renderingTimer = 0;
+	unsigned long int drawingTimer = 0;
 
 	// main program loop
 	while(keepDominicusAlive) {
@@ -51,10 +51,10 @@ int dominicusMain(int argc, char* argv[]) {
 			plannedWait = keyboardTimer - now;
 
 		// renderer
-		if(renderingTimer <= now)
-			renderingTimer = now + renderingMaster->loop();
-		if(renderingTimer - now < plannedWait)
-			plannedWait = renderingTimer - now;
+		if(drawingTimer <= now)
+			drawingTimer = now + drawingMaster->loop();
+		if(drawingTimer - now < plannedWait)
+			plannedWait = drawingTimer - now;
 
 		// sanity check
 		if(plannedWait == -1)
@@ -66,7 +66,7 @@ int dominicusMain(int argc, char* argv[]) {
 	}
 
 	// clean up objects
-	delete (renderingMaster);
+	delete (drawingMaster);
 	delete (screen);
 	delete (keyboard);
 

@@ -14,7 +14,7 @@
 #include "GamePrefs.h"
 #include "Keyboard.h"
 #include "Platform.h"
-#include "RenderingMaster.h"
+#include "DrawingMaster.h"
 #include "Screen.h"
 #include "SystemInfo.h"
 
