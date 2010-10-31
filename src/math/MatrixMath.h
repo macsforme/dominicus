@@ -114,26 +114,29 @@ public:
 				m41 * mat.m14 + m42 * mat.m24 + m43 * mat.m34 + m44 * mat.m44
 			);
 	}
+
 	Matrix4& operator *= (const Matrix4& mat) {
-		m11 = m11 * mat.m11 + m12 * mat.m21 + m13 * mat.m31 + m14 * mat.m41;
-		m12 = m11 * mat.m12 + m12 * mat.m22 + m13 * mat.m32 + m14 * mat.m42;
-		m13 = m11 * mat.m13 + m12 * mat.m23 + m13 * mat.m33 + m14 * mat.m43;
-		m14 = m11 * mat.m14 + m12 * mat.m24 + m13 * mat.m34 + m14 * mat.m44;
+		Matrix4 old(*this);
 
-		m21 = m21 * mat.m11 + m22 * mat.m21 + m23 * mat.m31 + m24 * mat.m41;
-		m22 = m21 * mat.m12 + m22 * mat.m22 + m23 * mat.m32 + m24 * mat.m42;
-		m23 = m21 * mat.m13 + m22 * mat.m23 + m23 * mat.m33 + m24 * mat.m43;
-		m24 = m21 * mat.m14 + m22 * mat.m24 + m23 * mat.m34 + m24 * mat.m44;
+		m11 = old.m11 * mat.m11 + old.m12 * mat.m21 + old.m13 * mat.m31 + old.m14 * mat.m41;
+		m12 = old.m11 * mat.m12 + old.m12 * mat.m22 + old.m13 * mat.m32 + old.m14 * mat.m42;
+		m13 = old.m11 * mat.m13 + old.m12 * mat.m23 + old.m13 * mat.m33 + old.m14 * mat.m43;
+		m14 = old.m11 * mat.m14 + old.m12 * mat.m24 + old.m13 * mat.m34 + old.m14 * mat.m44;
 
-		m31 = m31 * mat.m11 + m32 * mat.m21 + m33 * mat.m31 + m34 * mat.m41;
-		m32 = m31 * mat.m12 + m32 * mat.m22 + m33 * mat.m32 + m34 * mat.m42;
-		m33 = m31 * mat.m13 + m32 * mat.m23 + m33 * mat.m33 + m34 * mat.m43;
-		m34 = m31 * mat.m14 + m32 * mat.m24 + m33 * mat.m34 + m34 * mat.m44;
+		m21 = old.m21 * mat.m11 + old.m22 * mat.m21 + old.m23 * mat.m31 + old.m24 * mat.m41;
+		m22 = old.m21 * mat.m12 + old.m22 * mat.m22 + old.m23 * mat.m32 + old.m24 * mat.m42;
+		m23 = old.m21 * mat.m13 + old.m22 * mat.m23 + old.m23 * mat.m33 + old.m24 * mat.m43;
+		m24 = old.m21 * mat.m14 + old.m22 * mat.m24 + old.m23 * mat.m34 + old.m24 * mat.m44;
 
-		m41 = m41 * mat.m11 + m42 * mat.m21 + m43 * mat.m31 + m44 * mat.m41;
-		m42 = m41 * mat.m12 + m42 * mat.m22 + m43 * mat.m32 + m44 * mat.m42;
-		m43 = m41 * mat.m13 + m42 * mat.m23 + m43 * mat.m33 + m44 * mat.m43;
-		m44 = m41 * mat.m14 + m42 * mat.m24 + m43 * mat.m34 + m44 * mat.m44;
+		m31 = old.m31 * mat.m11 + old.m32 * mat.m21 + old.m33 * mat.m31 + old.m34 * mat.m41;
+		m32 = old.m31 * mat.m12 + old.m32 * mat.m22 + old.m33 * mat.m32 + old.m34 * mat.m42;
+		m33 = old.m31 * mat.m13 + old.m32 * mat.m23 + old.m33 * mat.m33 + old.m34 * mat.m43;
+		m34 = old.m31 * mat.m14 + old.m32 * mat.m24 + old.m33 * mat.m34 + old.m34 * mat.m44;
+
+		m41 = old.m41 * mat.m11 + old.m42 * mat.m21 + old.m43 * mat.m31 + old.m44 * mat.m41;
+		m42 = old.m41 * mat.m12 + old.m42 * mat.m22 + old.m43 * mat.m32 + old.m44 * mat.m42;
+		m43 = old.m41 * mat.m13 + old.m42 * mat.m23 + old.m43 * mat.m33 + old.m44 * mat.m43;
+		m44 = old.m41 * mat.m14 + old.m42 * mat.m24 + old.m43 * mat.m34 + old.m44 * mat.m44;
 
 		return *this;
 	}
