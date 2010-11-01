@@ -14,6 +14,8 @@
 #include "VectorMath.h"
 
 // library headers
+#include <map>
+#include <string>
 #include <vector>
 
 class Mesh {
@@ -149,7 +151,7 @@ public:
 		normals.push_back(cross(v1, v2));
 		normals.back().norm();
 	}
-	void autoTexCoord(unsigned int index, std::string group) {
+	void autoTexCoord(unsigned int index, std::string group = "") {
 		texCoords.push_back(Vector2(
 				vertices[faceGroups[group][index].vertices[0]].x,
 				vertices[faceGroups[group][index].vertices[0]].y
