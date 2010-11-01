@@ -29,4 +29,12 @@ inline float absolute(float num) {
 	return (num < 0.0f ? -num : num);
 }
 
+inline float maximum(float num1, float num2) {
+	return (num1 > num2 ? num1 : num2);
+}
+
+inline float minimum(float num1, float num2) {
+	return (num1 < num2 ? num1 : num2);
+}
+
 #endif

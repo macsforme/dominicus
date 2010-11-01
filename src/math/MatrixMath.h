@@ -178,9 +178,12 @@ inline Vector4 operator * (const Vector4 vec, const Matrix4& mat) {
 
 // non-member matrix manipulation functions
 inline void scaleMatrix(float x, float y, float z, Matrix4& mat) {
-	mat.m11 *= x;
-	mat.m22 *= y;
-	mat.m33 *= z;
+	mat *= Matrix4(
+			x, 0.0f, 0.0f, 0.0f,
+			0.0f, y, 0.0f, 0.0f,
+			0.0f, 0.0f, z, 0.0f,
+			0.0f, 0.0f, 0.0f, 1.0f
+		);
 }
 inline void rotateMatrix(const Vector3 axis, float angle, Matrix4& mat) {
 	mat *= Matrix4(
@@ -206,9 +209,12 @@ inline void rotateMatrix(const Vector3 axis, float angle, Matrix4& mat) {
 		);
 }
 inline void translateMatrix(float x, float y, float z, Matrix4& mat) {
-	mat.m41 += x;
-	mat.m42 += y;
-	mat.m43 += z;
+	mat *= Matrix4(
+			1.0f, 0.0f, 0.0f, 0.0f,
+			0.0f, 1.0f, 0.0f, 0.0f,
+			0.0f, 0.0f, 1.0f, 0.0f,
+			x, y, z, 1.0f
+		);
 }
 
 #endif
