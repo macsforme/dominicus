@@ -68,5 +68,3 @@ const std::string GamePrefs::getBinding(SDLKey key) {
 void GamePrefs::setBinding(std::string value, SDLKey key) {
 	keyBindings[key] = value;
 }
-
-
