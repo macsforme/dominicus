@@ -19,10 +19,11 @@
 #include <fstream>
 #include <stdint.h>
 #include <sstream>
+#include <string>
 
 class BMPImage : public Texture {
 public:
-	BMPImage(const char* filename);
+	BMPImage(std::string filename);
 };
 
 #endif

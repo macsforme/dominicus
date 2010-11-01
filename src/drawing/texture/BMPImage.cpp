@@ -9,12 +9,12 @@
 
 #include "BMPImage.h"
 
-BMPImage::BMPImage(const char* filename) {
+BMPImage::BMPImage(std::string filename) {
 	// ===== Opening and reading the file =====
 
 	// open the file
 	std::ifstream fileStream;
-	fileStream.open(filename, std::ios::binary);
+	fileStream.open(filename.c_str(), std::ios::binary);
 
 	// ensure the file was successfully opened
 	if(! fileStream.is_open()) {

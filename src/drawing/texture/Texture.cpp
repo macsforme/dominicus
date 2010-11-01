@@ -16,7 +16,7 @@ Texture::Texture() {
 	pixelData = NULL;
 }
 
-Texture::Texture(unsigned int newWidth, unsigned int newHeight, PixelFormat newFormat) {
+Texture::Texture(uint32_t newWidth, uint32_t newHeight, PixelFormat newFormat) {
 	width = newWidth;
 	height = newHeight;
 	format = newFormat;
@@ -29,7 +29,7 @@ Texture::Texture(unsigned int newWidth, unsigned int newHeight, PixelFormat newF
 						(width * (format == FORMAT_RGBA ? 4 : 3) % 4) > 0 ?
 						4 - (width * (format == FORMAT_RGBA ? 4 : 3) % 4) : 0
 				),
-			sizeof(unsigned short int)
+			sizeof(uint8_t)
 		);
 }
 
@@ -37,12 +37,9 @@ Texture::~Texture() {
 	free(pixelData);
 }
 
-unsigned short int Texture::getRedValueAt(unsigned int column, unsigned int row) {
+uint8_t Texture::getRedValueAt(uint32_t column, uint32_t row) {
 	if(pixelData == NULL)
-		ProgramLog::report(
-				LOG_INTERNALERROR,
-				"Texture pixel color requested before memory allocated."
-			);
+		ProgramLog::report(LOG_FATAL, "Texture pixel color requested before memory allocated.");
 	if(column >= width || row >= height) {
 		std::stringstream err;
 		err << "Texture row or column index for retrieval out-of-bounds at " <<
@@ -51,10 +48,10 @@ unsigned short int Texture::getRedValueAt(unsigned int column, unsigned int row)
 				width << "," <<
 				height << ").";
 
-		ProgramLog::report(LOG_INTERNALERROR, err.str().c_str());
+		ProgramLog::report(LOG_FATAL, err.str().c_str());
 	}
 
-	return *((unsigned short int*) pixelData +
+	return *((uint8_t*) pixelData +
 			row *
 			(width * (format == FORMAT_RGBA ? 4 : 3) +
 					(width * (format == FORMAT_RGBA ? 4 : 3) % 4 > 0 ?
@@ -63,12 +60,9 @@ unsigned short int Texture::getRedValueAt(unsigned int column, unsigned int row)
 			0);
 }
 
-unsigned short int Texture::getGreenValueAt(unsigned int column, unsigned int row) {
+uint8_t Texture::getGreenValueAt(uint32_t column, uint32_t row) {
 	if(pixelData == NULL)
-		ProgramLog::report(
-				LOG_INTERNALERROR,
-				"Texture pixel color requested before memory allocated."
-			);
+		ProgramLog::report(LOG_FATAL, "Texture pixel color requested before memory allocated.");
 	if(column >= width || row >= height) {
 		std::stringstream err;
 		err << "Texture row or column index for retrieval out-of-bounds at " <<
@@ -77,10 +71,10 @@ unsigned short int Texture::getGreenValueAt(unsigned int column, unsigned int ro
 				width << "," <<
 				height << ").";
 
-		ProgramLog::report(LOG_INTERNALERROR, err.str().c_str());
+		ProgramLog::report(LOG_FATAL, err.str().c_str());
 	}
 
-	return *((unsigned short int*) pixelData +
+	return *((uint8_t*) pixelData +
 			row *
 			(width * (format == FORMAT_RGBA ? 4 : 3) +
 					(width * (format == FORMAT_RGBA ? 4 : 3) % 4 > 0 ?
@@ -89,12 +83,9 @@ unsigned short int Texture::getGreenValueAt(unsigned int column, unsigned int ro
 			1);
 }
 
-unsigned short int Texture::getBlueValueAt(unsigned int column, unsigned int row) {
+uint8_t Texture::getBlueValueAt(uint32_t column, uint32_t row) {
 	if(pixelData == NULL)
-		ProgramLog::report(
-				LOG_INTERNALERROR,
-				"Texture pixel color requested before memory allocated."
-			);
+		ProgramLog::report(LOG_FATAL, "Texture pixel color requested before memory allocated.");
 	if(column >= width || row >= height) {
 		std::stringstream err;
 		err << "Texture row or column index for retrieval out-of-bounds at " <<
@@ -103,10 +94,10 @@ unsigned short int Texture::getBlueValueAt(unsigned int column, unsigned int row
 				width << "," <<
 				height << ").";
 
-		ProgramLog::report(LOG_INTERNALERROR, err.str().c_str());
+		ProgramLog::report(LOG_FATAL, err.str().c_str());
 	}
 
-	return *((unsigned short int*) pixelData +
+	return *((uint8_t*) pixelData +
 			row *
 			(width * (format == FORMAT_RGBA ? 4 : 3) +
 					(width * (format == FORMAT_RGBA ? 4 : 3) % 4 > 0 ?
@@ -115,12 +106,9 @@ unsigned short int Texture::getBlueValueAt(unsigned int column, unsigned int row
 			0);
 }
 
-unsigned short int Texture::getAlphaValueAt(unsigned int column, unsigned int row) {
+uint8_t Texture::getAlphaValueAt(uint32_t column, uint32_t row) {
 	if(pixelData == NULL)
-		ProgramLog::report(
-				LOG_INTERNALERROR,
-				"Texture pixel color requested before memory allocated."
-			);
+		ProgramLog::report(LOG_FATAL, "Texture pixel color requested before memory allocated.");
 	if(column >= width || row >= height) {
 		std::stringstream err;
 		err << "Texture row or column index for retrieval out-of-bounds at " <<
@@ -129,11 +117,11 @@ unsigned short int Texture::getAlphaValueAt(unsigned int column, unsigned int ro
 				width << "," <<
 				height << ").";
 
-		ProgramLog::report(LOG_INTERNALERROR, err.str().c_str());
+		ProgramLog::report(LOG_FATAL, err.str().c_str());
 	}
 
 	if(format == FORMAT_RGBA)
-		return *((unsigned short int*) pixelData +
+		return *((uint8_t*) pixelData +
 				row *
 				(width * (format == FORMAT_RGBA ? 4 : 3) +
 						(width * (format == FORMAT_RGBA ? 4 : 3) % 4 > 0 ?
@@ -145,13 +133,10 @@ unsigned short int Texture::getAlphaValueAt(unsigned int column, unsigned int ro
 }
 
 void Texture::setColorAt(
-			unsigned int column, unsigned int row, unsigned short int red, unsigned short int green, unsigned short int blue, unsigned short int alpha
+			uint32_t column, uint32_t row, uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha
 		) {
 	if(pixelData == NULL)
-		ProgramLog::report(
-				LOG_INTERNALERROR,
-				"Texture pixel color specified before memory allocated."
-			);
+		ProgramLog::report(LOG_FATAL, "Texture pixel color specified before memory allocated.");
 	if(column >= width || row >= height) {
 		std::stringstream err;
 		err << "Texture row or column index for set out-of-bounds at " <<
@@ -160,12 +145,12 @@ void Texture::setColorAt(
 				width << "," <<
 				height << ").";
 
-		ProgramLog::report(LOG_INTERNALERROR, err.str().c_str());
+		ProgramLog::report(LOG_FATAL, err.str().c_str());
 	}
 	// create a marker pointer at the correct position in the data buffer,
 	// accounting for row-padding if necessary
-	unsigned short int* position =
-			(unsigned short int*) pixelData +
+	uint8_t* position =
+			(uint8_t*) pixelData +
 			row *
 			(width * (format == FORMAT_RGBA ? 4 : 3) +
 					(width * (format == FORMAT_RGBA ? 4 : 3) % 4 > 0 ?
@@ -179,5 +164,3 @@ void Texture::setColorAt(
 	if(format == FORMAT_RGBA)
 		*position = alpha;
 }
-
-
