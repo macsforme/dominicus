@@ -14,6 +14,8 @@
 #include "GamePrefs.h"
 #include "Platform.h"
 #include "ProgramLog.h"
+#include "RenderingMaster.h"
+#include "Screen.h"
 #include "SystemInfo.h"
 
 // library headers
@@ -27,8 +29,11 @@ extern GamePrefs gamePrefs;
 extern Platform platform;
 
 class DrawingMaster {
+private:
+	RenderingMaster* renderingMaster;
+
 public:
-	DrawingMaster();
+	DrawingMaster(Screen* screen);
 	~DrawingMaster();
 
 	void setViewPortSize(unsigned short int width, unsigned short int height);

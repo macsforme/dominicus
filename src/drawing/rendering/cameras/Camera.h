@@ -10,28 +10,11 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-// program headers
-#include "MatrixMath.h"
-#include "Platform.h"
-#include "Preferences.h"
-
-// constants
-#define ANGLE_FACTOR 1.0f
-#define ZOOM_FACTOR 1.0f
+// superclass of all cameras used in the program
 
 class Camera {
 public:
-	Matrix4 currentRotate;
-	Matrix4 currentScale;
-
-	Camera();
-
-	bool zoomInKey, zoomOutKey;
-	bool angleXPlusKey, angleXMinusKey;
-	bool angleYPlusKey, angleYMinusKey;
-	bool angleZPlusKey, angleZMinusKey;
-
-	void update();
+	void loop();
 };
 
 #endif

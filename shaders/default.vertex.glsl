@@ -6,12 +6,8 @@ attribute vec3 position;
 attribute vec2 texCoord;
 
 varying vec2 texCoordInterpol;
-varying float altitude;
-//varying vec3 coord;
 
 void main() {
     gl_Position = mvpMatrix * vec4(position, 1.0);
     texCoordInterpol = texCoord;
-	altitude = position.y;
-//	coord = position;
 }

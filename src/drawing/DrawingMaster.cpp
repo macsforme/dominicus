@@ -9,7 +9,13 @@
 
 #include "DrawingMaster.h"
 
-DrawingMaster::DrawingMaster() {
+DrawingMaster::DrawingMaster(Screen* screen) {
+	// initialize variables
+	renderingMaster = new RenderingMaster(screen);
+
+	// hide the system cursor
+	platform.hideCursor();
+
 	// initial OpenGL commands
 	if(gamePrefs.getBool("windowStartFullScreen"))
 		setViewPortSize(systemInfo.screenWidth, systemInfo.screenHeight);
@@ -76,6 +82,7 @@ unsigned long int DrawingMaster::loop() {
 	preFrame();
 
 	// draw the frame
+	renderingMaster->loop();
 
 	// execute post-frame instructions
 	postFrame();

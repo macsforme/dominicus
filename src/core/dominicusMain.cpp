@@ -26,7 +26,7 @@ int dominicusMain(int argc, char* argv[]) {
 	// initialize stuff
 	Screen* screen = new Screen(gamePrefs.getBool("windowStartFullScreen") ? true : false);
 	Keyboard* keyboard = new Keyboard(&screen);
-	DrawingMaster* drawingMaster = new DrawingMaster();
+	DrawingMaster* drawingMaster = new DrawingMaster(screen);
 
 	// with the graphics context initialized, check for a compatible system
 	SystemInfo::check();
@@ -53,6 +53,7 @@ int dominicusMain(int argc, char* argv[]) {
 		// renderer
 		if(drawingTimer <= now)
 			drawingTimer = now + drawingMaster->loop();
+
 		if(drawingTimer - now < plannedWait)
 			plannedWait = drawingTimer - now;
 
