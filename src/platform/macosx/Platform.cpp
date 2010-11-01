@@ -12,6 +12,7 @@
 // platform-dependent includes
 #include "CoreFoundation/CoreFoundation.h"
 #include <mach/mach_time.h>
+#include <SDL/SDL.h>
 #include <time.h>
 
 Platform::Platform() {
@@ -29,6 +30,10 @@ Platform::Platform() {
 
 	// initialize the random number generator
 	srand(time(NULL));
+}
+
+void Platform::hideCursor() {
+	SDL_ShowCursor(SDL_DISABLE);
 }
 
 unsigned int Platform::getExecutionTimeMicros() {

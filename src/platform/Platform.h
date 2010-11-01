@@ -24,6 +24,9 @@ public:
 
 	Platform();
 
+	// drawing functions
+	void hideCursor();
+
 	// time functions
 	unsigned int getExecutionTimeMicros();
 	void sleepMicros(unsigned int micros);
