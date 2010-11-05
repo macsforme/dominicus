@@ -25,7 +25,7 @@ class RenderingMaster {
 private:
 	WorldViewCamera* wvCamera;
 	OrthoCamera *oCamera;
-	
+
 	Matrix4* activeMatrix;
 
 	KeyTrap* cameraToggleKeyTrap;

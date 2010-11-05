@@ -22,7 +22,7 @@ unsigned long int Keyboard::loop() {
 	std::map<std::string,bool> keyEvents;
 
 	SDL_PumpEvents();
-	
+
 	while(SDL_PeepEvents(NULL, 1, SDL_PEEKEVENT, SDL_KEYEVENTMASK)) {
 		SDL_PollEvent(&event);
 

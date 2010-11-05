@@ -21,9 +21,9 @@ RenderingMaster::RenderingMaster(Screen* screen) {
 void RenderingMaster::loop() {
 	wvCamera->loop();
 	oCamera->loop();
-	
+
 	cameraToggleKeyTrap->loop();
-	
+
 	// toggle cameras if necessary
 	if(cameraToggleKeyTrap->newPress()) {
 		if(activeMatrix == &(oCamera->vpMatrix))
@@ -31,6 +31,6 @@ void RenderingMaster::loop() {
 		else if(activeMatrix == &(wvCamera->vpMatrix))
 			activeMatrix = &(oCamera->vpMatrix);
 	}
-	
+
 	terrainRenderer.render(*activeMatrix);
 }

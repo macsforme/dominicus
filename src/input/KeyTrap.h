@@ -29,9 +29,9 @@ private:
 
 public:
 	KeyTrap(std::string action);
-	
+
 	void loop();
-	
+
 	bool newPress();
 };
 

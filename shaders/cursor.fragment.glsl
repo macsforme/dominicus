@@ -9,5 +9,5 @@ void main() {
 			abs(boxCoordInterpol.x) > thickness && abs(boxCoordInterpol.y) > thickness ?
 					vec4(0.0) : vec4(1.0 - distance(vec2(0.0, 0.0), boxCoordInterpol))
 	);
-			
+
 }

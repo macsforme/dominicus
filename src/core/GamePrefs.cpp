@@ -30,12 +30,13 @@ GamePrefs::GamePrefs() {
 	preferences["fontStandardSize"] = "16";	// point (1/72 inch)
 	preferences["fontHeaderSize"] = "24";
 	preferences["fontLargeHeaderSize"] = "32";
-	
+
 	// GUI settings
 	preferences["cursorSize"] = "0.3f";	// portion of screen height cursor box takes up
 	preferences["cursorThickness"] = "0.015f";	// portion of cursor box
 
 	// key bindings
+	keyBindings[SDLK_k] = "toggleCamera";
 	keyBindings[SDLK_f] = "toggleFullScreen";
 	keyBindings[SDLK_c] = "toggleFPSCap";
 	keyBindings[SDLK_w] = "toggleWireFrameMode";

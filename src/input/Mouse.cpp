@@ -15,7 +15,7 @@ unsigned long int Mouse::loop() {
 	std::map<std::string,bool> keyEvents;
 
 	SDL_PumpEvents();
-	
+
 	while(SDL_PeepEvents(NULL, 1, SDL_PEEKEVENT, SDL_MOUSEEVENTMASK)) {
 		SDL_PollEvent(&event);
 

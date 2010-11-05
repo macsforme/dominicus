@@ -53,18 +53,18 @@ void DrawCursor::draw() {
 	glUniform1f(thicknessUniform, gamePrefs.getFloat("cursorThickness"));
 
 	glBegin(GL_QUADS);
-	
+
 	glVertexAttrib2f(boxCoordAttrib, -1.0f, -1.0f);
 	glVertexAttrib3f(positionAttrib, ll.x, ll.y, -0.9f);
-	
+
 	glVertexAttrib2f(boxCoordAttrib, -1.0f, 1.0f);
 	glVertexAttrib3f(positionAttrib, ll.x, ur.y, -0.9f);
-	
+
 	glVertexAttrib2f(boxCoordAttrib, 1.0f, 1.0f);
 	glVertexAttrib3f(positionAttrib, ur.x, ur.y, -0.9f);
-	
+
 	glVertexAttrib2f(boxCoordAttrib, 1.0f, -1.0f);
 	glVertexAttrib3f(positionAttrib, ur.x, ll.y, -0.9f);
-	
+
 	glEnd();
 }

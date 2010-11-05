@@ -26,7 +26,6 @@ bool KeyTrap::newPress() {
 			return true;
 		}
 	}
-	
+
 	return false;
 }
-	
