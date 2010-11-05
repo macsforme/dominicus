@@ -41,7 +41,6 @@ private:
 	GLuint textureID;
 
 	// geometry data
-	Mesh mesh;
 	Terrain terrain;
 
 public:

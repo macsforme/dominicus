@@ -61,32 +61,6 @@ TerrainRenderer::TerrainRenderer() {
 	// OpenGL state
 	glEnable(GL_TEXTURE_2D);
 
-	// create a mesh with that terrain data
-	for(int i = 0; i < terrain.density; ++i) {
-		for(int p = 0; p < terrain.density; ++p) {
-			mesh.addVertex(Vector3(
-					(float) i / (float) terrain.density * 2.0f - 1.0f,
-					((float) terrain.finalHeightMap[i][p] / 256.0f),
-					(float) p / (float) terrain.density * 2.0f - 1.0f
-				));
-
-			if(i > 0 && p > 0) {
-				mesh.addFace(
-						i - 1 + (p * terrain.density),
-						i - 1 + ((p - 1) * terrain.density),
-						i + ((p - 1) * terrain.density)
-					);
-				mesh.autoTexCoord(mesh.faceGroups[""].size() - 1);
-
-				mesh.addFace(
-						i + ((p - 1) * terrain.density),
-						i + p * terrain.density,
-						i - 1 + (p * terrain.density)
-					);
-				mesh.autoTexCoord(mesh.faceGroups[""].size() - 1);
-			}
-		}
-	}
 
 /*
 mesh = Mesh();
@@ -164,8 +138,8 @@ void TerrainRenderer::render(Matrix4 vpMatrix) {
 	// geometry
 	for(
 			std::map< std::string,std::vector<Mesh::Face> >::iterator itr =
-					mesh.faceGroups.begin();
-			itr != mesh.faceGroups.end();
+					terrain.mesh.faceGroups.begin();
+			itr != terrain.mesh.faceGroups.end();
 			++itr
 		) {
 		for(int i = 0; i < itr->second.size(); ++i) {
@@ -174,38 +148,38 @@ void TerrainRenderer::render(Matrix4 vpMatrix) {
 
 			glVertexAttrib2f(
 					texCoordAttrib,
-					mesh.texCoords[itr->second[i].texCoords[0]].x,
-					mesh.texCoords[itr->second[i].texCoords[0]].y
+					terrain.mesh.texCoords[itr->second[i].texCoords[0]].x,
+					terrain.mesh.texCoords[itr->second[i].texCoords[0]].y
 				);
 			glVertexAttrib3f(
 					positionAttrib,
-					mesh.vertices[itr->second[i].vertices[0]].x,
-					mesh.vertices[itr->second[i].vertices[0]].y,
-					mesh.vertices[itr->second[i].vertices[0]].z
+					terrain.mesh.vertices[itr->second[i].vertices[0]].x,
+					terrain.mesh.vertices[itr->second[i].vertices[0]].y,
+					terrain.mesh.vertices[itr->second[i].vertices[0]].z
 				);
 
 			glVertexAttrib2f(
 					texCoordAttrib,
-					mesh.texCoords[itr->second[i].texCoords[1]].x,
-					mesh.texCoords[itr->second[i].texCoords[1]].y
+					terrain.mesh.texCoords[itr->second[i].texCoords[1]].x,
+					terrain.mesh.texCoords[itr->second[i].texCoords[1]].y
 				);
 			glVertexAttrib3f(
 					positionAttrib,
-					mesh.vertices[itr->second[i].vertices[1]].x,
-					mesh.vertices[itr->second[i].vertices[1]].y,
-					mesh.vertices[itr->second[i].vertices[1]].z
+					terrain.mesh.vertices[itr->second[i].vertices[1]].x,
+					terrain.mesh.vertices[itr->second[i].vertices[1]].y,
+					terrain.mesh.vertices[itr->second[i].vertices[1]].z
 				);
 
 			glVertexAttrib2f(
 					texCoordAttrib,
-					mesh.texCoords[itr->second[i].texCoords[2]].x,
-					mesh.texCoords[itr->second[i].texCoords[2]].y
+					terrain.mesh.texCoords[itr->second[i].texCoords[2]].x,
+					terrain.mesh.texCoords[itr->second[i].texCoords[2]].y
 				);
 			glVertexAttrib3f(
 					positionAttrib,
-					mesh.vertices[itr->second[i].vertices[2]].x,
-					mesh.vertices[itr->second[i].vertices[2]].y,
-					mesh.vertices[itr->second[i].vertices[2]].z
+					terrain.mesh.vertices[itr->second[i].vertices[2]].x,
+					terrain.mesh.vertices[itr->second[i].vertices[2]].y,
+					terrain.mesh.vertices[itr->second[i].vertices[2]].z
 				);
 
 			glEnd();

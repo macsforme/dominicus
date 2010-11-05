@@ -114,6 +114,33 @@ Terrain::Terrain() {
 		for(int p = 0; p < density; ++p)
 			finalHeightMap[i][p] = (heightMap.data[i][p] + 1.0f) * (float) finalAlphaBumpMap[i][p] / 2.0f;
 
+	// create a mesh with that terrain data
+	for(int i = 0; i < density; ++i) {
+		for(int p = 0; p < density; ++p) {
+			mesh.addVertex(Vector3(
+					(float) i / (float) density * 2.0f - 1.0f,
+					((float) finalHeightMap[i][p] / 256.0f),
+					(float) p / (float) density * 2.0f - 1.0f
+				));
+
+			if(i > 0 && p > 0) {
+				mesh.addFace(
+						i - 1 + (p * density),
+						i - 1 + ((p - 1) * density),
+						i + ((p - 1) * density)
+					);
+				mesh.autoTexCoord(mesh.faceGroups[""].size() - 1);
+
+				mesh.addFace(
+						i + ((p - 1) * density),
+						i + p * density,
+						i - 1 + (p * density)
+					);
+				mesh.autoTexCoord(mesh.faceGroups[""].size() - 1);
+			}
+		}
+	}
+
 //(unsigned short int) ((heightMap.data[i][p] + 1.0f) * 128.0f * alphaData[i][p] / 256.0f),
 
 	// render a texture of each alpha bump map
