@@ -12,11 +12,11 @@
 TerrainRenderer::TerrainRenderer() {
 	// set up the shader program
 	vertexShader = ShaderTools::makeShader(
-			std::string(platform.dataPath +  "/shaders/model.vertex.glsl").c_str(),
+			std::string(platform.dataPath +  "/shaders/terrain.vertex.glsl").c_str(),
 			GL_VERTEX_SHADER
 		);
 	fragmentShader = ShaderTools::makeShader(
-			std::string(platform.dataPath + "/shaders/model.fragment.glsl").c_str(),
+			std::string(platform.dataPath + "/shaders/terrain.fragment.glsl").c_str(),
 			GL_FRAGMENT_SHADER
 		);
 
