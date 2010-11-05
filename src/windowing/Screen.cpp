@@ -13,6 +13,8 @@ Screen::Screen(bool fullScreen) : fullScreen(fullScreen) {
 	// initialize our viewing screen
 	width = (fullScreen ? systemInfo.screenWidth : gamePrefs.getInt("windowWidth"));
 	height = (fullScreen ? systemInfo.screenHeight : gamePrefs.getInt("windowHeight"));
+	aspectRatio = (float) width / (float) height;
+
 	uint32_t flags = SDL_OPENGL | SDL_DOUBLEBUF | SDL_HWSURFACE | (fullScreen ? SDL_FULLSCREEN : 0);
 
 	if(! SDL_VideoModeOK(
@@ -26,7 +28,7 @@ Screen::Screen(bool fullScreen) : fullScreen(fullScreen) {
 	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 5);
 	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 5);
 	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 5);
-	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, gamePrefs.getInt("windowColorDepth"));
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
 	SDL_Surface* surface = SDL_SetVideoMode(

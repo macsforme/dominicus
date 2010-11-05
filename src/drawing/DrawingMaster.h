@@ -11,6 +11,7 @@
 #define DRAWINGMASTER_H
 
 // program headers
+#include "DrawCursor.h"
 #include "GamePrefs.h"
 #include "Platform.h"
 #include "ProgramLog.h"
@@ -31,6 +32,8 @@ extern Platform platform;
 class DrawingMaster {
 private:
 	RenderingMaster* renderingMaster;
+
+	DrawCursor* drawCursor;
 
 public:
 	DrawingMaster(Screen* screen);

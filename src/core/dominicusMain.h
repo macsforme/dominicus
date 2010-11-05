@@ -11,10 +11,12 @@
 #define DOMINICUSMAIN_H
 
 // program headers
+#include "DrawingMaster.h"
 #include "GamePrefs.h"
 #include "Keyboard.h"
+#include "KeyTrap.h"
+#include "Mouse.h"
 #include "Platform.h"
-#include "DrawingMaster.h"
 #include "Screen.h"
 #include "SystemInfo.h"
 

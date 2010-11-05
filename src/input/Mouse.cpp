@@ -1,40 +1,36 @@
 /*
- *  Keyboard.cpp
+ *  Mouse.cpp
  *  dominicus
  *
- *  Created by Joshua Bodine on 5/28/10.
+ *  Created by Joshua Bodine on 11/5/10.
  *  Copyright 2010 Joshua Bodine. All rights reserved.
  *
  */
 
-#include "Keyboard.h"
+#include "Mouse.h"
 
-bool Keyboard::getKeyState(std::string key) {
-	if(keyStates.find(key) != keyStates.end())
-		return keyStates[key];
-	else
-		return false;
-}
-
-unsigned long int Keyboard::loop() {
-	// poll SDL for keyboard events
+unsigned long int Mouse::loop() {
+	// poll SDL for mouse events
 	SDL_Event event;
 	std::map<std::string,bool> keyEvents;
 
 	SDL_PumpEvents();
 	
-	while(SDL_PeepEvents(NULL, 1, SDL_PEEKEVENT, SDL_KEYEVENTMASK)) {
+	while(SDL_PeepEvents(NULL, 1, SDL_PEEKEVENT, SDL_MOUSEEVENTMASK)) {
 		SDL_PollEvent(&event);
 
 		switch(event.type) {
-		case SDL_KEYDOWN:
-		case SDL_KEYUP:
-			keyStates[gamePrefs.getBinding(event.key.keysym.sym)] =
-					(event.type == SDL_KEYDOWN ? true : false);
+		case SDL_MOUSEMOTION:
+			positionX = event.motion.x;
+			positionY = event.motion.y;
 
 			break;
+		case SDL_MOUSEBUTTONDOWN:
+			break;
+		case SDL_MOUSEBUTTONUP:
+			break;
 		default:
-			ProgramLog::report(LOG_DEBUG, "Received unhandled keyboard event.");
+			ProgramLog::report(LOG_DEBUG, "Received unhandled mouse event.");
 
 			break;
 
@@ -48,8 +44,8 @@ unsigned long int Keyboard::loop() {
 
 	unsigned long int now = platform.getExecutionTimeMicros();
 	unsigned long int idealSleepTime = (
-			gamePrefs.getInt("keyboardPollFrequency") != 0 ?
-			1000000 / gamePrefs.getInt("keyboardPollFrequency") : 0
+			gamePrefs.getInt("mousePollFrequency") != 0 ?
+			1000000 / gamePrefs.getInt("mousePollFrequency") : 0
 		);
 
 	// adjust the target sleep micros by the factor we are off by

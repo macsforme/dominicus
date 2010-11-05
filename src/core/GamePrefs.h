@@ -19,6 +19,7 @@ class GamePrefs {
 private:
 	std::map<std::string,std::string> preferences;
 	std::map<SDLKey, std::string> keyBindings;
+	std::map<Uint8, std::string> mouseButtonBindings;
 
 public:
 	GamePrefs();

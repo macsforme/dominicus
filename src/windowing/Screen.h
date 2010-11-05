@@ -27,7 +27,7 @@ extern GamePrefs gamePrefs;
 class Screen {
 public:
 	unsigned short int width, height;
-	float viewRatio;
+	float aspectRatio;
 	bool fullScreen;
 
 	Screen(bool fullScreen);

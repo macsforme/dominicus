@@ -13,6 +13,8 @@
 SystemInfo systemInfo;
 GamePrefs gamePrefs;
 Platform platform;
+Keyboard keyboard;
+Mouse mouse;
 bool keepDominicusAlive;	// global flag to continue game
 
 // main game function
@@ -25,7 +27,6 @@ int dominicusMain(int argc, char* argv[]) {
 
 	// initialize stuff
 	Screen* screen = new Screen(gamePrefs.getBool("windowStartFullScreen") ? true : false);
-	Keyboard* keyboard = new Keyboard(&screen);
 	DrawingMaster* drawingMaster = new DrawingMaster(screen);
 
 	// with the graphics context initialized, check for a compatible system
@@ -33,22 +34,42 @@ int dominicusMain(int argc, char* argv[]) {
 
 	// keep a timer for each module we loop over
 	unsigned long int keyboardTimer = 0;
+	unsigned long int mouseTimer = 0;
 	unsigned long int drawingTimer = 0;
 
 	// main program loop
-	while(keepDominicusAlive) {
+	while(keepDominicusAlive && ! keyboard.getKeyState("quit")) {
+		// see if we need to change the fullscreen status
+		static KeyTrap fullScreenKeyTrap("toggleFullScreen");
+		fullScreenKeyTrap.loop();
+
+		if(fullScreenKeyTrap.newPress()) {
+			bool currentFullScreen = screen->fullScreen;
+
+			delete(drawingMaster);
+			delete(screen);
+
+			screen = new Screen(!currentFullScreen);
+			drawingMaster = new DrawingMaster(screen);
+		}
+
 		// If the next execution time is less than now, run it. If not, store
 		// the time until due we know how long to sleep if none of our modules
 		// are ready.
-
 		unsigned long int plannedWait = -1;	// this will be set to the minimum sleep time
 		unsigned long int now = platform.getExecutionTimeMicros();
 
-		// keyboard
+		// keyboard polling
 		if(keyboardTimer <= now)
-			keyboardTimer = now + keyboard->loop();
+			keyboardTimer = now + keyboard.loop();
 		if(keyboardTimer - now < plannedWait)
 			plannedWait = keyboardTimer - now;
+
+		// mouse polling
+		if(mouseTimer <= now)
+			mouseTimer = now + mouse.loop();
+		if(mouseTimer - now < plannedWait)
+			plannedWait = mouseTimer - now;
 
 		// renderer
 		if(drawingTimer <= now)
@@ -69,7 +90,6 @@ int dominicusMain(int argc, char* argv[]) {
 	// clean up objects
 	delete (drawingMaster);
 	delete (screen);
-	delete (keyboard);
 
 	return 0;
 }

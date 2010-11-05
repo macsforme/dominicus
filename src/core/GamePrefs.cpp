@@ -17,11 +17,12 @@ GamePrefs::GamePrefs() {
 
 	// input settings
 	preferences["keyboardPollFrequency"] = "30";
+	preferences["mousePollFrequency"] = "30";
 
 	// window settings
 	preferences["windowStartFullScreen"] = "0";
-	preferences["windowWidth"] = "800";
-	preferences["windowHeight"] = "600";
+	preferences["windowWidth"] = "1024";
+	preferences["windowHeight"] = "768";
 	preferences["windowColorDepth"] = "16";
 
 	// font settings
@@ -29,6 +30,10 @@ GamePrefs::GamePrefs() {
 	preferences["fontStandardSize"] = "16";	// point (1/72 inch)
 	preferences["fontHeaderSize"] = "24";
 	preferences["fontLargeHeaderSize"] = "32";
+	
+	// GUI settings
+	preferences["cursorSize"] = "0.3f";	// portion of screen height cursor box takes up
+	preferences["cursorThickness"] = "0.015f";	// portion of cursor box
 
 	// key bindings
 	keyBindings[SDLK_f] = "toggleFullScreen";
@@ -62,7 +67,10 @@ void GamePrefs::set(std::string value, std::string key) {
 }
 
 const std::string GamePrefs::getBinding(SDLKey key) {
-	return keyBindings[key];
+	if(keyBindings.find(key) != keyBindings.end())
+		return keyBindings[key];
+	else
+		return "";
 }
 
 void GamePrefs::setBinding(std::string value, SDLKey key) {

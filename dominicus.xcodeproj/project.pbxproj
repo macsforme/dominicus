@@ -33,6 +33,9 @@
 		032B8B371263DF5900DDE564 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 032B8B351263DF5900DDE564 /* README.txt */; };
 		0353D4BA127B0A43002340BF /* Terrain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0353D4B9127B0A43002340BF /* Terrain.cpp */; };
 		0353D809127BB684002340BF /* SDL.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 032B8AD112639A4600DDE564 /* SDL.framework */; };
+		035A3C4612841B390001E186 /* Mouse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 035A3C4512841B390001E186 /* Mouse.cpp */; };
+		035A3D061284293A0001E186 /* DrawCursor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 035A3D051284293A0001E186 /* DrawCursor.cpp */; };
+		035A3DF91284391F0001E186 /* KeyTrap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 035A3DF81284391F0001E186 /* KeyTrap.cpp */; };
 		03D47B7E1263E27F001755A6 /* dominicus.icns in Resources */ = {isa = PBXBuildFile; fileRef = 03D47B7D1263E27F001755A6 /* dominicus.icns */; };
 		03D8C07D1264BEBA00F26DC9 /* licenses in Resources */ = {isa = PBXBuildFile; fileRef = 03D8C0781264BEBA00F26DC9 /* licenses */; };
 		03DA5B85127AA286003814F7 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03DA5B83127AA286003814F7 /* Camera.cpp */; };
@@ -102,6 +105,12 @@
 		032B8B351263DF5900DDE564 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 		0353D4B8127B0A43002340BF /* Terrain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Terrain.h; path = src/state/Terrain.h; sourceTree = "<group>"; };
 		0353D4B9127B0A43002340BF /* Terrain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Terrain.cpp; path = src/state/Terrain.cpp; sourceTree = "<group>"; };
+		035A3C4412841B390001E186 /* Mouse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mouse.h; sourceTree = "<group>"; };
+		035A3C4512841B390001E186 /* Mouse.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Mouse.cpp; sourceTree = "<group>"; };
+		035A3D041284293A0001E186 /* DrawCursor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DrawCursor.h; path = cursor/DrawCursor.h; sourceTree = "<group>"; };
+		035A3D051284293A0001E186 /* DrawCursor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DrawCursor.cpp; path = cursor/DrawCursor.cpp; sourceTree = "<group>"; };
+		035A3DF71284391F0001E186 /* KeyTrap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyTrap.h; sourceTree = "<group>"; };
+		035A3DF81284391F0001E186 /* KeyTrap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KeyTrap.cpp; sourceTree = "<group>"; };
 		036A4D2112757E5F00CEED79 /* Console.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Console.cpp; sourceTree = "<group>"; };
 		036A4D2212757E5F00CEED79 /* Console.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Console.h; sourceTree = "<group>"; };
 		03D47B7D1263E27F001755A6 /* dominicus.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = dominicus.icns; sourceTree = "<group>"; };
@@ -199,6 +208,7 @@
 				03DF59FF12797B4D003C2134 /* DrawingMaster.cpp */,
 				030F91941265152000190225 /* ShaderTools.h */,
 				030F91931265152000190225 /* ShaderTools.cpp */,
+				035A3D07128429400001E186 /* cursor */,
 				03DF59EB1279786E003C2134 /* HUD */,
 				03DF5A0112797B4D003C2134 /* rendering */,
 				030F8EB51264D05800190225 /* texture */,
@@ -244,6 +254,10 @@
 			children = (
 				030F8F3D1264DD1300190225 /* Keyboard.h */,
 				030F8F3C1264DD1300190225 /* Keyboard.cpp */,
+				035A3DF71284391F0001E186 /* KeyTrap.h */,
+				035A3DF81284391F0001E186 /* KeyTrap.cpp */,
+				035A3C4412841B390001E186 /* Mouse.h */,
+				035A3C4512841B390001E186 /* Mouse.cpp */,
 			);
 			name = input;
 			path = src/input;
@@ -269,6 +283,15 @@
 				030F8F2F1264DC2200190225 /* libz.a */,
 			);
 			name = frameworks;
+			sourceTree = "<group>";
+		};
+		035A3D07128429400001E186 /* cursor */ = {
+			isa = PBXGroup;
+			children = (
+				035A3D041284293A0001E186 /* DrawCursor.h */,
+				035A3D051284293A0001E186 /* DrawCursor.cpp */,
+			);
+			name = cursor;
 			sourceTree = "<group>";
 		};
 		035AB02F127577B1006257C1 /* state */ = {
@@ -465,6 +488,9 @@
 				03DA5BC3127AA7B0003814F7 /* RenderingMaster.cpp in Sources */,
 				03DA5BCA127AA84C003814F7 /* TerrainRenderer.cpp in Sources */,
 				0353D4BA127B0A43002340BF /* Terrain.cpp in Sources */,
+				035A3C4612841B390001E186 /* Mouse.cpp in Sources */,
+				035A3D061284293A0001E186 /* DrawCursor.cpp in Sources */,
+				035A3DF91284391F0001E186 /* KeyTrap.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

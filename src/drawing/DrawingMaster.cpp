@@ -13,14 +13,13 @@ DrawingMaster::DrawingMaster(Screen* screen) {
 	// initialize variables
 	renderingMaster = new RenderingMaster(screen);
 
+	drawCursor = new DrawCursor(screen);
+
 	// hide the system cursor
 	platform.hideCursor();
 
-	// initial OpenGL commands
-	if(gamePrefs.getBool("windowStartFullScreen"))
-		setViewPortSize(systemInfo.screenWidth, systemInfo.screenHeight);
-	else
-		setViewPortSize(gamePrefs.getInt("windowWidth"), gamePrefs.getInt("windowHeight"));
+	// set the OpenGL viewport size
+	setViewPortSize(screen->width, screen->height);
 }
 
 DrawingMaster::~DrawingMaster() {
@@ -83,6 +82,8 @@ unsigned long int DrawingMaster::loop() {
 
 	// draw the frame
 	renderingMaster->loop();
+
+	drawCursor->draw();
 
 	// execute post-frame instructions
 	postFrame();
