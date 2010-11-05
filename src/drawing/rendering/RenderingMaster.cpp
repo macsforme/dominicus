@@ -10,11 +10,27 @@
 #include "RenderingMaster.h"
 
 RenderingMaster::RenderingMaster(Screen* screen) {
-	camera = new WorldViewCamera(screen);
+	wvCamera = new WorldViewCamera(screen);
+	oCamera = new OrthoCamera(screen);
+
+	cameraToggleKeyTrap = new KeyTrap("toggleCamera");
+
+	activeMatrix = &(oCamera->vpMatrix);
 }
 
 void RenderingMaster::loop() {
-	camera->loop();
-
-	terrainRenderer.render(camera->vpMatrix);
+	wvCamera->loop();
+	oCamera->loop();
+	
+	cameraToggleKeyTrap->loop();
+	
+	// toggle cameras if necessary
+	if(cameraToggleKeyTrap->newPress()) {
+		if(activeMatrix == &(oCamera->vpMatrix))
+			activeMatrix = &(wvCamera->vpMatrix);
+		else if(activeMatrix == &(wvCamera->vpMatrix))
+			activeMatrix = &(oCamera->vpMatrix);
+	}
+	
+	terrainRenderer.render(*activeMatrix);
 }

@@ -43,6 +43,7 @@
 		03DA5BC3127AA7B0003814F7 /* RenderingMaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03DA5BC2127AA7B0003814F7 /* RenderingMaster.cpp */; };
 		03DA5BCA127AA84C003814F7 /* TerrainRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03DA5BC9127AA84C003814F7 /* TerrainRenderer.cpp */; };
 		03DF5A0812797B4D003C2134 /* DrawingMaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03DF59FF12797B4D003C2134 /* DrawingMaster.cpp */; };
+		03E2C285128444A000F40D33 /* OrthoCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03E2C283128444A000F40D33 /* OrthoCamera.cpp */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 /* End PBXBuildFile section */
 
@@ -133,6 +134,8 @@
 		03DF5A0412797B4D003C2134 /* SubjectRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubjectRenderer.h; sourceTree = "<group>"; };
 		03DF5A0612797B4D003C2134 /* TerrainDevelopment.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TerrainDevelopment.cpp; sourceTree = "<group>"; };
 		03DF5A0712797B4D003C2134 /* TerrainDevelopment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TerrainDevelopment.h; sourceTree = "<group>"; };
+		03E2C283128444A000F40D33 /* OrthoCamera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OrthoCamera.cpp; sourceTree = "<group>"; };
+		03E2C284128444A000F40D33 /* OrthoCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrthoCamera.h; sourceTree = "<group>"; };
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* dominicus-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "dominicus-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -318,6 +321,8 @@
 			children = (
 				03DA5B84127AA286003814F7 /* Camera.h */,
 				03DA5B83127AA286003814F7 /* Camera.cpp */,
+				03E2C284128444A000F40D33 /* OrthoCamera.h */,
+				03E2C283128444A000F40D33 /* OrthoCamera.cpp */,
 				03DA5B86127AA312003814F7 /* WorldViewCamera.h */,
 				03DA5B87127AA312003814F7 /* WorldViewCamera.cpp */,
 			);
@@ -491,6 +496,7 @@
 				035A3C4612841B390001E186 /* Mouse.cpp in Sources */,
 				035A3D061284293A0001E186 /* DrawCursor.cpp in Sources */,
 				035A3DF91284391F0001E186 /* KeyTrap.cpp in Sources */,
+				03E2C285128444A000F40D33 /* OrthoCamera.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

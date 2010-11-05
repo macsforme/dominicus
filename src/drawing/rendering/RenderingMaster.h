@@ -11,13 +11,24 @@
 #define RENDERINGMASTER_H
 
 // program headers
+#include "Keyboard.h"
+#include "KeyTrap.h"
+#include "OrthoCamera.h"
 #include "Screen.h"
 #include "TerrainRenderer.h"
 #include "WorldViewCamera.h"
 
+// global variables
+extern Keyboard keyboard;
+
 class RenderingMaster {
 private:
-	WorldViewCamera* camera;
+	WorldViewCamera* wvCamera;
+	OrthoCamera *oCamera;
+	
+	Matrix4* activeMatrix;
+
+	KeyTrap* cameraToggleKeyTrap;
 
 	// renderers
 	TerrainRenderer terrainRenderer;

@@ -28,7 +28,7 @@ void WorldViewCamera::loop() {
 	// camera transformations
 	scaleMatrix(zoom, zoom, zoom, vpMatrix); // zoom
 	rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(rotation), vpMatrix); // dynamic rotation
-	rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(-30.0f), vpMatrix); // static tilt up
+	rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(-birdsEyeAngle), vpMatrix); // static tilt up
 	translateMatrix(0.0f, 0.0f, 1.15f, vpMatrix); // back away
 
 	// perspective projection
@@ -38,4 +38,5 @@ void WorldViewCamera::loop() {
 	        0.0, 0.0, (farClip + nearClip) / (farClip - nearClip), 1.0,
 	        0.0, 0.0, -2.0 * farClip * nearClip / (farClip - nearClip), 0.0
 		);
+
 }
