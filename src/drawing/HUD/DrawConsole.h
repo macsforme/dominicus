@@ -1,5 +1,5 @@
 /*
- *  ConsoleRenderer.h
+ *  DrawConsole.h
  *  dominicus
  *
  *  Created by Joshua Bodine on 10/8/10.
@@ -7,8 +7,8 @@
  *
  */
 
-#ifndef CONSOLERENDERER_H
-#define CONSOLERENDERER_H
+#ifndef DRAWCONSOLE_H
+#define DRAWCONSOLE_H
 
 // Note: all screen coordinates are in units of 2.0 per screen width (-1.0 to 1.0)
 
@@ -22,6 +22,9 @@
 // library headers
 #include <OpenGL/OpenGL.h>
 
+// global variables
+extern Platform platform;
+
 // console container constants
 #define INSIDE_COLOR 0.047058823529412f, 0.043137254901961f, 0.137254901960784f, 0.6f
 #define HIGHLIGHT_COLOR 0.274509803921569f, 0.298039215686275f, 0.403921568627451f, 1.0f
@@ -29,7 +32,7 @@
 #define OUTSIDE_COLOR 0.0f, 0.0f, 0.0f, 0.0f
 #define CONTAINER_BORDER_WIDTH 8.0f / screenWidth * 2.0f
 
-class ConsoleRenderer {
+class DrawConsole {
 private:
 	// internal variables
 	unsigned int screenWidth, screenHeight;
@@ -59,7 +62,7 @@ private:
 	GLuint primCoordAttrib;			// vec2
 
 public:
-	ConsoleRenderer(unsigned int screenWidth, unsigned int screenHeight);
+	DrawConsole(unsigned int screenWidth, unsigned int screenHeight);
 
 	void render();
 };

@@ -36,6 +36,8 @@
 		035A3C4612841B390001E186 /* Mouse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 035A3C4512841B390001E186 /* Mouse.cpp */; };
 		035A3D061284293A0001E186 /* DrawCursor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 035A3D051284293A0001E186 /* DrawCursor.cpp */; };
 		035A3DF91284391F0001E186 /* KeyTrap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 035A3DF81284391F0001E186 /* KeyTrap.cpp */; };
+		0369DE2A128588C000355C4E /* SplashBackground.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0369DE29128588C000355C4E /* SplashBackground.cpp */; };
+		0369DE97128595C100355C4E /* DrawConsole.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0369DE95128595C100355C4E /* DrawConsole.cpp */; };
 		03D47B7E1263E27F001755A6 /* dominicus.icns in Resources */ = {isa = PBXBuildFile; fileRef = 03D47B7D1263E27F001755A6 /* dominicus.icns */; };
 		03D8C07D1264BEBA00F26DC9 /* licenses in Resources */ = {isa = PBXBuildFile; fileRef = 03D8C0781264BEBA00F26DC9 /* licenses */; };
 		03DA5B85127AA286003814F7 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03DA5B83127AA286003814F7 /* Camera.cpp */; };
@@ -112,6 +114,10 @@
 		035A3D051284293A0001E186 /* DrawCursor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DrawCursor.cpp; path = cursor/DrawCursor.cpp; sourceTree = "<group>"; };
 		035A3DF71284391F0001E186 /* KeyTrap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyTrap.h; sourceTree = "<group>"; };
 		035A3DF81284391F0001E186 /* KeyTrap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KeyTrap.cpp; sourceTree = "<group>"; };
+		0369DE28128588C000355C4E /* SplashBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SplashBackground.h; path = splash/SplashBackground.h; sourceTree = "<group>"; };
+		0369DE29128588C000355C4E /* SplashBackground.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SplashBackground.cpp; path = splash/SplashBackground.cpp; sourceTree = "<group>"; };
+		0369DE95128595C100355C4E /* DrawConsole.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawConsole.cpp; sourceTree = "<group>"; };
+		0369DE96128595C100355C4E /* DrawConsole.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawConsole.h; sourceTree = "<group>"; };
 		036A4D2112757E5F00CEED79 /* Console.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Console.cpp; sourceTree = "<group>"; };
 		036A4D2212757E5F00CEED79 /* Console.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Console.h; sourceTree = "<group>"; };
 		03D47B7D1263E27F001755A6 /* dominicus.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = dominicus.icns; sourceTree = "<group>"; };
@@ -124,8 +130,6 @@
 		03DA5BC2127AA7B0003814F7 /* RenderingMaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RenderingMaster.cpp; sourceTree = "<group>"; };
 		03DA5BC8127AA84C003814F7 /* TerrainRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TerrainRenderer.h; path = terrain/TerrainRenderer.h; sourceTree = "<group>"; };
 		03DA5BC9127AA84C003814F7 /* TerrainRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TerrainRenderer.cpp; path = terrain/TerrainRenderer.cpp; sourceTree = "<group>"; };
-		03DF59EC1279786E003C2134 /* ConsoleRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConsoleRenderer.cpp; sourceTree = "<group>"; };
-		03DF59ED1279786E003C2134 /* ConsoleRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConsoleRenderer.h; sourceTree = "<group>"; };
 		03DF59EE1279786E003C2134 /* HUDRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HUDRenderer.cpp; sourceTree = "<group>"; };
 		03DF59EF1279786E003C2134 /* HUDRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUDRenderer.h; sourceTree = "<group>"; };
 		03DF59FF12797B4D003C2134 /* DrawingMaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawingMaster.cpp; sourceTree = "<group>"; };
@@ -211,6 +215,7 @@
 				03DF59FF12797B4D003C2134 /* DrawingMaster.cpp */,
 				030F91941265152000190225 /* ShaderTools.h */,
 				030F91931265152000190225 /* ShaderTools.cpp */,
+				0369DE27128588A800355C4E /* splash */,
 				035A3D07128429400001E186 /* cursor */,
 				03DF59EB1279786E003C2134 /* HUD */,
 				03DF5A0112797B4D003C2134 /* rendering */,
@@ -306,11 +311,20 @@
 			name = state;
 			sourceTree = "<group>";
 		};
+		0369DE27128588A800355C4E /* splash */ = {
+			isa = PBXGroup;
+			children = (
+				0369DE28128588C000355C4E /* SplashBackground.h */,
+				0369DE29128588C000355C4E /* SplashBackground.cpp */,
+			);
+			name = splash;
+			sourceTree = "<group>";
+		};
 		036A4D2012757E5F00CEED79 /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				036A4D2112757E5F00CEED79 /* Console.cpp */,
 				036A4D2212757E5F00CEED79 /* Console.h */,
+				036A4D2112757E5F00CEED79 /* Console.cpp */,
 			);
 			name = UI;
 			path = src/UI;
@@ -341,8 +355,8 @@
 		03DF59EB1279786E003C2134 /* HUD */ = {
 			isa = PBXGroup;
 			children = (
-				03DF59ED1279786E003C2134 /* ConsoleRenderer.h */,
-				03DF59EC1279786E003C2134 /* ConsoleRenderer.cpp */,
+				0369DE96128595C100355C4E /* DrawConsole.h */,
+				0369DE95128595C100355C4E /* DrawConsole.cpp */,
 				03DF59EF1279786E003C2134 /* HUDRenderer.h */,
 				03DF59EE1279786E003C2134 /* HUDRenderer.cpp */,
 			);
@@ -497,6 +511,8 @@
 				035A3D061284293A0001E186 /* DrawCursor.cpp in Sources */,
 				035A3DF91284391F0001E186 /* KeyTrap.cpp in Sources */,
 				03E2C285128444A000F40D33 /* OrthoCamera.cpp in Sources */,
+				0369DE2A128588C000355C4E /* SplashBackground.cpp in Sources */,
+				0369DE97128595C100355C4E /* DrawConsole.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

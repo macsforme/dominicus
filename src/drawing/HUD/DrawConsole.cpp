@@ -1,5 +1,5 @@
 /*
- *  ConsoleRenderer.cpp
+ *  DrawConsole.cpp
  *  dominicus
  *
  *  Created by Joshua Bodine on 10/8/10.
@@ -7,9 +7,9 @@
  *
  */
 
-#include "ConsoleRenderer.h"
+#include "DrawConsole.h"
 
-void ConsoleRenderer::drawCurve(Vector2 position, Vector2 dimensions, float rotation,
+void DrawConsole::drawCurve(Vector2 position, Vector2 dimensions, float rotation,
 		bool highlight = false, float zMod = 0.0f, bool concave = false) {
 	// draws the curved portion of the console container at the specified place and size
 	glUniform2f(
@@ -73,7 +73,7 @@ void ConsoleRenderer::drawCurve(Vector2 position, Vector2 dimensions, float rota
 	glEnd();
 }
 
-void ConsoleRenderer::drawBorder(Vector2 position, Vector2 dimensions, float rotation,
+void DrawConsole::drawBorder(Vector2 position, Vector2 dimensions, float rotation,
 		bool highlight = false, float zMod = 0.0f) {
 	// draws the straight border portion of the console container at the specified place and size
 	glUniform2f(
@@ -152,7 +152,7 @@ void ConsoleRenderer::drawBorder(Vector2 position, Vector2 dimensions, float rot
 	glEnd();
 }
 
-void ConsoleRenderer::drawFiller(Vector2 position, Vector2 dimensions, bool highlight = false, float zMod = 0.0f) {
+void DrawConsole::drawFiller(Vector2 position, Vector2 dimensions, bool highlight = false, float zMod = 0.0f) {
 	// draws the filler portion of the console container at the specified place and size
 	glUniform2f(curveOriginCoordUniform, 0.0f, 0.0f);
 	glUniform1f(border1DistUniform, 1.0f);
@@ -202,15 +202,15 @@ void ConsoleRenderer::drawFiller(Vector2 position, Vector2 dimensions, bool high
 	glEnd();
 }
 
-ConsoleRenderer::ConsoleRenderer(unsigned int screenWidth, unsigned int screenHeight) :
+DrawConsole::DrawConsole(unsigned int screenWidth, unsigned int screenHeight) :
 		screenWidth(screenWidth), screenHeight(screenHeight) {
 	// set up container shader
 	containerVertexShader = ShaderTools::makeShader(
-			std::string(Platform::getResourcePath() +  "/shaders/consoleContainer.vertex.glsl").c_str(),
+			std::string(platform.dataPath +  "/shaders/consoleContainer.vertex.glsl").c_str(),
 			GL_VERTEX_SHADER
 		);
 	containerFragmentShader = ShaderTools::makeShader(
-			std::string(Platform::getResourcePath() + "/shaders/consoleContainer.fragment.glsl").c_str(),
+			std::string(platform.dataPath + "/shaders/consoleContainer.fragment.glsl").c_str(),
 			GL_FRAGMENT_SHADER
 		);
 
@@ -236,7 +236,7 @@ ConsoleRenderer::ConsoleRenderer(unsigned int screenWidth, unsigned int screenHe
 	primCoordAttrib = glGetAttribLocation(containerProgram, "primCoord");
 }
 
-void ConsoleRenderer::render() {
+void DrawConsole::render() {
 	glUseProgram(containerProgram);
 /*
 	drawCurve(Vector2(0.75f, 0.75f), Vector2(0.5f, 0.5f), 0.0f);
