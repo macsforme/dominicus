@@ -7,8 +7,8 @@
  *
  */
 
-#ifndef COMPATIBILITY_H
-#define COMPATIBILITY_H
+#ifndef SYSTEMINFO_H
+#define SYSTEMINFO_H
 
 // program headers
 #include "ProgramLog.h"
