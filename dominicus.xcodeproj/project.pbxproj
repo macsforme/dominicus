@@ -37,7 +37,8 @@
 		035A3D061284293A0001E186 /* DrawCursor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 035A3D051284293A0001E186 /* DrawCursor.cpp */; };
 		035A3DF91284391F0001E186 /* KeyTrap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 035A3DF81284391F0001E186 /* KeyTrap.cpp */; };
 		0369DE2A128588C000355C4E /* SplashBackground.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0369DE29128588C000355C4E /* SplashBackground.cpp */; };
-		0369DE97128595C100355C4E /* DrawConsole.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0369DE95128595C100355C4E /* DrawConsole.cpp */; };
+		0369DEE41285A28600355C4E /* DrawHUD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0369DEA31285964500355C4E /* DrawHUD.cpp */; };
+		039FA1211285D5A8003A2CC5 /* DrawHUDContainerUtility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039FA11F1285D5A8003A2CC5 /* DrawHUDContainerUtility.cpp */; };
 		03D47B7E1263E27F001755A6 /* dominicus.icns in Resources */ = {isa = PBXBuildFile; fileRef = 03D47B7D1263E27F001755A6 /* dominicus.icns */; };
 		03D8C07D1264BEBA00F26DC9 /* licenses in Resources */ = {isa = PBXBuildFile; fileRef = 03D8C0781264BEBA00F26DC9 /* licenses */; };
 		03DA5B85127AA286003814F7 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03DA5B83127AA286003814F7 /* Camera.cpp */; };
@@ -116,12 +117,14 @@
 		035A3DF81284391F0001E186 /* KeyTrap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KeyTrap.cpp; sourceTree = "<group>"; };
 		0369DE28128588C000355C4E /* SplashBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SplashBackground.h; path = splash/SplashBackground.h; sourceTree = "<group>"; };
 		0369DE29128588C000355C4E /* SplashBackground.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SplashBackground.cpp; path = splash/SplashBackground.cpp; sourceTree = "<group>"; };
-		0369DE95128595C100355C4E /* DrawConsole.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawConsole.cpp; sourceTree = "<group>"; };
-		0369DE96128595C100355C4E /* DrawConsole.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawConsole.h; sourceTree = "<group>"; };
 		0369DEA31285964500355C4E /* DrawHUD.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawHUD.cpp; sourceTree = "<group>"; };
 		0369DEA41285964500355C4E /* DrawHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawHUD.h; sourceTree = "<group>"; };
+		0369DF081285AB9400355C4E /* HUDArrangement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUDArrangement.h; sourceTree = "<group>"; };
+		0369DF0B1285ABA600355C4E /* HUDElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUDElement.h; sourceTree = "<group>"; };
 		036A4D2112757E5F00CEED79 /* Console.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Console.cpp; sourceTree = "<group>"; };
 		036A4D2212757E5F00CEED79 /* Console.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Console.h; sourceTree = "<group>"; };
+		039FA11F1285D5A8003A2CC5 /* DrawHUDContainerUtility.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawHUDContainerUtility.cpp; sourceTree = "<group>"; };
+		039FA1201285D5A8003A2CC5 /* DrawHUDContainerUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawHUDContainerUtility.h; sourceTree = "<group>"; };
 		03D47B7D1263E27F001755A6 /* dominicus.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = dominicus.icns; sourceTree = "<group>"; };
 		03D8C0781264BEBA00F26DC9 /* licenses */ = {isa = PBXFileReference; lastKnownFileType = folder; path = licenses; sourceTree = "<group>"; };
 		03DA5B83127AA286003814F7 /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
@@ -357,8 +360,10 @@
 			children = (
 				0369DEA41285964500355C4E /* DrawHUD.h */,
 				0369DEA31285964500355C4E /* DrawHUD.cpp */,
-				0369DE96128595C100355C4E /* DrawConsole.h */,
-				0369DE95128595C100355C4E /* DrawConsole.cpp */,
+				0369DF081285AB9400355C4E /* HUDArrangement.h */,
+				0369DF0B1285ABA600355C4E /* HUDElement.h */,
+				039FA1201285D5A8003A2CC5 /* DrawHUDContainerUtility.h */,
+				039FA11F1285D5A8003A2CC5 /* DrawHUDContainerUtility.cpp */,
 			);
 			path = HUD;
 			sourceTree = "<group>";
@@ -512,7 +517,8 @@
 				035A3DF91284391F0001E186 /* KeyTrap.cpp in Sources */,
 				03E2C285128444A000F40D33 /* OrthoCamera.cpp in Sources */,
 				0369DE2A128588C000355C4E /* SplashBackground.cpp in Sources */,
-				0369DE97128595C100355C4E /* DrawConsole.cpp in Sources */,
+				0369DEE41285A28600355C4E /* DrawHUD.cpp in Sources */,
+				039FA1211285D5A8003A2CC5 /* DrawHUDContainerUtility.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
