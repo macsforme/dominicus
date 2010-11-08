@@ -1,5 +1,5 @@
 /*
- *  DrawConsole.cpp
+ *  DrawHUDContainerUtility.cpp
  *  dominicus
  *
  *  Created by Joshua Bodine on 10/8/10.
@@ -7,210 +7,29 @@
  *
  */
 
-#include "DrawConsole.h"
+#include "DrawHUDContainerUtility.h"
 
-void DrawConsole::drawCurve(Vector2 position, Vector2 dimensions, float rotation,
-		bool highlight = false, float zMod = 0.0f, bool concave = false) {
-	// draws the curved portion of the console container at the specified place and size
-	glUniform2f(
-			curveOriginCoordUniform,
-			-(sqrt(2.0f) * cos(radians(rotation + 45.0f))),
-			-(sqrt(2.0f) * sin(radians(rotation + 45.0f)))
-		);
-	glUniform1f(border1DistUniform, 2.0f - (CONTAINER_BORDER_WIDTH * 2.0f / dimensions.x));
-	glUniform1f(border2DistUniform, 2.0f);
-	glUniform1f(zModUniform, zMod);
+DrawHUDContainerUtility::DrawHUDContainerUtility(
+		float zStart,
+		float borderWidth,
+		float newInsideColor[4],
+		float newHighlightColor[4],
+		float newBorderColor[4],
+		float newOutsideColor[4]
+	) :	zStart(zStart), borderWidth(borderWidth) {
+	// set variables
+	memcpy(insideColor, newInsideColor, 4 * sizeof(float));
+	memcpy(highlightColor, newHighlightColor, 4 * sizeof(float));
+	memcpy(borderColor, newBorderColor, 4 * sizeof(float));
+	memcpy(outsideColor, newOutsideColor, 4 * sizeof(float));
 
-	if(concave) {
-		glUniform4f(insideColorUniform, OUTSIDE_COLOR);
-
-		if(highlight)
-			glUniform4f(outsideColorUniform, HIGHLIGHT_COLOR);
-		else
-			glUniform4f(outsideColorUniform, INSIDE_COLOR);
-	} else {
-		if(highlight)
-			glUniform4f(insideColorUniform, HIGHLIGHT_COLOR);
-		else
-			glUniform4f(insideColorUniform, INSIDE_COLOR);
-
-		glUniform4f(outsideColorUniform, OUTSIDE_COLOR);
-	}
-	glUniform4f(borderColorUniform, BORDER_COLOR);
-
-	const float screenRatio = (float) screenWidth / (float) screenHeight;
-
-	glBegin(GL_QUADS);
-
-	glVertexAttrib2f(
-			positionAttrib,
-			position.x - dimensions.x / 2,
-			(position.y - dimensions.y / 2) * screenRatio
-		);
-	glVertexAttrib2f(primCoordAttrib, -1.0f, -1.0f);
-
-	glVertexAttrib2f(
-			positionAttrib,
-			position.x - dimensions.x / 2,
-			(position.y + dimensions.y / 2) * screenRatio
-		);
-	glVertexAttrib2f(primCoordAttrib, -1.0f, 1.0f);
-
-	glVertexAttrib2f(
-			positionAttrib,
-			position.x + dimensions.x / 2,
-			(position.y + dimensions.y / 2) * screenRatio
-		);
-	glVertexAttrib2f(primCoordAttrib, 1.0f, 1.0f);
-
-	glVertexAttrib2f(
-			positionAttrib,
-			position.x + dimensions.x / 2,
-			(position.y - dimensions.y / 2) * screenRatio
-		);
-	glVertexAttrib2f(primCoordAttrib, 1.0f, -1.0f);
-
-	glEnd();
-}
-
-void DrawConsole::drawBorder(Vector2 position, Vector2 dimensions, float rotation,
-		bool highlight = false, float zMod = 0.0f) {
-	// draws the straight border portion of the console container at the specified place and size
-	glUniform2f(
-			curveOriginCoordUniform,
-			-cos(radians(rotation)),
-			-sin(radians(rotation))
-		);
-
-	glUniform1f(border1DistUniform, 2.0f -
-			(CONTAINER_BORDER_WIDTH * 2.0f / (
-					absolute(dimensions.x * cos(radians(rotation))) +
-					absolute(dimensions.y * sin(radians(rotation)))
-			))
-		);
-	glUniform1f(border2DistUniform, 2.0f);
-	glUniform1f(zModUniform, zMod);
-
-	if(highlight)
-		glUniform4f(insideColorUniform, HIGHLIGHT_COLOR);
-	else
-		glUniform4f(insideColorUniform, INSIDE_COLOR);
-
-	glUniform4f(borderColorUniform, BORDER_COLOR);
-	glUniform4f(outsideColorUniform, OUTSIDE_COLOR);
-
-	const float screenRatio = (float) screenWidth / (float) screenHeight;
-
-	// rotate the primCoord arguments around as rotated
-
-	glBegin(GL_QUADS);
-
-	glVertexAttrib2f(
-			positionAttrib,
-			(position.x - dimensions.x / 2),
-			(position.y - dimensions.y / 2) * screenRatio
-		);
-	glVertexAttrib2f(
-			primCoordAttrib,
-			-absolute(cos(radians(rotation))),
-			-absolute(sin(radians(rotation)))
-		);
-
-	glVertexAttrib2f(
-			positionAttrib,
-			(position.x - dimensions.x / 2),
-			(position.y + dimensions.y / 2) * screenRatio
-		);
-	glVertexAttrib2f(
-			primCoordAttrib,
-			-absolute(cos(radians(rotation))),
-			absolute(sin(radians(rotation)))
-		);
-
-	glVertexAttrib2f(
-			positionAttrib,
-			(position.x + dimensions.x / 2),
-			(position.y + dimensions.y / 2) * screenRatio
-		);
-	glVertexAttrib2f(
-			primCoordAttrib,
-			absolute(cos(radians(rotation))),
-			absolute(sin(radians(rotation)))
-		);
-
-	glVertexAttrib2f(
-			positionAttrib,
-			(position.x + dimensions.x / 2),
-			(position.y - dimensions.y / 2) * screenRatio
-		);
-		glVertexAttrib2f(
-			primCoordAttrib,
-			absolute(cos(radians(rotation))),
-			-absolute(sin(radians(rotation)))
-		);
-
-	glEnd();
-}
-
-void DrawConsole::drawFiller(Vector2 position, Vector2 dimensions, bool highlight = false, float zMod = 0.0f) {
-	// draws the filler portion of the console container at the specified place and size
-	glUniform2f(curveOriginCoordUniform, 0.0f, 0.0f);
-	glUniform1f(border1DistUniform, 1.0f);
-	glUniform1f(border2DistUniform, 1.0f);
-
-	if(highlight)
-		glUniform4f(insideColorUniform, HIGHLIGHT_COLOR);
-	else
-		glUniform4f(insideColorUniform, INSIDE_COLOR);
-
-	glUniform4f(borderColorUniform, BORDER_COLOR);
-	glUniform4f(outsideColorUniform, OUTSIDE_COLOR);
-	glUniform1f(zModUniform, zMod);
-
-	const float screenRatio = (float) screenWidth / (float) screenHeight;
-
-	glBegin(GL_QUADS);
-
-	glVertexAttrib2f(
-			positionAttrib,
-			position.x - dimensions.x / 2,
-			(position.y - dimensions.y / 2) * screenRatio
-		);
-	glVertexAttrib2f(primCoordAttrib, 0.0f, 0.0f);
-
-	glVertexAttrib2f(
-			positionAttrib,
-			position.x - dimensions.x / 2,
-			(position.y + dimensions.y / 2) * screenRatio
-		);
-	glVertexAttrib2f(primCoordAttrib, 0.0f, 0.0f);
-
-	glVertexAttrib2f(
-			positionAttrib,
-			position.x + dimensions.x / 2,
-			(position.y + dimensions.y / 2) * screenRatio
-		);
-	glVertexAttrib2f(primCoordAttrib, 0.0f, 0.0f);
-
-	glVertexAttrib2f(
-			positionAttrib,
-			position.x + dimensions.x / 2,
-			(position.y - dimensions.y / 2) * screenRatio
-		);
-	glVertexAttrib2f(primCoordAttrib, 0.0f, 0.0f);
-
-	glEnd();
-}
-
-DrawConsole::DrawConsole(unsigned int screenWidth, unsigned int screenHeight) :
-		screenWidth(screenWidth), screenHeight(screenHeight) {
 	// set up container shader
 	containerVertexShader = ShaderTools::makeShader(
-			std::string(platform.dataPath +  "/shaders/consoleContainer.vertex.glsl").c_str(),
+			std::string(platform.dataPath +  "/shaders/hudContainer.vertex.glsl").c_str(),
 			GL_VERTEX_SHADER
 		);
 	containerFragmentShader = ShaderTools::makeShader(
-			std::string(platform.dataPath + "/shaders/consoleContainer.fragment.glsl").c_str(),
+			std::string(platform.dataPath + "/shaders/hudContainer.fragment.glsl").c_str(),
 			GL_FRAGMENT_SHADER
 		);
 
@@ -236,9 +55,213 @@ DrawConsole::DrawConsole(unsigned int screenWidth, unsigned int screenHeight) :
 	primCoordAttrib = glGetAttribLocation(containerProgram, "primCoord");
 }
 
-void DrawConsole::render() {
+void DrawHUDContainerUtility::drawCurve(Vector2 position, Vector2 dimensions, float rotation,
+		bool highlight = false, float zMod = 0.0f, bool concave = false) {
+	// draws the curved portion of the console container at the specified place and size
 	glUseProgram(containerProgram);
+
+	glUniform2f(
+			curveOriginCoordUniform,
+			-(sqrt(2.0f) * cos(radians(rotation + 45.0f))),
+			-(sqrt(2.0f) * sin(radians(rotation + 45.0f)))
+		);
+	glUniform1f(border1DistUniform, 2.0f - (borderWidth * 2.0f / dimensions.x));
+	glUniform1f(border2DistUniform, 2.0f);
+	glUniform1f(zModUniform, zStart + zMod);
+
+	if(concave) {
+		glUniform4fv(insideColorUniform, 1, outsideColor);
+
+		if(highlight)
+			glUniform4fv(outsideColorUniform, 1, highlightColor);
+		else
+			glUniform4fv(outsideColorUniform, 1, insideColor);
+	} else {
+		if(highlight)
+			glUniform4fv(insideColorUniform, 1, highlightColor);
+		else
+			glUniform4fv(insideColorUniform, 1, insideColor);
+
+		glUniform4fv(outsideColorUniform, 1, outsideColor);
+	}
+	glUniform4fv(borderColorUniform, 1, borderColor);
+
+	glBegin(GL_QUADS);
+
+	glVertexAttrib2f(
+			positionAttrib,
+			position.x - dimensions.x / 2,
+			position.y - dimensions.y / 2
+		);
+	glVertexAttrib2f(primCoordAttrib, -1.0f, -1.0f);
+
+	glVertexAttrib2f(
+			positionAttrib,
+			position.x - dimensions.x / 2,
+			position.y + dimensions.y / 2
+		);
+	glVertexAttrib2f(primCoordAttrib, -1.0f, 1.0f);
+
+	glVertexAttrib2f(
+			positionAttrib,
+			position.x + dimensions.x / 2,
+			position.y + dimensions.y / 2
+		);
+	glVertexAttrib2f(primCoordAttrib, 1.0f, 1.0f);
+
+	glVertexAttrib2f(
+			positionAttrib,
+			position.x + dimensions.x / 2,
+			position.y - dimensions.y / 2
+		);
+	glVertexAttrib2f(primCoordAttrib, 1.0f, -1.0f);
+
+	glEnd();
+}
+
+void DrawHUDContainerUtility::drawBorder(Vector2 position, Vector2 dimensions, float rotation,
+		bool highlight = false, float zMod = 0.0f) {
+	// draws the straight border portion of the console container at the specified place and size
+	glUseProgram(containerProgram);
+
+	glUniform2f(
+			curveOriginCoordUniform,
+			-cos(radians(rotation)),
+			-sin(radians(rotation))
+		);
+
+	glUniform1f(border1DistUniform, 2.0f -
+			(borderWidth * 2.0f / (
+					absolute(dimensions.x * cos(radians(rotation))) +
+					absolute(dimensions.y * sin(radians(rotation)))
+			))
+		);
+	glUniform1f(border2DistUniform, 2.0f);
+	glUniform1f(zModUniform, zStart + zMod);
+
+	if(highlight)
+		glUniform4fv(insideColorUniform, 1, highlightColor);
+	else
+		glUniform4fv(insideColorUniform, 1, insideColor);
+
+	glUniform4fv(borderColorUniform, 1, borderColor);
+	glUniform4fv(outsideColorUniform, 1, outsideColor);
+
+	// rotate the primCoord arguments around as rotated
+
+	glBegin(GL_QUADS);
+
+	glVertexAttrib2f(
+			positionAttrib,
+			(position.x - dimensions.x / 2),
+			position.y - dimensions.y / 2
+		);
+	glVertexAttrib2f(
+			primCoordAttrib,
+			-absolute(cos(radians(rotation))),
+			-absolute(sin(radians(rotation)))
+		);
+
+	glVertexAttrib2f(
+			positionAttrib,
+			(position.x - dimensions.x / 2),
+			position.y + dimensions.y / 2
+		);
+	glVertexAttrib2f(
+			primCoordAttrib,
+			-absolute(cos(radians(rotation))),
+			absolute(sin(radians(rotation)))
+		);
+
+	glVertexAttrib2f(
+			positionAttrib,
+			position.x + dimensions.x / 2,
+			position.y + dimensions.y / 2
+		);
+	glVertexAttrib2f(
+			primCoordAttrib,
+			absolute(cos(radians(rotation))),
+			absolute(sin(radians(rotation)))
+		);
+
+	glVertexAttrib2f(
+			positionAttrib,
+			position.x + dimensions.x / 2,
+			position.y - dimensions.y / 2
+		);
+	glVertexAttrib2f(
+			primCoordAttrib,
+			absolute(cos(radians(rotation))),
+			-absolute(sin(radians(rotation)))
+	);
+
+	glEnd();
+}
+
+void DrawHUDContainerUtility::drawFiller(Vector2 position, Vector2 dimensions, bool highlight = false,
+		float zMod = 0.0f) {
+	// draws the filler portion of the console container at the specified place and size
+	glUseProgram(containerProgram);
+
+	glUniform2f(curveOriginCoordUniform, 0.0f, 0.0f);
+	glUniform1f(border1DistUniform, 1.0f);
+	glUniform1f(border2DistUniform, 1.0f);
+
+	if(highlight)
+		glUniform4fv(insideColorUniform, 1, highlightColor);
+	else
+		glUniform4fv(insideColorUniform, 1, insideColor);
+
+	glUniform4fv(borderColorUniform, 1, borderColor);
+	glUniform4fv(outsideColorUniform, 1, outsideColor);
+	glUniform1f(zModUniform, zStart + zMod);
+
+	glBegin(GL_QUADS);
+
+	glVertexAttrib2f(
+			positionAttrib,
+			position.x - dimensions.x / 2,
+			position.y - dimensions.y / 2
+		);
+	glVertexAttrib2f(primCoordAttrib, 0.0f, 0.0f);
+
+	glVertexAttrib2f(
+			positionAttrib,
+			position.x - dimensions.x / 2,
+			position.y + dimensions.y / 2
+		);
+	glVertexAttrib2f(primCoordAttrib, 0.0f, 0.0f);
+
+	glVertexAttrib2f(
+			positionAttrib,
+			position.x + dimensions.x / 2,
+			position.y + dimensions.y / 2
+		);
+	glVertexAttrib2f(primCoordAttrib, 0.0f, 0.0f);
+
+	glVertexAttrib2f(
+			positionAttrib,
+			position.x + dimensions.x / 2,
+			position.y - dimensions.y / 2
+		);
+	glVertexAttrib2f(primCoordAttrib, 0.0f, 0.0f);
+
+	glEnd();
+}
+
 /*
+// console container constants
+#define INSIDE_COLOR 0.047058823529412f, 0.043137254901961f, 0.137254901960784f, 0.6f
+#define HIGHLIGHT_COLOR 0.274509803921569f, 0.298039215686275f, 0.403921568627451f, 1.0f
+#define BORDER_COLOR 0.52156862745098f, 0.568627450980392f, 0.537254901960784f, 1.0f
+#define OUTSIDE_COLOR 0.0f, 0.0f, 0.0f, 0.0f
+#define CONTAINER_BORDER_WIDTH 8.0f / screenWidth * 2.0f
+*/
+
+/*
+void DrawHUDContainerUtility::render() {
+	glUseProgram(containerProgram);
+
 	drawCurve(Vector2(0.75f, 0.75f), Vector2(0.5f, 0.5f), 0.0f);
 	drawCurve(Vector2(-0.75f, 0.75f), Vector2(0.5f, 0.5f), 90.0f);
 	drawCurve(Vector2(-0.75f, -0.75f), Vector2(0.5f, 0.5f), 180.0f);
@@ -250,13 +273,12 @@ void DrawConsole::render() {
 	drawBorder(Vector2(0.0f, -0.75f), Vector2(1.0f, 0.5f), 270.0f);
 
 	drawFiller(Vector2(0.0f, 0.0f), Vector2(1.0f, 1.0f));
-*/
-/*
+
+
 	drawCurve(Vector2(-0.5f, -0.5f), Vector2(1.0f, 1.0f), 180, true);
 	drawCurve(Vector2(-0.5f, 0.5f), Vector2(1.0f, 1.0f), 90);
 	drawCurve(Vector2(0.5f, 0.5f), Vector2(1.0f, 1.0f), 0, true);
 	drawCurve(Vector2(0.5f, -0.5f), Vector2(1.0f, 1.0f), 270);
-*/
 
 	// left border
 	drawCurve(Vector2(-0.8f, -0.3f), Vector2(0.1f, 0.1f), 180);
@@ -302,3 +324,4 @@ void DrawConsole::render() {
 	drawBorder(Vector2(0.8f, 0.0f), Vector2(0.1f, 0.5f), 0);
 	drawCurve(Vector2(0.80f, 0.3f), Vector2(0.1f, 0.1f), 0);
 }
+*/

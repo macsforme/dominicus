@@ -1,61 +1,46 @@
 /*
- *  HUDRenderer.h
+ *  DrawHUD.h
  *  dominicus
  *
- *  Created by Joshua Bodine on 8/28/10.
+ *  Created by Joshua Bodine on 11/7/10.
  *  Copyright 2010 Joshua Bodine. All rights reserved.
  *
  */
 
-#ifndef HUDRENDERER_H
-#define HUDRENDERER_H
-
-#define CONSOLE_BORDER 20.0f
+#ifndef DRAWHUD_H
+#define DRAWHUD_H
 
 // program headers
-#include "FontManager.h"
+#include "HUDArrangement.h"
+#include "HUDElement.h"
 #include "Platform.h"
-#include "Preferences.h"
-#include "ShaderTools.h"
-#include "SubjectRenderer.h"
+#include "Screen.h"
 #include "VectorMath.h"
 
 // library headers
-#include <OpenGL/OpenGL.h>
-#include <string>
 #include <vector>
 
-class HUDRenderer {
+// global variables
+extern Platform platform;
+
+class DrawHUD {
 private:
-	FontManager* fontManager;
+	Screen* screen;
+	Vector2 elementPadding;
 
-	SubjectRenderer* subjectRenderer;
+	HUDArrangement hudArrangement;
 
-	unsigned int width, height;
+	HUDElement* consoleHUDElement;
+	HUDElement* rearViewMirrorHUDElement;
+	HUDElement* playerInfoHUDElement;
+	HUDElement* radarElement;
 
-	// text shader
-	GLuint textProgram, textVertexShader, textFragmentShader;
-	GLuint textPositionAttrib, textTexCoordAttrib;
-	GLuint textTextureUniform;
-
-	// hud shader
-	GLuint hudProgram, hudVertexShader, hudFragmentShader;
-	GLuint hudPositionAttrib, hudColorAttrib;
-
-	// fps tracking
-	unsigned long int lastCheck;
-	unsigned int frameCount;
-	unsigned int currentFPS;
-
-	float normalize(unsigned int coordinate, unsigned int scale) { return (float) coordinate / ((float) scale / 2) - 1.0f; }
-	Vector2 stringMaxAdvances(std::string str);
-	Vector2 stringAdvances(std::string str);
+	HUDElement* findPriorElementCenter(int index);
 
 public:
-	HUDRenderer(unsigned int newWidth, unsigned int newHeight, SubjectRenderer* newSubjectRenderer);
-	~HUDRenderer();
-
-	void render();
+	DrawHUD(Screen* screen);
+	
+	void draw();
 };
 
 #endif

@@ -1,5 +1,5 @@
 /*
- *  DrawConsole.h
+ *  DrawHUDContainerUtility.h
  *  dominicus
  *
  *  Created by Joshua Bodine on 10/8/10.
@@ -7,10 +7,8 @@
  *
  */
 
-#ifndef DRAWCONSOLE_H
-#define DRAWCONSOLE_H
-
-// Note: all screen coordinates are in units of 2.0 per screen width (-1.0 to 1.0)
+#ifndef DRAWHUDCONTAINERUTILITY_H
+#define DRAWHUDCONTAINERUTILITY_H
 
 // program headers
 #include "MatrixMath.h"
@@ -21,26 +19,20 @@
 
 // library headers
 #include <OpenGL/OpenGL.h>
+#include <string.h>
 
 // global variables
 extern Platform platform;
 
-// console container constants
-#define INSIDE_COLOR 0.047058823529412f, 0.043137254901961f, 0.137254901960784f, 0.6f
-#define HIGHLIGHT_COLOR 0.274509803921569f, 0.298039215686275f, 0.403921568627451f, 1.0f
-#define BORDER_COLOR 0.52156862745098f, 0.568627450980392f, 0.537254901960784f, 1.0f
-#define OUTSIDE_COLOR 0.0f, 0.0f, 0.0f, 0.0f
-#define CONTAINER_BORDER_WIDTH 8.0f / screenWidth * 2.0f
-
-class DrawConsole {
+class DrawHUDContainerUtility {
 private:
-	// internal variables
-	unsigned int screenWidth, screenHeight;
+	float zStart;
+	float borderWidth;
 
-	// internal drawing functions
-	void drawCurve(Vector2 position, Vector2 dimensions, float rotation, bool highlight, float zMod, bool concave);
-	void drawBorder(Vector2 position, Vector2 dimensions, float rotation, bool highlight, float zMod);
-	void drawFiller(Vector2 position, Vector2 dimensions, bool highlight, float zMod);
+	float insideColor[4];
+	float highlightColor[4];
+	float borderColor[4];
+	float outsideColor[4];
 
 	// container shader
 	GLuint containerProgram;
@@ -62,9 +54,20 @@ private:
 	GLuint primCoordAttrib;			// vec2
 
 public:
-	DrawConsole(unsigned int screenWidth, unsigned int screenHeight);
-
-	void render();
+	DrawHUDContainerUtility(
+			float zStart,
+			float borderWidth,
+			float newInsideColor[4],
+			float newHighlightColor[4],
+			float newBorderColor[4],
+			float newOutsideColor[4]
+		);
+		
+	// utility drawing functions
+	void drawCurve(Vector2 position, Vector2 dimensions, float rotation, bool highlight,
+			float zMod, bool concave);
+	void drawBorder(Vector2 position, Vector2 dimensions, float rotation, bool highlight, float zMod);
+	void drawFiller(Vector2 position, Vector2 dimensions, bool highlight, float zMod);
 };
 
 #endif
