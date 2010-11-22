@@ -46,25 +46,29 @@ void DrawCursor::draw() {
 		);
 	Vector2 ll(middle.x - dims.x / 2.0f, middle.y - dims.y / 2.0f);
 	Vector2 ur(middle.x + dims.x / 2.0f, middle.y + dims.y / 2.0f);
-//printf("dims %+.2f, %+.2f middle %+.2f, %+.2f ll %+.2f, %+.2f ur %+.2f, %+.2f\n", dims.x, dims.y, middle.x, middle.y, ll.x, ll.y, ur.x, ur.y);
+
+	// cursor thickness is a minimum of 2 pixels
+	float thickness = gamePrefs.getFloat("cursorThickness");
+	if(thickness * dims.y / 2.0f * (float) screen->height < 1.0f)
+		thickness = 2.0f / (dims.y / 2.0f * (float) screen->height);
 
 	glUseProgram(program);
 
-	glUniform1f(thicknessUniform, gamePrefs.getFloat("cursorThickness"));
+	glUniform1f(thicknessUniform, thickness);
 
 	glBegin(GL_QUADS);
 
 	glVertexAttrib2f(boxCoordAttrib, -1.0f, -1.0f);
-	glVertexAttrib3f(positionAttrib, ll.x, ll.y, -0.9f);
+	glVertexAttrib3f(positionAttrib, ll.x, ll.y, -0.99f);
 
 	glVertexAttrib2f(boxCoordAttrib, -1.0f, 1.0f);
-	glVertexAttrib3f(positionAttrib, ll.x, ur.y, -0.9f);
+	glVertexAttrib3f(positionAttrib, ll.x, ur.y, -0.99f);
 
 	glVertexAttrib2f(boxCoordAttrib, 1.0f, 1.0f);
-	glVertexAttrib3f(positionAttrib, ur.x, ur.y, -0.9f);
+	glVertexAttrib3f(positionAttrib, ur.x, ur.y, -0.99f);
 
 	glVertexAttrib2f(boxCoordAttrib, 1.0f, -1.0f);
-	glVertexAttrib3f(positionAttrib, ur.x, ll.y, -0.9f);
+	glVertexAttrib3f(positionAttrib, ur.x, ll.y, -0.99f);
 
 	glEnd();
 }
