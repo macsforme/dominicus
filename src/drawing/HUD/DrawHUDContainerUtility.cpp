@@ -65,7 +65,7 @@ void DrawHUDContainerUtility::drawCurve(Vector2 position, Vector2 dimensions, fl
 			-(sqrt(2.0f) * cos(radians(rotation + 45.0f))),
 			-(sqrt(2.0f) * sin(radians(rotation + 45.0f)))
 		);
-	glUniform1f(border1DistUniform, 2.0f - (borderWidth * 2.0f / dimensions.x));
+	glUniform1f(border1DistUniform, 2.0f - borderWidth);
 	glUniform1f(border2DistUniform, 2.0f);
 	glUniform1f(zModUniform, zStart + zMod);
 
@@ -120,7 +120,7 @@ void DrawHUDContainerUtility::drawCurve(Vector2 position, Vector2 dimensions, fl
 }
 
 void DrawHUDContainerUtility::drawBorder(Vector2 position, Vector2 dimensions, float rotation,
-		bool highlight = false, float zMod = 0.0f) {
+		bool highlight, float zMod) {
 	// draws the straight border portion of the console container at the specified place and size
 	glUseProgram(containerProgram);
 
@@ -129,13 +129,8 @@ void DrawHUDContainerUtility::drawBorder(Vector2 position, Vector2 dimensions, f
 			-cos(radians(rotation)),
 			-sin(radians(rotation))
 		);
+	glUniform1f(border1DistUniform, 2.0f - borderWidth);
 
-	glUniform1f(border1DistUniform, 2.0f -
-			(borderWidth * 2.0f / (
-					absolute(dimensions.x * cos(radians(rotation))) +
-					absolute(dimensions.y * sin(radians(rotation)))
-			))
-		);
 	glUniform1f(border2DistUniform, 2.0f);
 	glUniform1f(zModUniform, zStart + zMod);
 
