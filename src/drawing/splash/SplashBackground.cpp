@@ -36,7 +36,7 @@ SplashBackground::SplashBackground() {
 
 	// load the texture
 	BMPImage image(platform.dataPath + "/data/textures/program/splash.bmp");
-	
+
 	glEnable(GL_TEXTURE_2D);
 
 	glGenTextures(1, &textureID);
@@ -47,7 +47,7 @@ SplashBackground::SplashBackground() {
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	
+
 	glTexImage2D(
 			GL_TEXTURE_2D,
 			0,
@@ -68,7 +68,7 @@ void SplashBackground::draw() {
 
 	Matrix4 mvpMatrix;
 	mvpMatrix.identity();
-	
+
 	float mvpMatrixArray[] = {
 			mvpMatrix.m11, mvpMatrix.m12, mvpMatrix.m13, mvpMatrix.m14,
 			mvpMatrix.m21, mvpMatrix.m22, mvpMatrix.m23, mvpMatrix.m24,
@@ -81,9 +81,9 @@ void SplashBackground::draw() {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, textureID);
 	glUniform1i(textureUniform, 0);
-	
+
 	glBegin(GL_QUADS);
-	
+
 	glVertexAttrib2f(texCoordAttrib, 0.0f, 0.0f);
 	glVertexAttrib3f(positionAttrib, -1.0f, -1.0f, 0.99f);
 
@@ -97,6 +97,6 @@ void SplashBackground::draw() {
 	glVertexAttrib3f(positionAttrib, 1.0f, -1.0f, 0.99f);
 
 	glEnd();
-	
+
 	glDisable(GL_TEXTURE_2D);
 }

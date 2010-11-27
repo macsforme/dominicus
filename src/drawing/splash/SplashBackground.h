@@ -35,7 +35,7 @@ private:
 
 	// texture id
 	GLuint textureID;
-	
+
 public:
 	SplashBackground();
 
