@@ -11,6 +11,10 @@
 #define DRAWHUD_H
 
 // program headers
+#include "DrawConsole.h"
+#include "DrawInfoBox.h"
+#include "DrawHUDEnclosure.h"
+#include "FontManager.h"
 #include "HUDArrangement.h"
 #include "HUDElement.h"
 #include "Platform.h"
@@ -25,21 +29,17 @@ extern Platform platform;
 
 class DrawHUD {
 private:
-	Screen* screen;
-	Vector2 elementPadding;
+	HUDArrangement* hudArrangement;
+	DrawHUDEnclosure* drawHUDEnclosure;
 
-	HUDArrangement hudArrangement;
-
-	HUDElement* consoleHUDElement;
-	HUDElement* rearViewMirrorHUDElement;
-	HUDElement* playerInfoHUDElement;
-	HUDElement* radarElement;
-
-	HUDElement* findPriorElementCenter(int index);
+	// HUD element drawing handlers
+	DrawConsole* consoleDrawer;
+	DrawInfoBox* infoBoxDrawer;
 
 public:
-	DrawHUD(Screen* screen);
-	
+	DrawHUD(Screen* screen, FontManager* fontManager);
+	~DrawHUD();
+
 	void draw();
 };
 

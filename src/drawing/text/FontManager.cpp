@@ -20,7 +20,7 @@ FontManager::FontManager() {
 					library,
 					std::string(platform.dataPath +
 							"/data/fonts/" +
-							gamePrefs.getString("fontStandardSize")).c_str(),
+							gamePrefs.getString("fontFile")).c_str(),
 					0,
 					&fontFace
 				)
@@ -29,7 +29,7 @@ FontManager::FontManager() {
 				std::string("The font face could not be loaded from " +
 						platform.dataPath +
 						"/data/fonts/" +
-						gamePrefs.getString("fontStandardSize")).c_str()
+						gamePrefs.getString("fontFile")).c_str()
 			);
 
 	// set a default size
@@ -43,6 +43,12 @@ FontManager::FontManager() {
 				)
 		)
 		ProgramLog::report(LOG_FATAL, "The default font size could not be set.");
+
+	// confirm that the face is scalable
+	if(! FT_IS_SCALABLE(fontFace))
+		ProgramLog::report(LOG_FATAL,
+				std::string("The specified font face is not a scalable font.").c_str()
+			);
 }
 
 FontManager::~FontManager() {
@@ -121,13 +127,13 @@ void FontManager::rebuildFontTextureCache(unsigned int size) {
 					);
 
 		// assign the texture coordinate info
-		fontData[charList[i]][size].sXCoord = positiveNormalize(xIndex * maxX, thisFontCache->getWidth());
-		fontData[charList[i]][size].sYCoord = positiveNormalize(yIndex * maxY, thisFontCache->getHeight());
-		fontData[charList[i]][size].eXCoord = positiveNormalize(
+		fontData[charList[i]][size].sX = positiveNormalize(xIndex * maxX, thisFontCache->getWidth());
+		fontData[charList[i]][size].sY = positiveNormalize(yIndex * maxY, thisFontCache->getHeight());
+		fontData[charList[i]][size].eX = positiveNormalize(
 				xIndex * maxX + thisGlyph->getWidth(),
 				thisFontCache->getWidth()
 			);
-		fontData[charList[i]][size].eYCoord = positiveNormalize(
+		fontData[charList[i]][size].eY = positiveNormalize(
 				yIndex * maxY + thisGlyph->getHeight(),
 				thisFontCache->getHeight()
 			);
@@ -190,6 +196,9 @@ void FontManager::buildChar(const char character, unsigned int size) {
 		ProgramLog::report(LOG_FATAL, err.str().c_str());
 	}
 
+	// store the line height for this size
+	lineHeights[size] = (unsigned int) fontFace->size->metrics.height / 64;
+
 	// load the glyph
 	FT_UInt glyphIndex = FT_Get_Char_Index(fontFace, character);
 	if(FT_Load_Glyph(fontFace, glyphIndex, FT_LOAD_DEFAULT)) {
@@ -217,7 +226,6 @@ void FontManager::buildChar(const char character, unsigned int size) {
 	thisData.adjustX = fontFace->glyph->bitmap_left;
 	thisData.adjustY = -(fontFace->glyph->bitmap.rows - fontFace->glyph->bitmap_top);	// +Y = up
 	thisData.advanceX = fontFace->glyph->advance.x / 64;
-	thisData.advanceY = (int) ((float) thisData.height * ADVANCE_Y_FACTOR);
 
 	// create the texture bitmap for this glyph
 	thisData.bitmap = new Texture(
@@ -274,4 +282,22 @@ void FontManager::populateCommonChars(unsigned int size) {
 	// build a cache of common characters including letters, numbers, and most symbols
 	for(char i = ' '; i < '~'; ++i)
 		buildChar(i, size);
+/*
+	for(char i = 0; i < '~'; ++i)
+
+printf("%u \'%c\' %u size %i %i metrics %+i %+i %+i coords %.3f %.3f %.3f %.3f\n",
+		i,
+		i,
+		size,
+		fontData[i][size].width,
+		fontData[i][size].height,
+		fontData[i][size].adjustX,
+		fontData[i][size].adjustY,
+		fontData[i][size].advanceX,
+		fontData[i][size].sX,
+		fontData[i][size].sY,
+		fontData[i][size].eX,
+		fontData[i][size].eY
+	);
+*/
 }

@@ -30,8 +30,6 @@
 extern Platform platform;
 extern GamePrefs gamePrefs;
 
-#define ADVANCE_Y_FACTOR 1.40f	// how much to multiply height by for newline spacing
-
 class FontManager {
 public:
 	struct FontData {
@@ -40,11 +38,11 @@ public:
 
 		// metrics
 		int adjustX, adjustY;
-		unsigned int advanceX, advanceY;
+		unsigned int advanceX;
 
 		// texture coordinates for texture cache
-		float sXCoord, eXCoord;
-		float sYCoord, eYCoord;
+		float sX, eX;
+		float sY, eY;
 
 		// individual font bitmap image
 		Texture* bitmap;
@@ -52,6 +50,7 @@ public:
 
 	// map of [character][size] font data
 	std::map< char, std::map<unsigned int, FontData> > fontData;
+	std::map<unsigned int, unsigned int> lineHeights;
 
 	// OpenGL texture IDs for font caches of each size
 	std::map<unsigned int, GLuint> textureIDs;

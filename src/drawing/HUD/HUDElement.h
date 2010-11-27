@@ -19,6 +19,6 @@ public:
 
 	HUDElement(Vector2 size, Vector2 position = Vector2(0.0f, 0.0f)) :
 			size(size), position(position) { }
-};	
+};
 
 #endif

@@ -12,6 +12,8 @@
 
 // program headers
 #include "HUDElement.h"
+#include "Screen.h"
+#include "VectorMath.h"
 
 // library headers
 #include <vector>
@@ -33,6 +35,17 @@ public:
 	};
 
 	std::vector<HUDElementEntry> elementList;
+
+private:
+	HUDElement* findPriorElementCenter(int index);
+
+	Screen* screen;
+	Vector2 elementPadding;
+
+public:
+	HUDArrangement(Screen* screen);
+
+	void rearrange();
 };
 
 #endif

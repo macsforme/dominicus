@@ -12,11 +12,14 @@
 
 // program headers
 #include "DrawCursor.h"
+#include "DrawHUD.h"
 #include "GamePrefs.h"
+#include "KeyTrap.h"
 #include "Platform.h"
 #include "ProgramLog.h"
 #include "RenderingMaster.h"
 #include "Screen.h"
+//#include "SplashBackground.h"
 #include "SystemInfo.h"
 
 // library headers
@@ -25,6 +28,7 @@
 #include <OpenGL/OpenGL.h>
 
 // global variables
+extern FontManager fontManager;
 extern SystemInfo systemInfo;
 extern GamePrefs gamePrefs;
 extern Platform platform;
@@ -32,8 +36,14 @@ extern Platform platform;
 class DrawingMaster {
 private:
 	RenderingMaster* renderingMaster;
+	FontManager* fontManager;
 
+//	SplashBackground* splashBackground;
 	DrawCursor* drawCursor;
+	DrawHUD* hudDrawing;
+
+	KeyTrap* fpsCapKeyTrap;
+	bool capFPS;
 
 public:
 	DrawingMaster(Screen* screen);

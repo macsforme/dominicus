@@ -12,18 +12,31 @@
 DrawingMaster::DrawingMaster(Screen* screen) {
 	// initialize variables
 	renderingMaster = new RenderingMaster(screen);
+	fontManager = new FontManager();
 
+	hudDrawing = new DrawHUD(screen, fontManager);
 	drawCursor = new DrawCursor(screen);
+//	splashBackground = new SplashBackground();
+
+	// initialize fonts
+	fontManager->populateCommonChars(gamePrefs.getInt("fontStandardSize"));
 
 	// hide the system cursor
 	platform.hideCursor();
 
 	// set the OpenGL viewport size
 	setViewPortSize(screen->width, screen->height);
+
+	// set the FPS cap key trap
+	fpsCapKeyTrap = new KeyTrap("toggleFPSCap");
+	capFPS = gamePrefs.getBool("renderingCapFPS");
 }
 
 DrawingMaster::~DrawingMaster() {
 	// any OpenGL commands to run upon context destruction
+
+	// delete our variables
+	delete(fpsCapKeyTrap);
 }
 
 void DrawingMaster::setViewPortSize(unsigned short int width, unsigned short int height) {
@@ -46,7 +59,8 @@ void DrawingMaster::preFrame() {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	glClearColor(0.447058823529412f, 0.407843137254902f, 0.298039215686275f, 1.0f);
+//	glClearColor(0.447058823529412f, 0.407843137254902f, 0.298039215686275f, 1.0f);
+	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 
 	// clear the screen
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -81,12 +95,21 @@ unsigned long int DrawingMaster::loop() {
 	preFrame();
 
 	// draw the frame
+//	splashBackground->draw();
 	renderingMaster->loop();
-
+	hudDrawing->draw();
 	drawCursor->draw();
 
 	// execute post-frame instructions
 	postFrame();
+
+	// see if we need to cap our FPS
+	fpsCapKeyTrap->loop();
+	if(fpsCapKeyTrap->newPress())
+		capFPS = !capFPS;
+
+	if(! capFPS)
+		return 0;
 
 	// calculate the maximum amount of time we can sleep in order
 	// to maintain our desired frequency

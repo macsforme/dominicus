@@ -62,7 +62,7 @@ public:
 			float newBorderColor[4],
 			float newOutsideColor[4]
 		);
-		
+
 	// utility drawing functions
 	void drawCurve(Vector2 position, Vector2 dimensions, float rotation, bool highlight,
 			float zMod, bool concave);
