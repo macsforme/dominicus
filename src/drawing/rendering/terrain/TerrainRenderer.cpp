@@ -34,10 +34,11 @@ TerrainRenderer::TerrainRenderer() {
 	mvpMatrixUniform = glGetUniformLocation(program, "mvpMatrix");
 	textureUniform = glGetUniformLocation(program, "texture");
 
-/*
 	// load the texture into OpenGL
 	std::string textureFile = platform.dataPath + std::string("/data/textures/terrain/dirt.bmp");
 	BMPImage image(textureFile);
+
+	glEnable(GL_TEXTURE_2D);
 
 	glGenTextures(1, &textureID);
 	glBindTexture(GL_TEXTURE_2D, textureID);
@@ -45,23 +46,22 @@ TerrainRenderer::TerrainRenderer() {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
 	glTexImage2D(
 			GL_TEXTURE_2D,
 			0,
-			(image.getFormat() == Texture::FORMAT_RGBA ? GL_RGBA : GL_RGBA),
+			(image.getFormat() == Texture::FORMAT_RGBA ? GL_RGBA : GL_RGB),
 			image.getWidth(),
 			image.getHeight(),
 			0,
-			(image.getFormat() == Texture::FORMAT_RGBA ? GL_RGBA : GL_RGBA),
+			(image.getFormat() == Texture::FORMAT_RGBA ? GL_RGBA : GL_RGB),
 			GL_UNSIGNED_BYTE,
 			image.getDataPointer()
 	);
-*/
 
-	// OpenGL state
-	glEnable(GL_TEXTURE_2D);
-
-
+//	glDisable(GL_TEXTURE_2D);
 /*
 mesh = Mesh();
 
@@ -115,8 +115,6 @@ TerrainRenderer::~TerrainRenderer() {
 }
 
 void TerrainRenderer::render(Matrix4 vpMatrix) {
-//	terrain.render();
-
 	glUseProgram(program);
 
 	// model view projection
@@ -131,6 +129,7 @@ void TerrainRenderer::render(Matrix4 vpMatrix) {
 	glUniformMatrix4fv(mvpMatrixUniform, 1, GL_FALSE, vpMatrixArray);
 
 	// textures
+	glEnable(GL_TEXTURE_2D);
 	glActiveTexture(GL_TEXTURE0);
 	glUniform1i(textureUniform, 0);
 	glBindTexture(GL_TEXTURE_2D, textureID);
@@ -143,13 +142,15 @@ void TerrainRenderer::render(Matrix4 vpMatrix) {
 			++itr
 		) {
 		for(int i = 0; i < itr->second.size(); ++i) {
+			float texDivisor = 0.25f;
+
 			// render triangles
 			glBegin(GL_TRIANGLES);
 
 			glVertexAttrib2f(
 					texCoordAttrib,
-					terrain.mesh.texCoords[itr->second[i].texCoords[0]].x,
-					terrain.mesh.texCoords[itr->second[i].texCoords[0]].y
+					terrain.mesh.vertices[itr->second[i].vertices[0]].x / texDivisor,
+					terrain.mesh.vertices[itr->second[i].vertices[0]].z / texDivisor
 				);
 			glVertexAttrib3f(
 					positionAttrib,
@@ -160,8 +161,8 @@ void TerrainRenderer::render(Matrix4 vpMatrix) {
 
 			glVertexAttrib2f(
 					texCoordAttrib,
-					terrain.mesh.texCoords[itr->second[i].texCoords[1]].x,
-					terrain.mesh.texCoords[itr->second[i].texCoords[1]].y
+					terrain.mesh.vertices[itr->second[i].vertices[1]].x / texDivisor,
+					terrain.mesh.vertices[itr->second[i].vertices[1]].z / texDivisor
 				);
 			glVertexAttrib3f(
 					positionAttrib,
@@ -172,8 +173,8 @@ void TerrainRenderer::render(Matrix4 vpMatrix) {
 
 			glVertexAttrib2f(
 					texCoordAttrib,
-					terrain.mesh.texCoords[itr->second[i].texCoords[2]].x,
-					terrain.mesh.texCoords[itr->second[i].texCoords[2]].y
+					terrain.mesh.vertices[itr->second[i].vertices[2]].x / texDivisor,
+					terrain.mesh.vertices[itr->second[i].vertices[2]].z / texDivisor
 				);
 			glVertexAttrib3f(
 					positionAttrib,
@@ -185,4 +186,7 @@ void TerrainRenderer::render(Matrix4 vpMatrix) {
 			glEnd();
 		}
 	}
+
+//	glDisable(GL_TEXTURE_2D);
+
 }

@@ -12,9 +12,10 @@
 Terrain::Terrain() {
 	// randomly generate our input variables within the set limits
 	/*unsigned int*/ density = 128;
-	float rough = 0.4f + (float) (rand() % 100) / 100.0f * 0.2f;
+//	float rough = 0.4f + (float) (rand() % 100) / 100.0f * 0.2f;
+	float rough = 0.6f;
 	float gradDist = 0.45f;
-	/*unsigned int*/ alphaBumps = 2 + (int) ((float) (rand() % 100) / 100.0f * 3.0f);
+	/*unsigned int*/ alphaBumps = 1; /*2 + (int) ((float) (rand() % 100) / 100.0f * 3.0f);*/
 	float flatness = 0.75f;
 
 	// generate the initial diamond-square heightmap
@@ -157,7 +158,7 @@ Terrain::Terrain() {
 						alphaBumpData[i][p][j],
 						1.0f
 					);
-
+/*
 		GLuint textureID;
 		glGenTextures(1, &textureID);
 		alphaBumpTextureIDs.push_back(textureID);
@@ -177,6 +178,7 @@ Terrain::Terrain() {
 				GL_UNSIGNED_BYTE,
 				texture.getDataPointer()
 			);
+*/
 	}
 
 	// one for the noise
@@ -192,7 +194,7 @@ Terrain::Terrain() {
 					(unsigned short int) ((heightMap.data[p][j] + 1.0f) * 128.0f),
 					1.0f
 				);
-
+/*
 	glGenTextures(1, &noiseTextureID);
 	glBindTexture(GL_TEXTURE_2D, noiseTextureID);
 
@@ -210,7 +212,7 @@ Terrain::Terrain() {
 			GL_UNSIGNED_BYTE,
 			noiseTexture.getDataPointer()
 		);
-
+*/
 
 	// and one for the final alpha image
 	Texture texture(density, density, Texture::FORMAT_RGB);
@@ -225,7 +227,7 @@ Terrain::Terrain() {
 					finalAlphaBumpMap[p][j],
 					1.0f
 				);
-
+/*
 	glGenTextures(1, &finalTextureID);
 	glBindTexture(GL_TEXTURE_2D, finalTextureID);
 
@@ -243,7 +245,7 @@ Terrain::Terrain() {
 			GL_UNSIGNED_BYTE,
 			texture.getDataPointer()
 		);
-
+*/
 	// and one for the final combined image
 	Texture combinedImage(density, density, Texture::FORMAT_RGB);
 
@@ -257,7 +259,7 @@ Terrain::Terrain() {
 					finalHeightMap[p][j],
 					1.0f
 				);
-
+/*
 	glGenTextures(1, &finalCombinedTextureID);
 	glBindTexture(GL_TEXTURE_2D, finalCombinedTextureID);
 
@@ -275,7 +277,9 @@ Terrain::Terrain() {
 			GL_UNSIGNED_BYTE,
 			combinedImage.getDataPointer()
 		);
+*/
 
+/*
 	// set up the shader program
 	vertexShader = ShaderTools::makeShader(
 			std::string(platform.dataPath +  "/shaders/default.vertex.glsl").c_str(),
@@ -299,6 +303,7 @@ Terrain::Terrain() {
 	// get uniform locations
 	mvpMatrixUniform = glGetUniformLocation(program, "mvpMatrix");
 	textureUniform = glGetUniformLocation(program, "texture");
+*/
 }
 
 void Terrain::render() {

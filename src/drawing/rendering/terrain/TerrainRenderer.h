@@ -25,6 +25,7 @@
 
 // global variables
 extern Platform platform;
+extern Terrain terrain;
 
 class TerrainRenderer {
 private:
@@ -39,9 +40,6 @@ private:
 
 	// texture IDs
 	GLuint textureID;
-
-	// geometry data
-	Terrain terrain;
 
 public:
 	TerrainRenderer();
