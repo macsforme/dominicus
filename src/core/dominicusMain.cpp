@@ -10,11 +10,13 @@
 #include "dominicusMain.h"
 
 // global variable instantiations
-SystemInfo systemInfo;
 GamePrefs gamePrefs;
-Platform platform;
 Keyboard keyboard;
 Mouse mouse;
+Platform platform;
+SystemInfo systemInfo;
+Terrain terrain;
+
 bool keepDominicusAlive;	// global flag to continue game
 
 // main game function
@@ -52,6 +54,13 @@ int dominicusMain(int argc, char* argv[]) {
 			screen = new Screen(!currentFullScreen);
 			drawingMaster = new DrawingMaster(screen);
 		}
+
+		// or regenerate the terrain
+		static KeyTrap newTerrainKeyTrap("newTerrain");
+		newTerrainKeyTrap.loop();
+
+		if(newTerrainKeyTrap.newPress())
+			terrain = Terrain();
 
 		// If the next execution time is less than now, run it. If not, store
 		// the time until due we know how long to sleep if none of our modules

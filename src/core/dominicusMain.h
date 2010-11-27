@@ -19,6 +19,7 @@
 #include "Platform.h"
 #include "Screen.h"
 #include "SystemInfo.h"
+#include "Terrain.h"
 
 int dominicusMain(int argc, char* argv[]);
 
