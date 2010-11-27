@@ -15,7 +15,7 @@ RenderingMaster::RenderingMaster(Screen* screen) {
 
 	cameraToggleKeyTrap = new KeyTrap("toggleCamera");
 
-	activeMatrix = &(oCamera->vpMatrix);
+	activeMatrix = &(wvCamera->vpMatrix);
 }
 
 void RenderingMaster::loop() {
