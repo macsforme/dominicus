@@ -31,13 +31,17 @@
 		032B8B1612639AED00DDE564 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 032B8B1512639AED00DDE564 /* OpenGL.framework */; };
 		032B8B361263DF5900DDE564 /* CODEFORMATTING.txt in Resources */ = {isa = PBXBuildFile; fileRef = 032B8B341263DF5900DDE564 /* CODEFORMATTING.txt */; };
 		032B8B371263DF5900DDE564 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 032B8B351263DF5900DDE564 /* README.txt */; };
+		032B9BA0129A94BD00E5F5FB /* HUDArrangement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032B9B9F129A94BD00E5F5FB /* HUDArrangement.cpp */; };
+		034FEA48129ACA060071B2AA /* TextBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 034FEA47129ACA060071B2AA /* TextBlock.cpp */; };
 		0353D4BA127B0A43002340BF /* Terrain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0353D4B9127B0A43002340BF /* Terrain.cpp */; };
 		0353D809127BB684002340BF /* SDL.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 032B8AD112639A4600DDE564 /* SDL.framework */; };
 		035A3C4612841B390001E186 /* Mouse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 035A3C4512841B390001E186 /* Mouse.cpp */; };
 		035A3D061284293A0001E186 /* DrawCursor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 035A3D051284293A0001E186 /* DrawCursor.cpp */; };
 		035A3DF91284391F0001E186 /* KeyTrap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 035A3DF81284391F0001E186 /* KeyTrap.cpp */; };
-		0369DE2A128588C000355C4E /* SplashBackground.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0369DE29128588C000355C4E /* SplashBackground.cpp */; };
 		0369DEE41285A28600355C4E /* DrawHUD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0369DEA31285964500355C4E /* DrawHUD.cpp */; };
+		036E68C0128831880084C49C /* DrawHUDEnclosure.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 036E68BF128831880084C49C /* DrawHUDEnclosure.cpp */; };
+		0388867E12A0D2AF0079CBB3 /* DrawConsole.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0388867C12A0D2AF0079CBB3 /* DrawConsole.cpp */; };
+		0388868212A0D2B80079CBB3 /* DrawInfoBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0388868012A0D2B80079CBB3 /* DrawInfoBox.cpp */; };
 		039FA1211285D5A8003A2CC5 /* DrawHUDContainerUtility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039FA11F1285D5A8003A2CC5 /* DrawHUDContainerUtility.cpp */; };
 		03D47B7E1263E27F001755A6 /* dominicus.icns in Resources */ = {isa = PBXBuildFile; fileRef = 03D47B7D1263E27F001755A6 /* dominicus.icns */; };
 		03D8C07D1264BEBA00F26DC9 /* licenses in Resources */ = {isa = PBXBuildFile; fileRef = 03D8C0781264BEBA00F26DC9 /* licenses */; };
@@ -107,6 +111,9 @@
 		032B8B1512639AED00DDE564 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		032B8B341263DF5900DDE564 /* CODEFORMATTING.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CODEFORMATTING.txt; sourceTree = "<group>"; };
 		032B8B351263DF5900DDE564 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
+		032B9B9F129A94BD00E5F5FB /* HUDArrangement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HUDArrangement.cpp; sourceTree = "<group>"; };
+		034FEA46129ACA060071B2AA /* TextBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextBlock.h; sourceTree = "<group>"; };
+		034FEA47129ACA060071B2AA /* TextBlock.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextBlock.cpp; sourceTree = "<group>"; };
 		0353D4B8127B0A43002340BF /* Terrain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Terrain.h; path = src/state/Terrain.h; sourceTree = "<group>"; };
 		0353D4B9127B0A43002340BF /* Terrain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Terrain.cpp; path = src/state/Terrain.cpp; sourceTree = "<group>"; };
 		035A3C4412841B390001E186 /* Mouse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mouse.h; sourceTree = "<group>"; };
@@ -123,6 +130,12 @@
 		0369DF0B1285ABA600355C4E /* HUDElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUDElement.h; sourceTree = "<group>"; };
 		036A4D2112757E5F00CEED79 /* Console.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Console.cpp; sourceTree = "<group>"; };
 		036A4D2212757E5F00CEED79 /* Console.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Console.h; sourceTree = "<group>"; };
+		036E68BE128831880084C49C /* DrawHUDEnclosure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawHUDEnclosure.h; sourceTree = "<group>"; };
+		036E68BF128831880084C49C /* DrawHUDEnclosure.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawHUDEnclosure.cpp; sourceTree = "<group>"; };
+		0388867C12A0D2AF0079CBB3 /* DrawConsole.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawConsole.cpp; sourceTree = "<group>"; };
+		0388867D12A0D2AF0079CBB3 /* DrawConsole.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawConsole.h; sourceTree = "<group>"; };
+		0388868012A0D2B80079CBB3 /* DrawInfoBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawInfoBox.cpp; sourceTree = "<group>"; };
+		0388868112A0D2B80079CBB3 /* DrawInfoBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawInfoBox.h; sourceTree = "<group>"; };
 		039FA11F1285D5A8003A2CC5 /* DrawHUDContainerUtility.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawHUDContainerUtility.cpp; sourceTree = "<group>"; };
 		039FA1201285D5A8003A2CC5 /* DrawHUDContainerUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawHUDContainerUtility.h; sourceTree = "<group>"; };
 		03D47B7D1263E27F001755A6 /* dominicus.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = dominicus.icns; sourceTree = "<group>"; };
@@ -256,6 +269,8 @@
 			children = (
 				030F8ECE1264D82200190225 /* FontManager.h */,
 				030F8ECD1264D82200190225 /* FontManager.cpp */,
+				034FEA46129ACA060071B2AA /* TextBlock.h */,
+				034FEA47129ACA060071B2AA /* TextBlock.cpp */,
 			);
 			path = text;
 			sourceTree = "<group>";
@@ -333,6 +348,24 @@
 			path = src/UI;
 			sourceTree = "<group>";
 		};
+		0388867B12A0D2AF0079CBB3 /* console */ = {
+			isa = PBXGroup;
+			children = (
+				0388867D12A0D2AF0079CBB3 /* DrawConsole.h */,
+				0388867C12A0D2AF0079CBB3 /* DrawConsole.cpp */,
+			);
+			path = console;
+			sourceTree = "<group>";
+		};
+		0388867F12A0D2B80079CBB3 /* infobox */ = {
+			isa = PBXGroup;
+			children = (
+				0388868112A0D2B80079CBB3 /* DrawInfoBox.h */,
+				0388868012A0D2B80079CBB3 /* DrawInfoBox.cpp */,
+			);
+			path = infobox;
+			sourceTree = "<group>";
+		};
 		03DA5B82127AA286003814F7 /* cameras */ = {
 			isa = PBXGroup;
 			children = (
@@ -360,10 +393,15 @@
 			children = (
 				0369DEA41285964500355C4E /* DrawHUD.h */,
 				0369DEA31285964500355C4E /* DrawHUD.cpp */,
-				0369DF081285AB9400355C4E /* HUDArrangement.h */,
 				0369DF0B1285ABA600355C4E /* HUDElement.h */,
+				0369DF081285AB9400355C4E /* HUDArrangement.h */,
+				032B9B9F129A94BD00E5F5FB /* HUDArrangement.cpp */,
 				039FA1201285D5A8003A2CC5 /* DrawHUDContainerUtility.h */,
 				039FA11F1285D5A8003A2CC5 /* DrawHUDContainerUtility.cpp */,
+				036E68BE128831880084C49C /* DrawHUDEnclosure.h */,
+				036E68BF128831880084C49C /* DrawHUDEnclosure.cpp */,
+				0388867B12A0D2AF0079CBB3 /* console */,
+				0388867F12A0D2B80079CBB3 /* infobox */,
 			);
 			path = HUD;
 			sourceTree = "<group>";
@@ -516,9 +554,13 @@
 				035A3D061284293A0001E186 /* DrawCursor.cpp in Sources */,
 				035A3DF91284391F0001E186 /* KeyTrap.cpp in Sources */,
 				03E2C285128444A000F40D33 /* OrthoCamera.cpp in Sources */,
-				0369DE2A128588C000355C4E /* SplashBackground.cpp in Sources */,
 				0369DEE41285A28600355C4E /* DrawHUD.cpp in Sources */,
 				039FA1211285D5A8003A2CC5 /* DrawHUDContainerUtility.cpp in Sources */,
+				036E68C0128831880084C49C /* DrawHUDEnclosure.cpp in Sources */,
+				032B9BA0129A94BD00E5F5FB /* HUDArrangement.cpp in Sources */,
+				034FEA48129ACA060071B2AA /* TextBlock.cpp in Sources */,
+				0388867E12A0D2AF0079CBB3 /* DrawConsole.cpp in Sources */,
+				0388868212A0D2B80079CBB3 /* DrawInfoBox.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

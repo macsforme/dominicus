@@ -1,4 +1,5 @@
 SHORT TERM:
+* auto texture coordinates needs to be fixed
 * fix opengl version test in compatibility.cpp
 * should probably go through ALL files (especially Texture.cpp) and replace LOG_FATAL with LOG_INTERNALERROR as needed (or disable LOG_INTERNALERROR entirely?)
 * go through source (especially Texture.cpp) and determine where uint8_t stuff should be replaced
@@ -14,3 +15,4 @@ CONTEMPLATIONS:
 * GUI text arrangement needs to be re-thought out
 * look into freetype glyph vertical orientation... is it read upside-down necessitating a vertical flip?
 * consider fixing screen orientation so that upper-left is proper 0, 0 and lower right is dimX, dimY
+* maybe fix all the backwards rotation in the HUD container shader?
