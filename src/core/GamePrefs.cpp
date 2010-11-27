@@ -11,9 +11,9 @@
 
 GamePrefs::GamePrefs() {
 	// rendering settings
-	preferences["renderingDisplayUpdateFrequency"] = "4";	// tests per second
+	preferences["renderingDisplayUpdateFrequency"] = "2";	// tests per second
 	preferences["renderingCapFPS"] = "1";
-	preferences["renderingFPS"] = "60";
+	preferences["renderingFPS"] = "30";
 
 	// input settings
 	preferences["keyboardPollFrequency"] = "30";
@@ -23,22 +23,24 @@ GamePrefs::GamePrefs() {
 	preferences["windowStartFullScreen"] = "0";
 	preferences["windowWidth"] = "1024";
 	preferences["windowHeight"] = "768";
-	preferences["windowColorDepth"] = "16";
+	preferences["windowColorDepth"] = "24";
 
 	// font settings
 	preferences["fontFile"] = "JuraMedium.ttf";
-	preferences["fontStandardSize"] = "16";	// point (1/72 inch)
+	preferences["fontStandardSize"] = "12";	// point (1/72 inch)
 	preferences["fontHeaderSize"] = "24";
 	preferences["fontLargeHeaderSize"] = "32";
 
 	// GUI settings
-	preferences["cursorSize"] = "0.3f";	// portion of screen height cursor box takes up
-	preferences["cursorThickness"] = "0.015f";	// portion of cursor box
+	preferences["cursorSize"] = "0.3";	// portion of screen height cursor box takes up
+	preferences["cursorThickness"] = "0.005";	// portion of cursor box
+	preferences["elementPadding"] = "0.1";
 
 	// key bindings
 	keyBindings[SDLK_k] = "toggleCamera";
 	keyBindings[SDLK_f] = "toggleFullScreen";
 	keyBindings[SDLK_c] = "toggleFPSCap";
+	keyBindings[SDLK_t] = "newTerrain";
 	keyBindings[SDLK_w] = "toggleWireFrameMode";
 	keyBindings[SDLK_ESCAPE] = "quit";
 }
