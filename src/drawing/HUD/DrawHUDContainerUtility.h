@@ -12,13 +12,13 @@
 
 // program headers
 #include "MatrixMath.h"
+#include "OpenGLHeaders.h"
 #include "Platform.h"
 #include "ScalarMath.h"
 #include "ShaderTools.h"
 #include "VectorMath.h"
 
 // library headers
-#include <OpenGL/OpenGL.h>
 #include <string.h>
 
 // global variables

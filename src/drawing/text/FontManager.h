@@ -12,6 +12,7 @@
 
 // program headers
 #include "GamePrefs.h"
+#include "OpenGLHeaders.h"
 #include "Platform.h"
 #include "ProgramLog.h"
 #include "Texture.h"
@@ -21,7 +22,6 @@
 #include FT_FREETYPE_H
 #include <map>
 #include <math.h>
-#include <OpenGL/OpenGL.h>
 #include <sstream>
 #include <string>
 #include <vector>

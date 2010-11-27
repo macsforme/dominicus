@@ -16,6 +16,7 @@
 #include "GamePrefs.h"
 #include "HUDArrangement.h"
 #include "HUDElement.h"
+#include "OpenGLHeaders.h"
 #include "Platform.h"
 #include "ProgramLog.h"
 #include "Screen.h"
@@ -24,7 +25,6 @@
 #include "VectorMath.h"
 
 // library headers
-#include <OpenGL/OpenGL.h>
 #include <string>
 #include <vector>
 

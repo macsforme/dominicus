@@ -11,10 +11,10 @@
 #define SYSTEMINFO_H
 
 // program headers
+#include "OpenGLHeaders.h"
 #include "ProgramLog.h"
 
 // library headers
-#include <OpenGL/OpenGL.h>
 #include <SDL/SDL.h>
 #include <sstream>
 

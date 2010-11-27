@@ -15,6 +15,7 @@
 #include "DrawHUD.h"
 #include "GamePrefs.h"
 #include "KeyTrap.h"
+#include "OpenGLHeaders.h"
 #include "Platform.h"
 #include "ProgramLog.h"
 #include "RenderingMaster.h"
@@ -25,7 +26,6 @@
 // library headers
 #include <sstream>
 #include <SDL/SDL.h>
-#include <OpenGL/OpenGL.h>
 
 // global variables
 extern FontManager fontManager;

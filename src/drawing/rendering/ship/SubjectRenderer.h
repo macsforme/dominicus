@@ -16,6 +16,7 @@
 #include "MatrixMath.h"
 #include "Mesh.h"
 #include "Platform.h"
+#include "OpenGLHeaders.h"
 #include "Preferences.h"
 #include "ProgramLog.h"
 #include "ScalarMath.h"
@@ -25,7 +26,6 @@
 // library headers
 #include <stdint.h>
 #include <string>
-#include <OpenGL/OpenGL.h>
 #include <vector>
 
 class SubjectRenderer {

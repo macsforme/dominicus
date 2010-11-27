@@ -16,8 +16,6 @@
 #include "SystemInfo.h"
 
 // library headers
-#include <map>
-#include <OpenGL/OpenGL.h>
 #include <SDL/SDL.h>
 
 // global variables

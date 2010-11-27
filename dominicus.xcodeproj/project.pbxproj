@@ -136,6 +136,7 @@
 		0388867D12A0D2AF0079CBB3 /* DrawConsole.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawConsole.h; sourceTree = "<group>"; };
 		0388868012A0D2B80079CBB3 /* DrawInfoBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawInfoBox.cpp; sourceTree = "<group>"; };
 		0388868112A0D2B80079CBB3 /* DrawInfoBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawInfoBox.h; sourceTree = "<group>"; };
+		038FC1DE12A0EA3A00AE328B /* OpenGLHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLHeaders.h; sourceTree = "<group>"; };
 		039FA11F1285D5A8003A2CC5 /* DrawHUDContainerUtility.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawHUDContainerUtility.cpp; sourceTree = "<group>"; };
 		039FA1201285D5A8003A2CC5 /* DrawHUDContainerUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawHUDContainerUtility.h; sourceTree = "<group>"; };
 		03D47B7D1263E27F001755A6 /* dominicus.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = dominicus.icns; sourceTree = "<group>"; };
@@ -196,6 +197,7 @@
 			isa = PBXGroup;
 			children = (
 				030F8E8B1264CD7700190225 /* Platform.h */,
+				038FC1DE12A0EA3A00AE328B /* OpenGLHeaders.h */,
 				030F8E131264C0FF00190225 /* macosx */,
 			);
 			name = platform;

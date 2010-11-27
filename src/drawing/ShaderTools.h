@@ -11,11 +11,11 @@
 #define SHADERTOOLS_H
 
 // program headers
+#include "OpenGLHeaders.h"
 #include "ProgramLog.h"
 
 // library headers
 #include <fstream>
-#include <OpenGL/OpenGL.h>
 #include <sstream>
 #include <vector>
 

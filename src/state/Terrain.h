@@ -14,6 +14,7 @@
 #include "DiamondSquare.h"
 #include "MatrixMath.h"
 #include "Mesh.h"
+#include "OpenGLHeaders.h"
 #include "Platform.h"
 #include "ScalarMath.h"
 #include "ShaderTools.h"
@@ -21,7 +22,6 @@
 #include "VectorMath.h"
 
 // library headers
-#include <OpenGL/OpenGL.h>
 #include <vector>
 
 // global variables

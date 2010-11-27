@@ -15,13 +15,11 @@
 #include "DiamondSquare.h"
 #include "MatrixMath.h"
 #include "Mesh.h"
+#include "OpenGLHeaders.h"
 #include "Platform.h"
 #include "ShaderTools.h"
 #include "Terrain.h"
 #include "VectorMath.h"
-
-// library headers
-#include <OpenGL/OpenGL.h>
 
 // global variables
 extern Platform platform;

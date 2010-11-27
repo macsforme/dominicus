@@ -13,11 +13,9 @@
 // program headers
 #include "BMPImage.h"
 #include "MatrixMath.h"
+#include "OpenGLHeaders.h"
 #include "Platform.h"
 #include "ShaderTools.h"
-
-// library headers
-#include <OpenGL/OpenGL.h>
 
 // global variables
 extern Platform platform;
