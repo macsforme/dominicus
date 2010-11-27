@@ -13,6 +13,7 @@
 // library headers
 #include <cstdlib>
 #include <iostream>
+#include <vector>
 
 enum LogDetail {
 		LOG_INTERNALERROR,	// safety mechanisms in case of internal bugs (no external libs or files)
@@ -27,9 +28,3 @@ public:
 };
 
 #endif
-
-
-
-
-
-

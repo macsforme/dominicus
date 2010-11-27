@@ -9,6 +9,8 @@
 
 #include "ProgramLog.h"
 
+std::vector<std::string> logStrings;
+
 void ProgramLog::report(LogDetail detail, const char* report) {
 	switch(detail) {
 		case LOG_INTERNALERROR:
@@ -20,11 +22,12 @@ void ProgramLog::report(LogDetail detail, const char* report) {
 		case LOG_DEBUG:
 			std::cout << "DEBUG: " << report << std::endl;
 
+			logStrings.push_back(std::string("DEBUG: ") + report);
+
 			break;
 		case LOG_INFO:
-			std::cout << "INFO: " << report << std::endl;
+			logStrings.push_back(std::string("INFO: ") + report);
 
 			break;
 	}
 }
-
