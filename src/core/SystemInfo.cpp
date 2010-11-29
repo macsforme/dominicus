@@ -71,7 +71,7 @@ void SystemInfo::check() {
 			std::string("OpenGL Renderer: " + std::string((char*) glGetString(GL_RENDERER))).c_str()
 		);
 
-	// Maximum texture image units
+	// texture image units
 	int maxTexUnits = 0;
 	glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &maxTexUnits);
 
@@ -90,4 +90,12 @@ void SystemInfo::check() {
 				err.str().c_str()
 			);
 	}
+
+	// anisotropic filtering extension
+	if(strstr((const char*)glGetString(GL_EXTENSIONS),
+			"GL_EXT_texture_filter_anisotropic") == NULL)
+		ProgramLog::report(LOG_FATAL,
+				"OpenGL extension not supported: GL_EXT_texture_filter_anisotropic");
+	else
+		ProgramLog::report(LOG_INFO, "OpenGL Extension Found: GL_EXT_texture_filter_anisotropic");
 }
