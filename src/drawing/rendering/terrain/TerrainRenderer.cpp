@@ -67,50 +67,7 @@ TerrainRenderer::TerrainRenderer() {
 
 	glGenerateMipmap(GL_TEXTURE_2D);
 
-//	glDisable(GL_TEXTURE_2D);
-/*
-mesh = Mesh();
-
-mesh.addVertex(Vector3(-1.0f, -1.0f, -1.0f));
-mesh.addVertex(Vector3(-1.0f, 1.0f, -1.0f));
-mesh.addVertex(Vector3(1.0f, 1.0f, -1.0f));
-mesh.addVertex(Vector3(1.0f, -1.0f, -1.0f));
-
-mesh.addVertex(Vector3(-1.0f, -1.0f, 1.0f));
-mesh.addVertex(Vector3(-1.0f, 1.0f, 1.0f));
-mesh.addVertex(Vector3(1.0f, 1.0f, 1.0f));
-mesh.addVertex(Vector3(1.0f, -1.0f, 1.0f));
-
-mesh.addFace(0, 1, 2);
-mesh.autoTexCoord(mesh.faceGroups[""].size() - 1);
-mesh.addFace(2, 3, 0);
-mesh.autoTexCoord(mesh.faceGroups[""].size() - 1);
-
-mesh.addFace(6, 5, 4);
-mesh.autoTexCoord(mesh.faceGroups[""].size() - 1);
-mesh.addFace(4, 7, 6);
-mesh.autoTexCoord(mesh.faceGroups[""].size() - 1);
-
-mesh.addFace(4, 5, 1);
-mesh.autoTexCoord(mesh.faceGroups[""].size() - 1);
-mesh.addFace(1, 0, 4);
-mesh.autoTexCoord(mesh.faceGroups[""].size() - 1);
-
-mesh.addFace(3, 2, 6);
-mesh.autoTexCoord(mesh.faceGroups[""].size() - 1);
-mesh.addFace(6, 7, 3);
-mesh.autoTexCoord(mesh.faceGroups[""].size() - 1);
-
-mesh.addFace(1, 5, 6);
-mesh.autoTexCoord(mesh.faceGroups[""].size() - 1);
-mesh.addFace(6, 2, 1);
-mesh.autoTexCoord(mesh.faceGroups[""].size() - 1);
-
-mesh.addFace(4, 0, 3);
-mesh.autoTexCoord(mesh.faceGroups[""].size() - 1);
-mesh.addFace(3, 7, 4);
-mesh.autoTexCoord(mesh.faceGroups[""].size() - 1);
-*/
+	glDisable(GL_TEXTURE_2D);
 }
 
 TerrainRenderer::~TerrainRenderer() {
@@ -141,6 +98,8 @@ void TerrainRenderer::render(Matrix4 vpMatrix) {
 	glBindTexture(GL_TEXTURE_2D, textureID);
 
 	// geometry
+	float texDivisor = 10.0f;
+
 	for(
 			std::map< std::string,std::vector<Mesh::Face> >::iterator itr =
 					terrain.mesh.faceGroups.begin();
@@ -148,8 +107,6 @@ void TerrainRenderer::render(Matrix4 vpMatrix) {
 			++itr
 		) {
 		for(int i = 0; i < itr->second.size(); ++i) {
-			float texDivisor = 0.25f;
-
 			// render triangles
 			glBegin(GL_TRIANGLES);
 

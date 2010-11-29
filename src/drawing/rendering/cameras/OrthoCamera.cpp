@@ -24,7 +24,7 @@ void OrthoCamera::loop() {
 	vpMatrix.identity();
 
 	// camera transformations
-	scaleMatrix(0.75, 0.75, 0.75, vpMatrix);
+	scaleMatrix(0.02, 0.02, 0.02, vpMatrix);
 	rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(rotation), vpMatrix); // dynamic rotation
 	rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(-orthoBirdsEyeAngle), vpMatrix); // static tilt up
 	scaleMatrix(aspectRatio, 1.0f, 1.0f, vpMatrix); // aspect ratio

@@ -18,7 +18,7 @@
 #include "VectorMath.h"
 
 // constants
-const float birdsEyeAngle = 45.0f; // degrees from horizon
+const float birdsEyeAngle = 30.0f; // degrees from horizon
 const float rotationSpeed = 30.0f; // degrees per second
 const float zoomFactor = 0.25f;	// total zoom distance
 const float zoomPeriod = 1.0f;	// time in seconds to complete a zoom cycle

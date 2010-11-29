@@ -7,12 +7,12 @@ varying vec3 coord;
 
 void main() {
 	float alpha = 1.0;
-	if (coord.y < 0.05) alpha = (coord.y / 0.05);
+	if (coord.y < 5.0) alpha = (coord.y / 5.0);
 
 	if(coord.y <= 0.0)
 		discard;
 	else
 		gl_FragColor =
 				vec4(texture2D(texture, texCoordInterpol).rgb, alpha) -
-				vec4(coord.y, coord.y, coord.y, 0.0) * 0.25;
+				vec4(coord.y, coord.y, coord.y, 0.0) / 50.0 * 0.25;
 }
