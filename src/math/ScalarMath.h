@@ -37,4 +37,8 @@ inline float minimum(float num1, float num2) {
 	return (num1 < num2 ? num1 : num2);
 }
 
+inline float round(float num, unsigned short int places) {
+	return((float) ((int) (num * pow(10.0f, (float) places))) / pow(10.0f, (float) places));
+}
+
 #endif
