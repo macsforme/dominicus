@@ -14,11 +14,11 @@
 #include "DrawHUDContainerUtility.h"
 #include "FontManager.h"
 #include "GamePrefs.h"
+#include "GameWindow.h"
 #include "HUDArrangement.h"
 #include "HUDElement.h"
 #include "OpenGLHeaders.h"
 #include "Platform.h"
-#include "Screen.h"
 #include "ShaderTools.h"
 #include "TextBlock.h"
 #include "VectorMath.h"
@@ -34,7 +34,7 @@ extern GamePrefs gamePrefs;
 
 class DrawInfoBox {
 private:
-	Screen* screen;
+	GameWindow* gameWindow;
 	FontManager* fontManager;
 	HUDElement* myElement;
 	TextBlock* textBlock;
@@ -58,7 +58,7 @@ private:
 	float currentExecTime;
 
 public:
-	DrawInfoBox(HUDArrangement* hudArrangement, Screen* screen, FontManager* fontManager);
+	DrawInfoBox(HUDArrangement* hudArrangement, GameWindow* gameWindow, FontManager* fontManager);
 
 	void draw();
 };

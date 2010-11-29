@@ -15,10 +15,10 @@
 #include "DrawInfoBox.h"
 #include "DrawHUDEnclosure.h"
 #include "FontManager.h"
+#include "GameWindow.h"
 #include "HUDArrangement.h"
 #include "HUDElement.h"
 #include "Platform.h"
-#include "Screen.h"
 #include "VectorMath.h"
 
 // library headers
@@ -37,7 +37,7 @@ private:
 	DrawInfoBox* infoBoxDrawer;
 
 public:
-	DrawHUD(Screen* screen, FontManager* fontManager);
+	DrawHUD(GameWindow* gameWindow, FontManager* fontManager);
 	~DrawHUD();
 
 	void draw();

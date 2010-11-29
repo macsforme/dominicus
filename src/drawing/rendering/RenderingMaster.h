@@ -11,10 +11,10 @@
 #define RENDERINGMASTER_H
 
 // program headers
+#include "GameWindow.h"
 #include "Keyboard.h"
 #include "KeyTrap.h"
 #include "OrthoCamera.h"
-#include "Screen.h"
 #include "TerrainRenderer.h"
 #include "WorldViewCamera.h"
 
@@ -34,7 +34,7 @@ private:
 	TerrainRenderer terrainRenderer;
 
 public:
-	RenderingMaster(Screen* screen);
+	RenderingMaster(GameWindow* gameWindow);
 
 	void loop();
 };

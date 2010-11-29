@@ -9,11 +9,11 @@
 
 #include "DrawInfoBox.h"
 
-DrawInfoBox::DrawInfoBox(HUDArrangement* hudArrangement, Screen* screen, FontManager* fontManager) :
-		screen(screen), fontManager(fontManager) {
+DrawInfoBox::DrawInfoBox(HUDArrangement* hudArrangement, GameWindow* gameWindow,
+		FontManager* fontManager) :
+		gameWindow(gameWindow), fontManager(fontManager) {
 	// set up the HUD laying arrangement info
-	float aspectRatio = (float) screen->width / (float) screen->height;
-	myElement = new HUDElement(Vector2(0.4f / aspectRatio, 0.4f));
+	myElement = new HUDElement(Vector2(0.4f / gameWindow->aspectRatio, 0.4f));
 
 	HUDArrangement::HUDElementEntry myEntry;
 	myEntry.element = myElement;
@@ -72,9 +72,8 @@ DrawInfoBox::DrawInfoBox(HUDArrangement* hudArrangement, Screen* screen, FontMan
 
 void DrawInfoBox::draw() {
 	// account for our container padding
-	const float aspectRatio = (float) screen->width / (float) screen->height;
 	const Vector2 containerPadding(
-			0.02f / aspectRatio,
+			0.02f / gameWindow->aspectRatio,
 			0.02f
 		);
 	const Vector2 contentSize = myElement->size - containerPadding * 2.0f;
@@ -192,8 +191,8 @@ void DrawInfoBox::draw() {
 	// if need be, regenerate the text block
 	if(textBlock == NULL)
 		textBlock = new TextBlock(outputLines.c_str(),
-				(myElement->size.x  - containerPadding.x * 2.0f) / 2.0f * screen->width,
-				(myElement->size.y  - containerPadding.y * 2.0f) / 2.0f * screen->height,
+				(myElement->size.x  - containerPadding.x * 2.0f) / 2.0f * gameWindow->width,
+				(myElement->size.y  - containerPadding.y * 2.0f) / 2.0f * gameWindow->height,
 				fontManager,
 				gamePrefs.getInt("fontStandardSize")
 			);
@@ -213,14 +212,14 @@ void DrawInfoBox::draw() {
 
 	GLuint textureID = fontManager->textureIDs[fontSize];
 
-	glBindTexture(GL_TEXTURE_2D, textureID);
 	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, textureID);
 	glUniform1i(textureUniform, 0);
 
 	// align the text to the top-left of the content box
 	Vector2 drawSize(contentSize);
-	drawSize.x *= (float) textBlock->width / (contentSize.x / 2.0f * (float) screen->width);
-	drawSize.y *= (float) textBlock->height / (contentSize.y / 2.0f * (float) screen->height);
+	drawSize.x *= (float) textBlock->width / (contentSize.x / 2.0f * (float) gameWindow->width);
+	drawSize.y *= (float) textBlock->height / (contentSize.y / 2.0f * (float) gameWindow->height);
 
 	Vector2 drawCenter(myElement->position);
 	drawCenter.x -= contentSize.x / 2.0f;

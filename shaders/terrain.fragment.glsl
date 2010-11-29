@@ -13,6 +13,6 @@ void main() {
 		discard;
 	else
 		gl_FragColor =
-				vec4(texture2D(texture, texCoordInterpol).rgb, alpha)/* +
-				vec4(-coord.y, -coord.y, -coord.y, 0.0) * 0.25*/;
+				vec4(texture2D(texture, texCoordInterpol).rgb, alpha) -
+				vec4(coord.y, coord.y, coord.y, 0.0) * 0.25;
 }

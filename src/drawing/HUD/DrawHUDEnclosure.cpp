@@ -33,8 +33,8 @@ HUDElement* DrawHUDEnclosure::findPriorElementCenter(int index) {
 	return NULL;
 }
 
-DrawHUDEnclosure::DrawHUDEnclosure(HUDArrangement* hudArrangement, Screen* screen) :
-		hudArrangement(hudArrangement), screen(screen) {
+DrawHUDEnclosure::DrawHUDEnclosure(HUDArrangement* hudArrangement, GameWindow* gameWindow) :
+		hudArrangement(hudArrangement), gameWindow(gameWindow) {
 	float insideColor[4] = { 0.0f, 0.01f, 0.13f, 0.24f };
 	float highlightColor[4] = { 0.0f, 0.01f, 0.13f, 0.24f };
 	float borderColor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
@@ -51,7 +51,7 @@ DrawHUDEnclosure::DrawHUDEnclosure(HUDArrangement* hudArrangement, Screen* scree
 }
 
 void DrawHUDEnclosure::draw() {
-	float aspectRatio = (float) screen->width / (float) screen->height;
+	float aspectRatio = (float) gameWindow->aspectRatio;
 	Vector2 elementPadding(
 			gamePrefs.getFloat("elementPadding") / aspectRatio,
 			gamePrefs.getFloat("elementPadding")

@@ -24,7 +24,6 @@
 		030F8F011264DBF300190225 /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 030F8F001264DBF300190225 /* libfreetype.a */; };
 		030F8F301264DC2200190225 /* libz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 030F8F2F1264DC2200190225 /* libz.a */; };
 		030F8F3E1264DD1300190225 /* Keyboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 030F8F3C1264DD1300190225 /* Keyboard.cpp */; };
-		030F8F6F1264E10500190225 /* Screen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 030F8F6D1264E10500190225 /* Screen.cpp */; };
 		030F91991265152000190225 /* ShaderTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 030F91931265152000190225 /* ShaderTools.cpp */; };
 		032B8AD212639A4600DDE564 /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 032B8AD112639A4600DDE564 /* SDL.framework */; };
 		032B8AE312639AC300DDE564 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 032B8AE212639AC300DDE564 /* Cocoa.framework */; };
@@ -38,6 +37,7 @@
 		035A3C4612841B390001E186 /* Mouse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 035A3C4512841B390001E186 /* Mouse.cpp */; };
 		035A3D061284293A0001E186 /* DrawCursor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 035A3D051284293A0001E186 /* DrawCursor.cpp */; };
 		035A3DF91284391F0001E186 /* KeyTrap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 035A3DF81284391F0001E186 /* KeyTrap.cpp */; };
+		035F1E4512A358FB008DA566 /* GameWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 035F1E4312A358FB008DA566 /* GameWindow.cpp */; };
 		0369DEE41285A28600355C4E /* DrawHUD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0369DEA31285964500355C4E /* DrawHUD.cpp */; };
 		036E68C0128831880084C49C /* DrawHUDEnclosure.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 036E68BF128831880084C49C /* DrawHUDEnclosure.cpp */; };
 		0388867E12A0D2AF0079CBB3 /* DrawConsole.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0388867C12A0D2AF0079CBB3 /* DrawConsole.cpp */; };
@@ -101,8 +101,6 @@
 		030F8F2F1264DC2200190225 /* libz.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libz.a; path = /usr/local/lib/libz.a; sourceTree = "<absolute>"; };
 		030F8F3C1264DD1300190225 /* Keyboard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Keyboard.cpp; sourceTree = "<group>"; };
 		030F8F3D1264DD1300190225 /* Keyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Keyboard.h; sourceTree = "<group>"; };
-		030F8F6D1264E10500190225 /* Screen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Screen.cpp; sourceTree = "<group>"; };
-		030F8F6E1264E10500190225 /* Screen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Screen.h; sourceTree = "<group>"; };
 		030F91931265152000190225 /* ShaderTools.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShaderTools.cpp; sourceTree = "<group>"; };
 		030F91941265152000190225 /* ShaderTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShaderTools.h; sourceTree = "<group>"; };
 		032B8AB21263982C00DDE564 /* dominicus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = dominicus.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -122,6 +120,8 @@
 		035A3D051284293A0001E186 /* DrawCursor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DrawCursor.cpp; path = cursor/DrawCursor.cpp; sourceTree = "<group>"; };
 		035A3DF71284391F0001E186 /* KeyTrap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyTrap.h; sourceTree = "<group>"; };
 		035A3DF81284391F0001E186 /* KeyTrap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KeyTrap.cpp; sourceTree = "<group>"; };
+		035F1E4312A358FB008DA566 /* GameWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameWindow.cpp; sourceTree = "<group>"; };
+		035F1E4412A358FB008DA566 /* GameWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameWindow.h; sourceTree = "<group>"; };
 		0369DE28128588C000355C4E /* SplashBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SplashBackground.h; path = splash/SplashBackground.h; sourceTree = "<group>"; };
 		0369DE29128588C000355C4E /* SplashBackground.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SplashBackground.cpp; path = splash/SplashBackground.cpp; sourceTree = "<group>"; };
 		0369DEA31285964500355C4E /* DrawHUD.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawHUD.cpp; sourceTree = "<group>"; };
@@ -294,8 +294,8 @@
 		030F8F6C1264E10500190225 /* windowing */ = {
 			isa = PBXGroup;
 			children = (
-				030F8F6E1264E10500190225 /* Screen.h */,
-				030F8F6D1264E10500190225 /* Screen.cpp */,
+				035F1E4412A358FB008DA566 /* GameWindow.h */,
+				035F1E4312A358FB008DA566 /* GameWindow.cpp */,
 			);
 			name = windowing;
 			path = src/windowing;
@@ -543,7 +543,6 @@
 				030F8EBB1264D05800190225 /* Texture.cpp in Sources */,
 				030F8ECF1264D82200190225 /* FontManager.cpp in Sources */,
 				030F8F3E1264DD1300190225 /* Keyboard.cpp in Sources */,
-				030F8F6F1264E10500190225 /* Screen.cpp in Sources */,
 				030F91991265152000190225 /* ShaderTools.cpp in Sources */,
 				030DEC00126CDD1B000D87ED /* DiamondSquare.cpp in Sources */,
 				03DF5A0812797B4D003C2134 /* DrawingMaster.cpp in Sources */,
@@ -563,6 +562,7 @@
 				034FEA48129ACA060071B2AA /* TextBlock.cpp in Sources */,
 				0388867E12A0D2AF0079CBB3 /* DrawConsole.cpp in Sources */,
 				0388868212A0D2B80079CBB3 /* DrawInfoBox.cpp in Sources */,
+				035F1E4512A358FB008DA566 /* GameWindow.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

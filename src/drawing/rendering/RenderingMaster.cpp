@@ -9,9 +9,9 @@
 
 #include "RenderingMaster.h"
 
-RenderingMaster::RenderingMaster(Screen* screen) {
-	wvCamera = new WorldViewCamera(screen);
-	oCamera = new OrthoCamera(screen);
+RenderingMaster::RenderingMaster(GameWindow* gameWindow) {
+	wvCamera = new WorldViewCamera(gameWindow);
+	oCamera = new OrthoCamera(gameWindow);
 
 	cameraToggleKeyTrap = new KeyTrap("toggleCamera");
 

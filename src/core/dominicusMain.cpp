@@ -28,8 +28,8 @@ int dominicusMain(int argc, char* argv[]) {
 	keepDominicusAlive = true;
 
 	// initialize stuff
-	Screen* screen = new Screen(gamePrefs.getBool("windowStartFullScreen") ? true : false);
-	DrawingMaster* drawingMaster = new DrawingMaster(screen);
+	GameWindow* gameWindow = new GameWindow(gamePrefs.getBool("windowStartFullScreen") ? true : false);
+	DrawingMaster* drawingMaster = new DrawingMaster(gameWindow);
 
 	// with the graphics context initialized, check for a compatible system
 	SystemInfo::check();
@@ -46,13 +46,13 @@ int dominicusMain(int argc, char* argv[]) {
 		fullScreenKeyTrap.loop();
 
 		if(fullScreenKeyTrap.newPress()) {
-			bool currentFullScreen = screen->fullScreen;
+			bool currentFullScreen = gameWindow->fullScreen;
 
 			delete(drawingMaster);
-			delete(screen);
+			delete(gameWindow);
 
-			screen = new Screen(!currentFullScreen);
-			drawingMaster = new DrawingMaster(screen);
+			gameWindow = new GameWindow(!currentFullScreen);
+			drawingMaster = new DrawingMaster(gameWindow);
 		}
 
 		// or regenerate the terrain
@@ -98,7 +98,7 @@ int dominicusMain(int argc, char* argv[]) {
 
 	// clean up objects
 	delete (drawingMaster);
-	delete (screen);
+	delete (gameWindow);
 
 	return 0;
 }

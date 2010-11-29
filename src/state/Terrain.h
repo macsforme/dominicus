@@ -17,7 +17,7 @@
 #include "OpenGLHeaders.h"
 #include "Platform.h"
 #include "ScalarMath.h"
-#include "ShaderTools.h"
+//#include "ShaderTools.h"
 #include "Texture.h"
 #include "VectorMath.h"
 

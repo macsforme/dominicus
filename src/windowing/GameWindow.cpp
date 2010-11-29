@@ -1,5 +1,5 @@
 /*
- *  Screen.cpp
+ *  GameWindow.cpp
  *  dominicus
  *
  *  Created by Joshua Bodine on 5/28/10.
@@ -7,9 +7,9 @@
  *
  */
 
-#include "Screen.h"
+#include "GameWindow.h"
 
-Screen::Screen(bool fullScreen) : fullScreen(fullScreen) {
+GameWindow::GameWindow(bool fullScreen) : fullScreen(fullScreen) {
 	// initialize our viewing screen
 	width = (fullScreen ? systemInfo.screenWidth : gamePrefs.getInt("windowWidth"));
 	height = (fullScreen ? systemInfo.screenHeight : gamePrefs.getInt("windowHeight"));

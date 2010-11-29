@@ -33,9 +33,9 @@ HUDElement* HUDArrangement::findPriorElementCenter(int index) {
 	return NULL;
 }
 
-HUDArrangement::HUDArrangement(Screen* screen) : screen(screen) {
+HUDArrangement::HUDArrangement(GameWindow* gameWindow) : gameWindow(gameWindow) {
 	// set our variables
-	float aspectRatio = (float) screen->width / (float) screen->height;
+	float aspectRatio = (float) gameWindow->width / (float) gameWindow->height;
 	elementPadding = Vector2(
 			gamePrefs.getFloat("elementPadding") / aspectRatio,
 			gamePrefs.getFloat("elementPadding")

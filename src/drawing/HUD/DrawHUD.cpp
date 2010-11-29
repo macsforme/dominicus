@@ -9,14 +9,14 @@
 
 #include "DrawHUD.h"
 
-DrawHUD::DrawHUD(Screen* screen, FontManager* fontManager) {
+DrawHUD::DrawHUD(GameWindow* gameWindow, FontManager* fontManager) {
 	// set variables
-	hudArrangement = new HUDArrangement(screen);
-	drawHUDEnclosure = new DrawHUDEnclosure(hudArrangement, screen);
+	hudArrangement = new HUDArrangement(gameWindow);
+	drawHUDEnclosure = new DrawHUDEnclosure(hudArrangement, gameWindow);
 
 	// set up children drawers
-	consoleDrawer = new DrawConsole(hudArrangement, screen, fontManager);
-	infoBoxDrawer = new DrawInfoBox(hudArrangement, screen, fontManager);
+	consoleDrawer = new DrawConsole(hudArrangement, gameWindow, fontManager);
+	infoBoxDrawer = new DrawInfoBox(hudArrangement, gameWindow, fontManager);
 }
 
 DrawHUD::~DrawHUD() {

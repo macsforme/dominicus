@@ -13,7 +13,6 @@
 // program headers
 #include "GamePrefs.h"
 #include "Platform.h"
-#include "Screen.h"
 
 // library headers
 #include <map>

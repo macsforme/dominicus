@@ -11,8 +11,8 @@
 #define HUDARRANGEMENT_H
 
 // program headers
+#include "GameWindow.h"
 #include "HUDElement.h"
-#include "Screen.h"
 #include "VectorMath.h"
 
 // library headers
@@ -39,11 +39,11 @@ public:
 private:
 	HUDElement* findPriorElementCenter(int index);
 
-	Screen* screen;
+	GameWindow* gameWindow;
 	Vector2 elementPadding;
 
 public:
-	HUDArrangement(Screen* screen);
+	HUDArrangement(GameWindow* gameWindow);
 
 	void rearrange();
 };

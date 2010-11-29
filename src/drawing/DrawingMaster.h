@@ -14,12 +14,12 @@
 #include "DrawCursor.h"
 #include "DrawHUD.h"
 #include "GamePrefs.h"
+#include "GameWindow.h"
 #include "KeyTrap.h"
 #include "OpenGLHeaders.h"
 #include "Platform.h"
 #include "ProgramLog.h"
 #include "RenderingMaster.h"
-#include "Screen.h"
 //#include "SplashBackground.h"
 #include "SystemInfo.h"
 
@@ -46,7 +46,7 @@ private:
 	bool capFPS;
 
 public:
-	DrawingMaster(Screen* screen);
+	DrawingMaster(GameWindow* gameWindow);
 	~DrawingMaster();
 
 	void setViewPortSize(unsigned short int width, unsigned short int height);

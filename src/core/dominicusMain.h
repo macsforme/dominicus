@@ -13,11 +13,11 @@
 // program headers
 #include "DrawingMaster.h"
 #include "GamePrefs.h"
+#include "GameWindow.h"
 #include "Keyboard.h"
 #include "KeyTrap.h"
 #include "Mouse.h"
 #include "Platform.h"
-#include "Screen.h"
 #include "SystemInfo.h"
 #include "Terrain.h"
 

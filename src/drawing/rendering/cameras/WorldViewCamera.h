@@ -14,7 +14,7 @@
 #include "Camera.h"
 #include "MatrixMath.h"
 #include "Platform.h"
-#include "Screen.h"
+#include "GameWindow.h"
 #include "VectorMath.h"
 
 // constants
@@ -40,8 +40,8 @@ private:
 public:
 	Matrix4 vpMatrix;
 
-	WorldViewCamera(Screen* screen) :
-			aspectRatio(screen->width / screen->height), rotation(0.0f), zoom(0.0f) { }
+	WorldViewCamera(GameWindow* gameWindow) :
+			aspectRatio(gameWindow->aspectRatio), rotation(0.0f), zoom(0.0f) { }
 
 	void loop();
 };

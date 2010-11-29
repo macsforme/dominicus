@@ -9,13 +9,13 @@
 
 #include "DrawingMaster.h"
 
-DrawingMaster::DrawingMaster(Screen* screen) {
+DrawingMaster::DrawingMaster(GameWindow* gameWindow) {
 	// initialize variables
-	renderingMaster = new RenderingMaster(screen);
+	renderingMaster = new RenderingMaster(gameWindow);
 	fontManager = new FontManager();
 
-	hudDrawing = new DrawHUD(screen, fontManager);
-	drawCursor = new DrawCursor(screen);
+	hudDrawing = new DrawHUD(gameWindow, fontManager);
+	drawCursor = new DrawCursor(gameWindow);
 //	splashBackground = new SplashBackground();
 
 	// initialize fonts
@@ -25,7 +25,7 @@ DrawingMaster::DrawingMaster(Screen* screen) {
 	platform.hideCursor();
 
 	// set the OpenGL viewport size
-	setViewPortSize(screen->width, screen->height);
+	setViewPortSize(gameWindow->width, gameWindow->height);
 
 	// set the FPS cap key trap
 	fpsCapKeyTrap = new KeyTrap("toggleFPSCap");

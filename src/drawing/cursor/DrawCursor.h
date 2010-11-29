@@ -11,10 +11,10 @@
 #define DRAWCURSOR_H
 
 // program headers
+#include "GameWindow.h"
 #include "Mouse.h"
 #include "OpenGLHeaders.h"
 #include "Platform.h"
-#include "Screen.h"
 #include "ShaderTools.h"
 #include "VectorMath.h"
 
@@ -25,7 +25,7 @@ extern Platform platform;
 class DrawCursor {
 private:
 	// screen dimensions
-	Screen* screen;
+	GameWindow* gameWindow;
 
 	// program/shader names
 	GLuint program, vertexShader, fragmentShader;
@@ -37,7 +37,7 @@ private:
 	GLint thicknessUniform;
 
 public:
-	DrawCursor(Screen* screen);
+	DrawCursor(GameWindow* gameWindow);
 
 	void draw();
 };

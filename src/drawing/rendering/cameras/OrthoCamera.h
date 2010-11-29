@@ -12,9 +12,9 @@
 
 // program headers
 #include "Camera.h"
+#include "GameWindow.h"
 #include "MatrixMath.h"
 #include "Platform.h"
-#include "Screen.h"
 #include "VectorMath.h"
 
 // constants
@@ -33,8 +33,8 @@ private:
 public:
 	Matrix4 vpMatrix;
 
-	OrthoCamera(Screen* screen) :
-			aspectRatio(screen->width / screen->height), rotation(0.0f) { }
+	OrthoCamera(GameWindow* gameWindow) :
+			aspectRatio(gameWindow->aspectRatio), rotation(0.0f) { }
 
 	void loop();
 };

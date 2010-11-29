@@ -1,5 +1,5 @@
 /*
- *  Screen.h
+ *  GameWindow.h
  *  dominicus
  *
  *  Created by Joshua Bodine on 5/28/10.
@@ -7,8 +7,8 @@
  *
  */
 
-#ifndef SCREEN_H
-#define SCREEN_H
+#ifndef GAMEWINDOW_H
+#define GAMEWINDOW_H
 
 // program headers
 #include "GamePrefs.h"
@@ -22,13 +22,13 @@
 extern SystemInfo systemInfo;
 extern GamePrefs gamePrefs;
 
-class Screen {
+class GameWindow {
 public:
 	unsigned short int width, height;
 	float aspectRatio;
 	bool fullScreen;
 
-	Screen(bool fullScreen);
+	GameWindow(bool fullScreen);
 };
 
 #endif

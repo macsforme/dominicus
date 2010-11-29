@@ -32,7 +32,7 @@ GamePrefs::GamePrefs() {
 	preferences["fontLargeHeaderSize"] = "32";
 
 	// GUI settings
-	preferences["cursorSize"] = "0.3";	// portion of screen height cursor box takes up
+	preferences["cursorSize"] = "0.2";	// portion of screen height cursor box takes up
 	preferences["cursorThickness"] = "0.005";	// portion of cursor box
 	preferences["elementPadding"] = "0.1";
 

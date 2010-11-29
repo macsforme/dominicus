@@ -14,12 +14,12 @@
 #include "DrawHUDContainerUtility.h"
 #include "HUDArrangement.h"
 #include "HUDElement.h"
-#include "Screen.h"
+#include "GameWindow.h"
 #include "VectorMath.h"
 
 class DrawHUDEnclosure {
 private:
-	Screen* screen;
+	GameWindow* gameWindow;
 
 	HUDArrangement* hudArrangement;
 
@@ -28,7 +28,7 @@ private:
 	HUDElement* findPriorElementCenter(int index);
 
 public:
-	DrawHUDEnclosure(HUDArrangement* hudArrangement, Screen* screen);
+	DrawHUDEnclosure(HUDArrangement* hudArrangement, GameWindow* gameWindow);
 
 	void draw();
 };
