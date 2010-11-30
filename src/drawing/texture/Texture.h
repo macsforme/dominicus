@@ -15,6 +15,7 @@
 
 // library headers
 #include <sstream>
+#include <stdint.h>
 
 class Texture {
 public:
