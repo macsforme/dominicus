@@ -15,7 +15,7 @@
 #include <sys/time.h>
 Platform::Platform() {
 	// determine the resource directory path
-	dataPath = "data";
+	dataPath = ".";
 
 	// initialize the random number generator
 	srand(time(NULL));
@@ -30,8 +30,8 @@ unsigned int Platform::getExecutionTimeMicros() {
 	if(gettimeofday(&tv, NULL) == -1)
 		ProgramLog::report(LOG_FATAL, "An error occurred when attempting to retrieve the time.");
 
-	static unsigned long int beginning = tv.tv_usec;
-	unsigned long int now = tv.tv_usec;
+	static unsigned long int beginning = tv.tv_sec * 1000000 + tv.tv_usec;
+	unsigned long int now = tv.tv_sec * 1000000 + tv.tv_usec;
 
 	return now - beginning;
 }
