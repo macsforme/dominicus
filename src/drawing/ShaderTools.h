@@ -17,6 +17,7 @@
 // library headers
 #include <fstream>
 #include <sstream>
+#include <string.h>
 #include <vector>
 
 class ShaderTools {

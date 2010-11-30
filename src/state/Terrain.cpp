@@ -160,14 +160,14 @@ Terrain::Terrain() {
 						i - 1 + ((p - 1) * density),
 						i + ((p - 1) * density)
 					);
-				mesh.autoTexCoord(mesh.faceGroups[""].size() - 1);
+//				mesh.autoTexCoord(mesh.faceGroups[""].size() - 1);
 
 				mesh.addFace(
 						i + ((p - 1) * density),
 						i + p * density,
 						i - 1 + (p * density)
 					);
-				mesh.autoTexCoord(mesh.faceGroups[""].size() - 1);
+//				mesh.autoTexCoord(mesh.faceGroups[""].size() - 1);
 			}
 		}
 	}
