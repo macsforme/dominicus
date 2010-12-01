@@ -26,9 +26,13 @@ TerrainRenderer::TerrainRenderer() {
 
 	program = ShaderTools::makeProgram(shaders);
 
-	// get attribute locations
-	positionAttrib = glGetAttribLocation(program, "position");
-	texCoordAttrib = glGetAttribLocation(program, "texCoord");
+	// set attribute locations
+	positionAttrib = 0;
+	texCoordAttrib = 1;
+	glBindAttribLocation(program, 0, "position");
+	glBindAttribLocation(program, 1, "texCoord");
+
+	ShaderTools::linkProgram(program);
 
 	// get uniform locations
 	mvpMatrixUniform = glGetUniformLocation(program, "mvpMatrix");

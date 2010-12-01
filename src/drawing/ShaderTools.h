@@ -23,6 +23,7 @@
 class ShaderTools {
 public:
 	static GLuint makeShader(const char* filename, GLenum shaderType);
+	static void linkProgram(GLuint program);
 	static GLuint makeProgram(std::vector<GLuint> shaders);
 };
 

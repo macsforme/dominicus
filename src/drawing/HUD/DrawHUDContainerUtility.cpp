@@ -40,6 +40,14 @@ DrawHUDContainerUtility::DrawHUDContainerUtility(
 
 	containerProgram = ShaderTools::makeProgram(containerShaders);
 
+	// bind attribute locations
+	positionAttrib = 0;
+	primCoordAttrib = 1;
+	glBindAttribLocation(containerProgram, 0, "position");
+	glBindAttribLocation(containerProgram, 1, "primCoord");
+
+	ShaderTools::linkProgram(containerProgram);
+
 	// get uniform locations
 	insideColorUniform = glGetUniformLocation(containerProgram, "insideColor");
 	borderColorUniform = glGetUniformLocation(containerProgram, "borderColor");
@@ -49,10 +57,6 @@ DrawHUDContainerUtility::DrawHUDContainerUtility(
 	border1DistUniform = glGetUniformLocation(containerProgram, "border1Dist");
 	border2DistUniform = glGetUniformLocation(containerProgram, "border2Dist");
 	zModUniform = glGetUniformLocation(containerProgram, "zMod");
-
-	// get attribute locations
-	positionAttrib = glGetAttribLocation(containerProgram, "position");
-	primCoordAttrib = glGetAttribLocation(containerProgram, "primCoord");
 }
 
 void DrawHUDContainerUtility::drawCurve(Vector2 position, Vector2 dimensions, float rotation,

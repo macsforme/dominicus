@@ -26,9 +26,13 @@ DrawCursor::DrawCursor(GameWindow* gameWindow) : gameWindow(gameWindow) {
 
 	program = ShaderTools::makeProgram(shaders);
 
-	// get attribute locations
-	positionAttrib = glGetAttribLocation(program, "position");
-	boxCoordAttrib = glGetAttribLocation(program, "boxCoord");
+	// set attribute locations
+	positionAttrib = 0;
+	boxCoordAttrib = 1;
+	glBindAttribLocation(program, 0, "position");
+	glBindAttribLocation(program, 1, "boxCoord");
+
+	ShaderTools::linkProgram(program);
 
 	// get uniform locations
 	thicknessUniform = glGetUniformLocation(program, "thickness");

@@ -104,14 +104,7 @@ GLuint ShaderTools::makeShader(const char* filename, GLenum shaderType) {
 	return shader;
 }
 
-GLuint ShaderTools::makeProgram(std::vector<GLuint> shaders) {
-	GLuint program;
-
-	program = glCreateProgram();
-
-	for(int i = 0; i < shaders.size(); ++i)
-		glAttachShader(program, shaders[i]);
-
+void ShaderTools::linkProgram(GLuint program) {
 	glLinkProgram(program);
 
 	GLint result;
@@ -135,6 +128,17 @@ GLuint ShaderTools::makeProgram(std::vector<GLuint> shaders) {
 
 		ProgramLog::report(LOG_FATAL, err.str().c_str());
 	}
+}
+
+GLuint ShaderTools::makeProgram(std::vector<GLuint> shaders) {
+	GLuint program;
+
+	program = glCreateProgram();
+
+	for(int i = 0; i < shaders.size(); ++i)
+		glAttachShader(program, shaders[i]);
+
+	linkProgram(program);
 
 	return program;
 }
