@@ -88,33 +88,33 @@ void DrawHUDContainerUtility::drawCurve(Vector2 position, Vector2 dimensions, fl
 
 	glBegin(GL_QUADS);
 
-	glVertexAttrib2f(
-			positionAttrib,
-			position.x - dimensions.x / 2,
-			position.y - dimensions.y / 2
-		);
 	glVertexAttrib2f(primCoordAttrib, -1.0f, -1.0f);
+	glVertexAttrib2f(
+			positionAttrib,
+			position.x - dimensions.x / 2,
+			position.y - dimensions.y / 2
+		);
 
+	glVertexAttrib2f(primCoordAttrib, -1.0f, 1.0f);
 	glVertexAttrib2f(
 			positionAttrib,
 			position.x - dimensions.x / 2,
 			position.y + dimensions.y / 2
 		);
-	glVertexAttrib2f(primCoordAttrib, -1.0f, 1.0f);
 
+	glVertexAttrib2f(primCoordAttrib, 1.0f, 1.0f);
 	glVertexAttrib2f(
 			positionAttrib,
 			position.x + dimensions.x / 2,
 			position.y + dimensions.y / 2
 		);
-	glVertexAttrib2f(primCoordAttrib, 1.0f, 1.0f);
 
+	glVertexAttrib2f(primCoordAttrib, 1.0f, -1.0f);
 	glVertexAttrib2f(
 			positionAttrib,
 			position.x + dimensions.x / 2,
 			position.y - dimensions.y / 2
 		);
-	glVertexAttrib2f(primCoordAttrib, 1.0f, -1.0f);
 
 	glEnd();
 }
@@ -147,48 +147,48 @@ void DrawHUDContainerUtility::drawBorder(Vector2 position, Vector2 dimensions, f
 	glBegin(GL_QUADS);
 
 	glVertexAttrib2f(
-			positionAttrib,
-			(position.x - dimensions.x / 2),
-			position.y - dimensions.y / 2
-		);
-	glVertexAttrib2f(
 			primCoordAttrib,
 			-absolute(cos(radians(rotation))),
 			-absolute(sin(radians(rotation)))
 		);
-
 	glVertexAttrib2f(
 			positionAttrib,
 			(position.x - dimensions.x / 2),
-			position.y + dimensions.y / 2
+			position.y - dimensions.y / 2
 		);
+
 	glVertexAttrib2f(
 			primCoordAttrib,
 			-absolute(cos(radians(rotation))),
 			absolute(sin(radians(rotation)))
 		);
-
 	glVertexAttrib2f(
 			positionAttrib,
-			position.x + dimensions.x / 2,
+			(position.x - dimensions.x / 2),
 			position.y + dimensions.y / 2
 		);
+
 	glVertexAttrib2f(
 			primCoordAttrib,
 			absolute(cos(radians(rotation))),
 			absolute(sin(radians(rotation)))
 		);
-
 	glVertexAttrib2f(
 			positionAttrib,
 			position.x + dimensions.x / 2,
-			position.y - dimensions.y / 2
+			position.y + dimensions.y / 2
 		);
+
 	glVertexAttrib2f(
 			primCoordAttrib,
 			absolute(cos(radians(rotation))),
 			-absolute(sin(radians(rotation)))
 	);
+	glVertexAttrib2f(
+			positionAttrib,
+			position.x + dimensions.x / 2,
+			position.y - dimensions.y / 2
+		);
 
 	glEnd();
 }
@@ -213,33 +213,33 @@ void DrawHUDContainerUtility::drawFiller(Vector2 position, Vector2 dimensions, b
 
 	glBegin(GL_QUADS);
 
+	glVertexAttrib2f(primCoordAttrib, 0.0f, 0.0f);
 	glVertexAttrib2f(
 			positionAttrib,
 			position.x - dimensions.x / 2,
 			position.y - dimensions.y / 2
 		);
-	glVertexAttrib2f(primCoordAttrib, 0.0f, 0.0f);
 
+	glVertexAttrib2f(primCoordAttrib, 0.0f, 0.0f);
 	glVertexAttrib2f(
 			positionAttrib,
 			position.x - dimensions.x / 2,
 			position.y + dimensions.y / 2
 		);
-	glVertexAttrib2f(primCoordAttrib, 0.0f, 0.0f);
 
+	glVertexAttrib2f(primCoordAttrib, 0.0f, 0.0f);
 	glVertexAttrib2f(
 			positionAttrib,
 			position.x + dimensions.x / 2,
 			position.y + dimensions.y / 2
 		);
-	glVertexAttrib2f(primCoordAttrib, 0.0f, 0.0f);
 
+	glVertexAttrib2f(primCoordAttrib, 0.0f, 0.0f);
 	glVertexAttrib2f(
 			positionAttrib,
 			position.x + dimensions.x / 2,
 			position.y - dimensions.y / 2
 		);
-	glVertexAttrib2f(primCoordAttrib, 0.0f, 0.0f);
 
 	glEnd();
 }

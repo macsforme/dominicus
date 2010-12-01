@@ -1,7 +1,7 @@
 #version 110
 
-attribute vec2 boxCoord;
 attribute vec3 position;
+attribute vec2 boxCoord;
 
 varying vec2 boxCoordInterpol;
 
