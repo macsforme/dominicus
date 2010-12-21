@@ -192,14 +192,14 @@ inline void rotateMatrix(const Vector3 axis, float angle, Matrix4& mat) {
 			axis.x * axis.z * (1.0f - cos(angle)) - axis.y * sin(angle),
 			0.0f,
 
-			axis.x * axis.y * (1.0f - cos(angle)) - axis.z * sin(angle),
+			axis.y * axis.x * (1.0f - cos(angle)) - axis.z * sin(angle),
 			axis.y * axis.y * (1.0f - cos(angle)) + cos(angle),
 			axis.y * axis.z * (1.0f - cos(angle)) + axis.x * sin(angle),
 			0.0f,
 
-			axis.x * axis.z * (1.0f - cos(angle)) + axis.y * sin(angle),
-			axis.y * axis.z * (1.0f - cos(angle)) - axis.x * sin(angle),
-			axis.x * axis.x * (1.0f - cos(angle)) + cos(angle),
+			axis.z * axis.x * (1.0f - cos(angle)) + axis.y * sin(angle),
+			axis.z * axis.y * (1.0f - cos(angle)) - axis.x * sin(angle),
+			axis.z * axis.z * (1.0f - cos(angle)) + cos(angle),
 			0.0f,
 
 			0.0f,
