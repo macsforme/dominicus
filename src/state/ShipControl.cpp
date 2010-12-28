@@ -58,13 +58,13 @@ void ShipControl::loop() {
 		);
 
 	if(keyboard.getKeyState("bankLeft"))
-		rotateMatrix(zVec, radians(0.2f * SHIP_TURNPERSEC * (float) dt / 1000000.0f), ship->orientation);
+		rotateMatrix(zVec, radians(0.5f * SHIP_TURNPERSEC * (float) dt / 1000000.0f), ship->orientation);
 	if(keyboard.getKeyState("bankRight"))
-		rotateMatrix(zVec, radians(-0.2f * SHIP_TURNPERSEC * (float) dt / 1000000.0f), ship->orientation);
+		rotateMatrix(zVec, radians(-0.5f * SHIP_TURNPERSEC * (float) dt / 1000000.0f), ship->orientation);
 	if(keyboard.getKeyState("down"))
-		rotateMatrix(xVec, radians(0.1f * SHIP_TURNPERSEC * (float) dt / 1000000.0f), ship->orientation);
+		rotateMatrix(xVec, radians(0.5f * SHIP_TURNPERSEC * (float) dt / 1000000.0f), ship->orientation);
 	if(keyboard.getKeyState("up"))
-		rotateMatrix(xVec, radians(-0.1f * SHIP_TURNPERSEC * (float) dt / 1000000.0f), ship->orientation);
+		rotateMatrix(xVec, radians(-0.5f * SHIP_TURNPERSEC * (float) dt / 1000000.0f), ship->orientation);
 
 	if(keyboard.getKeyState("speed+"))
 		if(ship->speed < SHIP_MOVEPERSEC)

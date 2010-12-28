@@ -193,7 +193,7 @@ void DrawInfoBox::draw() {
 	outputLines += execTimeLine.str();
 
 	// add the controls info
-	outputLines += "\n+/-: speed\n\n";
+	outputLines += "\n+/-: speed\narrows: direction\n";
 	outputLines += "\nf: fullscreen\nk: view\nc: fps cap\nt: new terrain\nesc: quit\n";
 
 	// if need be, regenerate the text block
