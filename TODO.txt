@@ -10,6 +10,7 @@ LONG TERM:
 * fix height in fontmanager... does the newline have a y-advance?
 
 CONTEMPLATIONS:
+* still not convinced that font glyph spacing is right... everything looks condensed unless using bold fonts
 * do we need LOG_INTERNALERROR at all? maybe better just to crash... lots of unused code
 * consider going through all code and changing widths, heights to vector2's
 * GUI text arrangement needs to be re-thought out
