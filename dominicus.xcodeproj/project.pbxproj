@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		030DEC00126CDD1B000D87ED /* DiamondSquare.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 030DEBFF126CDD1B000D87ED /* DiamondSquare.cpp */; };
-		030F8DE41264BFAA00190225 /* TODO.txt in Resources */ = {isa = PBXBuildFile; fileRef = 030F8DE31264BFAA00190225 /* TODO.txt */; };
 		030F8DEE1264C00100190225 /* shaders in Resources */ = {isa = PBXBuildFile; fileRef = 030F8DEC1264C00100190225 /* shaders */; };
 		030F8E021264C01100190225 /* data in Resources */ = {isa = PBXBuildFile; fileRef = 030F8DEF1264C01100190225 /* data */; };
 		030F8E161264C0FF00190225 /* dominicusMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 030F8E101264C0FF00190225 /* dominicusMain.cpp */; };
@@ -560,7 +559,6 @@
 				032B8B371263DF5900DDE564 /* README.txt in Resources */,
 				03D47B7E1263E27F001755A6 /* dominicus.icns in Resources */,
 				03D8C07D1264BEBA00F26DC9 /* licenses in Resources */,
-				030F8DE41264BFAA00190225 /* TODO.txt in Resources */,
 				030F8DEE1264C00100190225 /* shaders in Resources */,
 				030F8E021264C01100190225 /* data in Resources */,
 			);
