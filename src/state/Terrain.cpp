@@ -88,7 +88,7 @@ Terrain::Terrain() {
 
 	// smooth out the bumps with two different algorithms
 	float smoothHeightMap[density][density];
-	
+
 	for(int i = 0; i < density; ++i) {
 		for(int p = 0; p < density; ++p) {
 			unsigned int

@@ -25,19 +25,17 @@ void WorldViewCamera::loop() {
 	// re-initialize the matrix
 	vpMatrix.identity();
 
-	// camera transformations
-	scaleMatrix(0.04, 0.02, 0.04, vpMatrix);
-	scaleMatrix(zoom, zoom, zoom, vpMatrix); // zoom
+	// do transformations
 	rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(rotation), vpMatrix); // dynamic rotation
 	rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(-birdsEyeAngle), vpMatrix); // static tilt up
-	translateMatrix(0.0f, 0.0f, 1.15f, vpMatrix); // back away
+	translateMatrix(0.0f, 0.0f, 60.0f, vpMatrix); // z translation
+	scaleMatrix(zoom, zoom, zoom, vpMatrix); // dynamic zoom
 
 	// perspective projection
 	vpMatrix *= Matrix4(
-	        1.0/tan(radians(viewAngle)), 0.0, 0.0, 0.0,
-	        0.0, aspectRatio/tan(radians(viewAngle)), 0.0, 0.0,
-	        0.0, 0.0, (farClip + nearClip) / (farClip - nearClip), 1.0,
-	        0.0, 0.0, -2.0 * farClip * nearClip / (farClip - nearClip), 0.0
+	        1.0/tan(radians(WVC_VIEWANGLE)), 0.0, 0.0, 0.0,
+	        0.0, aspectRatio/tan(radians(WVC_VIEWANGLE)), 0.0, 0.0,
+	        0.0, 0.0, (WVC_FARCLIP + WVC_NEARCLIP) / (WVC_FARCLIP - WVC_NEARCLIP), 1.0,
+	        0.0, 0.0, -2.0 * WVC_FARCLIP * WVC_NEARCLIP / (WVC_FARCLIP - WVC_NEARCLIP), 0.0
 		);
-
 }

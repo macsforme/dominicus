@@ -23,9 +23,9 @@ const float rotationSpeed = 30.0f; // degrees per second
 const float zoomFactor = 0.25f;	// total zoom distance
 const float zoomPeriod = 1.0f;	// time in seconds to complete a zoom cycle
 
-const float nearClip = 0.1f;
-const float farClip = 10.0f;
-const float viewAngle = 45.0f;	// degrees
+#define WVC_NEARCLIP 1.0f
+#define WVC_FARCLIP 150.0f
+#define WVC_VIEWANGLE 30.0f
 
 // global variables
 extern Platform platform;

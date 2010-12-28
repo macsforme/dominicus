@@ -36,6 +36,10 @@ void Platform::hideCursor() {
 	SDL_ShowCursor(SDL_DISABLE);
 }
 
+void Platform::warpCursor(unsigned int x, unsigned int y) {
+	SDL_WarpMouse(x, y);
+}
+
 unsigned int Platform::getExecutionTimeMicros() {
 	static unsigned long int beginning = mach_absolute_time();
 	unsigned long int now = mach_absolute_time();

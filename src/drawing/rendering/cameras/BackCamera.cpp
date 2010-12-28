@@ -7,9 +7,9 @@
  *
  */
 
-#include "OrthoCamera.h"
+#include "BackCamera.h"
 
-void OrthoCamera::loop() {
+void BackCamera::loop() {
 	// get our delta T
 	static float lastUpdate = platform.getExecutionTimeMicros();
 	float dt = platform.getExecutionTimeMicros() - lastUpdate;
@@ -24,8 +24,50 @@ void OrthoCamera::loop() {
 	vpMatrix.identity();
 
 	// camera transformations
-	scaleMatrix(0.02, 0.02, 0.02, vpMatrix);
-	rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(rotation), vpMatrix); // dynamic rotation
-	rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(-orthoBirdsEyeAngle), vpMatrix); // static tilt up
-	scaleMatrix(aspectRatio, 1.0f, 1.0f, vpMatrix); // aspect ratio
+	rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(180.0f), vpMatrix);
+	vpMatrix *= Matrix4(
+			ship.orientation.m11,
+			ship.orientation.m12,
+			ship.orientation.m13,
+			0.0f,
+
+			ship.orientation.m21,
+			ship.orientation.m22,
+			ship.orientation.m23,
+			0.0f,
+
+			ship.orientation.m31,
+			ship.orientation.m32,
+			ship.orientation.m33,
+			0.0f,
+
+			0.0f,
+			0.0f,
+			0.0f,
+			1.0f
+		);
+
+	// un-roll it across the directional vector
+//	rotateMatrix(
+//			Vector3(ship.orientation.m31, ship.orientation.m32, ship.orientation.m33),
+//			-ship.roll,
+//			rotationMatrix
+//		);
+
+	// reverse the horizon angle
+//	rotationMatrix.m12 = -rotationMatrix.m12;
+//	rotationMatrix.m13 = -rotationMatrix.m13;
+
+//	rotationMatrix.m21 = -rotationMatrix.m21;
+//	rotationMatrix.m23 = -rotationMatrix.m23;
+
+//	rotationMatrix.m31 = -rotationMatrix.m31;
+//	rotationMatrix.m32 = -rotationMatrix.m32;
+
+	// roll it again against the z+ vector
+//	rotateMatrix(
+//			Vector3(ship.orientation.m31, ship.orientation.m32, ship.orientation.m33),
+//			ship.roll,
+//			vpMatrix
+//		);
 }

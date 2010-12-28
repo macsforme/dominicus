@@ -13,7 +13,7 @@ DrawInfoBox::DrawInfoBox(HUDArrangement* hudArrangement, GameWindow* gameWindow,
 		FontManager* fontManager) :
 		gameWindow(gameWindow), fontManager(fontManager) {
 	// set up the HUD laying arrangement info
-	myElement = new HUDElement(Vector2(0.4f / gameWindow->aspectRatio, 0.4f));
+	myElement = new HUDElement(Vector2(0.5f / gameWindow->aspectRatio, 0.5f));
 
 	HUDArrangement::HUDElementEntry myEntry;
 	myEntry.element = myElement;
@@ -179,18 +179,22 @@ void DrawInfoBox::draw() {
 
 	// update the execution time
 	if(platform.getExecutionTimeMicros() - (unsigned long int) (currentExecTime * 1000000.0f) > 100000) {
-		currentExecTime = (float) (platform.getExecutionTimeMicros() / 100000) / 10.0f;
+		currentExecTime = round((float) platform.getExecutionTimeMicros() / 1000000.0f, 3);
 
 		delete(textBlock);
 		textBlock = NULL;
 	}
 
+	char timeStr[4];
+	sprintf(timeStr, "%.1f", currentExecTime);
+
 	std::stringstream execTimeLine;
-	execTimeLine << "Time: " << currentExecTime << "\n";
+	execTimeLine << "Time: " << timeStr << "\n";
 	outputLines += execTimeLine.str();
 
 	// add the controls info
-	outputLines += "\nf - fullscreen\nk - view\nc - fps cap\nt - new terrain\nesc - quit\n";
+	outputLines += "\n+/-: speed\n\n";
+	outputLines += "\nf: fullscreen\nk: view\nc: fps cap\nt: new terrain\nesc: quit\n";
 
 	// if need be, regenerate the text block
 	if(textBlock == NULL)

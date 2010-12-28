@@ -1,5 +1,5 @@
 /*
- *  SubjectRenderer.h
+ *  ShipRenderer.h
  *  dominicus
  *
  *  Created by Joshua Bodine on 7/26/10.
@@ -7,17 +7,16 @@
  *
  */
 
-#ifndef SUBJECTRENDERER_H
-#define SUBJECTRENDERER_H
+#ifndef SHIPRENDERER_H
+#define SHIPRENDERER_H
 
 // program headers
 #include "BMPImage.h"
-#include "Camera.h"
+#include "GamePrefs.h"
 #include "MatrixMath.h"
 #include "Mesh.h"
-#include "Platform.h"
 #include "OpenGLHeaders.h"
-#include "Preferences.h"
+#include "Platform.h"
 #include "ProgramLog.h"
 #include "ScalarMath.h"
 #include "ShaderTools.h"
@@ -28,7 +27,10 @@
 #include <string>
 #include <vector>
 
-class SubjectRenderer {
+// global variables
+extern Platform platform;
+
+class ShipRenderer {
 private:
 	// program/shader names
 	GLuint modelProgram, modelVertexShader, modelFragmentShader;
@@ -42,7 +44,7 @@ private:
 	GLint positionAttrib, normalAttrib, texCoordAttrib;
 
 	// uniforms
-	GLint MVPMatrixUniform, textureUniform, clockUniform;
+	GLint mvpMatrixUniform, textureUniform, clockUniform;
 
 	// texture IDs
 	std::map<std::string,GLuint> textureIDs;
@@ -52,13 +54,12 @@ private:
 	bool viewWireFrame;
 
 public:
-	Mesh subject;
-	Camera camera;
+	Mesh ship;
 
-	SubjectRenderer();
-	~SubjectRenderer();
+	ShipRenderer();
+	~ShipRenderer();
 
-	void render();
+	void render(Matrix4 mvpMatrix);
 };
 
 #endif

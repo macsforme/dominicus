@@ -19,12 +19,12 @@
 #include "VectorMath.h"
 
 // definitions
-#define SHIPCAMERA_BACKOFFDIST 20.0f
-#define SHIPCAMERA_WATCHANGLE 30.0f
+#define FPC_BACKOFFDIST 20.0f
+#define FPC_WATCHANGLE 30.0f
 
-#define SHIPCAMERA_NEARCLIP 1.0f
-#define SHIPCAMERA_FARCLIP 150.0f
-#define SHIPCAMERA_VIEWANGLE 30.0f
+#define FPC_NEARCLIP 1.0f
+#define FPC_FARCLIP 150.0f
+#define FPC_VIEWANGLE 30.0f
 
 // global variables
 extern Platform platform;

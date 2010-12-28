@@ -12,6 +12,7 @@
 
 // program headers
 #include "GamePrefs.h"
+#include "Platform.h"
 #include "ProgramLog.h"
 #include "SystemInfo.h"
 
@@ -19,8 +20,9 @@
 #include <SDL/SDL.h>
 
 // global variables
-extern SystemInfo systemInfo;
 extern GamePrefs gamePrefs;
+extern Platform platform;
+extern SystemInfo systemInfo;
 
 class GameWindow {
 public:

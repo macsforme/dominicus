@@ -18,8 +18,11 @@
 #include "KeyTrap.h"
 #include "Mouse.h"
 #include "Platform.h"
+#include "Ship.h"
+#include "ShipControl.h"
 #include "SystemInfo.h"
 #include "Terrain.h"
+#include "VectorMath.h"
 
 int dominicusMain(int argc, char* argv[]);
 

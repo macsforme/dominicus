@@ -10,27 +10,34 @@
 #include "RenderingMaster.h"
 
 RenderingMaster::RenderingMaster(GameWindow* gameWindow) {
+	bCamera = new BackCamera(gameWindow);
+	fpCamera = new FirstPersonCamera(gameWindow);
 	wvCamera = new WorldViewCamera(gameWindow);
-	oCamera = new OrthoCamera(gameWindow);
 
 	cameraToggleKeyTrap = new KeyTrap("toggleCamera");
 
-	activeMatrix = &(wvCamera->vpMatrix);
+	activeMatrix = &(fpCamera->vpMatrix);
 }
 
 void RenderingMaster::loop() {
+	bCamera->loop();
+	fpCamera->loop();
 	wvCamera->loop();
-	oCamera->loop();
 
 	cameraToggleKeyTrap->loop();
 
 	// toggle cameras if necessary
 	if(cameraToggleKeyTrap->newPress()) {
-		if(activeMatrix == &(oCamera->vpMatrix))
+		if(activeMatrix == &(bCamera->vpMatrix))
+			activeMatrix = &(fpCamera->vpMatrix);
+		else if(activeMatrix == &(fpCamera->vpMatrix))
 			activeMatrix = &(wvCamera->vpMatrix);
 		else if(activeMatrix == &(wvCamera->vpMatrix))
-			activeMatrix = &(oCamera->vpMatrix);
+			activeMatrix = &(bCamera->vpMatrix);
 	}
 
-	terrainRenderer.render(*activeMatrix);
+	if(activeMatrix == &(bCamera->vpMatrix))
+		shipRenderer.render(*activeMatrix);
+	else
+		terrainRenderer.render(*activeMatrix);
 }

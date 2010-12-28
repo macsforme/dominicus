@@ -29,6 +29,8 @@ class Mouse {
 public:
 	unsigned short int positionX, positionY;
 
+	Mouse() : positionX(0), positionY(0) { };
+
 	unsigned long int loop();
 };
 

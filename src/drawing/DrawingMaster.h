@@ -11,6 +11,7 @@
 #define DRAWINGMASTER_H
 
 // program headers
+#include "DrawControlBox.h"
 #include "DrawCursor.h"
 #include "DrawHUD.h"
 #include "GamePrefs.h"
@@ -39,6 +40,7 @@ private:
 	FontManager* fontManager;
 
 //	SplashBackground* splashBackground;
+	DrawControlBox* drawControlBox;
 	DrawCursor* drawCursor;
 	DrawHUD* hudDrawing;
 

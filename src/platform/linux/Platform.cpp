@@ -25,6 +25,10 @@ void Platform::hideCursor() {
 	SDL_ShowCursor(SDL_DISABLE);
 }
 
+void Platform::warpCursor(unsigned int x, unsigned int y);
+	SDL_WarpMouse(x, y);
+}
+
 unsigned int Platform::getExecutionTimeMicros() {
 	timeval tv;
 	if(gettimeofday(&tv, NULL) == -1)

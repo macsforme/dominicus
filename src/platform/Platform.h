@@ -24,8 +24,9 @@ public:
 
 	Platform();
 
-	// drawing functions
+	// input functions
 	void hideCursor();
+	void warpCursor(unsigned int x, unsigned int y);
 
 	// time functions
 	unsigned int getExecutionTimeMicros();

@@ -26,14 +26,16 @@ GamePrefs::GamePrefs() {
 	preferences["windowColorDepth"] = "24";
 
 	// font settings
-	preferences["fontFile"] = "JuraMedium.ttf";
-	preferences["fontStandardSize"] = "12";	// point (1/72 inch)
+	preferences["fontFile"] = "DejaVuSans-Bold.ttf";
+	preferences["fontStandardSize"] = "10";	// point (1/72 inch)
 	preferences["fontHeaderSize"] = "24";
 	preferences["fontLargeHeaderSize"] = "32";
 
 	// GUI settings
 	preferences["cursorSize"] = "0.2";	// portion of screen height cursor box takes up
 	preferences["cursorThickness"] = "0.005";	// portion of cursor box
+	preferences["controlBoxSize"] = "0.7";	// portion of screen height control box takes up
+	preferences["controlBoxBorderPixels"] = "1";	// pixel width of border around the sides
 	preferences["elementPadding"] = "0.1";
 
 	// key bindings
@@ -43,6 +45,13 @@ GamePrefs::GamePrefs() {
 	keyBindings[SDLK_t] = "newTerrain";
 	keyBindings[SDLK_w] = "toggleWireFrameMode";
 	keyBindings[SDLK_ESCAPE] = "quit";
+	keyBindings[SDLK_EQUALS] = "speed+";
+	keyBindings[SDLK_MINUS] = "speed-";
+
+	keyBindings[SDLK_RIGHT] = "bankRight";
+	keyBindings[SDLK_LEFT] = "bankLeft";
+	keyBindings[SDLK_UP] = "up";
+	keyBindings[SDLK_DOWN] = "down";
 }
 
 const std::string GamePrefs::getString(std::string key) const {

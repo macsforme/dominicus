@@ -11,10 +11,12 @@
 #define RENDERINGMASTER_H
 
 // program headers
+#include "BackCamera.h"
+#include "FirstPersonCamera.h"
 #include "GameWindow.h"
 #include "Keyboard.h"
 #include "KeyTrap.h"
-#include "OrthoCamera.h"
+#include "ShipRenderer.h"
 #include "TerrainRenderer.h"
 #include "WorldViewCamera.h"
 
@@ -23,14 +25,16 @@ extern Keyboard keyboard;
 
 class RenderingMaster {
 private:
+	BackCamera* bCamera;
+	FirstPersonCamera* fpCamera;
 	WorldViewCamera* wvCamera;
-	OrthoCamera *oCamera;
 
 	Matrix4* activeMatrix;
 
 	KeyTrap* cameraToggleKeyTrap;
 
 	// renderers
+	ShipRenderer shipRenderer;
 	TerrainRenderer terrainRenderer;
 
 public:

@@ -12,7 +12,7 @@
 
 // definitions
 #define TERRAIN_MAXWIDTH 100.0f
-#define TERRAIN_MAXHEIGHT 40.0f
+#define TERRAIN_MAXHEIGHT 10.0f
 
 // program headers
 #include "DiamondSquare.h"

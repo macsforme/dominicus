@@ -19,7 +19,9 @@
 #include "HUDElement.h"
 #include "OpenGLHeaders.h"
 #include "Platform.h"
+#include "ScalarMath.h"
 #include "ShaderTools.h"
+#include "Ship.h"
 #include "TextBlock.h"
 #include "VectorMath.h"
 
@@ -29,8 +31,9 @@
 #include <vector>
 
 // global variables
-extern Platform platform;
 extern GamePrefs gamePrefs;
+extern Platform platform;
+extern Ship ship;
 
 class DrawInfoBox {
 private:

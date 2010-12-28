@@ -14,6 +14,7 @@ GamePrefs gamePrefs;
 Keyboard keyboard;
 Mouse mouse;
 Platform platform;
+Ship ship(Vector4(0.0f, 2.0f, -50.0f, 0.0f));
 SystemInfo systemInfo;
 Terrain terrain;
 
@@ -30,14 +31,10 @@ int dominicusMain(int argc, char* argv[]) {
 	// initialize stuff
 	GameWindow* gameWindow = new GameWindow(gamePrefs.getBool("windowStartFullScreen") ? true : false);
 	DrawingMaster* drawingMaster = new DrawingMaster(gameWindow);
+	ShipControl shipControl(gameWindow, &ship);
 
 	// with the graphics context initialized, check for a compatible system
 	SystemInfo::check();
-
-	// keep a timer for each module we loop over
-	unsigned long int keyboardTimer = 0;
-	unsigned long int mouseTimer = 0;
-	unsigned long int drawingTimer = 0;
 
 	// main program loop
 	while(keepDominicusAlive && ! keyboard.getKeyState("quit")) {
@@ -61,6 +58,12 @@ int dominicusMain(int argc, char* argv[]) {
 
 		if(newTerrainKeyTrap.newPress())
 			terrain = Terrain();
+
+		// keep a timer for each module we loop over
+		static unsigned long int keyboardTimer = 0;
+		static unsigned long int mouseTimer = 0;
+		static unsigned long int drawingTimer = 0;
+		static unsigned long int shipTimer = 0;
 
 		// If the next execution time is less than now, run it. If not, store
 		// the time until due we know how long to sleep if none of our modules
@@ -86,6 +89,15 @@ int dominicusMain(int argc, char* argv[]) {
 
 		if(drawingTimer - now < plannedWait)
 			plannedWait = drawingTimer - now;
+
+		// ship
+		shipControl.loop();
+
+		if(shipTimer <= now)
+			shipTimer = now + ship.loop();
+
+		if(shipTimer - now < plannedWait)
+			plannedWait = shipTimer - now;
 
 		// sanity check
 		if(plannedWait == -1)
