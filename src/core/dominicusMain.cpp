@@ -50,6 +50,8 @@ int dominicusMain(int argc, char* argv[]) {
 
 			gameWindow = new GameWindow(!currentFullScreen);
 			drawingMaster = new DrawingMaster(gameWindow);
+
+			shipControl.gameWindow = gameWindow;
 		}
 
 		// or regenerate the terrain
