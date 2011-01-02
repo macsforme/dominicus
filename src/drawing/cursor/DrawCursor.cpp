@@ -45,8 +45,8 @@ void DrawCursor::draw() {
 			gamePrefs.getFloat("cursorSize") * 2.0f
 		);
 	Vector2 middle(
-			-1.0f + (float) mouse.positionX / (float) gameWindow->width * 2.0f,
-			1.0f - (float) mouse.positionY / (float) gameWindow->height * 2.0f
+			-1.0f + (float) inputHandler.mouse.positionX / (float) gameWindow->width * 2.0f,
+			1.0f - (float) inputHandler.mouse.positionY / (float) gameWindow->height * 2.0f
 		);
 	Vector2 ll(middle.x - dims.x / 2.0f, middle.y - dims.y / 2.0f);
 	Vector2 ur(middle.x + dims.x / 2.0f, middle.y + dims.y / 2.0f);

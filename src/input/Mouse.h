@@ -20,6 +20,7 @@
 #include <iostream>
 #include <map>
 #include <SDL/SDL.h>
+#include <vector>
 
 // global variables
 extern GamePrefs gamePrefs;
@@ -29,9 +30,11 @@ class Mouse {
 public:
 	unsigned short int positionX, positionY;
 
+	std::vector<SDL_Event> eventStack;
+
 	Mouse() : positionX(0), positionY(0) { };
 
-	unsigned long int loop();
+	void loop();
 };
 
 #endif

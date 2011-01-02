@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		030D18C012D0792200DA9B7B /* InputHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 030D18BF12D0792200DA9B7B /* InputHandler.cpp */; };
 		030DEC00126CDD1B000D87ED /* DiamondSquare.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 030DEBFF126CDD1B000D87ED /* DiamondSquare.cpp */; };
 		030F8DEE1264C00100190225 /* shaders in Resources */ = {isa = PBXBuildFile; fileRef = 030F8DEC1264C00100190225 /* shaders */; };
 		030F8E021264C01100190225 /* data in Resources */ = {isa = PBXBuildFile; fileRef = 030F8DEF1264C01100190225 /* data */; };
@@ -73,6 +74,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		030D18BE12D0792200DA9B7B /* InputHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputHandler.h; sourceTree = "<group>"; };
+		030D18BF12D0792200DA9B7B /* InputHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InputHandler.cpp; sourceTree = "<group>"; };
 		030DEBFE126CDD1B000D87ED /* DiamondSquare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiamondSquare.h; sourceTree = "<group>"; };
 		030DEBFF126CDD1B000D87ED /* DiamondSquare.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DiamondSquare.cpp; sourceTree = "<group>"; };
 		030F8DE31264BFAA00190225 /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO.txt; sourceTree = "<group>"; };
@@ -296,6 +299,8 @@
 		030F8F3B1264DD1300190225 /* input */ = {
 			isa = PBXGroup;
 			children = (
+				030D18BE12D0792200DA9B7B /* InputHandler.h */,
+				030D18BF12D0792200DA9B7B /* InputHandler.cpp */,
 				030F8F3D1264DD1300190225 /* Keyboard.h */,
 				030F8F3C1264DD1300190225 /* Keyboard.cpp */,
 				035A3DF71284391F0001E186 /* KeyTrap.h */,
@@ -607,6 +612,7 @@
 				0390D44812C71D7E00CABAD5 /* BackCamera.cpp in Sources */,
 				0390D44912C71D7E00CABAD5 /* FirstPersonCamera.cpp in Sources */,
 				0390D4E312C727EA00CABAD5 /* DrawControlBox.cpp in Sources */,
+				030D18C012D0792200DA9B7B /* InputHandler.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

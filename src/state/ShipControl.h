@@ -13,13 +13,11 @@
 // program headers
 #include "GamePrefs.h"
 #include "GameWindow.h"
-#include "Keyboard.h"
-#include "Mouse.h"
+#include "InputHandler.h"
 #include "Ship.h"
 
-extern Keyboard keyboard;
-extern Mouse mouse;
 extern GamePrefs gamePrefs;
+extern InputHandler inputHandler;
 
 class ShipControl {
 public:

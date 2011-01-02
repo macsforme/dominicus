@@ -19,6 +19,7 @@
 #include <SDL/SDL.h>
 #include <sstream>
 #include <string>
+#include <vector>
 
 // global variables
 extern GamePrefs gamePrefs;
@@ -29,9 +30,11 @@ private:
 	std::map<std::string, bool> keyStates;
 
 public:
+	std::vector<SDL_Event> eventStack;
+
 	bool getKeyState(std::string key);
 
-	unsigned long int loop();
+	void loop();
 };
 
 #endif

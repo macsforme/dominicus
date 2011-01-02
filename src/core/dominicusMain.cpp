@@ -11,8 +11,7 @@
 
 // global variable instantiations
 GamePrefs gamePrefs;
-Keyboard keyboard;
-Mouse mouse;
+InputHandler inputHandler;
 Platform platform;
 Ship ship(Vector4(0.0f, 2.0f, -50.0f, 0.0f));
 SystemInfo systemInfo;
@@ -37,7 +36,7 @@ int dominicusMain(int argc, char* argv[]) {
 	SystemInfo::check();
 
 	// main program loop
-	while(keepDominicusAlive && ! keyboard.getKeyState("quit")) {
+	while(keepDominicusAlive && ! inputHandler.keyboard.getKeyState("quit")) {
 		// see if we need to change the fullscreen status
 		static KeyTrap fullScreenKeyTrap("toggleFullScreen");
 		fullScreenKeyTrap.loop();
@@ -62,8 +61,7 @@ int dominicusMain(int argc, char* argv[]) {
 			terrain = Terrain();
 
 		// keep a timer for each module we loop over
-		static unsigned long int keyboardTimer = 0;
-		static unsigned long int mouseTimer = 0;
+		static unsigned long int inputTimer = 0;
 		static unsigned long int drawingTimer = 0;
 		static unsigned long int shipTimer = 0;
 
@@ -73,17 +71,11 @@ int dominicusMain(int argc, char* argv[]) {
 		unsigned long int plannedWait = -1;	// this will be set to the minimum sleep time
 		unsigned long int now = platform.getExecutionTimeMicros();
 
-		// keyboard polling
-		if(keyboardTimer <= now)
-			keyboardTimer = now + keyboard.loop();
-		if(keyboardTimer - now < plannedWait)
-			plannedWait = keyboardTimer - now;
-
-		// mouse polling
-		if(mouseTimer <= now)
-			mouseTimer = now + mouse.loop();
-		if(mouseTimer - now < plannedWait)
-			plannedWait = mouseTimer - now;
+		// input polling
+		if(inputTimer <= now)
+			inputTimer = now + inputHandler.processEvents();
+		if(inputTimer - now < plannedWait)
+			plannedWait = inputTimer - now;
 
 		// renderer
 		if(drawingTimer <= now)

@@ -14,13 +14,13 @@ KeyTrap::KeyTrap(std::string action) : action(action) {
 }
 
 void KeyTrap::loop() {
-	if(! keyboard.getKeyState(action))
+	if(! inputHandler.keyboard.getKeyState(action))
 		alreadyPressed = false;
 }
 
 bool KeyTrap::newPress() {
 	if(! alreadyPressed) {
-		if(keyboard.getKeyState(action)) {
+		if(inputHandler.keyboard.getKeyState(action)) {
 			alreadyPressed = true;
 
 			return true;

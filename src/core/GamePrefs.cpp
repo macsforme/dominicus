@@ -16,8 +16,7 @@ GamePrefs::GamePrefs() {
 	preferences["renderingFPS"] = "30";
 
 	// input settings
-	preferences["keyboardPollFrequency"] = "30";
-	preferences["mousePollFrequency"] = "30";
+	preferences["inputPollingFrequency"] = "120";
 
 	// window settings
 	preferences["windowStartFullScreen"] = "0";

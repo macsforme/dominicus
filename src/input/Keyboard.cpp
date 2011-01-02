@@ -16,16 +16,11 @@ bool Keyboard::getKeyState(std::string key) {
 		return false;
 }
 
-unsigned long int Keyboard::loop() {
-	// poll SDL for keyboard events
-	SDL_Event event;
-	std::map<std::string,bool> keyEvents;
-
-	SDL_PumpEvents();
-
-	while(SDL_PeepEvents(NULL, 1, SDL_PEEKEVENT, SDL_KEYEVENTMASK)) {
-		SDL_PollEvent(&event);
-
+void Keyboard::loop() {
+	// handle input events on our stack
+	while(eventStack.size() > 0) {
+		SDL_Event event = eventStack.front();
+		
 		switch(event.type) {
 		case SDL_KEYDOWN:
 		case SDL_KEYUP:
@@ -37,25 +32,8 @@ unsigned long int Keyboard::loop() {
 			ProgramLog::report(LOG_DEBUG, "Received unhandled keyboard event.");
 
 			break;
-
 		}
+
+		eventStack.erase(eventStack.begin());
 	}
-
-	// calculate the maximum amount of time we can sleep in order
-	// to maintain our desired frequency
-	static unsigned long int last = platform.getExecutionTimeMicros();
-	static unsigned long int sleepMicros = 1;
-
-	unsigned long int now = platform.getExecutionTimeMicros();
-	unsigned long int idealSleepTime = (
-			gamePrefs.getInt("keyboardPollFrequency") != 0 ?
-			1000000 / gamePrefs.getInt("keyboardPollFrequency") : 0
-		);
-
-	// adjust the target sleep micros by the factor we are off by
-	sleepMicros = (sleepMicros > 0 ? sleepMicros : 1) * ((double) idealSleepTime / (double) (now - last));
-
-	last = now;
-
-	return sleepMicros;
 }

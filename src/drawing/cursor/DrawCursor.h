@@ -12,14 +12,14 @@
 
 // program headers
 #include "GameWindow.h"
-#include "Mouse.h"
+#include "InputHandler.h"
 #include "OpenGLHeaders.h"
 #include "Platform.h"
 #include "ShaderTools.h"
 #include "VectorMath.h"
 
 // global variables
-extern Mouse mouse;
+extern InputHandler inputHandler;
 extern Platform platform;
 
 class DrawCursor {

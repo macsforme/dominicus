@@ -35,10 +35,10 @@ void ShipControl::loop() {
 
 	// do rotations
 	float xMovement =
-			-((float) mouse.positionX / (float) gameWindow->width - 0.5f) *
+			-((float) inputHandler.mouse.positionX / (float) gameWindow->width - 0.5f) *
 			 gameWindow->aspectRatio / (gamePrefs.getFloat("controlBoxSize") / 2);
 	float yMovement =
-			((float) mouse.positionY / (float) gameWindow->height - 0.5f) /
+			((float) inputHandler.mouse.positionY / (float) gameWindow->height - 0.5f) /
 			(gamePrefs.getFloat("controlBoxSize") / 2);
 
 	if(xMovement > 1.0f) xMovement = 1.0f;
@@ -57,19 +57,19 @@ void ShipControl::loop() {
 			ship->orientation
 		);
 
-	if(keyboard.getKeyState("bankLeft"))
+	if(inputHandler.keyboard.getKeyState("bankLeft"))
 		rotateMatrix(zVec, radians(0.5f * SHIP_TURNPERSEC * (float) dt / 1000000.0f), ship->orientation);
-	if(keyboard.getKeyState("bankRight"))
+	if(inputHandler.keyboard.getKeyState("bankRight"))
 		rotateMatrix(zVec, radians(-0.5f * SHIP_TURNPERSEC * (float) dt / 1000000.0f), ship->orientation);
-	if(keyboard.getKeyState("down"))
+	if(inputHandler.keyboard.getKeyState("down"))
 		rotateMatrix(xVec, radians(0.5f * SHIP_TURNPERSEC * (float) dt / 1000000.0f), ship->orientation);
-	if(keyboard.getKeyState("up"))
+	if(inputHandler.keyboard.getKeyState("up"))
 		rotateMatrix(xVec, radians(-0.5f * SHIP_TURNPERSEC * (float) dt / 1000000.0f), ship->orientation);
 
-	if(keyboard.getKeyState("speed+"))
+	if(inputHandler.keyboard.getKeyState("speed+"))
 		if(ship->speed < SHIP_MOVEPERSEC)
 			ship->speed += SHIP_MOVEPERSEC * (float) dt / 1000000.0f;
-	if(keyboard.getKeyState("speed-"))
+	if(inputHandler.keyboard.getKeyState("speed-"))
 		if(ship->speed > -SHIP_MOVEPERSEC)
 			ship->speed -= SHIP_MOVEPERSEC * (float) dt / 1000000.0f;
 }

@@ -12,14 +12,14 @@
 
 // program headers
 #include "GamePrefs.h"
-#include "Keyboard.h"
+#include "InputHandler.h"
 
 // library headers
 #include <string>
 
 // global variables
 extern GamePrefs gamePrefs;
-extern Keyboard keyboard;
+extern InputHandler inputHandler;
 
 class KeyTrap {
 private:
