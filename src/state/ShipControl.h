@@ -14,7 +14,9 @@
 #include "GamePrefs.h"
 #include "GameWindow.h"
 #include "InputHandler.h"
+#include "ScalarMath.h"
 #include "Ship.h"
+#include "VectorMath.h"
 
 extern GamePrefs gamePrefs;
 extern InputHandler inputHandler;

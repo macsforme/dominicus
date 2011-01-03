@@ -1,15 +1,21 @@
 #version 110
 
-uniform float borderSize;
+uniform float spotSize;
 
 varying vec2 boxCoordInterpol;
 
 void main() {
-	if(
-			abs(boxCoordInterpol.x) < 1.0 - borderSize &&
-			abs(boxCoordInterpol.y) < 1.0 - borderSize
+	if(distance(vec2(0.0, 0.0), boxCoordInterpol) <= spotSize)
+		gl_FragColor = vec4(vec3(0.3), 0.1);
+	else if(
+			abs(boxCoordInterpol.x) < 0.75 &&
+			abs(boxCoordInterpol.y) < 0.75
 		)
 		discard;
-
-	gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+	else
+		gl_FragColor = vec4(
+				vec3(0.3),
+				(max(abs(boxCoordInterpol.x), abs(boxCoordInterpol.y)) * 4.0 - 3.0) *
+						0.1
+			);
 }

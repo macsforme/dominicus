@@ -13,7 +13,7 @@ GamePrefs::GamePrefs() {
 	// rendering settings
 	preferences["renderingDisplayUpdateFrequency"] = "2";	// tests per second
 	preferences["renderingCapFPS"] = "1";
-	preferences["renderingFPS"] = "30";
+	preferences["renderingFPS"] = "60";
 
 	// input settings
 	preferences["inputPollingFrequency"] = "120";
@@ -34,7 +34,7 @@ GamePrefs::GamePrefs() {
 	preferences["cursorSize"] = "0.2";	// portion of screen height cursor box takes up
 	preferences["cursorThickness"] = "0.005";	// portion of cursor box
 	preferences["controlBoxSize"] = "0.7";	// portion of screen height control box takes up
-	preferences["controlBoxBorderPixels"] = "1";	// pixel width of border around the sides
+	preferences["controlSpotSize"] = "0.05";	// portion of screen height dead spot takes up
 	preferences["elementPadding"] = "0.1";
 
 	// key bindings

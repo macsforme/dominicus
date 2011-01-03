@@ -35,14 +35,13 @@ DrawControlBox::DrawControlBox(GameWindow* gameWindow) : gameWindow(gameWindow) 
 	ShaderTools::linkProgram(program);
 
 	// get uniform locations
-	borderSizeUniform = glGetUniformLocation(program, "borderSize");
+	spotSizeUniform = glGetUniformLocation(program, "spotSize");
 }
 
 void DrawControlBox::draw() {
 	// calculate the geomtery values
-	float borderHeight = (float) gamePrefs.getInt("controlBoxBorderPixels") * 2.0f / gameWindow->height;
-	float totalControlBoxSize =
-			gamePrefs.getFloat("controlBoxSize") + borderHeight * 2.0f;
+	float totalControlBoxSize = gamePrefs.getFloat("controlBoxSize");
+	float spotSize = gamePrefs.getFloat("controlSpotSize") / totalControlBoxSize;
 
 	Vector2 dims(
 			totalControlBoxSize * 2.0f / (float) gameWindow->aspectRatio,
@@ -55,7 +54,7 @@ void DrawControlBox::draw() {
 
 	glUseProgram(program);
 
-	glUniform1f(borderSizeUniform, borderHeight / totalControlBoxSize);
+	glUniform1f(spotSizeUniform, spotSize);
 
 	glBegin(GL_QUADS);
 

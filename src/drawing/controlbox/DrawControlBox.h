@@ -34,7 +34,7 @@ private:
 	GLint positionAttrib, boxCoordAttrib;
 
 	// uniforms
-	GLint borderSizeUniform;
+	GLint spotSizeUniform;
 
 public:
 	DrawControlBox(GameWindow* gameWindow);

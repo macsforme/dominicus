@@ -11,7 +11,7 @@
 #define SHIP_H
 
 // definitions
-#define SHIP_UPDATESPERSECOND 30
+#define SHIP_UPDATESPERSECOND 200
 #define SHIP_MOVEPERSEC 3.0f
 #define SHIP_TURNPERSEC 90.0f
 
