@@ -249,20 +249,6 @@ void ShipRenderer::render(Matrix4 mvpMatrix) {
 	glUseProgram(modelProgram);
 
 	// prepare the MVP matrix
-//	mvpMatrix.identity();
-
-	// screen height/width factor
-	mvpMatrix *= Matrix4(
-			1.0f, 0.0f, 0.0f, 0.0f,
-			0.0f, 4.0f/3.0f, 0.0f, 0.0f,
-			0.0f, 0.0f, 1.0f, 0.0f,
-			0.0f, 0.0f, 0.0f, 1.0f
-		);
-
-	// zoom/rotations
-//	scaleMatrix(0.15f, 0.15f, 0.15f, mvpMatrix);
-//	MVPMatrix = camera.currentScale * camera.currentRotate * MVPMatrix;
-
 	float mvpMatrixArray[] = {
 			mvpMatrix.m11, mvpMatrix.m12, mvpMatrix.m13, mvpMatrix.m14,
 			mvpMatrix.m21, mvpMatrix.m22, mvpMatrix.m23, mvpMatrix.m24,
