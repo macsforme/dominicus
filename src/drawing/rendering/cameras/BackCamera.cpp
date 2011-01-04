@@ -10,27 +10,19 @@
 #include "BackCamera.h"
 
 void BackCamera::loop() {
-	// get our delta T
-	static float lastUpdate = platform.getExecutionTimeMicros();
-	float dt = platform.getExecutionTimeMicros() - lastUpdate;
-	lastUpdate += dt;
+	// re-initialize the matrices
+	shipVPMatrix.identity();
+	terrainVPMatrix.identity();
 
-	// do math on variables
-	rotation += (float) dt / 1000000.0f * orthoRotationSpeed;
-	if(rotation > 360.0f)
-		rotation -= 360.0f;
+	// ship camera transformations	
+	rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(180.0f), shipVPMatrix);
 
-	// re-initialize the matrix
-	vpMatrix.identity();
-
-	// camera transformations
-	rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(180.0f), vpMatrix);
-	vpMatrix *= Matrix4(
+	shipVPMatrix *= Matrix4(
 			ship.orientation.m11,
 			ship.orientation.m12,
 			ship.orientation.m13,
 			0.0f,
-
+			
 			ship.orientation.m21,
 			ship.orientation.m22,
 			ship.orientation.m23,
@@ -47,27 +39,62 @@ void BackCamera::loop() {
 			1.0f
 		);
 
-	// un-roll it across the directional vector
-//	rotateMatrix(
-//			Vector3(ship.orientation.m31, ship.orientation.m32, ship.orientation.m33),
-//			-ship.roll,
-//			rotationMatrix
-//		);
+	Vector2 zeroAngle(0.0f, 1.0f);
+	Vector2 point(ship.orientation.m31, ship.orientation.m33);
+	point.norm();
+	float angle = degrees(acos(dot(zeroAngle, point)));
+	if(point.x < 0.0f)
+		angle = 360.0f - angle;
 
-	// reverse the horizon angle
-//	rotationMatrix.m12 = -rotationMatrix.m12;
-//	rotationMatrix.m13 = -rotationMatrix.m13;
+	// rotate back around +Y so we're always facing forward
+	rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), -radians(angle), shipVPMatrix);
 
-//	rotationMatrix.m21 = -rotationMatrix.m21;
-//	rotationMatrix.m23 = -rotationMatrix.m23;
+	rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(BC_WATCHANGLE), shipVPMatrix);
+	translateMatrix(0.0f, 0.0f, BC_BACKOFFDIST, shipVPMatrix);
 
-//	rotationMatrix.m31 = -rotationMatrix.m31;
-//	rotationMatrix.m32 = -rotationMatrix.m32;
+	shipVPMatrix *= Matrix4(
+	        1.0/tan(radians(BC_VIEWANGLE)), 0.0, 0.0, 0.0,
+	        0.0, aspectRatio/tan(radians(BC_VIEWANGLE)), 0.0, 0.0,
+	        0.0, 0.0, (BC_FARCLIP + BC_NEARCLIP) / (BC_FARCLIP - BC_NEARCLIP), 1.0,
+	        0.0, 0.0, -2.0 * BC_FARCLIP * BC_NEARCLIP / (BC_FARCLIP - BC_NEARCLIP), 0.0
+		);
 
-	// roll it again against the z+ vector
-//	rotateMatrix(
-//			Vector3(ship.orientation.m31, ship.orientation.m32, ship.orientation.m33),
-//			ship.roll,
-//			vpMatrix
-//		);
+	// terrain camera transformations
+	translateMatrix(-ship.position.x, -ship.position.y, -ship.position.z, terrainVPMatrix);
+
+	Vector3 zVec(ship.orientation.m31, 0.0f, ship.orientation.m33);
+	zVec.norm();
+
+	terrainVPMatrix *= Matrix4(
+			zVec.z,
+			0.0f,
+			zVec.x,
+			0.0f,
+			
+			0.0f,
+			1.0f,
+			0.0f,
+			0.0f,
+
+			-zVec.x,
+			0.0f,
+			zVec.z,
+			0.0f,
+
+			0.0f,
+			0.0f,
+			0.0f,
+			1.0f
+		);
+
+	rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(BC_WATCHANGLE), terrainVPMatrix);
+	translateMatrix(0.0f, 0.0f, BC_BACKOFFDIST, terrainVPMatrix);
+
+	terrainVPMatrix *= Matrix4(
+	        1.0/tan(radians(BC_VIEWANGLE)), 0.0, 0.0, 0.0,
+	        0.0, aspectRatio/tan(radians(BC_VIEWANGLE)), 0.0, 0.0,
+	        0.0, 0.0, (BC_FARCLIP + BC_NEARCLIP) / (BC_FARCLIP - BC_NEARCLIP), 1.0,
+	        0.0, 0.0, -2.0 * BC_FARCLIP * BC_NEARCLIP / (BC_FARCLIP - BC_NEARCLIP), 0.0
+		);
+
 }

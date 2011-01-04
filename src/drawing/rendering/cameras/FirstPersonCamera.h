@@ -19,9 +19,6 @@
 #include "VectorMath.h"
 
 // definitions
-#define FPC_BACKOFFDIST 20.0f
-#define FPC_WATCHANGLE 30.0f
-
 #define FPC_NEARCLIP 1.0f
 #define FPC_FARCLIP 150.0f
 #define FPC_VIEWANGLE 30.0f

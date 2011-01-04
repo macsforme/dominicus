@@ -19,8 +19,12 @@
 #include "VectorMath.h"
 
 // constants
-const float orthoBirdsEyeAngle = 45.0f; // degrees from horizon
-const float orthoRotationSpeed = 30.0f; // degrees per second
+#define BC_BACKOFFDIST 5.0f
+#define BC_WATCHANGLE -20.0f
+
+#define BC_NEARCLIP 1.0f
+#define BC_FARCLIP 150.0f
+#define BC_VIEWANGLE 30.0f
 
 // global variables
 extern Platform platform;
@@ -33,7 +37,8 @@ private:
 	float aspectRatio;
 
 public:
-	Matrix4 vpMatrix;
+	Matrix4 terrainVPMatrix;
+	Matrix4 shipVPMatrix;
 
 	BackCamera(GameWindow* gameWindow) :
 			aspectRatio(gameWindow->aspectRatio), rotation(0.0f) { }
