@@ -23,8 +23,7 @@ public:
 	unsigned short int screenWidth, screenHeight;
 
 	void init();
-
-	static void check();
+	void check();
 };
 
 #endif

@@ -33,7 +33,7 @@ int dominicusMain(int argc, char* argv[]) {
 	ShipControl shipControl(gameWindow, &ship);
 
 	// with the graphics context initialized, check for a compatible system
-	SystemInfo::check();
+	systemInfo.check();
 
 	// main program loop
 	while(keepDominicusAlive && ! inputHandler.keyboard.getKeyState("quit")) {
