@@ -44,7 +44,7 @@ void ShipControl::loop() {
 	// we have a dead spot in the middle
 	Vector2 zeroVec(0.0f, 0.0f);
 	Vector2 posVec(xMovement, yMovement);
-	
+
 	if(distance(zeroVec, posVec) > gamePrefs.getFloat("controlSpotSize") / gamePrefs.getFloat("controlBoxSize")) {
 		if(xMovement > 1.0f) xMovement = 1.0f;
 		if(xMovement < -1.0f) xMovement = -1.0f;
@@ -62,7 +62,7 @@ void ShipControl::loop() {
 				ship->orientation
 			);
 	}
-	
+
 	if(inputHandler.keyboard.getKeyState("bankLeft"))
 		rotateMatrix(zVec, radians(0.5f * SHIP_TURNPERSEC * (float) dt / 1000000.0f), ship->orientation);
 	if(inputHandler.keyboard.getKeyState("bankRight"))

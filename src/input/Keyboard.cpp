@@ -20,7 +20,7 @@ void Keyboard::loop() {
 	// handle input events on our stack
 	while(eventStack.size() > 0) {
 		SDL_Event event = eventStack.front();
-		
+
 		switch(event.type) {
 		case SDL_KEYDOWN:
 		case SDL_KEYUP:

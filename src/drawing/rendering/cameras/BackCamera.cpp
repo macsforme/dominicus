@@ -14,7 +14,7 @@ void BackCamera::loop() {
 	shipVPMatrix.identity();
 	terrainVPMatrix.identity();
 
-	// ship camera transformations	
+	// ship camera transformations
 	rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(180.0f), shipVPMatrix);
 
 	shipVPMatrix *= Matrix4(
@@ -22,7 +22,7 @@ void BackCamera::loop() {
 			ship.orientation.m12,
 			ship.orientation.m13,
 			0.0f,
-			
+
 			ship.orientation.m21,
 			ship.orientation.m22,
 			ship.orientation.m23,
@@ -70,7 +70,7 @@ void BackCamera::loop() {
 			0.0f,
 			zVec.x,
 			0.0f,
-			
+
 			0.0f,
 			1.0f,
 			0.0f,

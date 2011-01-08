@@ -13,19 +13,19 @@ unsigned long int InputHandler::processEvents() {
 	// poll SDL for events and forward the ones we use to the appropriate
 	// input handler
 	SDL_Event event;
-	
+
 	while(SDL_PollEvent(&event)) {
 		switch(event.type) {
 		case SDL_KEYDOWN:
 		case SDL_KEYUP:
 			keyboard.eventStack.push_back(event);
-			
+
 			break;
 		case SDL_MOUSEMOTION:
 		case SDL_MOUSEBUTTONDOWN:
 		case SDL_MOUSEBUTTONUP:
 			mouse.eventStack.push_back(event);
-			
+
 			break;
 		default:
 			break;
