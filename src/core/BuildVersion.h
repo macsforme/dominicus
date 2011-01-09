@@ -27,8 +27,10 @@
 #include "ProgramLog.h"
 
 // library headers
-#include <string>
 #include <sstream>
+#include <stdio.h>
+#include <string>
+#include <string.h>
 
 // global variables
 extern Platform platform;
