@@ -32,6 +32,10 @@ Platform::Platform() {
 	srand(time(NULL));
 }
 
+const char* Platform::getArchitecture() {
+	return "MacOSX";
+}
+
 void Platform::hideCursor() {
 	SDL_ShowCursor(SDL_DISABLE);
 }

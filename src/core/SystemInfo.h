@@ -11,6 +11,7 @@
 #define SYSTEMINFO_H
 
 // program headers
+#include "BuildVersion.h"
 #include "OpenGLHeaders.h"
 #include "ProgramLog.h"
 
@@ -20,6 +21,7 @@
 
 class SystemInfo {
 public:
+	BuildVersion buildVersion;
 	unsigned short int screenWidth, screenHeight;
 
 	void init();

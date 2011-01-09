@@ -14,6 +14,17 @@ void SystemInfo::init() {
 	// this class is instantiated before SDL_Init() is called from the
 	// main loop
 
+	// report the build version
+	std::stringstream buildInfo;
+	buildInfo <<
+			"Dominicus " <<
+			buildVersion.version << " " <<
+			buildVersion.classification << " " <<
+			buildVersion.source << " " <<
+			buildVersion.architecture << " " <<
+			buildVersion.buildDate;
+	programLog.report(LOG_INFO, buildInfo.str().c_str());
+
 	// the first call to SDL_getVideoInfo gives us the width and height of the desktop
 	SDL_VideoInfo* vidInfo = (SDL_VideoInfo*) SDL_GetVideoInfo();
 	if(vidInfo == NULL)

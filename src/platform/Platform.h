@@ -23,6 +23,7 @@ public:
 	std::string dataPath;
 
 	Platform();
+	const char* getArchitecture();
 
 	// input functions
 	void hideCursor();

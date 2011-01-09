@@ -26,7 +26,7 @@ GamePrefs::GamePrefs() {
 
 	// font settings
 	preferences["fontFile"] = "DejaVuSans-Bold.ttf";
-	preferences["fontStandardSize"] = "10";	// point (1/72 inch)
+	preferences["fontStandardSize"] = "12";	// point (1/72 inch)
 	preferences["fontHeaderSize"] = "24";
 	preferences["fontLargeHeaderSize"] = "32";
 

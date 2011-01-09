@@ -56,6 +56,7 @@
 		03DA5BC3127AA7B0003814F7 /* RenderingMaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03DA5BC2127AA7B0003814F7 /* RenderingMaster.cpp */; };
 		03DA5BCA127AA84C003814F7 /* TerrainRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03DA5BC9127AA84C003814F7 /* TerrainRenderer.cpp */; };
 		03DF5A0812797B4D003C2134 /* DrawingMaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03DF59FF12797B4D003C2134 /* DrawingMaster.cpp */; };
+		03E6C23D12D9AFAF0093B629 /* BuildVersion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03E6C23C12D9AFAF0093B629 /* BuildVersion.cpp */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 /* End PBXBuildFile section */
 
@@ -174,6 +175,8 @@
 		03DF5A0012797B4D003C2134 /* DrawingMaster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawingMaster.h; sourceTree = "<group>"; };
 		03DF5A0612797B4D003C2134 /* TerrainDevelopment.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TerrainDevelopment.cpp; sourceTree = "<group>"; };
 		03DF5A0712797B4D003C2134 /* TerrainDevelopment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TerrainDevelopment.h; sourceTree = "<group>"; };
+		03E6C23B12D9AFAF0093B629 /* BuildVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BuildVersion.h; sourceTree = "<group>"; };
+		03E6C23C12D9AFAF0093B629 /* BuildVersion.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BuildVersion.cpp; sourceTree = "<group>"; };
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* dominicus-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "dominicus-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -203,6 +206,8 @@
 				030F8E7A1264CC2D00190225 /* ProgramLog.cpp */,
 				030F8E6A1264CB9400190225 /* SystemInfo.h */,
 				030F8E691264CB9400190225 /* SystemInfo.cpp */,
+				03E6C23B12D9AFAF0093B629 /* BuildVersion.h */,
+				03E6C23C12D9AFAF0093B629 /* BuildVersion.cpp */,
 				030F8E1C1264C1F800190225 /* GamePrefs.h */,
 				030F8E1B1264C1F800190225 /* GamePrefs.cpp */,
 			);
@@ -613,6 +618,7 @@
 				0390D44912C71D7E00CABAD5 /* FirstPersonCamera.cpp in Sources */,
 				0390D4E312C727EA00CABAD5 /* DrawControlBox.cpp in Sources */,
 				030D18C012D0792200DA9B7B /* InputHandler.cpp in Sources */,
+				03E6C23D12D9AFAF0093B629 /* BuildVersion.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
