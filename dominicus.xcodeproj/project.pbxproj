@@ -37,6 +37,7 @@
 		035A3C4612841B390001E186 /* Mouse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 035A3C4512841B390001E186 /* Mouse.cpp */; };
 		035A3D061284293A0001E186 /* DrawCursor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 035A3D051284293A0001E186 /* DrawCursor.cpp */; };
 		035A3DF91284391F0001E186 /* KeyTrap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 035A3DF81284391F0001E186 /* KeyTrap.cpp */; };
+		035E0E7712DCE54D00F84121 /* MainLoopMember.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 035E0E7612DCE54D00F84121 /* MainLoopMember.cpp */; };
 		035F1E4512A358FB008DA566 /* GameWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 035F1E4312A358FB008DA566 /* GameWindow.cpp */; };
 		035F214712A39233008DA566 /* Ship.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 035F214612A39233008DA566 /* Ship.cpp */; };
 		035F23DE12A3DCE0008DA566 /* ShipControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 035F23DD12A3DCE0008DA566 /* ShipControl.cpp */; };
@@ -130,6 +131,8 @@
 		035A3D051284293A0001E186 /* DrawCursor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DrawCursor.cpp; path = cursor/DrawCursor.cpp; sourceTree = "<group>"; };
 		035A3DF71284391F0001E186 /* KeyTrap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyTrap.h; sourceTree = "<group>"; };
 		035A3DF81284391F0001E186 /* KeyTrap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KeyTrap.cpp; sourceTree = "<group>"; };
+		035E0E7512DCE54D00F84121 /* MainLoopMember.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainLoopMember.h; sourceTree = "<group>"; };
+		035E0E7612DCE54D00F84121 /* MainLoopMember.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MainLoopMember.cpp; sourceTree = "<group>"; };
 		035F1E4312A358FB008DA566 /* GameWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameWindow.cpp; sourceTree = "<group>"; };
 		035F1E4412A358FB008DA566 /* GameWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameWindow.h; sourceTree = "<group>"; };
 		035F214512A39233008DA566 /* Ship.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Ship.h; path = src/state/Ship.h; sourceTree = "<group>"; };
@@ -202,6 +205,8 @@
 			children = (
 				030F8E111264C0FF00190225 /* dominicusMain.h */,
 				030F8E101264C0FF00190225 /* dominicusMain.cpp */,
+				035E0E7512DCE54D00F84121 /* MainLoopMember.h */,
+				035E0E7612DCE54D00F84121 /* MainLoopMember.cpp */,
 				030F8E7B1264CC2D00190225 /* ProgramLog.h */,
 				030F8E7A1264CC2D00190225 /* ProgramLog.cpp */,
 				030F8E6A1264CB9400190225 /* SystemInfo.h */,
@@ -619,6 +624,7 @@
 				0390D4E312C727EA00CABAD5 /* DrawControlBox.cpp in Sources */,
 				030D18C012D0792200DA9B7B /* InputHandler.cpp in Sources */,
 				03E6C23D12D9AFAF0093B629 /* BuildVersion.cpp in Sources */,
+				035E0E7712DCE54D00F84121 /* MainLoopMember.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

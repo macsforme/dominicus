@@ -17,6 +17,7 @@
 #include "GamePrefs.h"
 #include "GameWindow.h"
 #include "KeyTrap.h"
+#include "MainLoopMember.h"
 #include "OpenGLHeaders.h"
 #include "Platform.h"
 #include "ProgramLog.h"
@@ -34,7 +35,7 @@ extern SystemInfo systemInfo;
 extern GamePrefs gamePrefs;
 extern Platform platform;
 
-class DrawingMaster {
+class DrawingMaster : public MainLoopMember {
 private:
 	RenderingMaster* renderingMaster;
 	FontManager* fontManager;

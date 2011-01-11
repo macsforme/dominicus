@@ -68,38 +68,40 @@ int dominicusMain(int argc, char* argv[]) {
 		// If the next execution time is less than now, run it. If not, store
 		// the time until due we know how long to sleep if none of our modules
 		// are ready.
-		unsigned long int plannedWait = -1;	// this will be set to the minimum sleep time
-		unsigned long int now = platform.getExecutionTimeMicros();
+		unsigned long int nextPlannedLoop = -1;	// this will be set to the minimum sleep time
+		unsigned long int now;
 
 		// input polling
+		now = platform.getExecutionTimeMicros();
 		if(inputTimer <= now)
 			inputTimer = now + inputHandler.processEvents();
-		if(inputTimer - now < plannedWait)
-			plannedWait = inputTimer - now;
+
+		if(inputTimer < nextPlannedLoop)
+			nextPlannedLoop = inputTimer;
 
 		// renderer
+		now = platform.getExecutionTimeMicros();
 		if(drawingTimer <= now)
 			drawingTimer = now + drawingMaster->loop();
 
-		if(drawingTimer - now < plannedWait)
-			plannedWait = drawingTimer - now;
+		if(drawingTimer < nextPlannedLoop)
+			nextPlannedLoop = drawingTimer;
 
 		// ship
-		shipControl.loop();
-
-		if(shipTimer <= now)
+		now = platform.getExecutionTimeMicros();
+		if(shipTimer <= now) {
 			shipTimer = now + ship.loop();
+			shipControl.loop();
+		}
 
-		if(shipTimer - now < plannedWait)
-			plannedWait = shipTimer - now;
+		if(shipTimer < nextPlannedLoop)
+			nextPlannedLoop = shipTimer;
 
-		// sanity check
-		if(plannedWait == -1)
-			ProgramLog::report(LOG_INTERNALERROR, "Loop sleep time was unable to be properly set.");
+		now = platform.getExecutionTimeMicros();
 
 		// sleep the loop if we're not already overdue for something
-		if(plannedWait > 0)
-			platform.sleepMicros(plannedWait);
+		if(nextPlannedLoop > now)
+			platform.sleepMicros(nextPlannedLoop - now);
 	}
 
 	// clean up objects

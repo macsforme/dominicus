@@ -24,22 +24,10 @@ unsigned long int Ship::loop() {
 	// update the position
 	position += (Vector4(0.0f, 0.0f, 1.0f, 0.0f) * ((float) dt / 1000000.0f * speed)) * orientation;
 
-	// calculate the maximum amount of time we can sleep in order
-	// to maintain our desired frequency
-	static unsigned long int last = platform.getExecutionTimeMicros();
-	static unsigned long int sleepMicros = 1;
-
-	unsigned long int now = platform.getExecutionTimeMicros();
-	unsigned long int idealSleepTime = (
+	// calculate and return sleep time from superclass
+	static const unsigned long int idealSleepTime = (
 			SHIP_UPDATESPERSECOND != 0 ?
 			1000000 / SHIP_UPDATESPERSECOND : 0
 		);
-
-	// adjust the target sleep micros by the factor we are off by
-	sleepMicros = (sleepMicros > 0 ? sleepMicros : 1) * ((double) idealSleepTime / (double) (now - last));
-
-	last = now;
-
-	return sleepMicros;
-
+	return getSleepTime(idealSleepTime);
 }

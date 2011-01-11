@@ -36,22 +36,10 @@ unsigned long int InputHandler::processEvents() {
 	keyboard.loop();
 	mouse.loop();
 
-	// calculate the maximum amount of time we can sleep in order
-	// to maintain our desired frequency
-	static unsigned long int last = platform.getExecutionTimeMicros();
-	static unsigned long int sleepMicros = 1;
-
-	unsigned long int now = platform.getExecutionTimeMicros();
-	unsigned long int idealSleepTime = (
+	// calculate and return sleep time from superclass
+	static const unsigned long int idealSleepTime = (
 			gamePrefs.getInt("inputPollingFrequency") != 0 ?
 			1000000 / gamePrefs.getInt("inputPollingFrequency") : 0
 		);
-
-	// adjust the target sleep micros by the factor we are off by
-	sleepMicros = (sleepMicros > 0 ? sleepMicros : 1) * ((double) idealSleepTime / (double) (now - last));
-
-	last = now;
-
-	return sleepMicros;
-
+	return getSleepTime(idealSleepTime);
 }

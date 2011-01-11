@@ -12,12 +12,13 @@
 
 // program headers
 #include "Keyboard.h"
+#include "MainLoopMember.h"
 #include "Mouse.h"
 
 // library headers
 #include <SDL/SDL.h>
 
-class InputHandler {
+class InputHandler : public MainLoopMember {
 public:
 	Keyboard keyboard;
 	Mouse mouse;

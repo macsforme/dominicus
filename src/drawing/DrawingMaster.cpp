@@ -112,21 +112,10 @@ unsigned long int DrawingMaster::loop() {
 	if(! capFPS)
 		return 0;
 
-	// calculate the maximum amount of time we can sleep in order
-	// to maintain our desired frequency
-	static unsigned long int last = platform.getExecutionTimeMicros();
-	static unsigned long int sleepMicros = 1;
-
-	unsigned long int now = platform.getExecutionTimeMicros();
+	// calculate and return sleep time from superclass
 	unsigned long int idealSleepTime = (
 			gamePrefs.getInt("renderingFPS") != 0 ?
 			1000000 / gamePrefs.getInt("renderingFPS") : 0
 		);
-
-	// adjust the target sleep micros by the factor we are off by
-	sleepMicros = (sleepMicros > 0 ? sleepMicros : 1) * ((double) idealSleepTime / (double) (now - last));
-
-	last = now;
-
-	return sleepMicros;
+	return getSleepTime(idealSleepTime);
 }
