@@ -42,6 +42,7 @@ SOURCES = \
 	./src/core/dominicusMain.cpp \
 	./src/core/SystemInfo.cpp \
 	./src/core/BuildVersion.cpp \
+	./src/core/MainLoopMember.cpp \
 	./src/windowing/GameWindow.cpp \
 	./src/drawing/DrawingMaster.cpp \
 	./src/drawing/rendering/RenderingMaster.cpp \
