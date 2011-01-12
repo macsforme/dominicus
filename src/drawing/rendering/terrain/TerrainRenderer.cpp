@@ -125,7 +125,7 @@ void TerrainRenderer::render(Matrix4 vpMatrix) {
 }
 
 void TerrainRenderer::reloadGeometry(bool firstLoad) {
-	const float texDivisor = 10.0f; // texture coordinate divisor
+	const float texDivisor = 50.0f; // texture coordinate divisor
 
 	// set up the buffers
 	if(! firstLoad && glIsBuffer(vertDataBuffer))

@@ -24,7 +24,7 @@ const float zoomFactor = 0.25f;	// total zoom distance
 const float zoomPeriod = 1.0f;	// time in seconds to complete a zoom cycle
 
 #define WVC_NEARCLIP 1.0f
-#define WVC_FARCLIP 150.0f
+#define WVC_FARCLIP 1500.0f
 #define WVC_VIEWANGLE 30.0f
 
 // global variables

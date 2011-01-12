@@ -13,7 +13,7 @@
 GamePrefs gamePrefs;
 InputHandler inputHandler;
 Platform platform;
-Ship ship(Vector4(0.0f, 2.0f, -50.0f, 0.0f));
+Ship ship(Vector4(0.0f, 2.0f, -500.0f, 0.0f));
 SystemInfo systemInfo;
 Terrain terrain;
 

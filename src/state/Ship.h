@@ -12,8 +12,8 @@
 
 // definitions
 #define SHIP_UPDATESPERSECOND 60
-#define SHIP_MOVEPERSEC 3.0f
-#define SHIP_TURNPERSEC 90.0f
+#define SHIP_MOVEPERSEC 15.0f
+#define SHIP_TURNPERSEC 60.0f
 
 // program headers
 #include "MainLoopMember.h"

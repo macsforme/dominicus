@@ -20,7 +20,7 @@
 
 // definitions
 #define FPC_NEARCLIP 1.0f
-#define FPC_FARCLIP 150.0f
+#define FPC_FARCLIP 1500.0f
 #define FPC_VIEWANGLE 30.0f
 
 // global variables

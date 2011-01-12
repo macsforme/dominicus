@@ -28,7 +28,7 @@ void WorldViewCamera::loop() {
 	// do transformations
 	rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(rotation), vpMatrix); // dynamic rotation
 	rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(-birdsEyeAngle), vpMatrix); // static tilt up
-	translateMatrix(0.0f, 0.0f, 60.0f, vpMatrix); // z translation
+	translateMatrix(0.0f, 0.0f, 750.0f, vpMatrix); // z translation
 	scaleMatrix(zoom, zoom, zoom, vpMatrix); // dynamic zoom
 
 	// perspective projection

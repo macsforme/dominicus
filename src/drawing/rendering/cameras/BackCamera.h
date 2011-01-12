@@ -23,7 +23,7 @@
 #define BC_WATCHANGLE -20.0f
 
 #define BC_NEARCLIP 1.0f
-#define BC_FARCLIP 150.0f
+#define BC_FARCLIP 1500.0f
 #define BC_VIEWANGLE 30.0f
 
 // global variables

@@ -14,5 +14,5 @@ void main() {
 	else
 		gl_FragColor =
 				vec4(texture2D(texture, texCoordInterpol).rgb, alpha) -
-				vec4(coord.y, coord.y, coord.y, 0.0) / 25.0;
+				vec4(coord.y, coord.y, coord.y, 0.0) / 200.0;
 }
