@@ -37,7 +37,6 @@ extern Platform platform;
 
 class DrawingMaster : public MainLoopMember {
 private:
-	RenderingMaster* renderingMaster;
 	FontManager* fontManager;
 
 //	SplashBackground* splashBackground;
@@ -49,11 +48,12 @@ private:
 	bool capFPS;
 
 public:
+	RenderingMaster* renderingMaster;
+
 	DrawingMaster(GameWindow* gameWindow);
 	~DrawingMaster();
 
 	void setViewPortSize(unsigned short int width, unsigned short int height);
-
 	void preFrame();
 	void postFrame();
 

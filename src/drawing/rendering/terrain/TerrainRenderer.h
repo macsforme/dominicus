@@ -47,12 +47,17 @@ private:
 
 	// texture IDs
 	GLuint textureID;
+	
+	// buffers
+	GLuint vertDataBuffer, vertElementBuffer;
 
 public:
 	TerrainRenderer();
 	~TerrainRenderer();
 
 	void render(Matrix4 mvpMatrix);
+
+	void reloadGeometry(bool firstLoad = false);
 };
 
 #endif

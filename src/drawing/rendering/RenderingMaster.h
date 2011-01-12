@@ -35,9 +35,10 @@ private:
 
 	// renderers
 	ShipRenderer shipRenderer;
-	TerrainRenderer terrainRenderer;
 
 public:
+	TerrainRenderer terrainRenderer;
+
 	RenderingMaster(GameWindow* gameWindow);
 
 	void loop();

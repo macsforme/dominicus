@@ -72,9 +72,15 @@ TerrainRenderer::TerrainRenderer() {
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 	glDisable(GL_TEXTURE_2D);
+
+	// generate the vertex buffers
+	reloadGeometry(true);
 }
 
 TerrainRenderer::~TerrainRenderer() {
+	glDeleteBuffers(1, &vertDataBuffer);
+	glDeleteBuffers(1, &vertElementBuffer);
+
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
 
@@ -85,7 +91,6 @@ void TerrainRenderer::render(Matrix4 vpMatrix) {
 	glUseProgram(program);
 
 	// model view projection
-	// pass in the row-major matrix since GL does the multiplication backwards
 	float vpMatrixArray[] = {
 			vpMatrix.m11, vpMatrix.m12, vpMatrix.m13, vpMatrix.m14,
 			vpMatrix.m21, vpMatrix.m22, vpMatrix.m23, vpMatrix.m24,
@@ -101,59 +106,75 @@ void TerrainRenderer::render(Matrix4 vpMatrix) {
 	glUniform1i(textureUniform, 0);
 	glBindTexture(GL_TEXTURE_2D, textureID);
 
-	// geometry
-	float texDivisor = 10.0f;
+	// draw the data stored in GPU memory
+	glBindBuffer(GL_ARRAY_BUFFER, vertDataBuffer);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertElementBuffer);
+	
+	glVertexAttribPointer(positionAttrib, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GL_FLOAT), NULL);
+	glVertexAttribPointer(texCoordAttrib, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GL_FLOAT),
+			(void*) (3 * sizeof(GLfloat)));
 
-	for(
-			std::map< std::string,std::vector<Mesh::Face> >::iterator itr =
-					terrain.mesh.faceGroups.begin();
-			itr != terrain.mesh.faceGroups.end();
-			++itr
-		) {
-		for(int i = 0; i < itr->second.size(); ++i) {
-			// render triangles
-			glBegin(GL_TRIANGLES);
+	glEnableVertexAttribArray(positionAttrib);
+	glEnableVertexAttribArray(texCoordAttrib);
 
-			glVertexAttrib2f(
-					texCoordAttrib,
-					terrain.mesh.vertices[itr->second[i].vertices[0]].x / texDivisor,
-					terrain.mesh.vertices[itr->second[i].vertices[0]].z / texDivisor
-				);
-			glVertexAttrib3f(
-					positionAttrib,
-					terrain.mesh.vertices[itr->second[i].vertices[0]].x,
-					terrain.mesh.vertices[itr->second[i].vertices[0]].y,
-					terrain.mesh.vertices[itr->second[i].vertices[0]].z
-				);
+	glDrawElements(GL_TRIANGLES, terrain.mesh.faceGroups.begin()->second.size() * 3, GL_UNSIGNED_INT, NULL);
 
-			glVertexAttrib2f(
-					texCoordAttrib,
-					terrain.mesh.vertices[itr->second[i].vertices[1]].x / texDivisor,
-					terrain.mesh.vertices[itr->second[i].vertices[1]].z / texDivisor
-				);
-			glVertexAttrib3f(
-					positionAttrib,
-					terrain.mesh.vertices[itr->second[i].vertices[1]].x,
-					terrain.mesh.vertices[itr->second[i].vertices[1]].y,
-					terrain.mesh.vertices[itr->second[i].vertices[1]].z
-				);
+	glDisableVertexAttribArray(vertDataBuffer);
 
-			glVertexAttrib2f(
-					texCoordAttrib,
-					terrain.mesh.vertices[itr->second[i].vertices[2]].x / texDivisor,
-					terrain.mesh.vertices[itr->second[i].vertices[2]].z / texDivisor
-				);
-			glVertexAttrib3f(
-					positionAttrib,
-					terrain.mesh.vertices[itr->second[i].vertices[2]].x,
-					terrain.mesh.vertices[itr->second[i].vertices[2]].y,
-					terrain.mesh.vertices[itr->second[i].vertices[2]].z
-				);
+	glDisable(GL_TEXTURE_2D);
+}
 
-			glEnd();
-		}
+void TerrainRenderer::reloadGeometry(bool firstLoad) {
+	const float texDivisor = 10.0f; // texture coordinate divisor
+
+	// set up the buffers
+	if(! firstLoad && glIsBuffer(vertDataBuffer))
+		glDeleteBuffers(1, &vertDataBuffer);
+	if(! firstLoad && glIsBuffer(vertElementBuffer))
+		glDeleteBuffers(1, &vertElementBuffer);
+
+	glGenBuffers(1, &vertDataBuffer);
+	glGenBuffers(1, &vertElementBuffer);
+
+	glBindBuffer(GL_ARRAY_BUFFER, vertDataBuffer);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertElementBuffer);
+
+	// prepare arrays of vertex data and element data
+	std::vector<Mesh::Face>* faces = &(terrain.mesh.faceGroups.begin()->second);
+
+	GLfloat vertDataBufferArray[15 * faces->size()];	// 3 vertices + 2 texcoords * 3 per face
+	for(int i = 0; i < faces->size(); ++i) {
+		vertDataBufferArray[i * 15 + 0] = terrain.mesh.vertices[(*faces)[i].vertices[0]].x;
+		vertDataBufferArray[i * 15 + 1] = terrain.mesh.vertices[(*faces)[i].vertices[0]].y;
+		vertDataBufferArray[i * 15 + 2] = terrain.mesh.vertices[(*faces)[i].vertices[0]].z;
+
+		vertDataBufferArray[i * 15 + 3] = terrain.mesh.vertices[(*faces)[i].vertices[0]].x / texDivisor;
+		vertDataBufferArray[i * 15 + 4] = terrain.mesh.vertices[(*faces)[i].vertices[0]].z / texDivisor;
+
+		vertDataBufferArray[i * 15 + 5] = terrain.mesh.vertices[(*faces)[i].vertices[1]].x;
+		vertDataBufferArray[i * 15 + 6] = terrain.mesh.vertices[(*faces)[i].vertices[1]].y;
+		vertDataBufferArray[i * 15 + 7] = terrain.mesh.vertices[(*faces)[i].vertices[1]].z;
+
+		vertDataBufferArray[i * 15 + 8] = terrain.mesh.vertices[(*faces)[i].vertices[1]].x / texDivisor;
+		vertDataBufferArray[i * 15 + 9] = terrain.mesh.vertices[(*faces)[i].vertices[1]].z / texDivisor;
+
+		vertDataBufferArray[i * 15 + 10] = terrain.mesh.vertices[(*faces)[i].vertices[2]].x;
+		vertDataBufferArray[i * 15 + 11] = terrain.mesh.vertices[(*faces)[i].vertices[2]].y;
+		vertDataBufferArray[i * 15 + 12] = terrain.mesh.vertices[(*faces)[i].vertices[2]].z;
+
+		vertDataBufferArray[i * 15 + 13] = terrain.mesh.vertices[(*faces)[i].vertices[2]].x / texDivisor;
+		vertDataBufferArray[i * 15 + 14] = terrain.mesh.vertices[(*faces)[i].vertices[2]].z / texDivisor;
 	}
 
-//	glDisable(GL_TEXTURE_2D);
+	GLuint vertElementBufferArray[3 * faces->size()];
+	for(int i = 0; i < faces->size(); ++i) {
+		vertElementBufferArray[i * 3 + 0] = i * 3 + 0;
+		vertElementBufferArray[i * 3 + 1] = i * 3 + 1;
+		vertElementBufferArray[i * 3 + 2] = i * 3 + 2;
+	}
 
+	// send the buffer data
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertDataBufferArray), vertDataBufferArray, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(vertElementBufferArray), vertElementBufferArray,
+			GL_STATIC_DRAW);
 }

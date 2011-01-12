@@ -57,8 +57,11 @@ int dominicusMain(int argc, char* argv[]) {
 		static KeyTrap newTerrainKeyTrap("newTerrain");
 		newTerrainKeyTrap.loop();
 
-		if(newTerrainKeyTrap.newPress())
+		if(newTerrainKeyTrap.newPress()) {
 			terrain = Terrain();
+
+			drawingMaster->renderingMaster->terrainRenderer.reloadGeometry();
+		}
 
 		// keep a timer for each module we loop over
 		static unsigned long int inputTimer = 0;
