@@ -22,17 +22,16 @@ unsigned long int MainLoopMember::getSleepTime(unsigned long int idealSleepTime)
 
 	// adjust the target sleep micros by the factor we are off by
 	if(timeDiff == 0) {
-		sleepMicros = idealSleepTime;
+		return sleepMicros;
+	} else if(timeDiff < idealSleepTime / 2) {
+		// avoid over-compensating if we hit way earlier than expected
+		sleepMicros *= 1.5f;
+	} else if (timeDiff > idealSleepTime * 2) {
+		// same thing if we hit much later than expected
+		sleepMicros /= 1.5f;
 	} else {
-		if(timeDiff < idealSleepTime / 2) {
-			// avoid over-compensating if we hit way earlier than expected
-			last = now;
-			
-			return sleepMicros;
-		} else {
-			// if we hit late, throw it into gear
-			sleepMicros *= ((float) idealSleepTime / (float) (now - last));
-		}
+		// perform minute adjustments
+		sleepMicros *= ((float) idealSleepTime / (float) (now - last));
 	}
 
 	last = now;
