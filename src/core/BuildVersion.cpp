@@ -17,20 +17,20 @@ BuildVersion::BuildVersion() : classification(BV_CLASSIFICATION), source(BV_SOUR
 
 	const char* dateString = __DATE__;
 	
-	const char* monthString = std::string(dateString).substr(0, 3).c_str();
+	std::string monthString = std::string(dateString).substr(0, 3);
 	unsigned int month = 0;
-	if(strcmp(monthString, "Jan") == 0) month = 1;
-	else if(strcmp(monthString, "Feb") == 0) month = 2;
-	else if(strcmp(monthString, "Mar") == 0) month = 3;
-	else if(strcmp(monthString, "Apr") == 0) month = 4;
-	else if(strcmp(monthString, "May") == 0) month = 5;
-	else if(strcmp(monthString, "Jun") == 0) month = 6;
-	else if(strcmp(monthString, "Jul") == 0) month = 7;
-	else if(strcmp(monthString, "Aug") == 0) month = 8;
-	else if(strcmp(monthString, "Sep") == 0) month = 9;
-	else if(strcmp(monthString, "Oct") == 0) month = 10;
-	else if(strcmp(monthString, "Nov") == 0) month = 11;
-	else if(strcmp(monthString, "Dec") == 0) month = 12;
+	if(strcmp(monthString.c_str(), "Jan") == 0) month = 1;
+	else if(strcmp(monthString.c_str(), "Feb") == 0) month = 2;
+	else if(strcmp(monthString.c_str(), "Mar") == 0) month = 3;
+	else if(strcmp(monthString.c_str(), "Apr") == 0) month = 4;
+	else if(strcmp(monthString.c_str(), "May") == 0) month = 5;
+	else if(strcmp(monthString.c_str(), "Jun") == 0) month = 6;
+	else if(strcmp(monthString.c_str(), "Jul") == 0) month = 7;
+	else if(strcmp(monthString.c_str(), "Aug") == 0) month = 8;
+	else if(strcmp(monthString.c_str(), "Sep") == 0) month = 9;
+	else if(strcmp(monthString.c_str(), "Oct") == 0) month = 10;
+	else if(strcmp(monthString.c_str(), "Nov") == 0) month = 11;
+	else if(strcmp(monthString.c_str(), "Dec") == 0) month = 12;
 	else {
 		std::stringstream err;
 		err << "Unable to determine build month from string '" << std::string(dateString) << "'.";

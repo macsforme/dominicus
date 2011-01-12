@@ -1,6 +1,6 @@
 PROGRAM = dominicus
 GCC = g++
-CFLAGS = `freetype-config --cflags` -D GL_GLEXT_PROTOTYPES
+CFLAGS = `freetype-config --cflags` -D GL_GLEXT_PROTOTYPES -g
 LIBS = -lGL -lSDL `freetype-config --libs`
 
 HEADERS = \
