@@ -19,9 +19,6 @@
 // Build classification (char array, DEVEL | ALPHA | BETA | RC# | STABLE)
 #define BV_CLASSIFICATION "DEVEL"
 
-// Build source (char array, UNVERIFIED, SANCTIONED [unused], OFFICIAL [unused])
-#define BV_SOURCE "UNVERIFIED"
-
 // program headers
 #include "Platform.h"
 #include "ProgramLog.h"
@@ -40,7 +37,6 @@ class BuildVersion {
 public:
 	std::string version;
 	std::string classification;
-	std::string source;
 	std::string architecture;
 	std::string buildDate;
 

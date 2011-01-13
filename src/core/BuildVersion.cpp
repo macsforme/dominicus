@@ -9,8 +9,8 @@
 
 #include "BuildVersion.h"
 
-BuildVersion::BuildVersion() : classification(BV_CLASSIFICATION), source(BV_SOURCE),
-		architecture(platform.getArchitecture()) {
+BuildVersion::BuildVersion() :
+		classification(BV_CLASSIFICATION),architecture(platform.getArchitecture()) {
 	std::stringstream versionStream;
 	versionStream << BV_VERSION << "." << BV_REVISION;
 	version = versionStream.str();

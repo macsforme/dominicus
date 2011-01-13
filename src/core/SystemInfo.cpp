@@ -20,7 +20,6 @@ void SystemInfo::init() {
 			"Dominicus " <<
 			buildVersion.version << " " <<
 			buildVersion.classification << " " <<
-			buildVersion.source << " " <<
 			buildVersion.architecture << " " <<
 			buildVersion.buildDate;
 	programLog.report(LOG_INFO, buildInfo.str().c_str());
