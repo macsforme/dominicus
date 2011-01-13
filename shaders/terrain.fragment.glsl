@@ -7,7 +7,7 @@ varying vec3 coord;
 
 void main() {
 	float alpha = 1.0;
-	if (coord.y < 0.5) alpha = (coord.y / 0.5);
+	if (coord.y < 2.0) alpha = (coord.y / 2.0);
 
 	if(coord.y <= 0.0)
 		discard;
