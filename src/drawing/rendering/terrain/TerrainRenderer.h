@@ -47,7 +47,7 @@ private:
 
 	// texture IDs
 	GLuint textureID;
-	
+
 	// buffers
 	GLuint vertDataBuffer, vertElementBuffer;
 

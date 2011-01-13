@@ -24,7 +24,7 @@ private:
 
 public:
 	MainLoopMember();
-	
+
 	unsigned long int getSleepTime(unsigned long int idealSleepTime);
 };
 

@@ -109,7 +109,7 @@ void TerrainRenderer::render(Matrix4 vpMatrix) {
 	// draw the data stored in GPU memory
 	glBindBuffer(GL_ARRAY_BUFFER, vertDataBuffer);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertElementBuffer);
-	
+
 	glVertexAttribPointer(positionAttrib, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GL_FLOAT), NULL);
 	glVertexAttribPointer(texCoordAttrib, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GL_FLOAT),
 			(void*) (3 * sizeof(GLfloat)));

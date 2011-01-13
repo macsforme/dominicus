@@ -16,7 +16,7 @@ BuildVersion::BuildVersion() :
 	version = versionStream.str();
 
 	const char* dateString = __DATE__;
-	
+
 	std::string monthString = std::string(dateString).substr(0, 3);
 	unsigned int month = 0;
 	if(strcmp(monthString.c_str(), "Jan") == 0) month = 1;
