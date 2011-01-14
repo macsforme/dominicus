@@ -11,12 +11,12 @@
 #define BUILDVERSION_H
 
 // Major version (positive integer)
-#define BV_VERSION 0
+#define BV_VERSION 1
 
 // Minor revision (positive integer)
-#define BV_REVISION 1
+#define BV_REVISION 0
 
-// Build classification (char array, DEVEL | ALPHA | BETA | RC# | STABLE)
+// Build classification (char array, DEVEL | ALPHA# | BETA# | RC# | STABLE)
 #define BV_CLASSIFICATION "DEVEL"
 
 // program headers
