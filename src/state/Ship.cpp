@@ -26,8 +26,8 @@ unsigned long int Ship::loop() {
 
 	// calculate and return sleep time from superclass
 	static const unsigned long int idealSleepTime = (
-			SHIP_UPDATESPERSECOND != 0 ?
-			1000000 / SHIP_UPDATESPERSECOND : 0
+			gamePrefs.getInt("shipUpdateFrequency") != 0 ?
+			1000000 / gamePrefs.getInt("shipUpdateFrequency") : 0
 		);
 	return getSleepTime(idealSleepTime);
 }

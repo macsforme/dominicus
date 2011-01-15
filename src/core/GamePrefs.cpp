@@ -10,6 +10,12 @@
 #include "GamePrefs.h"
 
 GamePrefs::GamePrefs() {
+	// ship state
+	preferences["shipUpdateFrequency"] = "60";	// updates per second
+	preferences["shipAccelRate"] = "15";	// meters per second
+	preferences["shipMaxAccel"] = "15";	// top speed, meters per second
+	preferences["shipTurnRate"] = "60"; // degrees per second
+
 	// rendering settings
 	preferences["renderingDisplayUpdateFrequency"] = "2";	// tests per second
 	preferences["renderingCapFPS"] = "1";

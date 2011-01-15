@@ -10,12 +10,8 @@
 #ifndef SHIP_H
 #define SHIP_H
 
-// definitions
-#define SHIP_UPDATESPERSECOND 60
-#define SHIP_MOVEPERSEC 15.0f
-#define SHIP_TURNPERSEC 60.0f
-
 // program headers
+#include "GamePrefs.h"
 #include "MainLoopMember.h"
 #include "MatrixMath.h"
 #include "Mouse.h"
@@ -23,6 +19,7 @@
 #include "VectorMath.h"
 
 // global variables
+extern GamePrefs gamePrefs;
 extern Mouse mouse;
 extern Platform platform;
 
