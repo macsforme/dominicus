@@ -40,10 +40,14 @@ void FirstPersonCamera::loop() {
 		);
 
 	// perspective projection
+	const float fov = gamePrefs.getFloat("perspectiveFOV");
+	const float nClip = gamePrefs.getFloat("perspectiveNearClip");
+	const float fClip = gamePrefs.getFloat("perspectiveFarClip");
+
 	vpMatrix *= Matrix4(
-	        1.0/tan(radians(FPC_VIEWANGLE)), 0.0, 0.0, 0.0,
-	        0.0, aspectRatio/tan(radians(FPC_VIEWANGLE)), 0.0, 0.0,
-	        0.0, 0.0, (FPC_FARCLIP + FPC_NEARCLIP) / (FPC_FARCLIP - FPC_NEARCLIP), 1.0,
-	        0.0, 0.0, -2.0 * FPC_FARCLIP * FPC_NEARCLIP / (FPC_FARCLIP - FPC_NEARCLIP), 0.0
+	        1.0/tan(radians(fov)), 0.0, 0.0, 0.0,
+	        0.0, aspectRatio/tan(radians(fov)), 0.0, 0.0,
+	        0.0, 0.0, (fClip + nClip) / (fClip - nClip), 1.0,
+	        0.0, 0.0, -2.0 * fClip * nClip / (fClip - nClip), 0.0
 		);
 }

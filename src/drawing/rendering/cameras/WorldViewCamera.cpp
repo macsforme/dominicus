@@ -32,10 +32,14 @@ void WorldViewCamera::loop() {
 	scaleMatrix(zoom, zoom, zoom, vpMatrix); // dynamic zoom
 
 	// perspective projection
+	const float fov = gamePrefs.getFloat("perspectiveFOV");
+	const float nClip = gamePrefs.getFloat("perspectiveNearClip");
+	const float fClip = gamePrefs.getFloat("perspectiveFarClip");
+
 	vpMatrix *= Matrix4(
-	        1.0/tan(radians(WVC_VIEWANGLE)), 0.0, 0.0, 0.0,
-	        0.0, aspectRatio/tan(radians(WVC_VIEWANGLE)), 0.0, 0.0,
-	        0.0, 0.0, (WVC_FARCLIP + WVC_NEARCLIP) / (WVC_FARCLIP - WVC_NEARCLIP), 1.0,
-	        0.0, 0.0, -2.0 * WVC_FARCLIP * WVC_NEARCLIP / (WVC_FARCLIP - WVC_NEARCLIP), 0.0
+	        1.0/tan(radians(fov)), 0.0, 0.0, 0.0,
+	        0.0, aspectRatio/tan(radians(fov)), 0.0, 0.0,
+	        0.0, 0.0, (fClip + nClip) / (fClip - nClip), 1.0,
+	        0.0, 0.0, -2.0 * fClip * nClip / (fClip - nClip), 0.0
 		);
 }

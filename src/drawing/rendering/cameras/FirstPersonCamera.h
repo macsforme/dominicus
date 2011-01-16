@@ -15,15 +15,12 @@
 #include "MatrixMath.h"
 #include "Platform.h"
 #include "Ship.h"
+#include "GamePrefs.h"
 #include "GameWindow.h"
 #include "VectorMath.h"
 
-// definitions
-#define FPC_NEARCLIP 1.0f
-#define FPC_FARCLIP 1500.0f
-#define FPC_VIEWANGLE 30.0f
-
 // global variables
+extern GamePrefs gamePrefs;
 extern Platform platform;
 extern Ship ship;
 

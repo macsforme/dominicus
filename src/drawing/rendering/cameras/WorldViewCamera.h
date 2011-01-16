@@ -14,6 +14,7 @@
 #include "Camera.h"
 #include "MatrixMath.h"
 #include "Platform.h"
+#include "GamePrefs.h"
 #include "GameWindow.h"
 #include "VectorMath.h"
 
@@ -23,11 +24,8 @@ const float rotationSpeed = 30.0f; // degrees per second
 const float zoomFactor = 0.25f;	// total zoom distance
 const float zoomPeriod = 1.0f;	// time in seconds to complete a zoom cycle
 
-#define WVC_NEARCLIP 1.0f
-#define WVC_FARCLIP 1500.0f
-#define WVC_VIEWANGLE 30.0f
-
 // global variables
+extern GamePrefs gamePrefs;
 extern Platform platform;
 
 extern GameWindow* gameWindow;

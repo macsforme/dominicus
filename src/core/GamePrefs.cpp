@@ -21,6 +21,14 @@ GamePrefs::GamePrefs() {
 	preferences["renderingCapFPS"] = "1";
 	preferences["renderingFPS"] = "60";
 
+	// 3D view settings
+	preferences["perspectiveNearClip"] = "1.0";
+	preferences["perspectiveFarClip"] = "1500.0";
+	preferences["perspectiveFOV"] = "30.0";
+	preferences["shipFollowDistance"] = "5";
+	preferences["shipFollowAngle"] = "20";
+	preferences["shipFollowLagFactor"] = "1";	// approximately in seconds how long to catch up
+
 	// input settings
 	preferences["inputPollingFrequency"] = "120";
 
