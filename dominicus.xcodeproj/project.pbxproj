@@ -139,8 +139,6 @@
 		035F214612A39233008DA566 /* Ship.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Ship.cpp; path = src/state/Ship.cpp; sourceTree = "<group>"; };
 		035F23DC12A3DCE0008DA566 /* ShipControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShipControl.h; path = src/state/ShipControl.h; sourceTree = "<group>"; };
 		035F23DD12A3DCE0008DA566 /* ShipControl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ShipControl.cpp; path = src/state/ShipControl.cpp; sourceTree = "<group>"; };
-		0369DE28128588C000355C4E /* SplashBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SplashBackground.h; path = splash/SplashBackground.h; sourceTree = "<group>"; };
-		0369DE29128588C000355C4E /* SplashBackground.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SplashBackground.cpp; path = splash/SplashBackground.cpp; sourceTree = "<group>"; };
 		0369DEA31285964500355C4E /* DrawHUD.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawHUD.cpp; sourceTree = "<group>"; };
 		0369DEA41285964500355C4E /* DrawHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawHUD.h; sourceTree = "<group>"; };
 		0369DF081285AB9400355C4E /* HUDArrangement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUDArrangement.h; sourceTree = "<group>"; };
@@ -261,7 +259,6 @@
 				03DF59FF12797B4D003C2134 /* DrawingMaster.cpp */,
 				030F91941265152000190225 /* ShaderTools.h */,
 				030F91931265152000190225 /* ShaderTools.cpp */,
-				0369DE27128588A800355C4E /* splash */,
 				035A3D07128429400001E186 /* cursor */,
 				0390D4DD12C7278C00CABAD5 /* controlBox */,
 				03DF59EB1279786E003C2134 /* HUD */,
@@ -373,15 +370,6 @@
 				035F23DD12A3DCE0008DA566 /* ShipControl.cpp */,
 			);
 			name = state;
-			sourceTree = "<group>";
-		};
-		0369DE27128588A800355C4E /* splash */ = {
-			isa = PBXGroup;
-			children = (
-				0369DE28128588C000355C4E /* SplashBackground.h */,
-				0369DE29128588C000355C4E /* SplashBackground.cpp */,
-			);
-			name = splash;
 			sourceTree = "<group>";
 		};
 		036A4D2012757E5F00CEED79 /* UI */ = {
@@ -688,6 +676,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
 				SDKROOT = macosx10.6;
+				WARNING_CFLAGS = "";
 			};
 			name = Debug;
 		};

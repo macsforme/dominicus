@@ -9,10 +9,10 @@
 
 #include "RenderingMaster.h"
 
-RenderingMaster::RenderingMaster(GameWindow* gameWindow) {
-	bCamera = new BackCamera(gameWindow);
-	fpCamera = new FirstPersonCamera(gameWindow);
-	wvCamera = new WorldViewCamera(gameWindow);
+RenderingMaster::RenderingMaster() {
+	bCamera = new BackCamera();
+	fpCamera = new FirstPersonCamera();
+	wvCamera = new WorldViewCamera();
 
 	cameraToggleKeyTrap = new KeyTrap("toggleCamera");
 

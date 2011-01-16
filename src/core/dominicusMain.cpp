@@ -11,11 +11,14 @@
 
 // global variable instantiations
 GamePrefs gamePrefs;
-InputHandler inputHandler;
 Platform platform;
 Ship ship(Vector4(0.0f, 2.0f, -500.0f, 0.0f));
 SystemInfo systemInfo;
 Terrain terrain;
+
+InputHandler* inputHandler = NULL;
+GameWindow* gameWindow = NULL;
+DrawingMaster* drawingMaster = NULL;
 
 bool keepDominicusAlive;	// global flag to continue game
 
@@ -28,15 +31,16 @@ int dominicusMain(int argc, char* argv[]) {
 	keepDominicusAlive = true;
 
 	// initialize stuff
-	GameWindow* gameWindow = new GameWindow(gamePrefs.getBool("windowStartFullScreen") ? true : false);
-	DrawingMaster* drawingMaster = new DrawingMaster(gameWindow);
-	ShipControl shipControl(gameWindow, &ship);
+	gameWindow = new GameWindow(gamePrefs.getBool("windowStartFullScreen") ? true : false);
+	inputHandler = new InputHandler();
+	drawingMaster = new DrawingMaster();
+	ShipControl shipControl(&ship);
 
 	// with the graphics context initialized, check for a compatible system
 	systemInfo.check();
 
 	// main program loop
-	while(keepDominicusAlive && ! inputHandler.keyboard.getKeyState("quit")) {
+	while(keepDominicusAlive && ! inputHandler->keyboard.getKeyState("quit")) {
 		// see if we need to change the fullscreen status
 		static KeyTrap fullScreenKeyTrap("toggleFullScreen");
 		fullScreenKeyTrap.loop();
@@ -48,9 +52,7 @@ int dominicusMain(int argc, char* argv[]) {
 			delete(gameWindow);
 
 			gameWindow = new GameWindow(!currentFullScreen);
-			drawingMaster = new DrawingMaster(gameWindow);
-
-			shipControl.gameWindow = gameWindow;
+			drawingMaster = new DrawingMaster();
 		}
 
 		// or regenerate the terrain
@@ -77,7 +79,7 @@ int dominicusMain(int argc, char* argv[]) {
 		// input polling
 		now = platform.getExecutionTimeMicros();
 		if(inputTimer <= now)
-			inputTimer = now + inputHandler.processEvents();
+			inputTimer = now + inputHandler->processEvents();
 
 		if(inputTimer < nextPlannedLoop)
 			nextPlannedLoop = inputTimer;

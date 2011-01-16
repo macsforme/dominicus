@@ -17,10 +17,11 @@
 #include "GameWindow.h"
 #include "VectorMath.h"
 
+// global variables
+extern GameWindow* gameWindow;
+
 class DrawHUDEnclosure {
 private:
-	GameWindow* gameWindow;
-
 	HUDArrangement* hudArrangement;
 
 	DrawHUDContainerUtility* containerUtility;
@@ -28,7 +29,7 @@ private:
 	HUDElement* findPriorElementCenter(int index);
 
 public:
-	DrawHUDEnclosure(HUDArrangement* hudArrangement, GameWindow* gameWindow);
+	DrawHUDEnclosure(HUDArrangement* hudArrangement);
 
 	void draw();
 };

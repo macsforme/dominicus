@@ -22,7 +22,6 @@
 #include "Platform.h"
 #include "ProgramLog.h"
 #include "RenderingMaster.h"
-//#include "SplashBackground.h"
 #include "SystemInfo.h"
 
 // library headers
@@ -31,15 +30,16 @@
 
 // global variables
 extern FontManager fontManager;
-extern SystemInfo systemInfo;
 extern GamePrefs gamePrefs;
+extern SystemInfo systemInfo;
 extern Platform platform;
+
+extern GameWindow* gameWindow;
 
 class DrawingMaster : public MainLoopMember {
 private:
 	FontManager* fontManager;
 
-//	SplashBackground* splashBackground;
 	DrawControlBox* drawControlBox;
 	DrawCursor* drawCursor;
 	DrawHUD* hudDrawing;
@@ -50,7 +50,7 @@ private:
 public:
 	RenderingMaster* renderingMaster;
 
-	DrawingMaster(GameWindow* gameWindow);
+	DrawingMaster();
 	~DrawingMaster();
 
 	void setViewPortSize(unsigned short int width, unsigned short int height);

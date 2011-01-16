@@ -22,11 +22,10 @@
 extern Mouse mouse;
 extern Platform platform;
 
+extern GameWindow* gameWindow;
+
 class DrawControlBox {
 private:
-	// screen dimensions
-	GameWindow* gameWindow;
-
 	// program/shader names
 	GLuint program, vertexShader, fragmentShader;
 
@@ -37,7 +36,7 @@ private:
 	GLint spotSizeUniform;
 
 public:
-	DrawControlBox(GameWindow* gameWindow);
+	DrawControlBox();
 
 	void draw();
 };

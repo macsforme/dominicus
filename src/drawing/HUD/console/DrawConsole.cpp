@@ -9,9 +9,8 @@
 
 #include "DrawConsole.h"
 
-DrawConsole::DrawConsole(HUDArrangement* hudArrangement, GameWindow* gameWindow,
-		FontManager* fontManager) :
-		gameWindow(gameWindow), fontManager(fontManager) {
+DrawConsole::DrawConsole(HUDArrangement* hudArrangement, FontManager* fontManager) :
+		fontManager(fontManager) {
 	// set up the HUD laying arrangement info
 	myElement = new HUDElement(Vector2(1.5f / gameWindow->aspectRatio, 0.333f));
 

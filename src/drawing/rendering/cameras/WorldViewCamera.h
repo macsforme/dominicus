@@ -30,6 +30,8 @@ const float zoomPeriod = 1.0f;	// time in seconds to complete a zoom cycle
 // global variables
 extern Platform platform;
 
+extern GameWindow* gameWindow;
+
 class WorldViewCamera : Camera {
 private:
 	float rotation;
@@ -40,8 +42,8 @@ private:
 public:
 	Matrix4 vpMatrix;
 
-	WorldViewCamera(GameWindow* gameWindow) :
-			aspectRatio(gameWindow->aspectRatio), rotation(0.0f), zoom(0.0f) { }
+	WorldViewCamera() :
+			rotation(0.0f), zoom(0.0f), aspectRatio(gameWindow->aspectRatio) { }
 
 	void loop();
 };

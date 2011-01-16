@@ -18,16 +18,17 @@
 #include "Ship.h"
 #include "VectorMath.h"
 
+// global variables
 extern GamePrefs gamePrefs;
-extern InputHandler inputHandler;
+extern InputHandler* inputHandler;
+
+extern GameWindow* gameWindow;
 
 class ShipControl {
 public:
-	GameWindow* gameWindow;
-
 	Ship* ship;
 
-	ShipControl(GameWindow* gameWindow, Ship* ship);
+	ShipControl(Ship* ship);
 
 	void loop();
 };

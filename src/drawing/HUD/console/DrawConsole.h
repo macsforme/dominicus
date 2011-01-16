@@ -32,9 +32,10 @@
 extern Platform platform;
 extern GamePrefs gamePrefs;
 
+extern GameWindow* gameWindow;
+
 class DrawConsole {
 private:
-	GameWindow* gameWindow;
 	FontManager* fontManager;
 	HUDElement* myElement;
 	TextBlock* textBlock;
@@ -50,7 +51,7 @@ private:
 	GLint mvpMatrixUniform, textureUniform;
 
 public:
-	DrawConsole(HUDArrangement* hudArrangement, GameWindow* gameWindow, FontManager* fontManager);
+	DrawConsole(HUDArrangement* hudArrangement, FontManager* fontManager);
 
 	void draw();
 };

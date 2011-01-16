@@ -35,9 +35,10 @@ extern GamePrefs gamePrefs;
 extern Platform platform;
 extern Ship ship;
 
+extern GameWindow* gameWindow;
+
 class DrawInfoBox {
 private:
-	GameWindow* gameWindow;
 	FontManager* fontManager;
 	HUDElement* myElement;
 	TextBlock* textBlock;
@@ -61,7 +62,7 @@ private:
 	float currentExecTime;
 
 public:
-	DrawInfoBox(HUDArrangement* hudArrangement, GameWindow* gameWindow, FontManager* fontManager);
+	DrawInfoBox(HUDArrangement* hudArrangement, FontManager* fontManager);
 
 	void draw();
 };

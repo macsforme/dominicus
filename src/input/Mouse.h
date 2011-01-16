@@ -14,7 +14,9 @@
 
 // program headers
 #include "GamePrefs.h"
+#include "GameWindow.h"
 #include "Platform.h"
+#include "VectorMath.h"
 
 // library headers
 #include <iostream>
@@ -24,15 +26,16 @@
 
 // global variables
 extern GamePrefs gamePrefs;
+extern GameWindow* gameWindow;
 extern Platform platform;
 
 class Mouse {
 public:
-	unsigned short int positionX, positionY;
+	Vector2 position;
 
 	std::vector<SDL_Event> eventStack;
 
-	Mouse() : positionX(0), positionY(0) { };
+	Mouse() : position(Vector2(0.0f, 0.0f)) { };
 
 	void loop();
 };

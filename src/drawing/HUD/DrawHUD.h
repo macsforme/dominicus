@@ -27,6 +27,8 @@
 // global variables
 extern Platform platform;
 
+extern GameWindow* gameWindow;
+
 class DrawHUD {
 private:
 	HUDArrangement* hudArrangement;
@@ -37,7 +39,7 @@ private:
 	DrawInfoBox* infoBoxDrawer;
 
 public:
-	DrawHUD(GameWindow* gameWindow, FontManager* fontManager);
+	DrawHUD(FontManager* fontManager);
 	~DrawHUD();
 
 	void draw();

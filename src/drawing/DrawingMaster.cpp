@@ -9,15 +9,14 @@
 
 #include "DrawingMaster.h"
 
-DrawingMaster::DrawingMaster(GameWindow* gameWindow) {
+DrawingMaster::DrawingMaster() {
 	// initialize variables
-	renderingMaster = new RenderingMaster(gameWindow);
+	renderingMaster = new RenderingMaster();
 	fontManager = new FontManager();
 
-	hudDrawing = new DrawHUD(gameWindow, fontManager);
-	drawControlBox = new DrawControlBox(gameWindow);
-	drawCursor = new DrawCursor(gameWindow);
-//	splashBackground = new SplashBackground();
+	hudDrawing = new DrawHUD(fontManager);
+	drawControlBox = new DrawControlBox();
+	drawCursor = new DrawCursor();
 
 	// initialize fonts
 	fontManager->populateCommonChars(gamePrefs.getInt("fontStandardSize"));
@@ -95,7 +94,6 @@ unsigned long int DrawingMaster::loop() {
 	preFrame();
 
 	// draw the frame
-//	splashBackground->draw();
 	renderingMaster->loop();
 	hudDrawing->draw();
 	drawControlBox->draw();

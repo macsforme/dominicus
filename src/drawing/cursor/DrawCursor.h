@@ -19,14 +19,13 @@
 #include "VectorMath.h"
 
 // global variables
-extern InputHandler inputHandler;
+extern InputHandler* inputHandler;
 extern Platform platform;
+
+extern GameWindow* gameWindow;
 
 class DrawCursor {
 private:
-	// screen dimensions
-	GameWindow* gameWindow;
-
 	// program/shader names
 	GLuint program, vertexShader, fragmentShader;
 
@@ -37,7 +36,7 @@ private:
 	GLint thicknessUniform;
 
 public:
-	DrawCursor(GameWindow* gameWindow);
+	DrawCursor();
 
 	void draw();
 };

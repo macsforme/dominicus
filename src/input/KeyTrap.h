@@ -19,7 +19,7 @@
 
 // global variables
 extern GamePrefs gamePrefs;
-extern InputHandler inputHandler;
+extern InputHandler* inputHandler;
 
 class KeyTrap {
 private:

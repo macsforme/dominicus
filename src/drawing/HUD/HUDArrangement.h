@@ -18,6 +18,9 @@
 // library headers
 #include <vector>
 
+// global variables
+extern GameWindow* gameWindow;
+
 class HUDArrangement {
 public:
 	enum Bearing {
@@ -39,11 +42,10 @@ public:
 private:
 	HUDElement* findPriorElementCenter(int index);
 
-	GameWindow* gameWindow;
 	Vector2 elementPadding;
 
 public:
-	HUDArrangement(GameWindow* gameWindow);
+	HUDArrangement();
 
 	void rearrange();
 };

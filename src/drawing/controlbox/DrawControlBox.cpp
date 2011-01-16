@@ -9,7 +9,7 @@
 
 #include "DrawControlBox.h"
 
-DrawControlBox::DrawControlBox(GameWindow* gameWindow) : gameWindow(gameWindow) {
+DrawControlBox::DrawControlBox() {
 	// set up the shader program
 	vertexShader = ShaderTools::makeShader(
 			std::string(platform.dataPath +  "/shaders/controlBox.vertex.glsl").c_str(),

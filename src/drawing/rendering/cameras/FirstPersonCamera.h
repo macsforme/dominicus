@@ -27,6 +27,8 @@
 extern Platform platform;
 extern Ship ship;
 
+extern GameWindow* gameWindow;
+
 class FirstPersonCamera : Camera {
 private:
 	float aspectRatio;
@@ -34,7 +36,7 @@ private:
 public:
 	Matrix4 vpMatrix;
 
-	FirstPersonCamera(GameWindow* gameWindow) :
+	FirstPersonCamera() :
 			aspectRatio(gameWindow->aspectRatio) { }
 
 	void loop();

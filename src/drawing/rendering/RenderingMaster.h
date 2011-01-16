@@ -23,6 +23,8 @@
 // global variables
 extern Keyboard keyboard;
 
+extern GameWindow* gameWindow;
+
 class RenderingMaster {
 private:
 	BackCamera* bCamera;
@@ -39,7 +41,7 @@ private:
 public:
 	TerrainRenderer terrainRenderer;
 
-	RenderingMaster(GameWindow* gameWindow);
+	RenderingMaster();
 
 	void loop();
 };

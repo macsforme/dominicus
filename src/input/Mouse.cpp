@@ -16,8 +16,8 @@ void Mouse::loop() {
 
 		switch(event.type) {
 		case SDL_MOUSEMOTION:
-			positionX = event.motion.x;
-			positionY = event.motion.y;
+			position.x = (float) event.motion.x / (float) gameWindow->width * 2.0f - 1.0f;
+			position.y = (float) -event.motion.y / (float) gameWindow->height * 2.0f + 1.0f;
 
 			break;
 		case SDL_MOUSEBUTTONDOWN:

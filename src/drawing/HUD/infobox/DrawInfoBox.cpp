@@ -9,9 +9,8 @@
 
 #include "DrawInfoBox.h"
 
-DrawInfoBox::DrawInfoBox(HUDArrangement* hudArrangement, GameWindow* gameWindow,
-		FontManager* fontManager) :
-		gameWindow(gameWindow), fontManager(fontManager) {
+DrawInfoBox::DrawInfoBox(HUDArrangement* hudArrangement, FontManager* fontManager) :
+		fontManager(fontManager) {
 	// set up the HUD laying arrangement info
 	myElement = new HUDElement(Vector2(0.5f / gameWindow->aspectRatio, 0.5f));
 

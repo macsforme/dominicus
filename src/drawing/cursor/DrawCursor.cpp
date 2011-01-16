@@ -9,7 +9,7 @@
 
 #include "DrawCursor.h"
 
-DrawCursor::DrawCursor(GameWindow* gameWindow) : gameWindow(gameWindow) {
+DrawCursor::DrawCursor() {
 	// set up the shader program
 	vertexShader = ShaderTools::makeShader(
 			std::string(platform.dataPath +  "/shaders/cursor.vertex.glsl").c_str(),
@@ -44,10 +44,8 @@ void DrawCursor::draw() {
 			gamePrefs.getFloat("cursorSize") * 2.0f / (float) gameWindow->aspectRatio,
 			gamePrefs.getFloat("cursorSize") * 2.0f
 		);
-	Vector2 middle(
-			-1.0f + (float) inputHandler.mouse.positionX / (float) gameWindow->width * 2.0f,
-			1.0f - (float) inputHandler.mouse.positionY / (float) gameWindow->height * 2.0f
-		);
+	Vector2 middle = inputHandler->mouse.position;
+
 	Vector2 ll(middle.x - dims.x / 2.0f, middle.y - dims.y / 2.0f);
 	Vector2 ur(middle.x + dims.x / 2.0f, middle.y + dims.y / 2.0f);
 

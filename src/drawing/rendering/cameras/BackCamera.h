@@ -30,6 +30,8 @@
 extern Platform platform;
 extern Ship ship;
 
+extern GameWindow* gameWindow;
+
 class BackCamera : Camera {
 private:
 	float rotation;
@@ -40,8 +42,7 @@ public:
 	Matrix4 terrainVPMatrix;
 	Matrix4 shipVPMatrix;
 
-	BackCamera(GameWindow* gameWindow) :
-			aspectRatio(gameWindow->aspectRatio), rotation(0.0f) { }
+	BackCamera() : rotation(0.0f), aspectRatio(gameWindow->aspectRatio) { }
 
 	void loop();
 };
