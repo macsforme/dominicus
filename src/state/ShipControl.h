@@ -28,7 +28,7 @@ class ShipControl {
 public:
 	Ship* ship;
 
-	ShipControl(Ship* ship);
+	ShipControl(Ship* ship) : ship(ship) { }
 
 	void loop();
 };

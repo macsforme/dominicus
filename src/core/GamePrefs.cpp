@@ -15,6 +15,7 @@ GamePrefs::GamePrefs() {
 	preferences["shipAccelRate"] = "15";	// meters per second
 	preferences["shipMaxAccel"] = "15";	// top speed, meters per second
 	preferences["shipTurnRate"] = "60"; // degrees per second
+	preferences["shipMaxAngle"] = "45";	// degrees
 
 	// rendering settings
 	preferences["renderingDisplayUpdateFrequency"] = "2";	// tests per second
