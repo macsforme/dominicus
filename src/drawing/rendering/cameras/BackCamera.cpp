@@ -16,8 +16,11 @@ BackCamera::BackCamera() : rotation(0.0f), aspectRatio(gameWindow->aspectRatio) 
 void BackCamera::loop() {
 	// the back ship view should trail behind the actual ship orientation and
 	// catch up to it a little bit each frame
-	const float cFactor = 1.0f /
-			((float) gamePrefs.getInt("renderingFPS") * (float) gamePrefs.getInt("shipFollowLagFactor"));
+	const float cFactor = 
+			(gamePrefs.getFloat("shipFollowLagFactor") != 0.0f ?
+					1.0f / ((float) gamePrefs.getInt("renderingFPS") *
+							gamePrefs.getFloat("shipFollowLagFactor"))
+					: 1.0f);
 	
 	cameraOrientation.m11 = cameraOrientation.m11 * (1.0f - cFactor) + ship.orientation.m11 * cFactor;
 	cameraOrientation.m12 = cameraOrientation.m12 * (1.0f - cFactor) + ship.orientation.m12 * cFactor;
