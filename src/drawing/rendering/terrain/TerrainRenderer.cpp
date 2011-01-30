@@ -119,7 +119,8 @@ void TerrainRenderer::render(Matrix4 vpMatrix) {
 
 	glDrawElements(GL_TRIANGLES, terrain.mesh.faceGroups.begin()->second.size() * 3, GL_UNSIGNED_INT, NULL);
 
-	glDisableVertexAttribArray(vertDataBuffer);
+	glDisableVertexAttribArray(positionAttrib);
+	glDisableVertexAttribArray(texCoordAttrib);
 
 	glDisable(GL_TEXTURE_2D);
 }
