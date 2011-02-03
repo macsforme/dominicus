@@ -108,18 +108,18 @@ void SkyRenderer::render(Matrix4 vpMatrix) {
 //	glDisableVertexAttribArray(vertDataBuffer);
 printf("rotation %+.2f\n", degrees(asin(ship.orientation.m32)));
 	glBegin(GL_QUADS);
-	
+
 	glVertexAttrib1f(degreesAttrib, (degrees(asin(ship.orientation.m32)) - 60.0f) / 90.0f);
 	glVertexAttrib3f(positionAttrib, -1.0f, -1.0f, 0.999999f);
-	
+
 	glVertexAttrib1f(degreesAttrib, (degrees(asin(ship.orientation.m32)) + 60.0f) / 90.0f);
 	glVertexAttrib3f(positionAttrib, -1.0f, 1.0f, 0.999999f);
-	
+
 	glVertexAttrib1f(degreesAttrib, (degrees(asin(ship.orientation.m32)) + 60.0f) / 90.0f);
 	glVertexAttrib3f(positionAttrib, 1.0f, 1.0f, 0.999999f);
-	
+
 	glVertexAttrib1f(degreesAttrib, (degrees(asin(ship.orientation.m32)) - 60.0f) / 90.0f);
 	glVertexAttrib3f(positionAttrib, 1.0f, -1.0f, 0.999999f);
-	
+
 	glEnd();
 }
