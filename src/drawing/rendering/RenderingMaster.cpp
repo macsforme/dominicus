@@ -36,10 +36,8 @@ void RenderingMaster::loop() {
 			activeMatrix = &(bCamera->terrainVPMatrix);
 	}
 
-	if(activeMatrix == &(bCamera->terrainVPMatrix)) {
+//	skyRenderer.render(*activeMatrix);
+	terrainRenderer.render(*activeMatrix);
+	if(activeMatrix == &(bCamera->terrainVPMatrix))
 		shipRenderer.render(bCamera->shipVPMatrix);
-		terrainRenderer.render(bCamera->terrainVPMatrix);
-	} else {
-		terrainRenderer.render(*activeMatrix);
-	}
 }

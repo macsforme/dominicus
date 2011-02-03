@@ -17,6 +17,7 @@
 #include "Keyboard.h"
 #include "KeyTrap.h"
 #include "ShipRenderer.h"
+#include "SkyRenderer.h"
 #include "TerrainRenderer.h"
 #include "WorldViewCamera.h"
 
@@ -37,6 +38,7 @@ private:
 
 	// renderers
 	ShipRenderer shipRenderer;
+	SkyRenderer skyRenderer;
 
 public:
 	TerrainRenderer terrainRenderer;

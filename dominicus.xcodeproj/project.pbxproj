@@ -57,6 +57,7 @@
 		03DA5BC3127AA7B0003814F7 /* RenderingMaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03DA5BC2127AA7B0003814F7 /* RenderingMaster.cpp */; };
 		03DA5BCA127AA84C003814F7 /* TerrainRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03DA5BC9127AA84C003814F7 /* TerrainRenderer.cpp */; };
 		03DF5A0812797B4D003C2134 /* DrawingMaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03DF59FF12797B4D003C2134 /* DrawingMaster.cpp */; };
+		03E09B8612F55A8100AE6306 /* SkyRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03E09B8412F55A8100AE6306 /* SkyRenderer.cpp */; };
 		03E6C23D12D9AFAF0093B629 /* BuildVersion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03E6C23C12D9AFAF0093B629 /* BuildVersion.cpp */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 /* End PBXBuildFile section */
@@ -125,6 +126,7 @@
 		034FEA47129ACA060071B2AA /* TextBlock.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextBlock.cpp; sourceTree = "<group>"; };
 		0353D4B8127B0A43002340BF /* Terrain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Terrain.h; path = src/state/Terrain.h; sourceTree = "<group>"; };
 		0353D4B9127B0A43002340BF /* Terrain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Terrain.cpp; path = src/state/Terrain.cpp; sourceTree = "<group>"; };
+		0358003012E2DC8E00CB625F /* MiscMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiscMath.h; sourceTree = "<group>"; };
 		035A3C4412841B390001E186 /* Mouse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mouse.h; sourceTree = "<group>"; };
 		035A3C4512841B390001E186 /* Mouse.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Mouse.cpp; sourceTree = "<group>"; };
 		035A3D041284293A0001E186 /* DrawCursor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DrawCursor.h; path = cursor/DrawCursor.h; sourceTree = "<group>"; };
@@ -176,6 +178,8 @@
 		03DF5A0012797B4D003C2134 /* DrawingMaster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawingMaster.h; sourceTree = "<group>"; };
 		03DF5A0612797B4D003C2134 /* TerrainDevelopment.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TerrainDevelopment.cpp; sourceTree = "<group>"; };
 		03DF5A0712797B4D003C2134 /* TerrainDevelopment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TerrainDevelopment.h; sourceTree = "<group>"; };
+		03E09B8412F55A8100AE6306 /* SkyRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SkyRenderer.cpp; sourceTree = "<group>"; };
+		03E09B8512F55A8100AE6306 /* SkyRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkyRenderer.h; sourceTree = "<group>"; };
 		03E6C23B12D9AFAF0093B629 /* BuildVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BuildVersion.h; sourceTree = "<group>"; };
 		03E6C23C12D9AFAF0093B629 /* BuildVersion.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BuildVersion.cpp; sourceTree = "<group>"; };
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -244,9 +248,10 @@
 		030F8EAE1264CFFC00190225 /* math */ = {
 			isa = PBXGroup;
 			children = (
-				030F8EAF1264CFFC00190225 /* MatrixMath.h */,
 				030F8EB01264CFFC00190225 /* ScalarMath.h */,
 				030F8EB11264CFFC00190225 /* VectorMath.h */,
+				030F8EAF1264CFFC00190225 /* MatrixMath.h */,
+				0358003012E2DC8E00CB625F /* MiscMath.h */,
 			);
 			name = math;
 			path = src/math;
@@ -459,6 +464,7 @@
 				03DA5B82127AA286003814F7 /* cameras */,
 				03DF5A0212797B4D003C2134 /* ship */,
 				03DA5C15127AAEDB003814F7 /* terrain */,
+				03E09B8312F55A8100AE6306 /* sky */,
 				03DF5A0512797B4D003C2134 /* testing */,
 			);
 			path = rendering;
@@ -480,6 +486,15 @@
 				03DF5A0612797B4D003C2134 /* TerrainDevelopment.cpp */,
 			);
 			path = testing;
+			sourceTree = "<group>";
+		};
+		03E09B8312F55A8100AE6306 /* sky */ = {
+			isa = PBXGroup;
+			children = (
+				03E09B8512F55A8100AE6306 /* SkyRenderer.h */,
+				03E09B8412F55A8100AE6306 /* SkyRenderer.cpp */,
+			);
+			path = sky;
 			sourceTree = "<group>";
 		};
 		29B97314FDCFA39411CA2CEA /* dominicus */ = {
@@ -613,6 +628,7 @@
 				030D18C012D0792200DA9B7B /* InputHandler.cpp in Sources */,
 				03E6C23D12D9AFAF0093B629 /* BuildVersion.cpp in Sources */,
 				035E0E7712DCE54D00F84121 /* MainLoopMember.cpp in Sources */,
+				03E09B8612F55A8100AE6306 /* SkyRenderer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

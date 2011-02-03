@@ -15,6 +15,7 @@ HEADERS = \
 	-I  src/drawing/rendering/cameras \
 	-I  src/drawing/rendering/ship \
 	-I  src/drawing/rendering/terrain \
+	-I  src/drawing/rendering/sky \
 	-I  src/drawing/text \
 	-I  src/drawing/texture \
 	-I  src/geometry \
@@ -52,6 +53,7 @@ SOURCES = \
 	./src/drawing/rendering/cameras/BackCamera.cpp \
 	./src/drawing/rendering/terrain/TerrainRenderer.cpp \
 	./src/drawing/rendering/ship/ShipRenderer.cpp \
+	./src/drawing/rendering/sky/SkyRenderer.cpp \
 	./src/drawing/text/FontManager.cpp \
 	./src/drawing/text/TextBlock.cpp \
 	./src/drawing/texture/Texture.cpp \

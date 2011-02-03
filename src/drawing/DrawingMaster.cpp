@@ -58,8 +58,8 @@ void DrawingMaster::preFrame() {
 
 //	glClearColor(0.447058823529412f, 0.407843137254902f, 0.298039215686275f, 1.0f);
 //	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
-//	glClearColor(0.75f, 0.86f, 0.92f, 1.0f);
 	glClearColor(0.58f, 0.71f, 0.79f, 1.0f);
+//	glClearColor(0.0f, 0.02f, 0.24f, 1.0f);
 
 	// clear the screen
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
