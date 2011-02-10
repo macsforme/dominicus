@@ -11,13 +11,59 @@
 
 Terrain::Terrain() {
 	// randomly generate our input variables within the set limits
-	unsigned int density = 128;
+	unsigned int dsFactor = 16;
+	unsigned int ssFactor = 8;
 	float rough = 0.6f;
 	float gradDist = 0.45f;
 	float height = 0.5f + (float) (rand() % 100) / 100.0f * 0.5f;
 
 	// generate the initial diamond-square heightmap
-	DiamondSquare diamondSquare(density, rough);
+	DiamondSquare diamondSquare(dsFactor, rough);
+
+	// do sine-wave smoothing
+	unsigned int density = dsFactor * ssFactor;
+	float sineDSHeightMap[density][density];
+
+	for(int i = 0; i < dsFactor; ++i) {
+		for(int p = 0; p < dsFactor; ++p) {
+			// create a mesh with that terrain data
+			float xPlusWave[ssFactor];
+			float xMinusWave[ssFactor];
+			float zPlusWave[ssFactor];
+			float zMinusWave[ssFactor];
+
+			float seValue = diamondSquare.data[i][p];
+			float swValue = diamondSquare.data[i + 1 == dsFactor ? 0 : i + 1][p];
+			float neValue = diamondSquare.data[i][p + 1 == dsFactor ? 0 : p + 1];
+			float nwValue = diamondSquare.data[i + 1 == dsFactor ? 0 : i + 1]
+					[p + 1 == dsFactor ? 0 : p + 1];
+
+			for(int j = 0; j < ssFactor; ++j) {
+				float jFactor = (float) j / (float) ssFactor;
+
+				xPlusWave[j] = swValue + sin(radians(90.0f * jFactor)) * (nwValue - swValue);
+				xMinusWave[j] = seValue + sin(radians(90.0f * jFactor)) * (neValue - seValue);
+				zPlusWave[j] = neValue + sin(radians(90.0f * jFactor)) * (nwValue - neValue);
+				zMinusWave[j] = seValue + sin(radians(90.0f * jFactor)) * (swValue - seValue);
+
+//				xPlusWave[j] = swValue + jFactor * (nwValue - swValue);
+//				xMinusWave[j] = seValue + jFactor * (neValue - seValue);
+//				zPlusWave[j] = neValue + jFactor * (nwValue - neValue);
+//				zMinusWave[j] = seValue + jFactor * (swValue - seValue);
+			}
+
+			for(int j = 0; j < ssFactor; ++j) {
+				for(int k = 0; k < ssFactor; ++k) {
+					sineDSHeightMap[i * ssFactor + j][p * ssFactor + k] = (
+							zPlusWave[j] * (float) k / (float) ssFactor +
+							zMinusWave[j] * ((float) ssFactor - (float)k) / (float) ssFactor +
+							xPlusWave[k] * (float) j / (float) ssFactor +
+							xMinusWave[k] * ((float) ssFactor - (float) j) / (float) ssFactor
+						) / 4.0f;
+				}
+			}
+		}
+	}
 
 	// generate an "alphaBump" mappings for height variance in island
 	float alphaHeightMap[density][density];
@@ -60,7 +106,7 @@ Terrain::Terrain() {
 			dist +=
 					(float)
 					((int)	// precision reduction
-					((diamondSquare.data[mapIndex][(int) (angle / 360.0f * (float) density)]	// the value from the heightmap
+					((sineDSHeightMap[mapIndex][(int) (angle / 360.0f * (float) density)]	// the value from the heightmap
 					+ 1.0f)	// bumped up to positive-only values
 					/ 2.0f	// divided back down to 0.0 - 1.0 range
 					* levels))	// precision reduction to 0-levels
@@ -73,7 +119,7 @@ Terrain::Terrain() {
 			else if(dist < radius)
 					alphaHeightMap[p][j] = (radius - dist) / gradDist;
 			else
-				alphaHeightMap[p][j] = 0;
+				alphaHeightMap[p][j] = 0.0f;
 		}
 	}
 
@@ -82,10 +128,10 @@ Terrain::Terrain() {
 
 	for(int i = 0; i < density; ++i)
 		for(int p = 0; p < density; ++p)
-			comboHeightMap[i][p] = (diamondSquare.data[i][p] + 1.0f) / 2.0f *
+			comboHeightMap[i][p] = (sineDSHeightMap[i][p] + 1.0f) / 2.0f *
 					(float) alphaHeightMap[i][p];
 
-
+/*
 	// smooth out the bumps with two different algorithms
 	float smoothHeightMap[density][density];
 
@@ -130,27 +176,28 @@ Terrain::Terrain() {
 				smoothHeightMap[i][p] += comboHeightMap[i][p] * 0.5f;
 		}
 	}
+*/
 
 	// re-map all the values to 0.0f - 1.0
 	float max = 0.0f;
 
 	for(int i = 0; i < density; ++i) {
 		for(int p = 0; p < density; ++p) {
-			if(smoothHeightMap[i][p] > max)
-				max = smoothHeightMap[i][p];
+			if(comboHeightMap[i][p] > max)
+				max = comboHeightMap[i][p];
 		}
 	}
 
 	for(int i = 0; i < density; ++i)
 		for(int p = 0; p < density; ++p)
-			smoothHeightMap[i][p] = smoothHeightMap[i][p] / max * height;
+			comboHeightMap[i][p] = comboHeightMap[i][p] / max * height;
 
 	// create a mesh with that terrain data
 	for(int i = 0; i < density; ++i) {
 		for(int p = 0; p < density; ++p) {
 			mesh.addVertex(Vector3(
 					((float) i / (float) density * 2.0f - 1.0f) * TERRAIN_MAXWIDTH / 2.0f,
-					smoothHeightMap[i][p] * TERRAIN_MAXHEIGHT,
+					comboHeightMap[i][p] * TERRAIN_MAXHEIGHT,
 					((float) p / (float) density * 2.0f - 1.0f) * TERRAIN_MAXWIDTH / 2.0f
 				));
 
