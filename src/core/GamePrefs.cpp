@@ -27,7 +27,7 @@ GamePrefs::GamePrefs() {
 	preferences["perspectiveFarClip"] = "1500.0";
 	preferences["perspectiveFOV"] = "30.0";
 	preferences["shipFollowDistance"] = "5";
-	preferences["shipFollowAngle"] = "20";
+	preferences["shipFollowAngle"] = "10";
 	preferences["shipFollowLagFactor"] = "1.0";	// approximately in seconds how long to catch up
 
 	// input settings
