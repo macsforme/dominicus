@@ -58,7 +58,7 @@ void DrawHUDEnclosure::draw() {
 	elementPadding /= 2.0f;
 
 	// draw the padding around each element
-	for(int i = 0; i < hudArrangement->elementList.size(); ++i) {
+	for(size_t i = 0; i < hudArrangement->elementList.size(); ++i) {
 		HUDArrangement::HUDElementEntry* thisElementEntry = &(hudArrangement->elementList[i]);
 		HUDElement* thisElement = thisElementEntry->element;
 
@@ -100,7 +100,7 @@ void DrawHUDEnclosure::draw() {
 
 		// corners
 		containerUtility->drawCurve(
-				thisElement->position + thisElement->size / 2.0 + paddingSize / 2.0,
+				thisElement->position + thisElement->size / 2.0f + paddingSize / 2.0f,
 				paddingSize,
 				0.0f,
 				false,
@@ -109,8 +109,8 @@ void DrawHUDEnclosure::draw() {
 			);
 		containerUtility->drawCurve(
 				Vector2(
-						thisElement->position.x - thisElement->size.x / 2.0 - paddingSize.x / 2.0,
-						thisElement->position.y + thisElement->size.y / 2.0 + paddingSize.y / 2.0
+						thisElement->position.x - thisElement->size.x / 2.0f - paddingSize.x / 2.0f,
+						thisElement->position.y + thisElement->size.y / 2.0f + paddingSize.y / 2.0f
 					),
 				paddingSize,
 				90.0f,
@@ -119,7 +119,7 @@ void DrawHUDEnclosure::draw() {
 				false
 			);
 		containerUtility->drawCurve(
-				thisElement->position - thisElement->size / 2.0 - paddingSize / 2.0,
+				thisElement->position - thisElement->size / 2.0 - paddingSize / 2.0f,
 				paddingSize,
 				180.0f,
 				false,
@@ -128,8 +128,8 @@ void DrawHUDEnclosure::draw() {
 			);
 		containerUtility->drawCurve(
 				Vector2(
-						thisElement->position.x + thisElement->size.x / 2.0 + paddingSize.x / 2.0,
-						thisElement->position.y - thisElement->size.y / 2.0 - paddingSize.y / 2.0
+						thisElement->position.x + thisElement->size.x / 2.0f + paddingSize.x / 2.0f,
+						thisElement->position.y - thisElement->size.y / 2.0f - paddingSize.y / 2.0f
 					),
 				paddingSize,
 				270.0f,

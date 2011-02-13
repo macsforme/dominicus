@@ -69,7 +69,7 @@ DrawInfoBox::DrawInfoBox(HUDArrangement* hudArrangement, FontManager* fontManage
 	textBlock = NULL;
 	lastCheck = 0;
 	frameCount = 0;
-	currentFPS = 0.0f;
+	currentFPS = 0;
 	currentExecTime = 0.0f;
 }
 
@@ -128,8 +128,8 @@ void DrawInfoBox::draw() {
 		);
 	containerUtility->drawCurve(
 			Vector2(
-					myElement->position.x - contentSize.x / 2.0 - containerPadding.x / 2.0,
-					myElement->position.y + contentSize.y / 2.0 + containerPadding.y / 2.0
+					myElement->position.x - contentSize.x / 2.0f - containerPadding.x / 2.0f,
+					myElement->position.y + contentSize.y / 2.0f + containerPadding.y / 2.0f
 				),
 			containerPadding,
 			90.0f,
@@ -138,7 +138,7 @@ void DrawInfoBox::draw() {
 			false
 		);
 	containerUtility->drawCurve(
-			myElement->position - contentSize / 2.0 - containerPadding / 2.0,
+			myElement->position - contentSize / 2.0f - containerPadding / 2.0f,
 			containerPadding,
 			180.0f,
 			false,
@@ -147,8 +147,8 @@ void DrawInfoBox::draw() {
 		);
 	containerUtility->drawCurve(
 			Vector2(
-					myElement->position.x + contentSize.x / 2.0 + containerPadding.x / 2.0,
-					myElement->position.y - contentSize.y / 2.0 - containerPadding.y / 2.0
+					myElement->position.x + contentSize.x / 2.0f + containerPadding.x / 2.0f,
+					myElement->position.y - contentSize.y / 2.0f - containerPadding.y / 2.0f
 				),
 			containerPadding,
 			270.0f,
@@ -161,8 +161,8 @@ void DrawInfoBox::draw() {
 	std::string outputLines = "";
 
 	// update the FPS
-	if(platform.getExecutionTimeMicros() - lastCheck > 1000000 / gamePrefs.getFloat("renderingDisplayUpdateFrequency")) {
-		currentFPS = frameCount * gamePrefs.getFloat("renderingDisplayUpdateFrequency");
+	if(platform.getExecutionTimeMicros() - lastCheck > (unsigned int)(1000000 / gamePrefs.getFloat("renderingDisplayUpdateFrequency"))) {
+		currentFPS = (unsigned int)(frameCount * gamePrefs.getFloat("renderingDisplayUpdateFrequency"));
 		frameCount = 0;
 		lastCheck = platform.getExecutionTimeMicros();
 
@@ -198,8 +198,8 @@ void DrawInfoBox::draw() {
 	// if need be, regenerate the text block
 	if(textBlock == NULL)
 		textBlock = new TextBlock(outputLines.c_str(),
-				(myElement->size.x  - containerPadding.x * 2.0f) / 2.0f * gameWindow->width,
-				(myElement->size.y  - containerPadding.y * 2.0f) / 2.0f * gameWindow->height,
+				(unsigned int)((myElement->size.x  - containerPadding.x * 2.0f) / 2.0f * gameWindow->width),
+				(unsigned int)((myElement->size.y  - containerPadding.y * 2.0f) / 2.0f * gameWindow->height),
 				fontManager,
 				gamePrefs.getInt("fontStandardSize")
 			);

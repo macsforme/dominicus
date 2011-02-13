@@ -18,7 +18,7 @@ TextBlock::TextBlock(const char* dataString, unsigned int wrapX, unsigned int wr
 	lines.push_back("");
 	unsigned int pixelsWide = 0;
 
-	for(int i = 0; i < strlen(dataString); ++i) {
+	for(size_t i = 0; i < strlen(dataString); ++i) {
 		pixelsWide += fontManager->fontData[dataString[i]][size].advanceX;
 
 		// newline test
@@ -53,7 +53,7 @@ TextBlock::TextBlock(const char* dataString, unsigned int wrapX, unsigned int wr
 	int largestNegAdj = 0;
 
 	if(lines.size() > 0 && lines.back().length() > 0)
-		for(int i = 0; i < lines.back().size(); ++i)
+		for(size_t i = 0; i < lines.back().size(); ++i)
 			if(fontManager->fontData[*(lines.back().c_str() + i)][size].adjustY < largestNegAdj)
 				largestNegAdj = fontManager->fontData[*(lines.back().c_str() + i)][size].adjustY;
 
@@ -62,10 +62,10 @@ TextBlock::TextBlock(const char* dataString, unsigned int wrapX, unsigned int wr
 	width = 0;
 	height = -largestNegAdj;
 
-	for(int i = lines.size() - 1; i >= 0; --i) {
+	for(size_t i = lines.size() - 1; i >= 0; --i) {
 		// determine the largest positive adjustment for this line to see if it fits
 		int largestPosAdj = 0;
-		for(int p = 0; p < lines[i].length(); ++p) {
+		for(size_t p = 0; p < lines[i].length(); ++p) {
 			FontManager::FontData* charData = &(fontManager->fontData[*(lines[i].c_str() + p)][size]);
 			int posAdj = charData->adjustY + charData->height;
 
@@ -80,9 +80,9 @@ TextBlock::TextBlock(const char* dataString, unsigned int wrapX, unsigned int wr
 			// if this is not the very first iteration
 			if(i < lines.size() - 1) {
 				unsigned int prevLargestPosAdj = 0;
-				for(int p = 0; p < lines[i + 1].length(); ++p) {
+				for(size_t p = 0; p < lines[i + 1].length(); ++p) {
 					FontManager::FontData* charData = &(fontManager->fontData[*(lines[i + 1].c_str() + p)][size]);
-					int posAdj = charData->adjustY + charData->height;
+					unsigned int posAdj = charData->adjustY + charData->height;
 
 					if(posAdj > prevLargestPosAdj)
 						prevLargestPosAdj = posAdj;
@@ -99,7 +99,7 @@ TextBlock::TextBlock(const char* dataString, unsigned int wrapX, unsigned int wr
 
 		// update the width if necessary
 		unsigned int pixelsWide = 0;
-		for(int p = 0; p < printLines[0].length(); ++p) {
+		for(size_t p = 0; p < printLines[0].length(); ++p) {
 			pixelsWide += fontManager->fontData[*(printLines[0].c_str() + p)][size].advanceX;
 		}
 
@@ -121,10 +121,10 @@ TextBlock::TextBlock(const char* dataString, unsigned int wrapX, unsigned int wr
 	}
 
 	// create the character entries
-	float penX = -1.0, penY = -1.0 - ((float)largestNegAdj * 2.0f / height);
+	float penX = -1.0f, penY = -1.0f - ((float)largestNegAdj * 2.0f / height);
 
-	for(int i = printLines.size() - 1; i >= 0; --i) {
-		for(int p = 0; p < printLines[i].length(); ++p) {
+	for(size_t i = printLines.size() - 1; i >= 0; --i) {
+		for(size_t p = 0; p < printLines[i].length(); ++p) {
 			CharEntry entry;
 			entry.character = *(printLines[i].c_str() + p);
 

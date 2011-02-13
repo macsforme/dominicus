@@ -115,7 +115,7 @@ void DrawConsole::draw() {
 
 	// corners
 	containerUtility->drawCurve(
-			myElement->position + contentSize / 2.0 + containerPadding / 2.0,
+			myElement->position + contentSize / 2.0f + containerPadding / 2.0f,
 			containerPadding,
 			0.0f,
 			false,
@@ -124,8 +124,8 @@ void DrawConsole::draw() {
 		);
 	containerUtility->drawCurve(
 			Vector2(
-					myElement->position.x - contentSize.x / 2.0 - containerPadding.x / 2.0,
-					myElement->position.y + contentSize.y / 2.0 + containerPadding.y / 2.0
+					myElement->position.x - contentSize.x / 2.0f - containerPadding.x / 2.0f,
+					myElement->position.y + contentSize.y / 2.0f + containerPadding.y / 2.0f
 				),
 			containerPadding,
 			90.0f,
@@ -134,7 +134,7 @@ void DrawConsole::draw() {
 			false
 		);
 	containerUtility->drawCurve(
-			myElement->position - contentSize / 2.0 - containerPadding / 2.0,
+			myElement->position - contentSize / 2.0f - containerPadding / 2.0f,
 			containerPadding,
 			180.0f,
 			false,
@@ -143,8 +143,8 @@ void DrawConsole::draw() {
 		);
 	containerUtility->drawCurve(
 			Vector2(
-					myElement->position.x + contentSize.x / 2.0 + containerPadding.x / 2.0,
-					myElement->position.y - contentSize.y / 2.0 - containerPadding.y / 2.0
+					myElement->position.x + contentSize.x / 2.0f + containerPadding.x / 2.0f,
+					myElement->position.y - contentSize.y / 2.0f - containerPadding.y / 2.0f
 				),
 			containerPadding,
 			270.0f,
@@ -175,8 +175,8 @@ void DrawConsole::draw() {
 			delete(textBlock);
 
 		textBlock = new TextBlock(logString.c_str(),
-				(myElement->size.x  - containerPadding.x * 2.0f) / 2.0f * gameWindow->width,
-				(myElement->size.y  - containerPadding.y * 2.0f) / 2.0f * gameWindow->height,
+				(unsigned int)((myElement->size.x  - containerPadding.x * 2.0f) / 2.0f * gameWindow->width),
+				(unsigned int)((myElement->size.y  - containerPadding.y * 2.0f) / 2.0f * gameWindow->height),
 				fontManager,
 				gamePrefs.getInt("fontStandardSize")
 		);

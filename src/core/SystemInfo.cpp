@@ -41,7 +41,7 @@ void SystemInfo::check() {
 
 	// OpenGL version
 	std::string openGLVersionStr = (char*) glGetString(GL_VERSION);
-	float openGLVersion = atof(openGLVersionStr.substr(0, openGLVersionStr.find(' ')).c_str());
+	float openGLVersion = (float)atof(openGLVersionStr.substr(0, openGLVersionStr.find(' ')).c_str());
 
 	if(openGLVersion < 2.0f) {
 		std::stringstream err;
@@ -60,7 +60,7 @@ void SystemInfo::check() {
 	}
 
 	// GLSL version
-	float GLSLVersion = atof((char*) glGetString(GL_SHADING_LANGUAGE_VERSION));
+	float GLSLVersion = (float)atof((char*) glGetString(GL_SHADING_LANGUAGE_VERSION));
 
 	if(GLSLVersion < 1.1f) {
 		std::stringstream err;

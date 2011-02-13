@@ -41,12 +41,12 @@ GLuint ShaderTools::makeShader(const char* filename, GLenum shaderType) {
 	uint8_t bytes = 0;
 	GLchar** shaderSource;
 
-	for(int i = 0; i < fileLines.size(); ++i)
+	for(size_t i = 0; i < fileLines.size(); ++i)
 		bytes += fileLines[i].size() + 1;
 
 	shaderSource = (GLchar**) malloc(fileLines.size() * sizeof(size_t));
 
-	for(int i = 0; i < fileLines.size(); ++i) {
+	for(size_t i = 0; i < fileLines.size(); ++i) {
 		shaderSource[i] = (GLchar*) malloc(fileLines[i].size() + 1);
 		memcpy(
 				shaderSource[i],
@@ -136,7 +136,7 @@ GLuint ShaderTools::makeProgram(std::vector<GLuint> shaders) {
 
 	program = glCreateProgram();
 
-	for(int i = 0; i < shaders.size(); ++i)
+	for(size_t i = 0; i < shaders.size(); ++i)
 		glAttachShader(program, shaders[i]);
 
 	linkProgram(program);

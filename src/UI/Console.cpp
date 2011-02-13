@@ -52,7 +52,7 @@ void Console::changeTabName(std::string newName, std::string oldName) {
 void Console::changeTabPosition(unsigned int position, std::string tabName) {
 	TabStorageEntry storage;
 
-	for(int i = 0; i < tabContents.size(); ++i) {
+	for(size_t i = 0; i < tabContents.size(); ++i) {
 		if(tabContents[i].first == tabName) {
 			storage = tabContents[i];
 

@@ -100,7 +100,7 @@ void FontManager::rebuildFontTextureCache(unsigned int size) {
 	}
 
 	// calculate the size of the texture needed
-	uint8_t charsSquare = sqrt((double)charList.size()) + 1;	// add one due to integer rounding
+	uint8_t charsSquare = (uint8_t)sqrt((double)charList.size()) + 1;	// add one due to integer rounding
 
 	// create a local texture for the font cache
 	Texture* thisFontCache = new Texture(

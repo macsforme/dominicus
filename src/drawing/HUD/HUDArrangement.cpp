@@ -45,7 +45,7 @@ HUDArrangement::HUDArrangement() {
 
 void HUDArrangement::rearrange() {
 	// set each element position
-	for(int i = 0; i < elementList.size(); ++i) {
+	for(size_t i = 0; i < elementList.size(); ++i) {
 		HUDElement* thisElement = elementList[i].element;
 		HUDElement* neighbor = findPriorElementCenter(i);
 

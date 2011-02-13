@@ -28,7 +28,7 @@ BMPImage::BMPImage(std::string filename) {
 
 	// get length of the file
 	fileStream.seekg(0, std::ios::end);
-	size_t length = fileStream.tellg();
+	size_t length = (size_t)fileStream.tellg();
 
 	fileStream.seekg(0, std::ios::beg);
 
@@ -196,7 +196,7 @@ BMPImage::BMPImage(std::string filename) {
 				for(uint32_t x = 0; x < fileDIBHeader.imageWidth; ++x) {
 					// Make sure we aren't past the end of the pixel data
 					if(dataMark - (fileContents + fileBMPHeader.dataOffset)
-							> fileDIBHeader.imageDataSize) {
+							> (uint8_t)fileDIBHeader.imageDataSize) {
 						std::stringstream err;
 						err << "The BMP image file "
 								<< filename
@@ -230,13 +230,13 @@ BMPImage::BMPImage(std::string filename) {
 						*(pixelStart + 3) = *(dataMark++);	// alpha
 				}
 
-				// For 24-bpp images, pad the row out until the bytes are divisable by 4
+				// For 24-bpp images, pad the row out until the bytes are divisible by 4
 				if(fileDIBHeader.bpp == 24)
 					dataMark += fileDIBHeader.imageWidth % 4;
 			}
 
 			// Make sure we exactly at the end of the pixel data
-			size_t shortfall = fileContents + fileBMPHeader.fileSize - dataMark;
+			int shortfall = (int)(fileContents + fileBMPHeader.fileSize - dataMark);
 			if(shortfall != 0) {
 				std::stringstream err;
 				err << "The BMP image file "

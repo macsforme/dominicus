@@ -13,30 +13,30 @@ DiamondSquare::DiamondSquare(unsigned int size, float roughness) :
 		size(size) {
 	// initialize the memory
 	data = (float**) malloc(size * sizeof(float*));
-	for(int i = 0; i < size; ++i)
+	for(unsigned int i = 0; i < size; ++i)
 		data[i] = (float*) malloc(size * sizeof(float));
 
 	// zero out the memory
-	for(int i = 0; i < size; ++i)
-		for(int p = 0; p < size; ++p)
+	for(unsigned int i = 0; i < size; ++i)
+		for(unsigned int p = 0; p < size; ++p)
 			data[i][p] = 0.0f;
 
 	// do diamond-square algorithm displacement
 	float displaceRange = 1.0f;
 
-	for(int i = 0; i < log2(size); ++i) {
+	for(int i = 0; i < (int)log2(size); ++i) {
 		// diamond step
 		for(
-				int p = size / pow(2.0, i + 1);
-				p <= size - size / pow(2.0, i + 1);
-				p += 2 * (size / pow(2.0, i + 1))
+				unsigned int p = size / (int)pow(2.0, i + 1);
+				p <= size - size / (int)pow(2.0, i + 1);
+				p += 2 * (size / (int)pow(2.0, i + 1))
 			) {
 			for(
-					int j = size / pow(2.0, i + 1);
-					j <= size - size / pow(2.0, i + 1);
-					j += 2 * (size / pow(2.0, i + 1))
+					unsigned int j = size / (int)pow(2.0, i + 1);
+					j <= size - size / (int)pow(2.0, i + 1);
+					j += 2 * (size / (int)pow(2.0, i + 1))
 				) {
-				unsigned int offset = size / pow(2.0, i + 1);
+				unsigned int offset = size / (int)pow(2.0, i + 1);
 
 				data[p][j] = (
 						data[p - offset][j - offset] +
@@ -49,7 +49,7 @@ DiamondSquare::DiamondSquare(unsigned int size, float roughness) :
 		}
 
 		// square step
-		int jump = size / pow(2.0, i);
+		unsigned int jump = size / (int)pow(2.0, i);
 
 		for(
 				int m = 0;
@@ -111,8 +111,8 @@ DiamondSquare::DiamondSquare(unsigned int size, float roughness) :
 	// re-map all the values to +1.0f, -1.0f
 	float min = 0.0f, max = 0.0f;
 
-	for(int i = 0; i < size; ++i) {
-		for(int p = 0; p < size; ++p) {
+	for(unsigned int i = 0; i < size; ++i) {
+		for(unsigned int p = 0; p < size; ++p) {
 			if(data[i][p] > max)
 				max = data[i][p];
 			else if(data[i][p] < min)
@@ -122,7 +122,7 @@ DiamondSquare::DiamondSquare(unsigned int size, float roughness) :
 
 	float range = 0.0f - min + max;
 
-	for(int i = 0; i < size; ++i)
-		for(int p = 0; p < size; ++p)
+	for(unsigned int i = 0; i < size; ++i)
+		for(unsigned int p = 0; p < size; ++p)
 			data[i][p] = (-min + data[i][p]) * 2.0f / range - 1.0f;
 }

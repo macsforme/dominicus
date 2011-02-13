@@ -81,7 +81,7 @@ const int GamePrefs::getInt(std::string key) const {
 }
 
 const float GamePrefs::getFloat(std::string key) const {
-	return atof(getString(key).c_str());
+	return (float)atof(getString(key).c_str());
 }
 
 const bool GamePrefs::getBool(std::string key) const {

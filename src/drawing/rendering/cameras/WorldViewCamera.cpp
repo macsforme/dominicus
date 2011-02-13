@@ -11,8 +11,8 @@
 
 void WorldViewCamera::loop() {
 	// get our delta T
-	static float lastUpdate = platform.getExecutionTimeMicros();
-	float dt = platform.getExecutionTimeMicros() - lastUpdate;
+	static float lastUpdate = (float)platform.getExecutionTimeMicros();
+	float dt = (float)platform.getExecutionTimeMicros() - lastUpdate;
 	lastUpdate += dt;
 
 	// do math on variables
@@ -37,9 +37,9 @@ void WorldViewCamera::loop() {
 	const float fClip = gamePrefs.getFloat("perspectiveFarClip");
 
 	vpMatrix *= Matrix4(
-	        1.0/tan(radians(fov)), 0.0, 0.0, 0.0,
+	        1.0f/tan(radians(fov)), 0.0, 0.0, 0.0,
 	        0.0, aspectRatio/tan(radians(fov)), 0.0, 0.0,
-	        0.0, 0.0, (fClip + nClip) / (fClip - nClip), 1.0,
-	        0.0, 0.0, -2.0 * fClip * nClip / (fClip - nClip), 0.0
+	        0.0, 0.0, (fClip + nClip) / (fClip - nClip), 1.0f,
+	        0.0, 0.0, -2.0f * fClip * nClip / (fClip - nClip), 0.0
 		);
 }

@@ -82,10 +82,10 @@ void BackCamera::loop() {
 	const float fClip = gamePrefs.getFloat("perspectiveFarClip");
 
 	shipVPMatrix *= Matrix4(
-	        1.0/tan(radians(fov)), 0.0, 0.0, 0.0,
+	        1.0f/tan(radians(fov)), 0.0, 0.0, 0.0,
 	        0.0, aspectRatio/tan(radians(fov)), 0.0, 0.0,
-	        0.0, 0.0, (fClip + nClip) / (fClip - nClip), 1.0,
-	        0.0, 0.0, -2.0 * fClip * nClip / (fClip - nClip), 0.0
+	        0.0, 0.0, (fClip + nClip) / (fClip - nClip), 1.0f,
+	        0.0, 0.0, -2.0f * fClip * nClip / (fClip - nClip), 0.0
 		);
 
 	// terrain camera transformations
@@ -120,9 +120,9 @@ void BackCamera::loop() {
 	translateMatrix(0.0f, 0.0f, (float) gamePrefs.getInt("shipFollowDistance"), terrainVPMatrix);
 
 	terrainVPMatrix *= Matrix4(
-	        1.0/tan(radians(fov)), 0.0, 0.0, 0.0,
+	        1.0f/tan(radians(fov)), 0.0, 0.0, 0.0,
 	        0.0, aspectRatio/tan(radians(fov)), 0.0, 0.0,
-	        0.0, 0.0, (fClip + nClip) / (fClip - nClip), 1.0,
-	        0.0, 0.0, -2.0 * fClip * nClip / (fClip - nClip), 0.0
+	        0.0, 0.0, (fClip + nClip) / (fClip - nClip), 1.0f,
+	        0.0, 0.0, -2.0f * fClip * nClip / (fClip - nClip), 0.0
 		);
 }

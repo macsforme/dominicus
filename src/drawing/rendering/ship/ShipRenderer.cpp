@@ -98,9 +98,11 @@ ShipRenderer::ShipRenderer() {
 									LOG_FATAL,
 									"Model face specification has out-of-bounds index."
 								);
-						faceVertices[i] = vertex;
-						faceNormals[i] = normal;
-						faceTexCoords[i] = texCoord;
+
+						// TODO ** REVIEW IF THESE SHOULD BE INT ARRAYS NOT FLOAT ARRAYS CUS THIS LOOKS LIKE AN INDEX BEING PUT INTO A VECTOR
+						faceVertices[i] = (float)vertex;
+						faceNormals[i] = (float)normal;
+						faceTexCoords[i] = (float)texCoord;
 					} else if(sscanf(subjs[i], "%u//%u", &vertex, &normal) == 2) {
 						// line has slashes and specifies the vertex and normal
 						if(
@@ -111,9 +113,9 @@ ShipRenderer::ShipRenderer() {
 									LOG_FATAL,
 									"Model face specification has out-of-bounds index."
 								);
-
-						faceVertices[i] = vertex;
-						faceNormals[i] = normal;
+						// TODO ** REVIEW IF THESE SHOULD BE INT ARRAYS NOT FLOAT ARRAYS CUS THIS LOOKS LIKE AN INDEX BEING PUT INTO A VECTOR
+						faceVertices[i] = (float)vertex;
+						faceNormals[i] = (float)normal;
 					} else if(sscanf(subjs[i],"%u", &vertex)) {
 						// line has just the vertex
 						if(vertex > ship.vertices.size())
@@ -121,7 +123,8 @@ ShipRenderer::ShipRenderer() {
 										LOG_FATAL,
 										"Model face specification has out-of-bounds index."
 									);
-						faceVertices[i] = vertex;
+						// TODO ** REVIEW IF THESE SHOULD BE INT ARRAYS NOT FLOAT ARRAYS CUS THIS LOOKS LIKE AN INDEX BEING PUT INTO A VECTOR
+						faceVertices[i] = (float)vertex;
 					} else {
 							ProgramLog::report(
 									LOG_FATAL,
@@ -132,29 +135,29 @@ ShipRenderer::ShipRenderer() {
 
 				// save it
 				ship.addFace(
-						faceVertices[0],
-						faceVertices[1],
-						faceVertices[2],
-						faceNormals[0],
-						faceNormals[1],
-						faceNormals[2],
-						faceTexCoords[0],
-						faceTexCoords[1],
-						faceTexCoords[2],
+						(unsigned int)faceVertices[0],
+						(unsigned int)faceVertices[1],
+						(unsigned int)faceVertices[2],
+						(unsigned int)faceNormals[0],
+						(unsigned int)faceNormals[1],
+						(unsigned int)faceNormals[2],
+						(unsigned int)faceTexCoords[0],
+						(unsigned int)faceTexCoords[1],
+						(unsigned int)faceTexCoords[2],
 						groupName
 					);
 				// add the other half of the quad as a second triangle, if necessary
 				if(numFaces == 4)
 					ship.addFace(
-							faceVertices[2],
-							faceVertices[3],
-							faceVertices[0],
-							faceNormals[2],
-							faceNormals[3],
-							faceNormals[0],
-							faceTexCoords[2],
-							faceTexCoords[3],
-							faceTexCoords[0],
+							(unsigned int)faceVertices[2],
+							(unsigned int)faceVertices[3],
+							(unsigned int)faceVertices[0],
+							(unsigned int)faceNormals[2],
+							(unsigned int)faceNormals[3],
+							(unsigned int)faceNormals[0],
+							(unsigned int)faceTexCoords[2],
+							(unsigned int)faceTexCoords[3],
+							(unsigned int)faceTexCoords[0],
 							groupName
 						);
 			}
@@ -272,7 +275,7 @@ void ShipRenderer::render(Matrix4 mvpMatrix) {
 		// activate the texture
 		glBindTexture(GL_TEXTURE_2D, textureIDs[itr->first]);
 
-		for(int i = 0; i < itr->second.size(); ++i) {
+		for(size_t i = 0; i < itr->second.size(); ++i) {
 			// render triangles
 			glBegin(GL_TRIANGLES);
 
