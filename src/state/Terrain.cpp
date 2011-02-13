@@ -11,8 +11,8 @@
 
 Terrain::Terrain() {
 	// randomly generate our input variables within the set limits
-	unsigned int dsFactor = 16;
-	unsigned int ssFactor = 8;
+	const unsigned int dsFactor = 16;
+	const unsigned int ssFactor = 8;
 	float rough = 0.6f;
 	float gradDist = 0.45f;
 	float height = 0.5f + (float) (rand() % 100) / 100.0f * 0.5f;
@@ -21,7 +21,7 @@ Terrain::Terrain() {
 	DiamondSquare diamondSquare(dsFactor, rough);
 
 	// do sine-wave smoothing
-	unsigned int density = dsFactor * ssFactor;
+	const unsigned int density = dsFactor * ssFactor;
 	float sineDSHeightMap[density][density];
 
 	for(int i = 0; i < dsFactor; ++i) {

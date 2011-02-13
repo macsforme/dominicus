@@ -143,7 +143,7 @@ void TerrainRenderer::reloadGeometry(bool firstLoad) {
 	// prepare arrays of vertex data and element data
 	std::vector<Mesh::Face>* faces = &(terrain.mesh.faceGroups.begin()->second);
 
-	GLfloat vertDataBufferArray[15 * faces->size()];	// 3 vertices + 2 texcoords * 3 per face
+	GLfloat* vertDataBufferArray = (GLfloat*)malloc(sizeof(GLfloat) * 15 * faces->size());	// 3 vertices + 2 texcoords * 3 per face
 	for(int i = 0; i < faces->size(); ++i) {
 		vertDataBufferArray[i * 15 + 0] = terrain.mesh.vertices[(*faces)[i].vertices[0]].x;
 		vertDataBufferArray[i * 15 + 1] = terrain.mesh.vertices[(*faces)[i].vertices[0]].y;
@@ -167,7 +167,7 @@ void TerrainRenderer::reloadGeometry(bool firstLoad) {
 		vertDataBufferArray[i * 15 + 14] = terrain.mesh.vertices[(*faces)[i].vertices[2]].z / texDivisor;
 	}
 
-	GLuint vertElementBufferArray[3 * faces->size()];
+	GLuint *vertElementBufferArray = (GLuint*)malloc(sizeof(GLuint) *3 * faces->size());
 	for(int i = 0; i < faces->size(); ++i) {
 		vertElementBufferArray[i * 3 + 0] = i * 3 + 0;
 		vertElementBufferArray[i * 3 + 1] = i * 3 + 1;
@@ -178,4 +178,7 @@ void TerrainRenderer::reloadGeometry(bool firstLoad) {
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertDataBufferArray), vertDataBufferArray, GL_STATIC_DRAW);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(vertElementBufferArray), vertElementBufferArray,
 			GL_STATIC_DRAW);
+
+	free(vertDataBufferArray);
+	free(vertElementBufferArray);
 }
