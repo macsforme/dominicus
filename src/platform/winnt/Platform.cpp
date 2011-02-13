@@ -38,6 +38,13 @@ void Platform::init()
 		d += "\\data\\";
 		if (GetFileAttributes(d.c_str()) != INVALID_FILE_ATTRIBUTES)
 			dataPath = d;
+		else
+		{
+			d = appName;
+			d += "\\..\\data\\";
+			if (GetFileAttributes(d.c_str()) != INVALID_FILE_ATTRIBUTES)
+				dataPath = d;
+		}
 	}
 }
 
