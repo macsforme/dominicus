@@ -41,4 +41,10 @@ inline float round(float num, unsigned short int places) {
 	return((float) ((int) (num * pow(10.0f, (float) places))) / pow(10.0f, (float) places));
 }
 
+#ifdef WIN32
+inline double log2(double n)
+{
+	return log( n ) / log( 2.0 );  
+}
+#endif
 #endif
