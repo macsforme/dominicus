@@ -27,16 +27,16 @@ DiamondSquare::DiamondSquare(unsigned int size, float roughness) :
 	for(int i = 0; i < log2(size); ++i) {
 		// diamond step
 		for(
-				int p = size / pow(2, i + 1);
-				p <= size - size / pow(2, i + 1);
-				p += 2 * (size / pow(2, i + 1))
+				int p = size / pow(2.0, i + 1);
+				p <= size - size / pow(2.0, i + 1);
+				p += 2 * (size / pow(2.0, i + 1))
 			) {
 			for(
-					int j = size / pow(2, i + 1);
-					j <= size - size / pow(2, i + 1);
-					j += 2 * (size / pow(2, i + 1))
+					int j = size / pow(2.0, i + 1);
+					j <= size - size / pow(2.0, i + 1);
+					j += 2 * (size / pow(2.0, i + 1))
 				) {
-				unsigned int offset = size / pow(2, i + 1);
+				unsigned int offset = size / pow(2.0, i + 1);
 
 				data[p][j] = (
 						data[p - offset][j - offset] +
@@ -49,17 +49,17 @@ DiamondSquare::DiamondSquare(unsigned int size, float roughness) :
 		}
 
 		// square step
-		int jump = size / pow(2, i);
+		int jump = size / pow(2.0, i);
 
 		for(
 				int m = 0;
-				m < pow(2, i);
+				m < pow(2.0, i);
 				++m
 			) {
 
 			for(
 					int n = 0;
-					n < pow(2, i);
+					n < pow(2.0, i);
 					++n
 				) {
 
