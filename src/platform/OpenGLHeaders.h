@@ -15,7 +15,16 @@
 #ifdef __APPLE__
 #include <OpenGL/OpenGL.h>
 #else
+
+#ifdef WIN32 // der windows needen der headers
+#include <Windows.h>
+#include "GL/glew.h"
 #include <GL/gl.h>
+#else
+#include <GL/gl.h>
+#endif
+
+
 #endif
 
 #endif

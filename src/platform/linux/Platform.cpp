@@ -50,3 +50,6 @@ void Platform::sleepMicros(unsigned int micros) {
 	delayTime.tv_nsec = micros * 1000;
 	nanosleep(&delayTime, NULL);
 }
+
+void Platform::loadExtensions(){
+}

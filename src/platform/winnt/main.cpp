@@ -10,17 +10,23 @@
 // program headers
 #include "dominicusMain.h"
 #include "ProgramLog.h"
+#include "OpenGLHeaders.h"
 
 // library headers
 #include <SDL/SDL.h>
 
-int main(int argc, char* argv[]) {
+
+int APIENTRY _tWinMain(HINSTANCE hInstance,
+                     HINSTANCE hPrevInstance,
+                     LPTSTR    lpCmdLine,
+                     int       nCmdShow)
+{
 	// initialize SDL
 	if(SDL_Init(SDL_INIT_VIDEO) == -1)
 		ProgramLog::report(LOG_FATAL, "SDL could not be initialized.");
 
 	// call the main program routine
-	int returnVal = dominicusMain(argc, argv);
+	int returnVal = dominicusMain(0, NULL);
 
 	// destroy SDL
 	SDL_Quit();

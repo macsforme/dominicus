@@ -32,6 +32,10 @@ int dominicusMain(int argc, char* argv[]) {
 
 	// initialize stuff
 	gameWindow = new GameWindow(gamePrefs.getBool("windowStartFullScreen") ? true : false);
+
+	// let the platform load any openGl extensions (or extension managers) it needs
+	platform.loadExtensions();
+
 	inputHandler = new InputHandler();
 	drawingMaster = new DrawingMaster();
 	ShipControl shipControl(&ship);

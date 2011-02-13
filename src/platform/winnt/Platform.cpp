@@ -11,18 +11,20 @@
 
 // platform-dependent includes
 #include <SDL/SDL.h>
-//#include <time.h>
-#include <sys/time.h>
+#include "OpenGLHeaders.h"
+
+#include <time.h>
+
 Platform::Platform() {
 	// determine the resource directory path
 	dataPath = ".";
 
 	// initialize the random number generator
-	srand(time(NULL));
+	srand(SDL_GetTicks());
 }
 
 const char* Platform::getArchitecture() {
-	return "Linux";
+	return "WinNT";
 }
 
 void Platform::hideCursor() {
@@ -34,19 +36,17 @@ void Platform::warpCursor(unsigned int x, unsigned int y) {
 }
 
 unsigned int Platform::getExecutionTimeMicros() {
-	timeval tv;
-	if(gettimeofday(&tv, NULL) == -1)
-		ProgramLog::report(LOG_FATAL, "An error occurred when attempting to retrieve the time.");
-
-	static unsigned long int beginning = tv.tv_sec * 1000000 + tv.tv_usec;
-	unsigned long int now = tv.tv_sec * 1000000 + tv.tv_usec;
-
-	return now - beginning;
+	return SDL_GetTicks();
 }
 
 void Platform::sleepMicros(unsigned int micros) {
-	timespec delayTime;
-	delayTime.tv_sec = 0;
-	delayTime.tv_nsec = micros * 1000;
-	nanosleep(&delayTime, NULL);
+	Sleep(micros);
+}
+
+void Platform::loadExtensions(){
+	GLenum err = glewInit();
+	if (GLEW_OK != err)
+	{
+	  // do something?
+	}
 }

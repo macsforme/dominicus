@@ -32,6 +32,9 @@ public:
 	// time functions
 	unsigned int getExecutionTimeMicros();
 	void sleepMicros(unsigned int micros);
+
+	// GL context function
+	void loadExtensions();
 };
 
 #endif
