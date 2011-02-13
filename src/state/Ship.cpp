@@ -17,7 +17,7 @@ Ship::Ship(Vector4 position) :
 
 unsigned long int Ship::loop() {
 	// get our delta T
-	static float lastUpdate = platform.getExecutionTimeMicros();
+	static float lastUpdate = (float)platform.getExecutionTimeMicros();
 	float dt = platform.getExecutionTimeMicros() - lastUpdate;
 	lastUpdate += dt;
 

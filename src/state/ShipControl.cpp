@@ -15,7 +15,7 @@ void ShipControl::loop() {
 			(float) gamePrefs.getInt("shipMaxAngle");
 
 	// get our delta T
-	static float lastUpdate = platform.getExecutionTimeMicros();
+	static float lastUpdate = (float)platform.getExecutionTimeMicros();
 	float dt = platform.getExecutionTimeMicros() - lastUpdate;
 	lastUpdate += dt;
 

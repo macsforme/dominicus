@@ -18,11 +18,11 @@
 
 // common functions
 inline float radians(float deg) {
-	return (deg * PI / 180);
+	return (float)(deg * PI / 180);
 }
 
 inline float degrees(float rad) {
-	return (rad * 180 / PI);
+	return (float)(rad * 180 / PI);
 }
 
 inline float absolute(float num) {
