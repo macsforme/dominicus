@@ -13,6 +13,57 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\core">
+      <UniqueIdentifier>{ef414896-c377-42a1-8c98-3921a1471d99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\core">
+      <UniqueIdentifier>{001c9a2e-1d20-4ae9-8d01-a0776769f67c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\drawing">
+      <UniqueIdentifier>{68ad4313-168e-43fb-bd9d-1cec23ee0745}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\drawing">
+      <UniqueIdentifier>{94bd525b-dc4b-47b7-bd13-410df45ae331}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\geometry">
+      <UniqueIdentifier>{5b3d961a-2ebd-4fb8-b668-ef7c09af3319}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\geometry">
+      <UniqueIdentifier>{1c8f117f-e8bc-4674-a90e-9f8340b7b297}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\input">
+      <UniqueIdentifier>{f1bc6a46-ed8c-47f2-8eae-1697a4dcfac8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\input">
+      <UniqueIdentifier>{5a25d982-c78b-4198-8d5a-db107609ca7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\math">
+      <UniqueIdentifier>{3fb2dd52-6ef7-4aaf-b0ec-1f65a1b7b939}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\platform">
+      <UniqueIdentifier>{29b18b39-e483-415a-b1e2-ec1d9f79eaee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\platform">
+      <UniqueIdentifier>{862e586e-91a2-4db0-a4ec-cf98723c4be4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\state">
+      <UniqueIdentifier>{fcde64e6-024a-4a66-a167-2bc54c054514}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\state">
+      <UniqueIdentifier>{0da0c1e1-0de9-4980-b223-fca26b6b4c77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ui">
+      <UniqueIdentifier>{6a2157c7-9b95-4890-9949-3f8f9935c0c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ui">
+      <UniqueIdentifier>{2a0900b9-ebe5-4a69-a928-4a1513886529}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\windowing">
+      <UniqueIdentifier>{dd9d2ebd-c66e-4175-af4f-14df93aa9ea1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\windowing">
+      <UniqueIdentifier>{b4a146a2-db27-40d8-b130-53c61775493a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="small.ico">
@@ -26,5 +77,261 @@
     <ResourceCompile Include="dominicus.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\core\BuildVersion.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\dominicusMain.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\GamePrefs.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\MainLoopMember.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\ProgramLog.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\SystemInfo.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\drawing\DrawingMaster.cpp">
+      <Filter>Source Files\drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\drawing\ShaderTools.cpp">
+      <Filter>Source Files\drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\drawing\controlbox\DrawControlBox.cpp">
+      <Filter>Source Files\drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\drawing\cursor\DrawCursor.cpp">
+      <Filter>Source Files\drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\drawing\HUD\console\DrawConsole.cpp">
+      <Filter>Source Files\drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\drawing\HUD\infobox\DrawInfoBox.cpp">
+      <Filter>Source Files\drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\drawing\HUD\DrawHUD.cpp">
+      <Filter>Source Files\drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\drawing\HUD\DrawHUDContainerUtility.cpp">
+      <Filter>Source Files\drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\drawing\HUD\DrawHUDEnclosure.cpp">
+      <Filter>Source Files\drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\drawing\HUD\HUDArrangement.cpp">
+      <Filter>Source Files\drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\drawing\rendering\cameras\BackCamera.cpp">
+      <Filter>Source Files\drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\drawing\rendering\cameras\Camera.cpp">
+      <Filter>Source Files\drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\drawing\rendering\cameras\FirstPersonCamera.cpp">
+      <Filter>Source Files\drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\drawing\rendering\cameras\WorldViewCamera.cpp">
+      <Filter>Source Files\drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\drawing\rendering\ship\ShipRenderer.cpp">
+      <Filter>Source Files\drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\drawing\rendering\sky\SkyRenderer.cpp">
+      <Filter>Source Files\drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\drawing\text\FontManager.cpp">
+      <Filter>Source Files\drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\drawing\text\TextBlock.cpp">
+      <Filter>Source Files\drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\drawing\texture\BMPImage.cpp">
+      <Filter>Source Files\drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\drawing\texture\Texture.cpp">
+      <Filter>Source Files\drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\geometry\DiamondSquare.cpp">
+      <Filter>Source Files\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\input\InputHandler.cpp">
+      <Filter>Source Files\input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\input\Keyboard.cpp">
+      <Filter>Source Files\input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\input\KeyTrap.cpp">
+      <Filter>Source Files\input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\input\Mouse.cpp">
+      <Filter>Source Files\input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\winnt\main.cpp">
+      <Filter>Source Files\platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\winnt\Platform.cpp">
+      <Filter>Source Files\platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\state\Ship.cpp">
+      <Filter>Source Files\state</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\state\ShipControl.cpp">
+      <Filter>Source Files\state</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\state\Terrain.cpp">
+      <Filter>Source Files\state</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\UI\Console.cpp">
+      <Filter>Source Files\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windowing\GameWindow.cpp">
+      <Filter>Source Files\windowing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\drawing\rendering\terrain\TerrainRenderer.cpp">
+      <Filter>Source Files\drawing</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\core\BuildVersion.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\dominicusMain.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\GamePrefs.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\MainLoopMember.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\ProgramLog.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\SystemInfo.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\drawing\rendering\cameras\BackCamera.h">
+      <Filter>Header Files\drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\drawing\texture\BMPImage.h">
+      <Filter>Header Files\drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\drawing\rendering\cameras\Camera.h">
+      <Filter>Header Files\drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\drawing\HUD\console\DrawConsole.h">
+      <Filter>Header Files\drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\drawing\controlbox\DrawControlBox.h">
+      <Filter>Header Files\drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\drawing\cursor\DrawCursor.h">
+      <Filter>Header Files\drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\drawing\HUD\DrawHUD.h">
+      <Filter>Header Files\drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\drawing\HUD\DrawHUDContainerUtility.h">
+      <Filter>Header Files\drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\drawing\HUD\DrawHUDEnclosure.h">
+      <Filter>Header Files\drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\drawing\HUD\infobox\DrawInfoBox.h">
+      <Filter>Header Files\drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\drawing\DrawingMaster.h">
+      <Filter>Header Files\drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\drawing\rendering\cameras\FirstPersonCamera.h">
+      <Filter>Header Files\drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\drawing\text\FontManager.h">
+      <Filter>Header Files\drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\drawing\HUD\HUDArrangement.h">
+      <Filter>Header Files\drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\drawing\HUD\HUDElement.h">
+      <Filter>Header Files\drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\drawing\ShaderTools.h">
+      <Filter>Header Files\drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\drawing\rendering\ship\ShipRenderer.h">
+      <Filter>Header Files\drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\drawing\rendering\sky\SkyRenderer.h">
+      <Filter>Header Files\drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\drawing\text\TextBlock.h">
+      <Filter>Header Files\drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\drawing\texture\Texture.h">
+      <Filter>Header Files\drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\drawing\rendering\cameras\WorldViewCamera.h">
+      <Filter>Header Files\drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\geometry\Mesh.h">
+      <Filter>Header Files\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\geometry\DiamondSquare.h">
+      <Filter>Header Files\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\input\InputHandler.h">
+      <Filter>Header Files\input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\input\Keyboard.h">
+      <Filter>Header Files\input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\input\KeyTrap.h">
+      <Filter>Header Files\input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\input\Mouse.h">
+      <Filter>Header Files\input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\math\MatrixMath.h">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\math\MiscMath.h">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\math\ScalarMath.h">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\math\VectorMath.h">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\OpenGLHeaders.h">
+      <Filter>Header Files\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\Platform.h">
+      <Filter>Header Files\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\state\Ship.h">
+      <Filter>Header Files\state</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\state\ShipControl.h">
+      <Filter>Header Files\state</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\state\Terrain.h">
+      <Filter>Header Files\state</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\UI\Console.h">
+      <Filter>Header Files\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\windowing\GameWindow.h">
+      <Filter>Header Files\windowing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\drawing\rendering\terrain\TerrainRenderer.h">
+      <Filter>Header Files\drawing</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -19,13 +19,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -45,30 +45,36 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../src/core;../src/drawing;../src/drawing/HUD;../src/drawing/rendering;../src/drawing/HUD/console;../src/drawing/controlbox;../src/drawing/HUD/infobox;../src/drawing/rendering/cameras;../src/drawing/rendering/ship;../src/drawing/rendering/terrain;../src/drawing/rendering/sky;../src/drawing/text;../src/drawing/texture;../src/geometry;../src/input;../src/math;../src/platform;../src/platform/winnt;../src/state;../src/UI;../src/windowing;../deps/sdl;../deps/freetype/include;../src/drawing/cursor;../deps/sdl/SDL;../deps/glew/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>../deps/sdl/Debug;../deps/freetype;../deps/glew/lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>freetype244MT_D.lib;SDL.lib;glew32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../src/core;../src/drawing;../src/drawing/HUD;../src/drawing/rendering;../src/drawing/HUD/console;../src/drawing/controlbox;../src/drawing/HUD/infobox;../src/drawing/rendering/cameras;../src/drawing/rendering/ship;../src/drawing/rendering/terrain;../src/drawing/rendering/sky;../src/drawing/text;../src/drawing/texture;../src/geometry;../src/input;../src/math;../src/platform;../src/platform/winnt;../src/state;../src/UI;../src/windowing;../deps/sdl;../deps/freetype/include;../src/drawing/cursor;../deps/sdl/SDL;../deps/glew/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>../deps/freetype;../deps/SDL/Debug;../deps/glew/lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL.lib;freetype244MT.lib;glew32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -77,6 +83,94 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="dominicus.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\core\BuildVersion.cpp" />
+    <ClCompile Include="..\src\core\dominicusMain.cpp" />
+    <ClCompile Include="..\src\core\GamePrefs.cpp" />
+    <ClCompile Include="..\src\core\MainLoopMember.cpp" />
+    <ClCompile Include="..\src\core\ProgramLog.cpp" />
+    <ClCompile Include="..\src\core\SystemInfo.cpp" />
+    <ClCompile Include="..\src\drawing\controlbox\DrawControlBox.cpp" />
+    <ClCompile Include="..\src\drawing\cursor\DrawCursor.cpp" />
+    <ClCompile Include="..\src\drawing\DrawingMaster.cpp" />
+    <ClCompile Include="..\src\drawing\HUD\console\DrawConsole.cpp" />
+    <ClCompile Include="..\src\drawing\HUD\DrawHUD.cpp" />
+    <ClCompile Include="..\src\drawing\HUD\DrawHUDContainerUtility.cpp" />
+    <ClCompile Include="..\src\drawing\HUD\DrawHUDEnclosure.cpp" />
+    <ClCompile Include="..\src\drawing\HUD\HUDArrangement.cpp" />
+    <ClCompile Include="..\src\drawing\HUD\infobox\DrawInfoBox.cpp" />
+    <ClCompile Include="..\src\drawing\rendering\cameras\BackCamera.cpp" />
+    <ClCompile Include="..\src\drawing\rendering\cameras\Camera.cpp" />
+    <ClCompile Include="..\src\drawing\rendering\cameras\FirstPersonCamera.cpp" />
+    <ClCompile Include="..\src\drawing\rendering\cameras\WorldViewCamera.cpp" />
+    <ClCompile Include="..\src\drawing\rendering\ship\ShipRenderer.cpp" />
+    <ClCompile Include="..\src\drawing\rendering\sky\SkyRenderer.cpp" />
+    <ClCompile Include="..\src\drawing\rendering\terrain\TerrainRenderer.cpp" />
+    <ClCompile Include="..\src\drawing\ShaderTools.cpp" />
+    <ClCompile Include="..\src\drawing\texture\BMPImage.cpp" />
+    <ClCompile Include="..\src\drawing\texture\Texture.cpp" />
+    <ClCompile Include="..\src\drawing\text\FontManager.cpp" />
+    <ClCompile Include="..\src\drawing\text\TextBlock.cpp" />
+    <ClCompile Include="..\src\geometry\DiamondSquare.cpp" />
+    <ClCompile Include="..\src\input\InputHandler.cpp" />
+    <ClCompile Include="..\src\input\Keyboard.cpp" />
+    <ClCompile Include="..\src\input\KeyTrap.cpp" />
+    <ClCompile Include="..\src\input\Mouse.cpp" />
+    <ClCompile Include="..\src\platform\winnt\main.cpp" />
+    <ClCompile Include="..\src\platform\winnt\Platform.cpp" />
+    <ClCompile Include="..\src\state\Ship.cpp" />
+    <ClCompile Include="..\src\state\ShipControl.cpp" />
+    <ClCompile Include="..\src\state\Terrain.cpp" />
+    <ClCompile Include="..\src\UI\Console.cpp" />
+    <ClCompile Include="..\src\windowing\GameWindow.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\core\BuildVersion.h" />
+    <ClInclude Include="..\src\core\dominicusMain.h" />
+    <ClInclude Include="..\src\core\GamePrefs.h" />
+    <ClInclude Include="..\src\core\MainLoopMember.h" />
+    <ClInclude Include="..\src\core\ProgramLog.h" />
+    <ClInclude Include="..\src\core\SystemInfo.h" />
+    <ClInclude Include="..\src\drawing\controlbox\DrawControlBox.h" />
+    <ClInclude Include="..\src\drawing\cursor\DrawCursor.h" />
+    <ClInclude Include="..\src\drawing\DrawingMaster.h" />
+    <ClInclude Include="..\src\drawing\HUD\console\DrawConsole.h" />
+    <ClInclude Include="..\src\drawing\HUD\DrawHUD.h" />
+    <ClInclude Include="..\src\drawing\HUD\DrawHUDContainerUtility.h" />
+    <ClInclude Include="..\src\drawing\HUD\DrawHUDEnclosure.h" />
+    <ClInclude Include="..\src\drawing\HUD\HUDArrangement.h" />
+    <ClInclude Include="..\src\drawing\HUD\HUDElement.h" />
+    <ClInclude Include="..\src\drawing\HUD\infobox\DrawInfoBox.h" />
+    <ClInclude Include="..\src\drawing\rendering\cameras\BackCamera.h" />
+    <ClInclude Include="..\src\drawing\rendering\cameras\Camera.h" />
+    <ClInclude Include="..\src\drawing\rendering\cameras\FirstPersonCamera.h" />
+    <ClInclude Include="..\src\drawing\rendering\cameras\WorldViewCamera.h" />
+    <ClInclude Include="..\src\drawing\rendering\ship\ShipRenderer.h" />
+    <ClInclude Include="..\src\drawing\rendering\sky\SkyRenderer.h" />
+    <ClInclude Include="..\src\drawing\rendering\terrain\TerrainRenderer.h" />
+    <ClInclude Include="..\src\drawing\ShaderTools.h" />
+    <ClInclude Include="..\src\drawing\texture\BMPImage.h" />
+    <ClInclude Include="..\src\drawing\texture\Texture.h" />
+    <ClInclude Include="..\src\drawing\text\FontManager.h" />
+    <ClInclude Include="..\src\drawing\text\TextBlock.h" />
+    <ClInclude Include="..\src\geometry\DiamondSquare.h" />
+    <ClInclude Include="..\src\geometry\Mesh.h" />
+    <ClInclude Include="..\src\input\InputHandler.h" />
+    <ClInclude Include="..\src\input\Keyboard.h" />
+    <ClInclude Include="..\src\input\KeyTrap.h" />
+    <ClInclude Include="..\src\input\Mouse.h" />
+    <ClInclude Include="..\src\math\MatrixMath.h" />
+    <ClInclude Include="..\src\math\MiscMath.h" />
+    <ClInclude Include="..\src\math\ScalarMath.h" />
+    <ClInclude Include="..\src\math\VectorMath.h" />
+    <ClInclude Include="..\src\platform\OpenGLHeaders.h" />
+    <ClInclude Include="..\src\platform\Platform.h" />
+    <ClInclude Include="..\src\state\Ship.h" />
+    <ClInclude Include="..\src\state\ShipControl.h" />
+    <ClInclude Include="..\src\state\Terrain.h" />
+    <ClInclude Include="..\src\UI\Console.h" />
+    <ClInclude Include="..\src\windowing\GameWindow.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
