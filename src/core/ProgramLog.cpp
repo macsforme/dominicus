@@ -20,14 +20,19 @@ void ProgramLog::report(LogDetail detail, const char* report) {
 
 			break;
 		case LOG_DEBUG:
+			{
 			std::cout << "DEBUG: " << report << std::endl;
-
-			logStrings.push_back(std::string("DEBUG: ") + report);
-
+			std::string msg = "DEBUG: ";
+			msg += report;
+			logStrings.push_back(msg);
+			}
 			break;
 		case LOG_INFO:
-			logStrings.push_back(std::string("INFO: ") + report);
-
+			{
+			std::string msg = "INFO: ";
+			msg += report;
+			logStrings.push_back(msg);
+			}
 			break;
 	}
 }
