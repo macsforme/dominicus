@@ -15,12 +15,30 @@
 
 #include <time.h>
 
+extern HINSTANCE myinstance;
+
 Platform::Platform() {
 	// determine the resource directory path
-	dataPath = ".";
+	dataPath = "./data/";
 
 	// initialize the random number generator
 	srand(SDL_GetTicks());
+}
+
+void Platform::init()
+{
+	if (myinstance)
+	{
+		char appName[MAX_PATH];
+		GetModuleFileName(myinstance,appName,MAX_PATH);
+		char* p = strrchr(appName,'\\');
+		if (p)
+			*p = 0;
+		std::string d = appName;
+		d += "\\data\\";
+		if (GetFileAttributes(d.c_str()) != INVALID_FILE_ATTRIBUTES)
+			dataPath = d;
+	}
 }
 
 const char* Platform::getArchitecture() {

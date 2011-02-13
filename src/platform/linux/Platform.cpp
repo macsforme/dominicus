@@ -21,6 +21,9 @@ Platform::Platform() {
 	srand(time(NULL));
 }
 
+void Platform::init(){
+}|
+
 const char* Platform::getArchitecture() {
 	return "Linux";
 }

@@ -15,12 +15,15 @@
 // library headers
 #include <SDL/SDL.h>
 
+HINSTANCE myinstance = NULL;
 
 int APIENTRY WinMain(HINSTANCE hInstance,
                      HINSTANCE hPrevInstance,
                      LPTSTR    lpCmdLine,
                      int       nCmdShow)
 {
+	myinstance = hInstance;
+
 	// initialize SDL
 	if(SDL_Init(SDL_INIT_VIDEO) == -1)
 		ProgramLog::report(LOG_FATAL, "SDL could not be initialized.");

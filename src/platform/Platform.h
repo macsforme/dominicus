@@ -25,6 +25,8 @@ public:
 	Platform();
 	const char* getArchitecture();
 
+	void init();
+
 	// input functions
 	void hideCursor();
 	void warpCursor(unsigned int x, unsigned int y);
