@@ -16,7 +16,7 @@
 #include <SDL/SDL.h>
 
 
-int APIENTRY _tWinMain(HINSTANCE hInstance,
+int APIENTRY WinMain(HINSTANCE hInstance,
                      HINSTANCE hPrevInstance,
                      LPTSTR    lpCmdLine,
                      int       nCmdShow)

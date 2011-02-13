@@ -104,6 +104,7 @@
     <ClCompile Include="..\src\drawing\rendering\cameras\Camera.cpp" />
     <ClCompile Include="..\src\drawing\rendering\cameras\FirstPersonCamera.cpp" />
     <ClCompile Include="..\src\drawing\rendering\cameras\WorldViewCamera.cpp" />
+    <ClCompile Include="..\src\drawing\rendering\RenderingMaster.cpp" />
     <ClCompile Include="..\src\drawing\rendering\ship\ShipRenderer.cpp" />
     <ClCompile Include="..\src\drawing\rendering\sky\SkyRenderer.cpp" />
     <ClCompile Include="..\src\drawing\rendering\terrain\TerrainRenderer.cpp" />
@@ -146,6 +147,7 @@
     <ClInclude Include="..\src\drawing\rendering\cameras\Camera.h" />
     <ClInclude Include="..\src\drawing\rendering\cameras\FirstPersonCamera.h" />
     <ClInclude Include="..\src\drawing\rendering\cameras\WorldViewCamera.h" />
+    <ClInclude Include="..\src\drawing\rendering\RenderingMaster.h" />
     <ClInclude Include="..\src\drawing\rendering\ship\ShipRenderer.h" />
     <ClInclude Include="..\src\drawing\rendering\sky\SkyRenderer.h" />
     <ClInclude Include="..\src\drawing\rendering\terrain\TerrainRenderer.h" />

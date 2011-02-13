@@ -196,6 +196,9 @@
     <ClCompile Include="..\src\drawing\rendering\terrain\TerrainRenderer.cpp">
       <Filter>Source Files\drawing</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\drawing\rendering\RenderingMaster.cpp">
+      <Filter>Source Files\drawing</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\core\BuildVersion.h">
@@ -331,6 +334,9 @@
       <Filter>Header Files\windowing</Filter>
     </ClInclude>
     <ClInclude Include="..\src\drawing\rendering\terrain\TerrainRenderer.h">
+      <Filter>Header Files\drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\drawing\rendering\RenderingMaster.h">
       <Filter>Header Files\drawing</Filter>
     </ClInclude>
   </ItemGroup>
