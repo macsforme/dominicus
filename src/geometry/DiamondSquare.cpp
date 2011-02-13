@@ -49,7 +49,7 @@ DiamondSquare::DiamondSquare(unsigned int size, float roughness) :
 		}
 
 		// square step
-		unsigned int jump = size / (int)pow(2.0, i);
+		unsigned int jump = (int)(size / pow(2.0, i));
 
 		for(
 				int m = 0;
