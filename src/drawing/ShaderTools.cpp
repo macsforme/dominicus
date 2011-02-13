@@ -8,6 +8,7 @@
  */
 
 #include "ShaderTools.h"
+#include <stdint.h>
 
 GLuint ShaderTools::makeShader(const char* filename, GLenum shaderType) {
 	std::ifstream fileStream;
