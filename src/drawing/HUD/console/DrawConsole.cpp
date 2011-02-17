@@ -198,8 +198,8 @@ void DrawConsole::draw() {
 
 	GLuint textureID = fontManager->textureIDs[fontSize];
 
-	glBindTexture(GL_TEXTURE_2D, textureID);
 	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, textureID);
 	glUniform1i(textureUniform, 0);
 
 	// align the text to the bottom-left of the content box
