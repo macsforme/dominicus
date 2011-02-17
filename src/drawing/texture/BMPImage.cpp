@@ -196,7 +196,7 @@ BMPImage::BMPImage(std::string filename) {
 				for(uint32_t x = 0; x < fileDIBHeader.imageWidth; ++x) {
 					// Make sure we aren't past the end of the pixel data
 					if(dataMark - (fileContents + fileBMPHeader.dataOffset)
-							> (uint8_t)fileDIBHeader.imageDataSize) {
+							> fileDIBHeader.imageDataSize) {
 						std::stringstream err;
 						err << "The BMP image file "
 								<< filename

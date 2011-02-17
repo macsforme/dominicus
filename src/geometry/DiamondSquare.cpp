@@ -49,7 +49,7 @@ DiamondSquare::DiamondSquare(unsigned int size, float roughness) :
 		}
 
 		// square step
-		unsigned int jump = (int)(size / pow(2.0, i));
+		int jump = (int)(size / pow(2.0f, i));
 
 		for(
 				int m = 0;
@@ -62,7 +62,6 @@ DiamondSquare::DiamondSquare(unsigned int size, float roughness) :
 					n < pow(2.0, i);
 					++n
 				) {
-
 				// west -x
 				data[m * jump][jump / 2 + n * jump] = (
 						// west neighbor

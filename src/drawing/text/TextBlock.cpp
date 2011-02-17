@@ -62,7 +62,7 @@ TextBlock::TextBlock(const char* dataString, unsigned int wrapX, unsigned int wr
 	width = 0;
 	height = -largestNegAdj;
 
-	for(size_t i = lines.size() - 1; i >= 0; --i) {
+	for(int i = (int) lines.size() - 1; i >= 0; --i) {
 		// determine the largest positive adjustment for this line to see if it fits
 		int largestPosAdj = 0;
 		for(size_t p = 0; p < lines[i].length(); ++p) {
@@ -123,7 +123,7 @@ TextBlock::TextBlock(const char* dataString, unsigned int wrapX, unsigned int wr
 	// create the character entries
 	float penX = -1.0f, penY = -1.0f - ((float)largestNegAdj * 2.0f / height);
 
-	for(size_t i = printLines.size() - 1; i >= 0; --i) {
+	for(int i = (int) printLines.size() - 1; i >= 0; --i) {
 		for(size_t p = 0; p < printLines[i].length(); ++p) {
 			CharEntry entry;
 			entry.character = *(printLines[i].c_str() + p);
