@@ -11,12 +11,12 @@
 #define WORLDVIEWCAMERA_H
 
 // program headers
-#include "Camera.h"
-#include "MatrixMath.h"
-#include "Platform.h"
-#include "GamePrefs.h"
-#include "GameWindow.h"
-#include "VectorMath.h"
+#include "core/GamePrefs.h"
+#include "drawing/rendering/cameras/Camera.h"
+#include "math/MatrixMath.h"
+#include "math/VectorMath.h"
+#include "platform/Platform.h"
+#include "windowing/GameWindow.h"
 
 // constants
 const float birdsEyeAngle = 30.0f; // degrees from horizon

@@ -15,12 +15,12 @@
 #define TERRAIN_MAXHEIGHT 100.0f
 
 // program headers
-#include "DiamondSquare.h"
-#include "MatrixMath.h"
-#include "Mesh.h"
-#include "Platform.h"
-#include "ScalarMath.h"
-#include "VectorMath.h"
+#include "geometry/DiamondSquare.h"
+#include "geometry/Mesh.h"
+#include "math/MatrixMath.h"
+#include "math/ScalarMath.h"
+#include "math/VectorMath.h"
+#include "platform/Platform.h"
 
 // library headers
 #include <vector>

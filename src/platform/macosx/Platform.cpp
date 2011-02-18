@@ -7,10 +7,10 @@
  *
  */
 
-#include "Platform.h"
+#include "platform/Platform.h"
 
-// platform-dependent includes
-#include "CoreFoundation/CoreFoundation.h"
+// platform-specific headers
+#include <CoreFoundation/CoreFoundation.h>
 #include <mach/mach_time.h>
 #include <SDL/SDL.h>
 #include <time.h>

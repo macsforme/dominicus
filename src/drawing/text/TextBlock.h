@@ -11,8 +11,8 @@
 #define FONTBLOCK_H
 
 // program headers
-#include "FontManager.h"
-#include "ScalarMath.h"
+#include "drawing/text/FontManager.h"
+#include "math/ScalarMath.h"
 
 class TextBlock {
 public:

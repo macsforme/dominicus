@@ -8,9 +8,9 @@
  */
 
 // program headers
-#include "dominicusMain.h"
-#include "ProgramLog.h"
-#include "OpenGLHeaders.h"
+#include "core/dominicusMain.h"
+#include "core/ProgramLog.h"
+#include "platform/OpenGLHeaders.h"
 
 // library headers
 #include <SDL/SDL.h>

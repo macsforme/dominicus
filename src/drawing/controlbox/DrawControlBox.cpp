@@ -7,7 +7,7 @@
  *
  */
 
-#include "DrawControlBox.h"
+#include "drawing/controlbox/DrawControlBox.h"
 
 DrawControlBox::DrawControlBox() {
 	// set up the shader program

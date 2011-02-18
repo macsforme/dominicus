@@ -11,12 +11,12 @@
 #define SHIPCONTROL_H
 
 // program headers
-#include "GamePrefs.h"
-#include "GameWindow.h"
-#include "InputHandler.h"
-#include "ScalarMath.h"
-#include "Ship.h"
-#include "VectorMath.h"
+#include "core/GamePrefs.h"
+#include "input/InputHandler.h"
+#include "math/ScalarMath.h"
+#include "math/VectorMath.h"
+#include "state/Ship.h"
+#include "windowing/GameWindow.h"
 
 // global variables
 extern GamePrefs gamePrefs;

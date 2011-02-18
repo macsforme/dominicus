@@ -24,7 +24,6 @@
 #include <GL/gl.h>
 #endif
 
-
 #endif
 
 #endif

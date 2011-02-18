@@ -11,7 +11,7 @@
 #define MAINLOOPMEMBER_H
 
 // program headers
-#include "Platform.h"
+#include "platform/Platform.h"
 
 // global variables
 extern Platform platform;

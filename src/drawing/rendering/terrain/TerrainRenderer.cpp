@@ -7,7 +7,7 @@
  *
  */
 
-#include "TerrainRenderer.h"
+#include "drawing/rendering/terrain/TerrainRenderer.h"
 
 TerrainRenderer::TerrainRenderer() {
 	// set up the shader program

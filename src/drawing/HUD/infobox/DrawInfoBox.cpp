@@ -7,7 +7,7 @@
  *
  */
 
-#include "DrawInfoBox.h"
+#include "drawing/HUD/infobox/DrawInfoBox.h"
 
 DrawInfoBox::DrawInfoBox(HUDArrangement* hudArrangement, FontManager* fontManager) :
 		fontManager(fontManager) {

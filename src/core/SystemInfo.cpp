@@ -7,7 +7,7 @@
  *
  */
 
-#include "SystemInfo.h"
+#include "core/SystemInfo.h"
 
 void SystemInfo::init() {
 	// this functionality cannot be placed in a constructor because

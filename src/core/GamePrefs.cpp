@@ -7,7 +7,7 @@
  *
  */
 
-#include "GamePrefs.h"
+#include "core/GamePrefs.h"
 
 GamePrefs::GamePrefs() {
 	// ship state

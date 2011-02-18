@@ -11,8 +11,8 @@
 #define KEYTRAP_H
 
 // program headers
-#include "GamePrefs.h"
-#include "InputHandler.h"
+#include "core/GamePrefs.h"
+#include "input/InputHandler.h"
 
 // library headers
 #include <string>

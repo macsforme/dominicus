@@ -11,13 +11,13 @@
 #define SKYRENDERER_H
 
 // program headers
-#include "BMPImage.h"
-#include "MatrixMath.h"
-#include "OpenGLHeaders.h"
-#include "Platform.h"
-#include "ShaderTools.h"
-#include "Ship.h"
-#include "VectorMath.h"
+#include "drawing/texture/BMPImage.h"
+#include "drawing/ShaderTools.h"
+#include "math/MatrixMath.h"
+#include "math/VectorMath.h"
+#include "platform/OpenGLHeaders.h"
+#include "platform/Platform.h"
+#include "state/Ship.h"
 
 // global variables
 extern Platform platform;

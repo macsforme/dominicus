@@ -11,9 +11,9 @@
 #define HUDARRANGEMENT_H
 
 // program headers
-#include "GameWindow.h"
-#include "HUDElement.h"
-#include "VectorMath.h"
+#include "drawing/HUD/HUDElement.h"
+#include "math/VectorMath.h"
+#include "windowing/GameWindow.h"
 
 // library headers
 #include <vector>

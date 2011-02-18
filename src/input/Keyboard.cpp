@@ -7,7 +7,7 @@
  *
  */
 
-#include "Keyboard.h"
+#include "input/Keyboard.h"
 
 bool Keyboard::getKeyState(std::string key) {
 	if(keyStates.find(key) != keyStates.end())

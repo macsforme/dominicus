@@ -7,7 +7,7 @@
  *
  */
 
-#include "Console.h"
+#include "UI/Console.h"
 
 void Console::addTab(std::string tabName) {
 	tabContents.push_back(

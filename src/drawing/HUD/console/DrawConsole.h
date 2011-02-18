@@ -11,18 +11,18 @@
 #define DRAWCONSOLE_H
 
 // program headers
-#include "DrawHUDContainerUtility.h"
-#include "FontManager.h"
-#include "GamePrefs.h"
-#include "GameWindow.h"
-#include "HUDArrangement.h"
-#include "HUDElement.h"
-#include "OpenGLHeaders.h"
-#include "Platform.h"
-#include "ProgramLog.h"
-#include "ShaderTools.h"
-#include "TextBlock.h"
-#include "VectorMath.h"
+#include "core/GamePrefs.h"
+#include "core/ProgramLog.h"
+#include "drawing/HUD/DrawHUDContainerUtility.h"
+#include "drawing/HUD/HUDArrangement.h"
+#include "drawing/HUD/HUDElement.h"
+#include "drawing/ShaderTools.h"
+#include "drawing/text/FontManager.h"
+#include "drawing/text/TextBlock.h"
+#include "platform/OpenGLHeaders.h"
+#include "platform/Platform.h"
+#include "math/VectorMath.h"
+#include "windowing/GameWindow.h"
 
 // library headers
 #include <string>

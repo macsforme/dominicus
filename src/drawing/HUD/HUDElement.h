@@ -11,7 +11,7 @@
 #define HUDELEMENT_H
 
 // program headers
-#include "VectorMath.h"
+#include "math/VectorMath.h"
 
 class HUDElement {
 public:

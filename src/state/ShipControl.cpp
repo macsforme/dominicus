@@ -7,7 +7,7 @@
  *
  */
 
-#include "ShipControl.h"
+#include "state/ShipControl.h"
 
 void ShipControl::loop() {
 	// determine how much further we can rotate around the +X axis

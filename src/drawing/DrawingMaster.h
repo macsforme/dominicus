@@ -11,18 +11,18 @@
 #define DRAWINGMASTER_H
 
 // program headers
-#include "DrawControlBox.h"
-#include "DrawCursor.h"
-#include "DrawHUD.h"
-#include "GamePrefs.h"
-#include "GameWindow.h"
-#include "KeyTrap.h"
-#include "MainLoopMember.h"
-#include "OpenGLHeaders.h"
-#include "Platform.h"
-#include "ProgramLog.h"
-#include "RenderingMaster.h"
-#include "SystemInfo.h"
+#include "core/GamePrefs.h"
+#include "core/MainLoopMember.h"
+#include "core/ProgramLog.h"
+#include "core/SystemInfo.h"
+#include "drawing/controlbox/DrawControlBox.h"
+#include "drawing/cursor/DrawCursor.h"
+#include "drawing/HUD/DrawHUD.h"
+#include "drawing/rendering/RenderingMaster.h"
+#include "input/KeyTrap.h"
+#include "platform/OpenGLHeaders.h"
+#include "platform/Platform.h"
+#include "windowing/GameWindow.h"
 
 // library headers
 #include <sstream>

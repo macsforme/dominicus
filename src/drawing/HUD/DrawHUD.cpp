@@ -7,7 +7,7 @@
  *
  */
 
-#include "DrawHUD.h"
+#include "drawing/HUD/DrawHUD.h"
 
 DrawHUD::DrawHUD(FontManager* fontManager) {
 	// set variables

@@ -7,7 +7,7 @@
  *
  */
 
-#include "DrawHUDEnclosure.h"
+#include "drawing/HUD/DrawHUDEnclosure.h"
 
 HUDElement* DrawHUDEnclosure::findPriorElementCenter(int index) {
 	HUDArrangement::HUDElementEntry* thisElement = &(hudArrangement->elementList[index]);

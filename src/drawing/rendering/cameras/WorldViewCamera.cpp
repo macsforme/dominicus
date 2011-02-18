@@ -7,7 +7,7 @@
  *
  */
 
-#include "WorldViewCamera.h"
+#include "drawing/rendering/cameras/WorldViewCamera.h"
 
 void WorldViewCamera::loop() {
 	// get our delta T

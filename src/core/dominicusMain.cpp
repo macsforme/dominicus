@@ -7,7 +7,7 @@
  *
  */
 
-#include "dominicusMain.h"
+#include "core/dominicusMain.h"
 
 // global variable instantiations
 GamePrefs gamePrefs;

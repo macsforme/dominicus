@@ -8,7 +8,7 @@
  */
 
 // program headers
-#include "VectorMath.h"
+#include "math/VectorMath.h"
 
 inline float getAngle(Vector2 point) {
 	if(point.x == 0.0f && point.y == 0.0f)

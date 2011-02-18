@@ -7,7 +7,7 @@
  *
  */
 
-#include "BackCamera.h"
+#include "drawing/rendering/cameras/BackCamera.h"
 
 BackCamera::BackCamera() : rotation(0.0f), aspectRatio(gameWindow->aspectRatio) {
 	cameraOrientation = ship.orientation;

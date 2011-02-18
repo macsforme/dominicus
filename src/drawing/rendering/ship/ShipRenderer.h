@@ -11,16 +11,16 @@
 #define SHIPRENDERER_H
 
 // program headers
-#include "BMPImage.h"
-#include "GamePrefs.h"
-#include "MatrixMath.h"
-#include "Mesh.h"
-#include "OpenGLHeaders.h"
-#include "Platform.h"
-#include "ProgramLog.h"
-#include "ScalarMath.h"
-#include "ShaderTools.h"
-#include "VectorMath.h"
+#include "core/GamePrefs.h"
+#include "core/ProgramLog.h"
+#include "drawing/texture/BMPImage.h"
+#include "drawing/ShaderTools.h"
+#include "geometry/Mesh.h"
+#include "math/MatrixMath.h"
+#include "math/ScalarMath.h"
+#include "math/VectorMath.h"
+#include "platform/OpenGLHeaders.h"
+#include "platform/Platform.h"
 
 // library headers
 #include <stdint.h>

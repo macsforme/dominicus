@@ -10,13 +10,11 @@
 #ifndef MOUSE_H
 #define MOUSE_H
 
-#include "Mouse.h"
-
 // program headers
-#include "GamePrefs.h"
-#include "GameWindow.h"
-#include "Platform.h"
-#include "VectorMath.h"
+#include "core/GamePrefs.h"
+#include "math/VectorMath.h"
+#include "platform/Platform.h"
+#include "windowing/GameWindow.h"
 
 // library headers
 #include <iostream>

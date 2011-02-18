@@ -11,11 +11,11 @@
 #define DRAWHUDENCLOSURE_H
 
 // program headers
-#include "DrawHUDContainerUtility.h"
-#include "HUDArrangement.h"
-#include "HUDElement.h"
-#include "GameWindow.h"
-#include "VectorMath.h"
+#include "drawing/HUD/DrawHUDContainerUtility.h"
+#include "drawing/HUD/HUDArrangement.h"
+#include "drawing/HUD/HUDElement.h"
+#include "math/VectorMath.h"
+#include "windowing/GameWindow.h"
 
 // global variables
 extern GameWindow* gameWindow;

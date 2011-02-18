@@ -7,7 +7,7 @@
  *
  */
 
-#include "DiamondSquare.h"
+#include "geometry/DiamondSquare.h"
 
 DiamondSquare::DiamondSquare(unsigned int size, float roughness) :
 		size(size) {
@@ -53,7 +53,7 @@ DiamondSquare::DiamondSquare(unsigned int size, float roughness) :
 
 		for(
 				int m = 0;
-				m < pow(2.0, i);
+				m < (int) pow(2.0, i);
 				++m
 			) {
 
@@ -74,7 +74,7 @@ DiamondSquare::DiamondSquare(unsigned int size, float roughness) :
 						data[jump / 2 + m * jump][jump / 2 + n * jump] +
 						// north neighbor
 						data[m * jump][
-								(jump + n * jump >= size ?
+								(jump + n * jump >= (int) size ?
 										jump + n * jump - size :
 										jump + n * jump)
 							] +
@@ -87,7 +87,7 @@ DiamondSquare::DiamondSquare(unsigned int size, float roughness) :
 						data[m * jump][n * jump] +
 						// east neighbor
 						data[
-								((m + 1) * jump >= size ?
+								((m + 1) * jump >= (int) size ?
 										(m + 1) * jump - size :
 										(m + 1) * jump)
 							][n * jump] +

@@ -7,7 +7,7 @@
  *
  */
 
-#include "KeyTrap.h"
+#include "input/KeyTrap.h"
 
 KeyTrap::KeyTrap(std::string action) : action(action) {
 	alreadyPressed = false;

@@ -11,8 +11,8 @@
 #define KEYBOARD_H
 
 // program headers
-#include "GamePrefs.h"
-#include "Platform.h"
+#include "core/GamePrefs.h"
+#include "platform/Platform.h"
 
 // library headers
 #include <map>

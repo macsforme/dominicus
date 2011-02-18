@@ -7,7 +7,7 @@
  *
  */
 
-#include "DrawingMaster.h"
+#include "drawing/DrawingMaster.h"
 
 DrawingMaster::DrawingMaster() {
 	// initialize variables

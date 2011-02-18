@@ -11,17 +11,17 @@
 #define DOMINICUSMAIN_H
 
 // program headers
-#include "DrawingMaster.h"
-#include "GamePrefs.h"
-#include "GameWindow.h"
-#include "InputHandler.h"
-#include "KeyTrap.h"
-#include "Platform.h"
-#include "Ship.h"
-#include "ShipControl.h"
-#include "SystemInfo.h"
-#include "Terrain.h"
-#include "VectorMath.h"
+#include "core/GamePrefs.h"
+#include "core/SystemInfo.h"
+#include "drawing/DrawingMaster.h"
+#include "state/Terrain.h"
+#include "input/InputHandler.h"
+#include "input/KeyTrap.h"
+#include "math/VectorMath.h"
+#include "platform/Platform.h"
+#include "state/Ship.h"
+#include "state/ShipControl.h"
+#include "windowing/GameWindow.h"
 
 int dominicusMain(int argc, char* argv[]);
 

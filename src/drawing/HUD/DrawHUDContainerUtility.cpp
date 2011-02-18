@@ -7,7 +7,7 @@
  *
  */
 
-#include "DrawHUDContainerUtility.h"
+#include "drawing/HUD/DrawHUDContainerUtility.h"
 
 DrawHUDContainerUtility::DrawHUDContainerUtility(
 		float zStart,

@@ -11,9 +11,9 @@
 #define INPUTHANDLER_H
 
 // program headers
-#include "Keyboard.h"
-#include "MainLoopMember.h"
-#include "Mouse.h"
+#include "core/MainLoopMember.h"
+#include "input/Keyboard.h"
+#include "input/Mouse.h"
 
 // library headers
 #include <SDL/SDL.h>

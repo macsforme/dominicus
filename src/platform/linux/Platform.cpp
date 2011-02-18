@@ -9,10 +9,10 @@
 
 #include "Platform.h"
 
-// platform-dependent includes
+// platform-specific headers
 #include <SDL/SDL.h>
-//#include <time.h>
 #include <sys/time.h>
+
 Platform::Platform() {
 	// determine the resource directory path
 	dataPath = ".";

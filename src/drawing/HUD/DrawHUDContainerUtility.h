@@ -11,12 +11,12 @@
 #define DRAWHUDCONTAINERUTILITY_H
 
 // program headers
-#include "MatrixMath.h"
-#include "OpenGLHeaders.h"
-#include "Platform.h"
-#include "ScalarMath.h"
-#include "ShaderTools.h"
-#include "VectorMath.h"
+#include "drawing/ShaderTools.h"
+#include "math/MatrixMath.h"
+#include "math/ScalarMath.h"
+#include "math/VectorMath.h"
+#include "platform/OpenGLHeaders.h"
+#include "platform/Platform.h"
 
 // library headers
 #include <string.h>

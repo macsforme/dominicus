@@ -10,18 +10,18 @@
 #ifndef BUILDVERSION_H
 #define BUILDVERSION_H
 
-// Major version (positive integer)
-#define BV_VERSION 1
+// Major version (non-negative integer)
+#define BV_VERSION 0
 
-// Minor revision (positive integer)
-#define BV_REVISION 0
+// Minor revision (non-negative integer)
+#define BV_REVISION 1
 
 // Build classification (char array, DEVEL | ALPHA# | BETA# | RC# | STABLE)
 #define BV_CLASSIFICATION "DEVEL"
 
 // program headers
-#include "Platform.h"
-#include "ProgramLog.h"
+#include "core/ProgramLog.h"
+#include "platform/Platform.h"
 
 // library headers
 #include <sstream>

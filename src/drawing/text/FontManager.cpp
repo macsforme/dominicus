@@ -7,7 +7,7 @@
  *
  */
 
-#include "FontManager.h"
+#include "drawing/text/FontManager.h"
 
 FontManager::FontManager() {
 	// initialize the freetype library

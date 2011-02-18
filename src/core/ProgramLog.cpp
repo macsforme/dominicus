@@ -7,7 +7,7 @@
  *
  */
 
-#include "ProgramLog.h"
+#include "core/ProgramLog.h"
 
 std::vector<std::string> logStrings;
 

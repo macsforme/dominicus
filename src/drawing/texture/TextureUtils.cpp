@@ -7,7 +7,7 @@
  *
  */
 
-#include "TextureUtils.h"
+#include "drawing/texture/TextureUtils.h"
 
 void setTextureDepth(Texture* subject, unsigned int depth) {
 	for(unsigned int i = 0; i < subject->getWidth(); ++i) {

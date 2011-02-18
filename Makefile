@@ -1,31 +1,9 @@
 PROGRAM = dominicus
 GCC = g++
-CFLAGS = `freetype-config --cflags` -D GL_GLEXT_PROTOTYPES -g
+CFLAGS = `freetype-config --cflags` -D GL_GLEXT_PROTOTYPES -g -Wall -Werror
 LIBS = -lGL -lSDL `freetype-config --libs`
 
-HEADERS = \
-	-I src/core \
-	-I  src/drawing \
-	-I  src/drawing/cursor \
-	-I  src/drawing/HUD \
-	-I  src/drawing/rendering \
-	-I  src/drawing/HUD/console \
-	-I  src/drawing/controlbox \
-	-I  src/drawing/HUD/infobox \
-	-I  src/drawing/rendering/cameras \
-	-I  src/drawing/rendering/ship \
-	-I  src/drawing/rendering/terrain \
-	-I  src/drawing/rendering/sky \
-	-I  src/drawing/text \
-	-I  src/drawing/texture \
-	-I  src/geometry \
-	-I  src/input \
-	-I  src/math \
-	-I  src/platform \
-	-I  src/platform/linux \
-	-I  src/state \
-	-I  src/UI \
-	-I  src/windowing
+HEADERS = -I src
 
 SOURCES = \
 	./src/input/InputHandler.cpp \

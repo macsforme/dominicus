@@ -7,7 +7,7 @@
  *
  */
 
-#include "RenderingMaster.h"
+#include "drawing/rendering/RenderingMaster.h"
 
 RenderingMaster::RenderingMaster() {
 	bCamera = new BackCamera();

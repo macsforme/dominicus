@@ -7,12 +7,10 @@
  *
  */
 
-#include "Platform.h"
-
-// platform-dependent includes
+// platform-specific headers
+#include "platform/OpenGLHeaders.h"
+#include "platform/Platform.h"
 #include <SDL/SDL.h>
-#include "OpenGLHeaders.h"
-
 #include <time.h>
 
 extern HINSTANCE myinstance;

@@ -7,7 +7,7 @@
  *
  */
 
-#include "MainLoopMember.h"
+#include "core/MainLoopMember.h"
 
 MainLoopMember::MainLoopMember() {
 	// variable initialization

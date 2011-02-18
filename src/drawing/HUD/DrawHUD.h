@@ -11,15 +11,15 @@
 #define DRAWHUD_H
 
 // program headers
-#include "DrawConsole.h"
-#include "DrawInfoBox.h"
-#include "DrawHUDEnclosure.h"
-#include "FontManager.h"
-#include "GameWindow.h"
-#include "HUDArrangement.h"
-#include "HUDElement.h"
-#include "Platform.h"
-#include "VectorMath.h"
+#include "drawing/HUD/console/DrawConsole.h"
+#include "drawing/HUD/infobox/DrawInfoBox.h"
+#include "drawing/HUD/DrawHUDEnclosure.h"
+#include "drawing/HUD/HUDArrangement.h"
+#include "drawing/HUD/HUDElement.h"
+#include "drawing/text/FontManager.h"
+#include "math/VectorMath.h"
+#include "platform/Platform.h"
+#include "windowing/GameWindow.h"
 
 // library headers
 #include <vector>

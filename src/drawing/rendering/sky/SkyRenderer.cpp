@@ -7,7 +7,7 @@
  *
  */
 
-#include "SkyRenderer.h"
+#include "drawing/rendering/sky/SkyRenderer.h"
 
 SkyRenderer::SkyRenderer() {
 	// set up the shader program

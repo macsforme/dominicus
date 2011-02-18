@@ -11,10 +11,10 @@
 #define GAMEWINDOW_H
 
 // program headers
-#include "GamePrefs.h"
-#include "Platform.h"
-#include "ProgramLog.h"
-#include "SystemInfo.h"
+#include "core/GamePrefs.h"
+#include "core/ProgramLog.h"
+#include "core/SystemInfo.h"
+#include "platform/Platform.h"
 
 // library headers
 #include <SDL/SDL.h>

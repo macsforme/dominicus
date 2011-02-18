@@ -11,8 +11,8 @@
 #define SHADERTOOLS_H
 
 // program headers
-#include "OpenGLHeaders.h"
-#include "ProgramLog.h"
+#include "core/ProgramLog.h"
+#include "platform/OpenGLHeaders.h"
 
 // library headers
 #include <fstream>

@@ -20,17 +20,17 @@
 #endif
 
 // program headers
-#include "BMPImage.h"
-#include "DiamondSquare.h"
-#include "GamePrefs.h"
-#include "MatrixMath.h"
-#include "Mesh.h"
-#include "OpenGLHeaders.h"
-#include "Platform.h"
-#include "ShaderTools.h"
-#include "Terrain.h"
-#include "TextureUtils.h"
-#include "VectorMath.h"
+#include "core/GamePrefs.h"
+#include "drawing/texture/BMPImage.h"
+#include "drawing/ShaderTools.h"
+#include "drawing/texture/TextureUtils.h"
+#include "geometry/DiamondSquare.h"
+#include "geometry/Mesh.h"
+#include "math/MatrixMath.h"
+#include "math/VectorMath.h"
+#include "platform/OpenGLHeaders.h"
+#include "platform/Platform.h"
+#include "state/Terrain.h"
 
 // global variables
 extern GamePrefs gamePrefs;

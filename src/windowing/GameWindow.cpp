@@ -7,7 +7,7 @@
  *
  */
 
-#include "GameWindow.h"
+#include "windowing/GameWindow.h"
 
 GameWindow::GameWindow(bool fullScreen) : fullScreen(fullScreen) {
 	// initialize our viewing screen

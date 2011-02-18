@@ -7,7 +7,7 @@
  *
  */
 
-#include "TextBlock.h"
+#include "drawing/text/TextBlock.h"
 
 TextBlock::TextBlock(const char* dataString, unsigned int wrapX, unsigned int wrapY,
 		FontManager* fontManager, unsigned int size) {
@@ -78,7 +78,7 @@ TextBlock::TextBlock(const char* dataString, unsigned int wrapX, unsigned int wr
 
 			// subtract difference between lineHeight and previous largestPosAdj from height
 			// if this is not the very first iteration
-			if(i < lines.size() - 1) {
+			if(i < (int) lines.size() - 1) {
 				unsigned int prevLargestPosAdj = 0;
 				for(size_t p = 0; p < lines[i + 1].length(); ++p) {
 					FontManager::FontData* charData = &(fontManager->fontData[*(lines[i + 1].c_str() + p)][size]);

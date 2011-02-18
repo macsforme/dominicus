@@ -11,12 +11,12 @@
 #define SHIP_H
 
 // program headers
-#include "GamePrefs.h"
-#include "MainLoopMember.h"
-#include "MatrixMath.h"
-#include "Mouse.h"
-#include "Platform.h"
-#include "VectorMath.h"
+#include "core/GamePrefs.h"
+#include "core/MainLoopMember.h"
+#include "input/Mouse.h"
+#include "math/MatrixMath.h"
+#include "math/VectorMath.h"
+#include "platform/Platform.h"
 
 // global variables
 extern GamePrefs gamePrefs;

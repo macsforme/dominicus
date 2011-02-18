@@ -7,7 +7,7 @@
  *
  */
 
-#include "ShipRenderer.h"
+#include "drawing/rendering/ship/ShipRenderer.h"
 
 ShipRenderer::ShipRenderer() {
 	// dummy info since .obj indices start at 1

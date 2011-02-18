@@ -7,7 +7,7 @@
  *
  */
 
-#include "HUDArrangement.h"
+#include "drawing/HUD/HUDArrangement.h"
 
 HUDElement* HUDArrangement::findPriorElementCenter(int index) {
 	HUDElementEntry* thisElement = &(elementList[index]);

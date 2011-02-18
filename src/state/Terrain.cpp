@@ -7,7 +7,7 @@
  *
  */
 
-#include "Terrain.h"
+#include "state/Terrain.h"
 
 Terrain::Terrain() {
 	// randomly generate our input variables within the set limits
@@ -24,8 +24,8 @@ Terrain::Terrain() {
 	const unsigned int density = dsFactor * ssFactor;
 	float sineDSHeightMap[density][density];
 
-	for(int i = 0; i < dsFactor; ++i) {
-		for(int p = 0; p < dsFactor; ++p) {
+	for(unsigned int i = 0; i < dsFactor; ++i) {
+		for(unsigned int p = 0; p < dsFactor; ++p) {
 			// create a mesh with that terrain data
 			float xPlusWave[ssFactor];
 			float xMinusWave[ssFactor];
@@ -38,7 +38,7 @@ Terrain::Terrain() {
 			float nwValue = diamondSquare.data[i + 1 == dsFactor ? 0 : i + 1]
 					[p + 1 == dsFactor ? 0 : p + 1];
 
-			for(int j = 0; j < ssFactor; ++j) {
+			for(unsigned int j = 0; j < ssFactor; ++j) {
 				float jFactor = (float) j / (float) ssFactor;
 
 				xPlusWave[j] = swValue + sin(radians(90.0f * jFactor)) * (nwValue - swValue);
@@ -52,8 +52,8 @@ Terrain::Terrain() {
 //				zMinusWave[j] = seValue + jFactor * (swValue - seValue);
 			}
 
-			for(int j = 0; j < ssFactor; ++j) {
-				for(int k = 0; k < ssFactor; ++k) {
+			for(unsigned int j = 0; j < ssFactor; ++j) {
+				for(unsigned int k = 0; k < ssFactor; ++k) {
 					sineDSHeightMap[i * ssFactor + j][p * ssFactor + k] = (
 							zPlusWave[j] * (float) k / (float) ssFactor +
 							zMinusWave[j] * ((float) ssFactor - (float)k) / (float) ssFactor +
@@ -80,8 +80,8 @@ Terrain::Terrain() {
 	unsigned int mapIndex = (rand() % 100) * density / 100;
 
 	// fill the mask with values
-	for(int p = 0; p < density; ++p) {
-		for(int j = 0; j < density; ++j) {
+	for(unsigned int p = 0; p < density; ++p) {
+		for(unsigned int j = 0; j < density; ++j) {
 			// coordinate of these indices
 			Vector2 coord(
 				(float) p / (float) density * 2.0f - 1.0f,
@@ -126,16 +126,16 @@ Terrain::Terrain() {
 	// adjust the heightmap for the alpha values
 	float comboHeightMap[density][density];
 
-	for(int i = 0; i < density; ++i)
-		for(int p = 0; p < density; ++p)
+	for(unsigned int i = 0; i < density; ++i)
+		for(unsigned int p = 0; p < density; ++p)
 			comboHeightMap[i][p] = (sineDSHeightMap[i][p] + 1.0f) / 2.0f *
 					(float) alphaHeightMap[i][p];
 
 	// smooth out the bumps with two different algorithms
 	float smoothHeightMap[density][density];
 
-	for(int i = 0; i < density; ++i) {
-		for(int p = 0; p < density; ++p) {
+	for(unsigned int i = 0; i < density; ++i) {
+		for(unsigned int p = 0; p < density; ++p) {
 			unsigned int
 						nCoord = (p + 1 == density ? 0 : p + 1),
 						sCoord = (p == 0 ? density - 1 : p - 1),
@@ -153,8 +153,8 @@ Terrain::Terrain() {
 		}
 	}
 
-	for(int i = 0; i < density; ++i) {
-		for(int p = 0; p < density; ++p) {
+	for(unsigned int i = 0; i < density; ++i) {
+		for(unsigned int p = 0; p < density; ++p) {
 			unsigned int
 					nCoord = (p + 1 == density ? 0 : p + 1),
 					sCoord = (p == 0 ? density - 1 : p - 1),
@@ -179,20 +179,20 @@ Terrain::Terrain() {
 	// re-map all the values to 0.0f - 1.0
 	float max = 0.0f;
 
-	for(int i = 0; i < density; ++i) {
-		for(int p = 0; p < density; ++p) {
+	for(unsigned int i = 0; i < density; ++i) {
+		for(unsigned int p = 0; p < density; ++p) {
 			if(smoothHeightMap[i][p] > max)
 				max = smoothHeightMap[i][p];
 		}
 	}
 
-	for(int i = 0; i < density; ++i)
-		for(int p = 0; p < density; ++p)
+	for(unsigned int i = 0; i < density; ++i)
+		for(unsigned int p = 0; p < density; ++p)
 			comboHeightMap[i][p] = comboHeightMap[i][p] / max * height;
 
 	// create a mesh with that terrain data
-	for(int i = 0; i < density; ++i) {
-		for(int p = 0; p < density; ++p) {
+	for(unsigned int i = 0; i < density; ++i) {
+		for(unsigned int p = 0; p < density; ++p) {
 			mesh.addVertex(Vector3(
 					((float) i / (float) density * 2.0f - 1.0f) * TERRAIN_MAXWIDTH / 2.0f,
 					comboHeightMap[i][p] * TERRAIN_MAXHEIGHT,

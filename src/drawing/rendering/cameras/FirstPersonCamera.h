@@ -11,13 +11,13 @@
 #define FIRSTPERSONCAMERA_H
 
 // program headers
-#include "Camera.h"
-#include "MatrixMath.h"
-#include "Platform.h"
-#include "Ship.h"
-#include "GamePrefs.h"
-#include "GameWindow.h"
-#include "VectorMath.h"
+#include "core/GamePrefs.h"
+#include "drawing/rendering/cameras/Camera.h"
+#include "math/MatrixMath.h"
+#include "math/VectorMath.h"
+#include "platform/Platform.h"
+#include "state/Ship.h"
+#include "windowing/GameWindow.h"
 
 // global variables
 extern GamePrefs gamePrefs;

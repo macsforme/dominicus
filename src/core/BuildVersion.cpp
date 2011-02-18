@@ -7,7 +7,7 @@
  *
  */
 
-#include "BuildVersion.h"
+#include "core/BuildVersion.h"
 
 BuildVersion::BuildVersion() :
 		classification(BV_CLASSIFICATION),architecture(platform.getArchitecture()) {

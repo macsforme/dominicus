@@ -7,7 +7,7 @@
  *
  */
 
-#include "Mouse.h"
+#include "input/Mouse.h"
 
 void Mouse::loop() {
 	// handle input events on our stack

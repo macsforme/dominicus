@@ -7,7 +7,7 @@
  *
  */
 
-#include "Ship.h"
+#include "state/Ship.h"
 
 Ship::Ship(Vector4 position) :
 		position(position),

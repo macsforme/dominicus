@@ -7,7 +7,7 @@
  *
  */
 
-#include "InputHandler.h"
+#include "input/InputHandler.h"
 
 unsigned long int InputHandler::processEvents() {
 	// poll SDL for events and forward the ones we use to the appropriate

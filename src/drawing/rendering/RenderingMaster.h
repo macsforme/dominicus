@@ -11,15 +11,15 @@
 #define RENDERINGMASTER_H
 
 // program headers
-#include "BackCamera.h"
-#include "FirstPersonCamera.h"
-#include "GameWindow.h"
-#include "Keyboard.h"
-#include "KeyTrap.h"
-#include "ShipRenderer.h"
-#include "SkyRenderer.h"
-#include "TerrainRenderer.h"
-#include "WorldViewCamera.h"
+#include "drawing/rendering/cameras/BackCamera.h"
+#include "drawing/rendering/cameras/FirstPersonCamera.h"
+#include "drawing/rendering/cameras/WorldViewCamera.h"
+#include "drawing/rendering/ship/ShipRenderer.h"
+#include "drawing/rendering/sky/SkyRenderer.h"
+#include "drawing/rendering/terrain/TerrainRenderer.h"
+#include "input/Keyboard.h"
+#include "input/KeyTrap.h"
+#include "windowing/GameWindow.h"
 
 // global variables
 extern Keyboard keyboard;

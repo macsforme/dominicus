@@ -11,11 +11,11 @@
 #define FONTMANAGER_H
 
 // program headers
-#include "GamePrefs.h"
-#include "OpenGLHeaders.h"
-#include "Platform.h"
-#include "ProgramLog.h"
-#include "Texture.h"
+#include "core/GamePrefs.h"
+#include "core/ProgramLog.h"
+#include "drawing/texture/Texture.h"
+#include "platform/OpenGLHeaders.h"
+#include "platform/Platform.h"
 
 // library headers
 #include <ft2build.h>

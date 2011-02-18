@@ -11,8 +11,8 @@
 #define BMPIMAGE_H
 
 // program headers
-#include "ProgramLog.h"
-#include "Texture.h"
+#include "core/ProgramLog.h"
+#include "drawing/texture/Texture.h"
 
 // library headers
 #include <cstring>

@@ -7,7 +7,7 @@
  *
  */
 
-#include "FirstPersonCamera.h"
+#include "drawing/rendering/cameras/FirstPersonCamera.h"
 
 void FirstPersonCamera::loop() {
 	// re-initialize the matrix

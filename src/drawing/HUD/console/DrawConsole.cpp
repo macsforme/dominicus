@@ -7,7 +7,7 @@
  *
  */
 
-#include "DrawConsole.h"
+#include "drawing/HUD/console/DrawConsole.h"
 
 DrawConsole::DrawConsole(HUDArrangement* hudArrangement, FontManager* fontManager) :
 		fontManager(fontManager) {

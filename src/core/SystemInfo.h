@@ -11,9 +11,9 @@
 #define SYSTEMINFO_H
 
 // program headers
-#include "BuildVersion.h"
-#include "OpenGLHeaders.h"
-#include "ProgramLog.h"
+#include "core/BuildVersion.h"
+#include "core/ProgramLog.h"
+#include "platform/OpenGLHeaders.h"
 
 // library headers
 #include <SDL/SDL.h>

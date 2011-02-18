@@ -7,7 +7,7 @@
  *
  */
 
-#include "Texture.h"
+#include "drawing/texture/Texture.h"
 
 Texture::Texture() {
 	// for subclasses only

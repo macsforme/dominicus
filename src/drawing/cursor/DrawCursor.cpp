@@ -7,7 +7,7 @@
  *
  */
 
-#include "DrawCursor.h"
+#include "drawing/cursor/DrawCursor.h"
 
 DrawCursor::DrawCursor() {
 	// set up the shader program

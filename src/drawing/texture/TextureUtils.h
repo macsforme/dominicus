@@ -11,7 +11,7 @@
 #define TEXTUREUTILS_H
 
 // program headers
-#include "Texture.h"
+#include "drawing/texture/Texture.h"
 
 void setTextureDepth(Texture* subject, unsigned int depth);
 

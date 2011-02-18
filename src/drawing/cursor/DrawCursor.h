@@ -11,12 +11,12 @@
 #define DRAWCURSOR_H
 
 // program headers
-#include "GameWindow.h"
-#include "InputHandler.h"
-#include "OpenGLHeaders.h"
-#include "Platform.h"
-#include "ShaderTools.h"
-#include "VectorMath.h"
+#include "drawing/ShaderTools.h"
+#include "input/InputHandler.h"
+#include "math/VectorMath.h"
+#include "platform/OpenGLHeaders.h"
+#include "platform/Platform.h"
+#include "windowing/GameWindow.h"
 
 // global variables
 extern InputHandler* inputHandler;

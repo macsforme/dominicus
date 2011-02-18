@@ -7,7 +7,7 @@
  *
  */
 
-#include "BMPImage.h"
+#include "drawing/texture/BMPImage.h"
 
 BMPImage::BMPImage(std::string filename) {
 	// ===== Opening and reading the file =====

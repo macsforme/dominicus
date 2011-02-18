@@ -13,7 +13,7 @@
 #define DIAMONDSQUARE_H
 
 // program headers
-#include "ScalarMath.h"
+#include "math/ScalarMath.h"
 
 // library headers
 #include <cstdlib>
