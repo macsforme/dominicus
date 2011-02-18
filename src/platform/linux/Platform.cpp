@@ -7,7 +7,7 @@
  *
  */
 
-#include "Platform.h"
+#include "platform/Platform.h"
 
 // platform-specific headers
 #include <SDL/SDL.h>

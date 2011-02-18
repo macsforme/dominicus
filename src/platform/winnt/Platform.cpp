@@ -7,9 +7,10 @@
  *
  */
 
+#include "platform/Platform.h"
+
 // platform-specific headers
 #include "platform/OpenGLHeaders.h"
-#include "platform/Platform.h"
 #include <SDL/SDL.h>
 #include <time.h>
 

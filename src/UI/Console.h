@@ -11,7 +11,7 @@
 #define CONSOLE_H
 
 // program headers
-#include "ProgramLog.h"
+#include "core/ProgramLog.h"
 
 // library headers
 #include <map>
