@@ -31,6 +31,7 @@
 		032B8B361263DF5900DDE564 /* CODEFORMATTING.txt in Resources */ = {isa = PBXBuildFile; fileRef = 032B8B341263DF5900DDE564 /* CODEFORMATTING.txt */; };
 		032B8B371263DF5900DDE564 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 032B8B351263DF5900DDE564 /* README.txt */; };
 		032B9BA0129A94BD00E5F5FB /* HUDArrangement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032B9B9F129A94BD00E5F5FB /* HUDArrangement.cpp */; };
+		0330978B130CFE7900908B16 /* TextureUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0330978A130CFE7900908B16 /* TextureUtils.cpp */; };
 		034FEA48129ACA060071B2AA /* TextBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 034FEA47129ACA060071B2AA /* TextBlock.cpp */; };
 		0353D4BA127B0A43002340BF /* Terrain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0353D4B9127B0A43002340BF /* Terrain.cpp */; };
 		0353D809127BB684002340BF /* SDL.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 032B8AD112639A4600DDE564 /* SDL.framework */; };
@@ -120,6 +121,8 @@
 		032B8B341263DF5900DDE564 /* CODEFORMATTING.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CODEFORMATTING.txt; sourceTree = "<group>"; };
 		032B8B351263DF5900DDE564 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 		032B9B9F129A94BD00E5F5FB /* HUDArrangement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HUDArrangement.cpp; sourceTree = "<group>"; };
+		03309789130CFE7900908B16 /* TextureUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureUtils.h; sourceTree = "<group>"; };
+		0330978A130CFE7900908B16 /* TextureUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextureUtils.cpp; sourceTree = "<group>"; };
 		0338164E12A4DAEF003DA262 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		0338164F12A4DAEF003DA262 /* Platform.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Platform.cpp; sourceTree = "<group>"; };
 		034FEA46129ACA060071B2AA /* TextBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextBlock.h; sourceTree = "<group>"; };
@@ -164,6 +167,8 @@
 		039FA1201285D5A8003A2CC5 /* DrawHUDContainerUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawHUDContainerUtility.h; sourceTree = "<group>"; };
 		03A8763312A691070078E049 /* ShipRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShipRenderer.cpp; sourceTree = "<group>"; };
 		03A8763412A691070078E049 /* ShipRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShipRenderer.h; sourceTree = "<group>"; };
+		03CC3690130CDB960049C4E1 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		03CC3691130CDB960049C4E1 /* Platform.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Platform.cpp; sourceTree = "<group>"; };
 		03D47B7D1263E27F001755A6 /* dominicus.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = dominicus.icns; sourceTree = "<group>"; };
 		03D8C0781264BEBA00F26DC9 /* licenses */ = {isa = PBXFileReference; lastKnownFileType = folder; path = licenses; sourceTree = "<group>"; };
 		03DA5B83127AA286003814F7 /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
@@ -229,6 +234,7 @@
 				038FC1DE12A0EA3A00AE328B /* OpenGLHeaders.h */,
 				030F8E131264C0FF00190225 /* macosx */,
 				0338164D12A4DAEF003DA262 /* linux */,
+				03CC368F130CDB960049C4E1 /* winnt */,
 			);
 			name = platform;
 			path = src/platform;
@@ -282,6 +288,8 @@
 				030F8EB81264D05800190225 /* Texture.cpp */,
 				030F8EB71264D05800190225 /* BMPImage.h */,
 				030F8EB61264D05800190225 /* BMPImage.cpp */,
+				03309789130CFE7900908B16 /* TextureUtils.h */,
+				0330978A130CFE7900908B16 /* TextureUtils.cpp */,
 			);
 			path = texture;
 			sourceTree = "<group>";
@@ -412,6 +420,15 @@
 				0390D4E112C727EA00CABAD5 /* DrawControlBox.cpp */,
 			);
 			name = controlBox;
+			sourceTree = "<group>";
+		};
+		03CC368F130CDB960049C4E1 /* winnt */ = {
+			isa = PBXGroup;
+			children = (
+				03CC3690130CDB960049C4E1 /* main.cpp */,
+				03CC3691130CDB960049C4E1 /* Platform.cpp */,
+			);
+			path = winnt;
 			sourceTree = "<group>";
 		};
 		03DA5B82127AA286003814F7 /* cameras */ = {
@@ -629,6 +646,7 @@
 				03E6C23D12D9AFAF0093B629 /* BuildVersion.cpp in Sources */,
 				035E0E7712DCE54D00F84121 /* MainLoopMember.cpp in Sources */,
 				03E09B8612F55A8100AE6306 /* SkyRenderer.cpp in Sources */,
+				0330978B130CFE7900908B16 /* TextureUtils.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

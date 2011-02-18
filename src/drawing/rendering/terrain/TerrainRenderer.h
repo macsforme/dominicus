@@ -22,15 +22,18 @@
 // program headers
 #include "BMPImage.h"
 #include "DiamondSquare.h"
+#include "GamePrefs.h"
 #include "MatrixMath.h"
 #include "Mesh.h"
 #include "OpenGLHeaders.h"
 #include "Platform.h"
 #include "ShaderTools.h"
 #include "Terrain.h"
+#include "TextureUtils.h"
 #include "VectorMath.h"
 
 // global variables
+extern GamePrefs gamePrefs;
 extern Platform platform;
 extern Terrain terrain;
 
@@ -43,10 +46,10 @@ private:
 	GLint positionAttrib, texCoordAttrib;
 
 	// uniforms
-	GLint mvpMatrixUniform, textureUniform;
+	GLint mvpMatrixUniform, texturesUniform, noiseTextureUniform, totalWidthUniform, totalHeightUniform;
 
 	// texture IDs
-	GLuint textureID;
+	GLuint textureIDs[4], noiseTextureID;
 
 	// buffers
 	GLuint vertDataBuffer, vertElementBuffer;

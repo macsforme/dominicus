@@ -21,6 +21,10 @@ GamePrefs::GamePrefs() {
 	preferences["renderingDisplayUpdateFrequency"] = "2";	// tests per second
 	preferences["renderingCapFPS"] = "1";
 	preferences["renderingFPS"] = "60";
+	preferences["renderingTerrainRepeat"] = "50";
+	preferences["renderingNoiseDensity"] = "512";
+	preferences["renderingNoiseRoughness"] = "0.6";
+	preferences["renderingNoiseDepth"] = "4";
 
 	// 3D view settings
 	preferences["perspectiveNearClip"] = "1.0";

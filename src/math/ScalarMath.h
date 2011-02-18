@@ -44,7 +44,7 @@ inline float round(float num, unsigned short int places) {
 #ifdef WIN32
 inline double log2(double n)
 {
-	return log( n ) / log( 2.0 );  
+	return log( n ) / log( 2.0 );
 }
 #endif
 #endif

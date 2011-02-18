@@ -103,7 +103,7 @@ uint8_t Texture::getBlueValueAt(uint32_t column, uint32_t row) {
 					(width * (format == FORMAT_RGBA ? 4 : 3) % 4 > 0 ?
 					4 - (width * (format == FORMAT_RGBA ? 4 : 3) % 4) : 0)) +
 			column * (format == FORMAT_RGBA ? 4 : 3) +
-			0);
+			2);
 }
 
 uint8_t Texture::getAlphaValueAt(uint32_t column, uint32_t row) {

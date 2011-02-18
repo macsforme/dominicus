@@ -11,8 +11,8 @@
 
 Terrain::Terrain() {
 	// randomly generate our input variables within the set limits
-	const unsigned int dsFactor = 16;
-	const unsigned int ssFactor = 8;
+	const unsigned int dsFactor = 64;
+	const unsigned int ssFactor = 2;
 	float rough = 0.6f;
 	float gradDist = 0.45f;
 	float height = 0.5f + (float) (rand() % 100) / 100.0f * 0.5f;
@@ -131,7 +131,6 @@ Terrain::Terrain() {
 			comboHeightMap[i][p] = (sineDSHeightMap[i][p] + 1.0f) / 2.0f *
 					(float) alphaHeightMap[i][p];
 
-/*
 	// smooth out the bumps with two different algorithms
 	float smoothHeightMap[density][density];
 
@@ -176,15 +175,14 @@ Terrain::Terrain() {
 				smoothHeightMap[i][p] += comboHeightMap[i][p] * 0.5f;
 		}
 	}
-*/
 
 	// re-map all the values to 0.0f - 1.0
 	float max = 0.0f;
 
 	for(int i = 0; i < density; ++i) {
 		for(int p = 0; p < density; ++p) {
-			if(comboHeightMap[i][p] > max)
-				max = comboHeightMap[i][p];
+			if(smoothHeightMap[i][p] > max)
+				max = smoothHeightMap[i][p];
 		}
 	}
 

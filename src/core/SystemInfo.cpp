@@ -85,11 +85,11 @@ void SystemInfo::check() {
 	int maxTexUnits = 0;
 	glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &maxTexUnits);
 
-	if(maxTexUnits < 4) {
+	if(maxTexUnits < 8) {
 		std::stringstream err;
 		err << "OpenGL implementation supports only " <<
 				maxTexUnits <<
-				" texture units, whereas 4 are required.";
+				" texture units, whereas 8 are required.";
 		ProgramLog::report(LOG_FATAL, err.str().c_str());
 	} else {
 		std::stringstream err;

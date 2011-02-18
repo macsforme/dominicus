@@ -57,6 +57,7 @@ SOURCES = \
 	./src/drawing/text/FontManager.cpp \
 	./src/drawing/text/TextBlock.cpp \
 	./src/drawing/texture/Texture.cpp \
+	./src/drawing/texture/TextureUtils.cpp \
 	./src/drawing/texture/BMPImage.cpp \
 	./src/drawing/HUD/DrawHUDContainerUtility.cpp \
 	./src/drawing/HUD/DrawHUD.cpp \

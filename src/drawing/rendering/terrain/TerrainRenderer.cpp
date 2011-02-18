@@ -36,48 +36,101 @@ TerrainRenderer::TerrainRenderer() {
 
 	// get uniform locations
 	mvpMatrixUniform = glGetUniformLocation(program, "mvpMatrix");
-	textureUniform = glGetUniformLocation(program, "texture");
+	texturesUniform = glGetUniformLocation(program, "textures");
+	noiseTextureUniform = glGetUniformLocation(program, "noiseTexture");
+	totalWidthUniform = glGetUniformLocation(program, "totalWidth");
+	totalHeightUniform = glGetUniformLocation(program, "totalHeight");
 
-	// load the texture into OpenGL
-	std::string textureFile = platform.dataPath + std::string("/data/textures/terrain/dirt.bmp");
-	BMPImage image(textureFile);
+	// load the textures into OpenGL
+	for(unsigned int i = 0; i < 4; ++i) {
+		std::stringstream filename;
+		filename <<
+				platform.dataPath <<
+				"/data/textures/terrain/" <<
+				i <<
+				".bmp";
+		BMPImage texture(filename.str().c_str());
 
-	glEnable(GL_TEXTURE_2D);
+		// load the texture into OpenGL
+		GLuint textureID = 0;
+		glGenTextures(1, &textureID);
+		glBindTexture(GL_TEXTURE_2D, textureID);
 
-	glGenTextures(1, &textureID);
-	glBindTexture(GL_TEXTURE_2D, textureID);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+		float maxAniso;
+		glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAniso);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, maxAniso);
+
+		glTexImage2D(
+				GL_TEXTURE_2D,
+				0,
+				(texture.getFormat() == Texture::FORMAT_RGBA ? GL_RGBA : GL_RGB),
+				texture.getWidth(),
+				texture.getHeight(),
+				0,
+				(texture.getFormat() == Texture::FORMAT_RGBA ? GL_RGBA : GL_RGB),
+				GL_UNSIGNED_BYTE,
+				texture.getDataPointer()
+		);
+
+		glGenerateMipmap(GL_TEXTURE_2D);
+
+		textureIDs[i] = textureID;
+	}
+
+	// load the noise texture into OpenGL
+	const size_t dsDensity = (size_t) gamePrefs.getInt("renderingNoiseDensity");
+	DiamondSquare diamondSquare(dsDensity, gamePrefs.getFloat("renderingNoiseRoughness"));
+	Texture texture(dsDensity, dsDensity, Texture::FORMAT_RGBA);
+	for(size_t i = 0; i < dsDensity; ++i)
+		for(size_t p = 0; p < dsDensity; ++p)
+			texture.setColorAt(
+					(uint32_t) i,
+					(uint32_t) p,
+					(uint8_t) (diamondSquare.data[i][p] * 128.0f + 127.0f),
+					(uint8_t) (diamondSquare.data[i][p] * 128.0f + 127.0f),
+					(uint8_t) (diamondSquare.data[i][p] * 128.0f + 127.0f),
+					0xFF
+				);
+	setTextureDepth(&texture, (unsigned int) gamePrefs.getInt("renderingNoiseDepth"));
+
+	glGenTextures(1, &noiseTextureID);
+	glBindTexture(GL_TEXTURE_2D, noiseTextureID);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-	float maxAniso;
-	glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAniso);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, maxAniso);
-
 	glTexImage2D(
 			GL_TEXTURE_2D,
 			0,
-			(image.getFormat() == Texture::FORMAT_RGBA ? GL_RGBA : GL_RGB),
-			image.getWidth(),
-			image.getHeight(),
+			(texture.getFormat() == Texture::FORMAT_RGBA ? GL_RGBA : GL_RGB),
+			texture.getWidth(),
+			texture.getHeight(),
 			0,
-			(image.getFormat() == Texture::FORMAT_RGBA ? GL_RGBA : GL_RGB),
+			(texture.getFormat() == Texture::FORMAT_RGBA ? GL_RGBA : GL_RGB),
 			GL_UNSIGNED_BYTE,
-			image.getDataPointer()
+			texture.getDataPointer()
 	);
 
 	glGenerateMipmap(GL_TEXTURE_2D);
-
-	glDisable(GL_TEXTURE_2D);
 
 	// generate the vertex buffers
 	reloadGeometry(true);
 }
 
 TerrainRenderer::~TerrainRenderer() {
+	for(unsigned int i = 0; i < 4; ++i)
+		glDeleteTextures(1, &(textureIDs[i]));
+	glDeleteTextures(1, &noiseTextureID);
+
 	glDeleteBuffers(1, &vertDataBuffer);
 	glDeleteBuffers(1, &vertElementBuffer);
 
@@ -100,11 +153,33 @@ void TerrainRenderer::render(Matrix4 vpMatrix) {
 
 	glUniformMatrix4fv(mvpMatrixUniform, 1, GL_FALSE, vpMatrixArray);
 
+	// dimensions uniforms
+	glUniform1f(totalWidthUniform, TERRAIN_MAXWIDTH);
+	glUniform1f(totalHeightUniform, TERRAIN_MAXHEIGHT);
+
 	// textures
 	glEnable(GL_TEXTURE_2D);
+
 	glActiveTexture(GL_TEXTURE0);
-	glUniform1i(textureUniform, 0);
-	glBindTexture(GL_TEXTURE_2D, textureID);
+	glBindTexture(GL_TEXTURE_2D, textureIDs[0]);
+
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, textureIDs[1]);
+
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, textureIDs[2]);
+
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_2D, textureIDs[3]);
+
+	GLint samplerList[] = { 0, 1, 2, 3 };
+	glUniform1iv(texturesUniform, 4, samplerList);
+
+	// noise texture
+	glActiveTexture(GL_TEXTURE4);
+	glBindTexture(GL_TEXTURE_2D, noiseTextureID);
+
+	glUniform1i(noiseTextureUniform, 4);
 
 	// draw the data stored in GPU memory
 	glBindBuffer(GL_ARRAY_BUFFER, vertDataBuffer);
@@ -126,7 +201,8 @@ void TerrainRenderer::render(Matrix4 vpMatrix) {
 }
 
 void TerrainRenderer::reloadGeometry(bool firstLoad) {
-	const float texDivisor = 50.0f; // texture coordinate divisor
+	const float texDivisor =
+			(float) gamePrefs.getInt("renderingTerrainRepeat"); // texture coordinate divisor
 
 	// set up the buffers
 	if(! firstLoad && glIsBuffer(vertDataBuffer))
