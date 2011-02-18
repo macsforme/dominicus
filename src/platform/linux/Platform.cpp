@@ -22,7 +22,7 @@ Platform::Platform() {
 }
 
 void Platform::init(){
-}|
+}
 
 const char* Platform::getArchitecture() {
 	return "Linux";
