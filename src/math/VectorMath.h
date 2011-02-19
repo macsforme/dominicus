@@ -88,7 +88,7 @@ public:
 	// assignment and comparison operators
 	Vector3& operator = (const Vector3& vec) { x = vec.x; y = vec.y; z = vec.z; return *this; }
 	bool operator == (const Vector3& vec) const { return x == vec.x && y == vec.y && z == vec.z; }
-	bool operator != (const Vector3& vec) const { return x != vec.x && y != vec.y || z != vec.z; }
+	bool operator != (const Vector3& vec) const { return x != vec.x || y != vec.y || z != vec.z; }
 
 	// arithmetic operators
 	Vector3 operator - () const { return Vector3(-x, -y, -z); }
@@ -150,7 +150,7 @@ public:
 	// assignment and comparison operators
 	Vector4& operator = (const Vector4& vec) { x = vec.x; y = vec.y; z = vec.z; w = vec.w; return *this; }
 	bool operator == (const Vector4& vec) const { return x == vec.x && y == vec.y && z == vec.z && w == vec.w; }
-	bool operator != (const Vector4& vec) const { return x != vec.x && y != vec.y || z != vec.z || w != vec.w; }
+	bool operator != (const Vector4& vec) const { return x != vec.x || y != vec.y || z != vec.z || w != vec.w; }
 
 	// arithmetic operators
 	Vector4 operator - () const { return Vector4(-x, -y, -z, -w); }

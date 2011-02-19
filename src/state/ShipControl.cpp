@@ -58,8 +58,8 @@ void ShipControl::loop() {
 
 	// dampen the up/down rotation at the limits
 	if(
-			yMovement < 0.0f && displacePercent > 0.0f ||
-			yMovement > 0.0f && displacePercent < 0.0f
+			(yMovement < 0.0f && displacePercent > 0.0f) ||
+			(yMovement > 0.0f && displacePercent < 0.0f)
 		)
 		yMovement *= 1.0f - absolute(displacePercent);
 
