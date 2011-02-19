@@ -84,7 +84,7 @@ TerrainRenderer::TerrainRenderer() {
 	}
 
 	// load the noise texture into OpenGL
-	const size_t dsDensity = (size_t) gamePrefs.getInt("renderingNoiseDensity");
+	const size_t dsDensity = (size_t) gamePrefs.getFloat("renderingNoiseDensity");
 	DiamondSquare diamondSquare(dsDensity, gamePrefs.getFloat("renderingNoiseRoughness"));
 	Texture texture(dsDensity, dsDensity, Texture::FORMAT_RGBA);
 	for(size_t i = 0; i < dsDensity; ++i)
@@ -97,7 +97,7 @@ TerrainRenderer::TerrainRenderer() {
 					(uint8_t) (diamondSquare.data[i][p] * 128.0f + 127.0f),
 					0xFF
 				);
-	setTextureDepth(&texture, (unsigned int) gamePrefs.getInt("renderingNoiseDepth"));
+	setTextureDepth(&texture, (unsigned int) gamePrefs.getFloat("renderingNoiseDepth"));
 
 	glGenTextures(1, &noiseTextureID);
 	glBindTexture(GL_TEXTURE_2D, noiseTextureID);
@@ -202,7 +202,7 @@ void TerrainRenderer::render(Matrix4 vpMatrix) {
 
 void TerrainRenderer::reloadGeometry(bool firstLoad) {
 	const float texDivisor =
-			(float) gamePrefs.getInt("renderingTerrainRepeat"); // texture coordinate divisor
+			gamePrefs.getFloat("renderingTerrainTextureRepeat"); // texture coordinate divisor
 
 	// set up the buffers
 	if(! firstLoad && glIsBuffer(vertDataBuffer))

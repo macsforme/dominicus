@@ -12,27 +12,23 @@
 std::vector<std::string> logStrings;
 
 void ProgramLog::report(LogDetail detail, const char* report) {
-	switch(detail) {
-		case LOG_INTERNALERROR:
-		case LOG_FATAL:
-			std::cout << "FATAL: " << report << std::endl;
-			exit(1);
+	std::string fullReport = "";
+	if(detail == LOG_INFO)
+		fullReport += "INFO: ";
+	else if(detail == LOG_DEBUG)
+		fullReport += "DEBUG: ";
+	else if(detail == LOG_FATAL)
+		fullReport += "FATAL: ";
+	else
+		fullReport += "INTERNAL ERROR: ";
 
-			break;
-		case LOG_DEBUG:
-			{
-			std::cout << "DEBUG: " << report << std::endl;
-			std::string msg = "DEBUG: ";
-			msg += report;
-			logStrings.push_back(msg);
-			}
-			break;
-		case LOG_INFO:
-			{
-			std::string msg = "INFO: ";
-			msg += report;
-			logStrings.push_back(msg);
-			}
-			break;
+	fullReport += report;
+	logStrings.push_back(fullReport);
+
+	if(detail != LOG_INFO) {
+		std::cout << fullReport << std::endl;
+
+		if(detail != LOG_DEBUG)
+			exit(1);
 	}
 }

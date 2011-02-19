@@ -25,9 +25,10 @@ unsigned long int Ship::loop() {
 	position += (Vector4(0.0f, 0.0f, 1.0f, 0.0f) * ((float) dt / 1000000.0f * speed)) * orientation;
 
 	// calculate and return sleep time from superclass
+	unsigned long int frequency = (unsigned long int) gamePrefs.getFloat("shipUpdateFrequency");
 	static const unsigned long int idealSleepTime = (
-			gamePrefs.getInt("shipUpdateFrequency") != 0 ?
-			1000000 / gamePrefs.getInt("shipUpdateFrequency") : 0
+			frequency != 0 ?
+			1000000 / frequency : 0
 		);
 	return getSleepTime(idealSleepTime);
 }

@@ -201,11 +201,11 @@ void DrawInfoBox::draw() {
 				(unsigned int)((myElement->size.x  - containerPadding.x * 2.0f) / 2.0f * gameWindow->width),
 				(unsigned int)((myElement->size.y  - containerPadding.y * 2.0f) / 2.0f * gameWindow->height),
 				fontManager,
-				gamePrefs.getInt("fontStandardSize")
+				(int) gamePrefs.getFloat("fontStandardSize")
 			);
 
 	// draw the text
-	unsigned int fontSize = gamePrefs.getInt("fontStandardSize");
+	unsigned int fontSize = (unsigned int) gamePrefs.getFloat("fontStandardSize");
 
 	glUseProgram(program);
 

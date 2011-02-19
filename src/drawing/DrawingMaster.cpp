@@ -19,7 +19,7 @@ DrawingMaster::DrawingMaster() {
 	drawCursor = new DrawCursor();
 
 	// initialize fonts
-	fontManager->populateCommonChars(gamePrefs.getInt("fontStandardSize"));
+	fontManager->populateCommonChars((int) gamePrefs.getFloat("fontStandardSize"));
 
 	// set the OpenGL viewport size
 	setViewPortSize(gameWindow->width, gameWindow->height);
@@ -111,9 +111,10 @@ unsigned long int DrawingMaster::loop() {
 		return 0;
 
 	// calculate and return sleep time from superclass
+	unsigned long int frequency = (unsigned long int) gamePrefs.getFloat("renderingFPS");
 	unsigned long int idealSleepTime = (
-			gamePrefs.getInt("renderingFPS") != 0 ?
-			1000000 / gamePrefs.getInt("renderingFPS") : 0
+			frequency != 0 ?
+			1000000 / frequency : 0
 		);
 	return getSleepTime(idealSleepTime);
 }

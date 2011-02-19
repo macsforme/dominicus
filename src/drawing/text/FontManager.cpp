@@ -37,7 +37,7 @@ FontManager::FontManager() {
 			FT_Set_Char_Size(
 					fontFace,
 					0,
-					gamePrefs.getInt("fontStandardSize") * 64,
+					(int) gamePrefs.getFloat("fontStandardSize") * 64,
 					0,
 					0
 				)

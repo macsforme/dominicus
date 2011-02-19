@@ -10,8 +10,12 @@
 #ifndef GAMEPREFS_H
 #define GAMEPREFS_H
 
+// program headers
+#include "core/ProgramLog.h"
+
 // library headers
 #include <map>
+#include <sstream>
 #include <string>
 #include <SDL/SDL.h>
 
@@ -26,7 +30,6 @@ public:
 
 	// preferences
 	const std::string getString(std::string key) const;
-	const int getInt(std::string key) const;
 	const float getFloat(std::string key) const;
 	const bool getBool(std::string key) const;
 	void set(std::string value, std::string key);
