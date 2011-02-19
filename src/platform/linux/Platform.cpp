@@ -24,10 +24,6 @@ Platform::Platform() {
 void Platform::init(){
 }
 
-const char* Platform::getArchitecture() {
-	return "Linux";
-}
-
 void Platform::hideCursor() {
 	SDL_ShowCursor(SDL_DISABLE);
 }

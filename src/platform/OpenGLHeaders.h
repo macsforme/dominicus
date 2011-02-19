@@ -12,18 +12,16 @@
 #ifndef OPENGLHEADERS_H
 #define OPENGLHEADERS_H
 
-#ifdef __APPLE__
-#include <OpenGL/OpenGL.h>
-#else
+#include "platform/Platform.h"
 
-#ifdef WIN32 // der windows needen der headers
+#if defined(PROGRAM_ARCH_MACOSX)
+#include <OpenGL/OpenGL.h>
+#elif defined(PROGRAM_ARCH_WINNT)
 #include <Windows.h>
 #include "GL/glew.h"
 #include <GL/gl.h>
 #else
 #include <GL/gl.h>
-#endif
-
 #endif
 
 #endif

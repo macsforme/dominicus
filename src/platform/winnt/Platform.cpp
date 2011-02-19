@@ -47,10 +47,6 @@ void Platform::init()
 	}
 }
 
-const char* Platform::getArchitecture() {
-	return "WinNT";
-}
-
 void Platform::hideCursor() {
 	SDL_ShowCursor(SDL_DISABLE);
 }
