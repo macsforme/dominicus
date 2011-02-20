@@ -33,6 +33,7 @@ extern FontManager fontManager;
 extern GamePrefs gamePrefs;
 extern SystemInfo systemInfo;
 extern Platform platform;
+extern ProgramLog programLog;
 
 extern GameWindow* gameWindow;
 

@@ -15,16 +15,18 @@
 #include <iostream>
 #include <vector>
 
-enum LogDetail {
-		LOG_INFO,	// verbose information that users generally don't need to see
-		LOG_DEBUG,	// problems that shouldn't normally happen
-		LOG_FATAL,	// errors created by outside means that we can't survive
-		LOG_INTERNALERROR	// safety mechanisms in case of internal bugs (no external libs or files)
-	};
-
 class ProgramLog {
 public:
-	static void report(LogDetail detail, const char* report);
+	enum LogDetail {
+			LOG_INFO,	// verbose information that users generally don't need to see
+			LOG_DEBUG,	// problems that shouldn't normally happen
+			LOG_FATAL,	// errors created by outside means that we can't survive
+			LOG_INTERNALERROR	// safety mechanisms in case of internal bugs (no external libs or files)
+		};
+
+	std::vector<std::string> logStrings;
+
+	void report(LogDetail detail, const char* report);
 };
 
 #endif

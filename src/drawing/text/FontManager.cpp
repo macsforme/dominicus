@@ -12,7 +12,7 @@
 FontManager::FontManager() {
 	// initialize the freetype library
 	if(FT_Init_FreeType(&library))
-		ProgramLog::report(LOG_FATAL, "The FreeType2 library could not be initialized.");
+		programLog.report(ProgramLog::LOG_FATAL, "The FreeType2 library could not be initialized.");
 
 	// load the font face
 	if(
@@ -25,7 +25,7 @@ FontManager::FontManager() {
 					&fontFace
 				)
 		)
-		ProgramLog::report(LOG_FATAL,
+		programLog.report(ProgramLog::LOG_FATAL,
 				std::string("The font face could not be loaded from " +
 						platform.dataPath +
 						"/data/fonts/" +
@@ -42,11 +42,11 @@ FontManager::FontManager() {
 					0
 				)
 		)
-		ProgramLog::report(LOG_FATAL, "The default font size could not be set.");
+		programLog.report(ProgramLog::LOG_FATAL, "The default font size could not be set.");
 
 	// confirm that the face is scalable
 	if(! FT_IS_SCALABLE(fontFace))
-		ProgramLog::report(LOG_FATAL,
+		programLog.report(ProgramLog::LOG_FATAL,
 				std::string("The specified font face is not a scalable font.").c_str()
 			);
 }
@@ -193,7 +193,7 @@ void FontManager::buildChar(const char character, unsigned int size) {
 				character <<
 				"'.";
 
-		ProgramLog::report(LOG_FATAL, err.str().c_str());
+		programLog.report(ProgramLog::LOG_FATAL, err.str().c_str());
 	}
 
 	// store the line height for this size
@@ -204,12 +204,12 @@ void FontManager::buildChar(const char character, unsigned int size) {
 	if(FT_Load_Glyph(fontFace, glyphIndex, FT_LOAD_DEFAULT)) {
 		std::stringstream err;
 		err << "Unable to load glyph for character '" << character << "'.";
-		ProgramLog::report(LOG_FATAL, err.str().c_str());
+		programLog.report(ProgramLog::LOG_FATAL, err.str().c_str());
 	}
 	if(FT_Render_Glyph(fontFace->glyph, FT_RENDER_MODE_NORMAL)) {
 		std::stringstream err;
 		err << "Unable to render glyph for character '" << character << "'.";
-		ProgramLog::report(LOG_FATAL, err.str().c_str());
+		programLog.report(ProgramLog::LOG_FATAL, err.str().c_str());
 	}
 
 	// Here we extract the bitmap info from the rendered glyph into a texture,

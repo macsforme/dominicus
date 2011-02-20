@@ -17,6 +17,9 @@
 #include <sstream>
 #include <stdint.h>
 
+// global variables
+extern ProgramLog programLog;
+
 class Texture {
 public:
 	enum PixelFormat {

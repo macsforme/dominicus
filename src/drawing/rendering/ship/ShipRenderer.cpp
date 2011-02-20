@@ -23,7 +23,7 @@ ShipRenderer::ShipRenderer() {
 
 	objFile.open(std::string(platform.dataPath + "/data/models/ship.obj").c_str());
 	if(! objFile.is_open())
-		ProgramLog::report(LOG_FATAL, "Unable to load ship model from file.");
+		programLog.report(programLog.LOG_FATAL, "Unable to load ship model from file.");
 
 	while(! objFile.eof()) {
 		std::getline(objFile, line);
@@ -94,8 +94,8 @@ ShipRenderer::ShipRenderer() {
 								normal > ship.normals.size() ||
 								texCoord > ship.texCoords.size()
 							)
-							ProgramLog::report(
-									LOG_FATAL,
+							programLog.report(
+									ProgramLog::LOG_FATAL,
 									"Model face specification has out-of-bounds index."
 								);
 
@@ -109,8 +109,8 @@ ShipRenderer::ShipRenderer() {
 								vertex > ship.vertices.size() ||
 								normal > ship.normals.size()
 							)
-							ProgramLog::report(
-									LOG_FATAL,
+							programLog.report(
+									ProgramLog::LOG_FATAL,
 									"Model face specification has out-of-bounds index."
 								);
 						// TODO ** REVIEW IF THESE SHOULD BE INT ARRAYS NOT FLOAT ARRAYS CUS THIS LOOKS LIKE AN INDEX BEING PUT INTO A VECTOR
@@ -119,15 +119,15 @@ ShipRenderer::ShipRenderer() {
 					} else if(sscanf(subjs[i],"%u", &vertex)) {
 						// line has just the vertex
 						if(vertex > ship.vertices.size())
-								ProgramLog::report(
-										LOG_FATAL,
+								programLog.report(
+										ProgramLog::LOG_FATAL,
 										"Model face specification has out-of-bounds index."
 									);
 						// TODO ** REVIEW IF THESE SHOULD BE INT ARRAYS NOT FLOAT ARRAYS CUS THIS LOOKS LIKE AN INDEX BEING PUT INTO A VECTOR
 						faceVertices[i] = (float)vertex;
 					} else {
-							ProgramLog::report(
-									LOG_FATAL,
+							programLog.report(
+									ProgramLog::LOG_FATAL,
 									"Model face specification has an invalid format."
 								);
 					}

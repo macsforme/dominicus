@@ -154,16 +154,15 @@ void DrawConsole::draw() {
 		);
 
 	// update the text block if we need to
-	extern std::vector<std::string> logStrings;
 	static unsigned int numLogLines = 0;
 
-	if(textBlock == NULL || numLogLines != logStrings.size()) {
+	if(textBlock == NULL || numLogLines != programLog.logStrings.size()) {
 		// create a string of combined log lines
 		std::string logString = "";
 
 		for(
-				std::vector<std::string>::iterator itr = logStrings.begin();
-				itr != logStrings.end();
+				std::vector<std::string>::iterator itr = programLog.logStrings.begin();
+				itr != programLog.logStrings.end();
 				++itr
 			)
 			logString += *itr + "\n";
@@ -180,7 +179,7 @@ void DrawConsole::draw() {
 				fontManager,
 				(int) gamePrefs.getFloat("fontStandardSize")
 		);
-		numLogLines = logStrings.size();
+		numLogLines = programLog.logStrings.size();
 	}
 
 	// draw the text

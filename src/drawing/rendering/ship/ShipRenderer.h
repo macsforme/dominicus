@@ -29,6 +29,7 @@
 
 // global variables
 extern Platform platform;
+extern ProgramLog programLog;
 
 class ShipRenderer {
 private:

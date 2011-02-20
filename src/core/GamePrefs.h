@@ -19,6 +19,9 @@
 #include <string>
 #include <SDL/SDL.h>
 
+// global variables
+extern ProgramLog programLog;
+
 class GamePrefs {
 private:
 	std::map<std::string,std::string> preferences;

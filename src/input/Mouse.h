@@ -26,6 +26,7 @@
 extern GamePrefs gamePrefs;
 extern GameWindow* gameWindow;
 extern Platform platform;
+extern ProgramLog programLog;
 
 class Mouse {
 public:

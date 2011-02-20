@@ -29,6 +29,7 @@
 // global variables
 extern Platform platform;
 extern GamePrefs gamePrefs;
+extern ProgramLog programLog;
 
 class FontManager {
 public:

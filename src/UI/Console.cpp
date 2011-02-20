@@ -29,7 +29,7 @@ void Console::deleteTab(std::string tabName) {
 	}
 
 	// not found
-	ProgramLog::report(LOG_INTERNALERROR, "Console tab deletion on non-existant name requested.");
+	programLog.report(ProgramLog::LOG_INTERNALERROR, "Console tab deletion on non-existant name requested.");
 }
 
 void Console::changeTabName(std::string newName, std::string oldName) {
@@ -46,7 +46,7 @@ void Console::changeTabName(std::string newName, std::string oldName) {
 	}
 
 	// not found
-	ProgramLog::report(LOG_INTERNALERROR, "Console tab rename on non-existant name requested.");
+	programLog.report(ProgramLog::LOG_INTERNALERROR, "Console tab rename on non-existant name requested.");
 }
 
 void Console::changeTabPosition(unsigned int position, std::string tabName) {
@@ -71,7 +71,7 @@ void Console::changeTabPosition(unsigned int position, std::string tabName) {
 	}
 
 	// not found
-	ProgramLog::report(LOG_INTERNALERROR, "Console tab re-position on non-existant name requested.");
+	programLog.report(ProgramLog::LOG_INTERNALERROR, "Console tab re-position on non-existant name requested.");
 }
 
 void Console::addLine(std::string lineContents, std::string tabName) {
@@ -87,7 +87,7 @@ void Console::addLine(std::string lineContents, std::string tabName) {
 	}
 
 	// not found
-	ProgramLog::report(LOG_INTERNALERROR, "Line insertion on non-existant tab name requested.");
+	programLog.report(ProgramLog::LOG_INTERNALERROR, "Line insertion on non-existant tab name requested.");
 }
 
 void Console::deleteLine(unsigned int lineNumber, std::string tabName) {
@@ -98,8 +98,8 @@ void Console::deleteLine(unsigned int lineNumber, std::string tabName) {
 		) {
 		if(itr->first == tabName) {
 			if(itr->second.size() <= lineNumber)
-				ProgramLog::report(
-						LOG_INTERNALERROR,
+				programLog.report(
+						ProgramLog::LOG_INTERNALERROR,
 						"Line deletion on non-existant line index requested."
 					);
 			else
@@ -110,7 +110,7 @@ void Console::deleteLine(unsigned int lineNumber, std::string tabName) {
 	}
 
 	// not found
-	ProgramLog::report(LOG_INTERNALERROR, "Line insertion on non-existant tab name requested.");
+	programLog.report(ProgramLog::LOG_INTERNALERROR, "Line insertion on non-existant tab name requested.");
 }
 
 void Console::changeLineContents(std::string newContents, unsigned int lineNumber, std::string tabName) {
@@ -121,8 +121,8 @@ void Console::changeLineContents(std::string newContents, unsigned int lineNumbe
 		) {
 		if(itr->first == tabName) {
 			if(itr->second.size() <= lineNumber)
-				ProgramLog::report(
-						LOG_INTERNALERROR,
+				programLog.report(
+						ProgramLog::LOG_INTERNALERROR,
 						"Line change on non-existant line index requested."
 					);
 			else
@@ -133,5 +133,5 @@ void Console::changeLineContents(std::string newContents, unsigned int lineNumbe
 	}
 
 	// not found
-	ProgramLog::report(LOG_INTERNALERROR, "Line change on non-existant tab name requested.");
+	programLog.report(ProgramLog::LOG_INTERNALERROR, "Line change on non-existant tab name requested.");
 }

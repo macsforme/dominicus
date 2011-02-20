@@ -67,6 +67,6 @@ void Platform::loadExtensions(){
 	GLenum err = glewInit();
 	if (GLEW_OK != err)
 	{
-	  // do something?
+		programLog.report(ProgramLog::LOG_FATAL, "Unable to initialize GLEW.");
 	}
 }

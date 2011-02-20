@@ -34,6 +34,9 @@
 #include <stdint.h>
 #include <string>
 
+// global variables
+extern ProgramLog programLog;
+
 class Platform {
 public:
 	std::string dataPath;

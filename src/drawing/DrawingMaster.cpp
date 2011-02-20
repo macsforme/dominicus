@@ -83,7 +83,7 @@ void DrawingMaster::postFrame() {
 		std::stringstream err;
 		err << "OpenGL returned an error: "
 				<< renderingError;
-		ProgramLog::report(LOG_DEBUG, err.str().c_str());
+		programLog.report(ProgramLog::LOG_DEBUG, err.str().c_str());
 
 		renderingError = glGetError();
 	}

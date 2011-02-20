@@ -19,6 +19,9 @@
 #include <SDL/SDL.h>
 #include <sstream>
 
+// global variables
+extern ProgramLog programLog;
+
 class SystemInfo {
 public:
 	BuildVersion buildVersion;

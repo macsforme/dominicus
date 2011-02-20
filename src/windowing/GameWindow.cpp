@@ -23,7 +23,8 @@ GameWindow::GameWindow(bool fullScreen) : fullScreen(fullScreen) {
 			(int) gamePrefs.getFloat("windowColorDepth"),
 			flags
 		))
-		ProgramLog::report(LOG_FATAL, "SDL cannot initialize a window with the specified settings.");
+		programLog.report(ProgramLog::LOG_FATAL,
+				"SDL cannot initialize a window with the specified settings.");
 
 	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 5);
 	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 5);
@@ -39,7 +40,8 @@ GameWindow::GameWindow(bool fullScreen) : fullScreen(fullScreen) {
 		);
 
 	if(surface == NULL)
-		ProgramLog::report(LOG_FATAL, "SDL could not initialize an OpenGL-ready window.");
+		programLog.report(ProgramLog::LOG_FATAL,
+				"SDL could not initialize an OpenGL-ready window.");
 
 	if(! fullScreen)
 		SDL_WM_SetCaption("dominicus", NULL);

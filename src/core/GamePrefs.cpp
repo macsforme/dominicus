@@ -80,7 +80,7 @@ const std::string GamePrefs::getString(std::string key) const {
 		std::stringstream err;
 		err << "Game preferences requested on non-existent key \"" << key << "\".";
 
-		ProgramLog::report(LOG_INTERNALERROR, err.str().c_str());
+		programLog.report(ProgramLog::LOG_INTERNALERROR, err.str().c_str());
 
 		// won't reach, but to make compiler happy...
 		return std::string("");

@@ -18,6 +18,9 @@
 #include <string>
 #include <vector>
 
+// global variables
+extern ProgramLog programLog;
+
 class Console {
 private:
 	typedef std::pair< std::string,std::vector<std::string> > TabStorageEntry;

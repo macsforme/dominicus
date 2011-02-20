@@ -12,6 +12,7 @@
 // global variable instantiations
 GamePrefs gamePrefs;
 Platform platform;
+ProgramLog programLog;
 Ship ship(Vector4(0.0f, 2.0f, -500.0f, 0.0f));
 SystemInfo systemInfo;
 Terrain terrain;

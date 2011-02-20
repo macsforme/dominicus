@@ -29,7 +29,7 @@ void Keyboard::loop() {
 
 			break;
 		default:
-			ProgramLog::report(LOG_DEBUG, "Received unhandled keyboard event.");
+			programLog.report(ProgramLog::LOG_DEBUG, "Received unhandled keyboard event.");
 
 			break;
 		}

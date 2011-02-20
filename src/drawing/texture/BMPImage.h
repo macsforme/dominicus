@@ -21,6 +21,9 @@
 #include <sstream>
 #include <string>
 
+// global variables
+extern ProgramLog programLog;
+
 class BMPImage : public Texture {
 public:
 	BMPImage(std::string filename);

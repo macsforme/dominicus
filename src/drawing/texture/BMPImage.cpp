@@ -18,8 +18,8 @@ BMPImage::BMPImage(std::string filename) {
 
 	// ensure the file was successfully opened
 	if(! fileStream.is_open()) {
-		ProgramLog::report(
-				LOG_FATAL,
+		programLog.report(
+				ProgramLog::LOG_FATAL,
 				std::string("The BMP image file " +
 						std::string(filename) +
 						" could not be opened for reading.").c_str()
@@ -81,8 +81,8 @@ BMPImage::BMPImage(std::string filename) {
 		);
 
 	if(fileMagic.magic[0] == 'B' && fileMagic.magic[1] == 'M') {
-		ProgramLog::report(
-				LOG_FATAL,
+		programLog.report(
+				ProgramLog::LOG_FATAL,
 				std::string("The BMP image file " +
 						std::string(filename) +
 						" does not appear to be a valid BMP file.").c_str()
@@ -98,8 +98,8 @@ BMPImage::BMPImage(std::string filename) {
 
 	// We only support the BITMAPINFOHEADER file format
 	if(fileBMPHeader.dataOffset - sizeof(fileMagic) - sizeof(fileBMPHeader) != 40) {
-		ProgramLog::report(
-				LOG_FATAL,
+		programLog.report(
+				ProgramLog::LOG_FATAL,
 				std::string("The BMP image file " +
 						std::string(filename) +
 						" appears to have an incorrect DIB header size.").c_str()
@@ -114,8 +114,8 @@ BMPImage::BMPImage(std::string filename) {
 		);
 	// Check again that we are using the BITMAPINFOHEADER file format
 	if(fileDIBHeader.headerSize != 40) {
-		ProgramLog::report(
-				LOG_FATAL,
+		programLog.report(
+				ProgramLog::LOG_FATAL,
 				std::string("The BMP image file " +
 						std::string(filename) +
 						" reports an incorrect DIB header size.").c_str()
@@ -124,8 +124,8 @@ BMPImage::BMPImage(std::string filename) {
 
 	// We don't support compressed bitmaps, only BI_RGB method
 	if(fileDIBHeader.compressionMethod != 0) {
-		ProgramLog::report(
-				LOG_FATAL,
+		programLog.report(
+				ProgramLog::LOG_FATAL,
 				std::string("The BMP image file " +
 						std::string(filename) +
 						" DIB header reports an unsupported image compression method.").c_str()
@@ -134,8 +134,8 @@ BMPImage::BMPImage(std::string filename) {
 
 	// We will probably never use indexed bitmaps, so we don't support them
 	if(fileDIBHeader.numIndexedColors > 0) {
-		ProgramLog::report(
-				LOG_FATAL,
+		programLog.report(
+				ProgramLog::LOG_FATAL,
 				std::string("The BMP image file " +
 						std::string(filename) +
 						" DIB header reports an unsupported color-indexed format.").c_str()
@@ -147,8 +147,8 @@ BMPImage::BMPImage(std::string filename) {
 			fileDIBHeader.bpp != 24 &&
 			fileDIBHeader.bpp != 32
 		) {
-		ProgramLog::report(
-				LOG_FATAL,
+		programLog.report(
+				ProgramLog::LOG_FATAL,
 				std::string("The BMP image file " +
 						std::string(filename) +
 						" DIB header reports an unsupported pixel depth of " +
@@ -211,7 +211,7 @@ BMPImage::BMPImage(std::string filename) {
 								<< fileDIBHeader.imageHeight <<
 								").";
 
-						ProgramLog::report(LOG_FATAL, err.str().c_str());
+						programLog.report(ProgramLog::LOG_FATAL, err.str().c_str());
 					}
 
 					// Pixel data starting point
@@ -246,7 +246,7 @@ BMPImage::BMPImage(std::string filename) {
 						<< (shortfall < 0 ? "short of" : "in excess of")
 						<< " the expected data length.";
 
-				ProgramLog::report(LOG_FATAL, err.str().c_str());
+				programLog.report(ProgramLog::LOG_FATAL, err.str().c_str());
 			}
 
 			break;

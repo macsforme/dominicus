@@ -39,7 +39,7 @@ Texture::~Texture() {
 
 uint8_t Texture::getRedValueAt(uint32_t column, uint32_t row) {
 	if(pixelData == NULL)
-		ProgramLog::report(LOG_FATAL, "Texture pixel color requested before memory allocated.");
+		programLog.report(ProgramLog::LOG_FATAL, "Texture pixel color requested before memory allocated.");
 	if(column >= width || row >= height) {
 		std::stringstream err;
 		err << "Texture row or column index for retrieval out-of-bounds at " <<
@@ -48,7 +48,7 @@ uint8_t Texture::getRedValueAt(uint32_t column, uint32_t row) {
 				width << "," <<
 				height << ").";
 
-		ProgramLog::report(LOG_FATAL, err.str().c_str());
+		programLog.report(ProgramLog::LOG_FATAL, err.str().c_str());
 	}
 
 	return *((uint8_t*) pixelData +
@@ -62,7 +62,7 @@ uint8_t Texture::getRedValueAt(uint32_t column, uint32_t row) {
 
 uint8_t Texture::getGreenValueAt(uint32_t column, uint32_t row) {
 	if(pixelData == NULL)
-		ProgramLog::report(LOG_FATAL, "Texture pixel color requested before memory allocated.");
+		programLog.report(ProgramLog::LOG_FATAL, "Texture pixel color requested before memory allocated.");
 	if(column >= width || row >= height) {
 		std::stringstream err;
 		err << "Texture row or column index for retrieval out-of-bounds at " <<
@@ -71,7 +71,7 @@ uint8_t Texture::getGreenValueAt(uint32_t column, uint32_t row) {
 				width << "," <<
 				height << ").";
 
-		ProgramLog::report(LOG_FATAL, err.str().c_str());
+		programLog.report(ProgramLog::LOG_FATAL, err.str().c_str());
 	}
 
 	return *((uint8_t*) pixelData +
@@ -85,7 +85,7 @@ uint8_t Texture::getGreenValueAt(uint32_t column, uint32_t row) {
 
 uint8_t Texture::getBlueValueAt(uint32_t column, uint32_t row) {
 	if(pixelData == NULL)
-		ProgramLog::report(LOG_FATAL, "Texture pixel color requested before memory allocated.");
+		programLog.report(ProgramLog::LOG_FATAL, "Texture pixel color requested before memory allocated.");
 	if(column >= width || row >= height) {
 		std::stringstream err;
 		err << "Texture row or column index for retrieval out-of-bounds at " <<
@@ -94,7 +94,7 @@ uint8_t Texture::getBlueValueAt(uint32_t column, uint32_t row) {
 				width << "," <<
 				height << ").";
 
-		ProgramLog::report(LOG_FATAL, err.str().c_str());
+		programLog.report(ProgramLog::LOG_FATAL, err.str().c_str());
 	}
 
 	return *((uint8_t*) pixelData +
@@ -108,7 +108,7 @@ uint8_t Texture::getBlueValueAt(uint32_t column, uint32_t row) {
 
 uint8_t Texture::getAlphaValueAt(uint32_t column, uint32_t row) {
 	if(pixelData == NULL)
-		ProgramLog::report(LOG_FATAL, "Texture pixel color requested before memory allocated.");
+		programLog.report(ProgramLog::LOG_FATAL, "Texture pixel color requested before memory allocated.");
 	if(column >= width || row >= height) {
 		std::stringstream err;
 		err << "Texture row or column index for retrieval out-of-bounds at " <<
@@ -117,7 +117,7 @@ uint8_t Texture::getAlphaValueAt(uint32_t column, uint32_t row) {
 				width << "," <<
 				height << ").";
 
-		ProgramLog::report(LOG_FATAL, err.str().c_str());
+		programLog.report(ProgramLog::LOG_FATAL, err.str().c_str());
 	}
 
 	if(format == FORMAT_RGBA)
@@ -136,7 +136,7 @@ void Texture::setColorAt(
 			uint32_t column, uint32_t row, uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha
 		) {
 	if(pixelData == NULL)
-		ProgramLog::report(LOG_FATAL, "Texture pixel color specified before memory allocated.");
+		programLog.report(ProgramLog::LOG_FATAL, "Texture pixel color specified before memory allocated.");
 	if(column >= width || row >= height) {
 		std::stringstream err;
 		err << "Texture row or column index for set out-of-bounds at " <<
@@ -145,7 +145,7 @@ void Texture::setColorAt(
 				width << "," <<
 				height << ").";
 
-		ProgramLog::report(LOG_FATAL, err.str().c_str());
+		programLog.report(ProgramLog::LOG_FATAL, err.str().c_str());
 	}
 	// create a marker pointer at the correct position in the data buffer,
 	// accounting for row-padding if necessary

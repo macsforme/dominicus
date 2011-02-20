@@ -34,7 +34,7 @@ BuildVersion::BuildVersion() :
 	else {
 		std::stringstream err;
 		err << "Unable to determine build month from string '" << std::string(dateString) << "'.";
-		programLog.report(LOG_INTERNALERROR, err.str().c_str());
+		programLog.report(ProgramLog::LOG_INTERNALERROR, err.str().c_str());
 
 	}
 	unsigned int day = atoi(std::string(dateString).substr(4, 2).c_str());

@@ -9,8 +9,6 @@
 
 #include "core/ProgramLog.h"
 
-std::vector<std::string> logStrings;
-
 void ProgramLog::report(LogDetail detail, const char* report) {
 	std::string fullReport = "";
 	if(detail == LOG_INFO)

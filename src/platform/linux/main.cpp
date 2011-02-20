@@ -17,7 +17,7 @@
 int main(int argc, char* argv[]) {
 	// initialize SDL
 	if(SDL_Init(SDL_INIT_VIDEO) == -1)
-		ProgramLog::report(LOG_FATAL, "SDL could not be initialized.");
+		programLog.report(ProgramLog::LOG_FATAL, "SDL could not be initialized.");
 
 	// call the main program routine
 	int returnVal = dominicusMain(argc, argv);
