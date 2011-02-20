@@ -18,6 +18,9 @@
 #include "state/Ship.h"
 #include "windowing/GameWindow.h"
 
+// forward declarations
+class Ship;
+
 // global variables
 extern GamePrefs gamePrefs;
 extern InputHandler* inputHandler;
@@ -26,7 +29,7 @@ extern GameWindow* gameWindow;
 
 class ShipControl {
 public:
-	Ship* ship;
+	class Ship* ship;
 
 	ShipControl(Ship* ship) : ship(ship) { }
 

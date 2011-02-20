@@ -161,10 +161,11 @@ void DrawInfoBox::draw() {
 	std::string outputLines = "";
 
 	// update the FPS
-	if(platform.getExecutionTimeMicros() - lastCheck > (unsigned int)(1000000 / gamePrefs.getFloat("renderingDisplayUpdateFrequency"))) {
-		currentFPS = (unsigned int)(frameCount * gamePrefs.getFloat("renderingDisplayUpdateFrequency"));
+	if(platform.getExecMills() - lastCheck >
+			(1000 / (unsigned int) gamePrefs.getFloat("renderingDisplayUpdateFrequency"))) {
+		currentFPS = (unsigned int) (frameCount * gamePrefs.getFloat("renderingDisplayUpdateFrequency"));
 		frameCount = 0;
-		lastCheck = platform.getExecutionTimeMicros();
+		lastCheck = platform.getExecMills();
 
 		delete(textBlock);
 		textBlock = NULL;
@@ -177,8 +178,8 @@ void DrawInfoBox::draw() {
 	outputLines += fpsLine.str();
 
 	// update the execution time
-	if(platform.getExecutionTimeMicros() - (unsigned long int) (currentExecTime * 1000000.0f) > 100000) {
-		currentExecTime = round((float) platform.getExecutionTimeMicros() / 1000000.0f, 3);
+	if(platform.getExecMills() - (unsigned int) (currentExecTime * 1000.0f) > 100) {
+		currentExecTime = round((float) platform.getExecMills() / 1000.0f, 3);
 
 		delete(textBlock);
 		textBlock = NULL;

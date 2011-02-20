@@ -13,6 +13,7 @@
 #include <CoreFoundation/CoreFoundation.h>
 #include <mach/mach_time.h>
 #include <SDL/SDL.h>
+#include <stdint.h>
 #include <time.h>
 
 Platform::Platform() {
@@ -43,23 +44,27 @@ void Platform::warpCursor(unsigned int x, unsigned int y) {
 	SDL_WarpMouse(x, y);
 }
 
-unsigned int Platform::getExecutionTimeMicros() {
-	static unsigned long int beginning = mach_absolute_time();
-	unsigned long int now = mach_absolute_time();
+unsigned int Platform::getExecMills() {
+	static uint64_t beginning = mach_absolute_time();
+	uint64_t now = mach_absolute_time();
 	mach_timebase_info_data_t timeInfo;
 	kern_return_t error = mach_timebase_info(&timeInfo);
 
 	if(error)
 		ProgramLog::report(LOG_FATAL, "An error occurred when attempting to retrieve the time.");
 
-	return (0.001 * (double) timeInfo.numer / (double) timeInfo.denom) *
-			(double) (now - beginning);
+	return (unsigned int) (
+			(0.000001 *
+					((double) timeInfo.numer / (double) timeInfo.denom) *
+					(double) (now - beginning)
+				)
+		);
 }
 
-void Platform::sleepMicros(unsigned int micros) {
+void Platform::sleepMills(unsigned int mills) {
 	timespec delayTime;
 	delayTime.tv_sec = 0;
-	delayTime.tv_nsec = micros * 1000;
+	delayTime.tv_nsec = mills * 1000000;
 	nanosleep(&delayTime, NULL);
 }
 

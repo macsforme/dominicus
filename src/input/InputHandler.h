@@ -23,7 +23,7 @@ public:
 	Keyboard keyboard;
 	Mouse mouse;
 
-	unsigned long int processEvents();
+	unsigned int execute();
 };
 
 #endif

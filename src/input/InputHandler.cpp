@@ -9,7 +9,7 @@
 
 #include "input/InputHandler.h"
 
-unsigned long int InputHandler::processEvents() {
+unsigned int InputHandler::execute() {
 	// poll SDL for events and forward the ones we use to the appropriate
 	// input handler
 	SDL_Event event;
@@ -37,10 +37,10 @@ unsigned long int InputHandler::processEvents() {
 	mouse.loop();
 
 	// calculate and return sleep time from superclass
-	unsigned long int frequency = (unsigned long int) gamePrefs.getFloat("inputPollingFrequency");
-	static const unsigned long int idealSleepTime = (
+	unsigned int frequency = (unsigned int) gamePrefs.getFloat("inputPollingFrequency");
+	static const unsigned int idealSleepTime = (
 			frequency  != 0 ?
-			1000000 / frequency : 0
+			1000 / frequency : 0
 		);
 	return getSleepTime(idealSleepTime);
 }

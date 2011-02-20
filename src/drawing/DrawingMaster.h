@@ -57,7 +57,7 @@ public:
 	void preFrame();
 	void postFrame();
 
-	unsigned long int loop();
+	unsigned int execute();
 };
 
 #endif

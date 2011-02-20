@@ -11,16 +11,16 @@
 
 void WorldViewCamera::loop() {
 	// get our delta T
-	static float lastUpdate = (float)platform.getExecutionTimeMicros();
-	float dt = (float)platform.getExecutionTimeMicros() - lastUpdate;
+	static float lastUpdate = (float)platform.getExecMills();
+	float dt = (float)platform.getExecMills() - lastUpdate;
 	lastUpdate += dt;
 
 	// do math on variables
-	rotation += (float) dt / 1000000.0f * rotationSpeed;
+	rotation += (float) dt / 1000.0f * rotationSpeed;
 	if(rotation > 360.0f)
 		rotation -= 360.0f;
 	zoom = 1.0f + zoomFactor *
-			cos((float) platform.getExecutionTimeMicros() / 1000000.0f / zoomPeriod) / 2.0f;
+			cos((float) (platform.getExecMills() % 1000) / 1000.0f / zoomPeriod) / 2.0f;
 
 	// re-initialize the matrix
 	vpMatrix.identity();

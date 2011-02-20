@@ -47,8 +47,8 @@ public:
 	void warpCursor(unsigned int x, unsigned int y);
 
 	// time functions
-	unsigned int getExecutionTimeMicros();
-	void sleepMicros(unsigned int micros);
+	unsigned int getExecMills();
+	void sleepMills(unsigned int mills);
 
 	// GL context function
 	void loadExtensions();

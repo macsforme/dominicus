@@ -89,7 +89,7 @@ void DrawingMaster::postFrame() {
 	}
 }
 
-unsigned long int DrawingMaster::loop() {
+unsigned int DrawingMaster::execute() {
 	// execute pre-frame instructions
 	preFrame();
 
@@ -111,10 +111,10 @@ unsigned long int DrawingMaster::loop() {
 		return 0;
 
 	// calculate and return sleep time from superclass
-	unsigned long int frequency = (unsigned long int) gamePrefs.getFloat("renderingFPS");
-	unsigned long int idealSleepTime = (
+	unsigned int frequency = (unsigned int) gamePrefs.getFloat("renderingFPS");
+	unsigned int idealSleepTime = (
 			frequency != 0 ?
-			1000000 / frequency : 0
+			1000 / frequency : 0
 		);
 	return getSleepTime(idealSleepTime);
 }

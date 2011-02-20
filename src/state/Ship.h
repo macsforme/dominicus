@@ -17,6 +17,10 @@
 #include "math/MatrixMath.h"
 #include "math/VectorMath.h"
 #include "platform/Platform.h"
+#include "state/ShipControl.h"
+
+// forward declarations
+class ShipControl;
 
 // global variables
 extern GamePrefs gamePrefs;
@@ -29,9 +33,11 @@ public:
 	Matrix4 orientation;
 	float speed;
 
+	ShipControl* shipControl;
+
 	Ship(Vector4 position);
 
-	unsigned long int loop();
+	unsigned int execute();
 };
 
 #endif

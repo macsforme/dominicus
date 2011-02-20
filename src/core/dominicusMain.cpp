@@ -47,6 +47,14 @@ int dominicusMain(int argc, char* argv[]) {
 	// with the graphics context initialized, check for a compatible system
 	systemInfo.check();
 
+	// prepare a map of modules to be executed up to once per loop
+	std::map<MainLoopMember*,unsigned int> mainLoopModules;
+
+	mainLoopModules[inputHandler] = 0;
+	mainLoopModules[drawingMaster] = 0;
+	mainLoopModules[&ship] = 0;
+	mainLoopModules[new MainLoopMember()] = 0;
+
 	// main program loop
 	while(keepDominicusAlive && ! inputHandler->keyboard.getKeyState("quit")) {
 		// see if we need to change the fullscreen status
@@ -56,11 +64,15 @@ int dominicusMain(int argc, char* argv[]) {
 		if(fullScreenKeyTrap.newPress()) {
 			bool currentFullScreen = gameWindow->fullScreen;
 
+			mainLoopModules.erase(mainLoopModules.find(drawingMaster));
+
 			delete(drawingMaster);
 			delete(gameWindow);
 
 			gameWindow = new GameWindow(!currentFullScreen);
 			drawingMaster = new DrawingMaster();
+
+			mainLoopModules[drawingMaster] = 0;
 		}
 
 		// or regenerate the terrain
@@ -73,48 +85,27 @@ int dominicusMain(int argc, char* argv[]) {
 			drawingMaster->renderingMaster->terrainRenderer.reloadGeometry();
 		}
 
-		// keep a timer for each module we loop over
-		static unsigned long int inputTimer = 0;
-		static unsigned long int drawingTimer = 0;
-		static unsigned long int shipTimer = 0;
+		// if the next execution time for any module is less than now, run it
+		unsigned int nextPlannedLoop = -1;	// this will be set to the minimum sleep time
+		unsigned int now;
 
-		// If the next execution time is less than now, run it. If not, store
-		// the time until due we know how long to sleep if none of our modules
-		// are ready.
-		unsigned long int nextPlannedLoop = -1;	// this will be set to the minimum sleep time
-		unsigned long int now;
+		for(
+				std::map<MainLoopMember*, unsigned int>::iterator itr = mainLoopModules.begin();
+				itr != mainLoopModules.end();
+				++itr
+			) {
+			now = platform.getExecMills();
 
-		// input polling
-		now = platform.getExecutionTimeMicros();
-		if(inputTimer <= now)
-			inputTimer = now + inputHandler->processEvents();
+			if(itr->second < now)
+				itr->second = now + (itr->first)->execute();
 
-		if(inputTimer < nextPlannedLoop)
-			nextPlannedLoop = inputTimer;
-
-		// renderer
-		now = platform.getExecutionTimeMicros();
-		if(drawingTimer <= now)
-			drawingTimer = now + drawingMaster->loop();
-
-		if(drawingTimer < nextPlannedLoop)
-			nextPlannedLoop = drawingTimer;
-
-		// ship
-		now = platform.getExecutionTimeMicros();
-		if(shipTimer <= now) {
-			shipTimer = now + ship.loop();
-			shipControl.loop();
+			if(itr->second < nextPlannedLoop)
+				nextPlannedLoop = itr->second;
 		}
-
-		if(shipTimer < nextPlannedLoop)
-			nextPlannedLoop = shipTimer;
-
-		now = platform.getExecutionTimeMicros();
 
 		// sleep the loop if we're not already overdue for something
 		if(nextPlannedLoop > now)
-			platform.sleepMicros(nextPlannedLoop - now);
+			platform.sleepMills(nextPlannedLoop - now);
 	}
 
 	// clean up objects

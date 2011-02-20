@@ -15,8 +15,8 @@ void ShipControl::loop() {
 			gamePrefs.getFloat("shipMaxAngle");
 
 	// get our delta T
-	static float lastUpdate = (float)platform.getExecutionTimeMicros();
-	float dt = platform.getExecutionTimeMicros() - lastUpdate;
+	static float lastUpdate = (float)platform.getExecMills();
+	float dt = platform.getExecMills() - lastUpdate;
 	lastUpdate += dt;
 
 	// create directional vectors for the relative +Z and +X axises
@@ -65,20 +65,20 @@ void ShipControl::loop() {
 
 	rotateMatrix(
 			yVec,
-			radians(xMovement * gamePrefs.getFloat("shipTurnRate") * (float) dt / 1000000.0f),
+			radians(xMovement * gamePrefs.getFloat("shipTurnRate") * (float) dt / 1000.0f),
 			ship->orientation
 		);
 	rotateMatrix(
 			xVec,
-			radians(yMovement * gamePrefs.getFloat("shipTurnRate") * (float) dt / 1000000.0f),
+			radians(yMovement * gamePrefs.getFloat("shipTurnRate") * (float) dt / 1000.0f),
 			ship->orientation
 		);
 
 	// ship velocity
 	if(inputHandler->keyboard.getKeyState("speed+"))
 		if(ship->speed < gamePrefs.getFloat("shipMaxAccel"))
-			ship->speed += gamePrefs.getFloat("shipMaxAccel") * (float) dt / 1000000.0f;
+			ship->speed += gamePrefs.getFloat("shipMaxAccel") * (float) dt / 1000.0f;
 	if(inputHandler->keyboard.getKeyState("speed-"))
 		if(ship->speed > -gamePrefs.getFloat("shipMaxAccel"))
-			ship->speed -= gamePrefs.getFloat("shipMaxAccel") * (float) dt / 1000000.0f;
+			ship->speed -= gamePrefs.getFloat("shipMaxAccel") * (float) dt / 1000.0f;
 }

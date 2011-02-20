@@ -18,14 +18,18 @@ extern Platform platform;
 
 class MainLoopMember {
 private:
-	unsigned long int now;
-	unsigned long int last;
-	float sleepMicros;
+	unsigned int now;
+	unsigned int last;
+	float sleepMills;
+
+protected:
+	unsigned int getSleepTime(unsigned int idealSleepTime);
 
 public:
 	MainLoopMember();
 
-	unsigned long int getSleepTime(unsigned long int idealSleepTime);
+	// returns milliseconds to sleep
+	virtual unsigned int execute() { return 0; };
 };
 
 #endif
