@@ -32,21 +32,21 @@ void Platform::warpCursor(unsigned int x, unsigned int y) {
 	SDL_WarpMouse(x, y);
 }
 
-unsigned int Platform::getExecutionTimeMicros() {
+unsigned int Platform::getExecMills() {
 	timeval tv;
 	if(gettimeofday(&tv, NULL) == -1)
 		ProgramLog::report(LOG_FATAL, "An error occurred when attempting to retrieve the time.");
 
-	static unsigned long int beginning = tv.tv_sec * 1000000 + tv.tv_usec;
-	unsigned long int now = tv.tv_sec * 1000000 + tv.tv_usec;
+	static unsigned int beginning = tv.tv_sec * 1000 + tv.tv_usec / 1000;
+	unsigned int now = tv.tv_sec * 1000 + tv.tv_usec / 1000;
 
 	return now - beginning;
 }
 
-void Platform::sleepMicros(unsigned int micros) {
+void Platform::sleepMills(unsigned int mills) {
 	timespec delayTime;
 	delayTime.tv_sec = 0;
-	delayTime.tv_nsec = micros * 1000;
+	delayTime.tv_nsec = mills * 1000000;
 	nanosleep(&delayTime, NULL);
 }
 

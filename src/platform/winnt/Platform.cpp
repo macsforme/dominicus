@@ -55,11 +55,11 @@ void Platform::warpCursor(unsigned int x, unsigned int y) {
 	SDL_WarpMouse(x, y);
 }
 
-unsigned int Platform::getExecutionTimeMicros() {
+unsigned int Platform::getExecMills() {
 	return SDL_GetTicks();
 }
 
-void Platform::sleepMicros(unsigned int micros) {
+void Platform::sleepMills(unsigned int mills) {
 	Sleep(micros);
 }
 
