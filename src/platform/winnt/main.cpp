@@ -26,7 +26,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 
 	// initialize SDL
 	if(SDL_Init(SDL_INIT_VIDEO) == -1)
-		ProgramLog::report(LOG_FATAL, "SDL could not be initialized.");
+		ProgramLog::report(ProgramLog::LOG_FATAL, "SDL could not be initialized.");
 
 	// call the main program routine
 	int returnVal = dominicusMain(0, NULL);

@@ -185,7 +185,7 @@ void DrawInfoBox::draw() {
 		textBlock = NULL;
 	}
 
-	char timeStr[4];
+	char timeStr[512];
 	sprintf(timeStr, "%.1f", currentExecTime);
 
 	std::stringstream execTimeLine;
