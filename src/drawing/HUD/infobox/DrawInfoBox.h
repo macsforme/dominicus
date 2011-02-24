@@ -48,10 +48,10 @@ private:
 	GLuint program, vertexShader, fragmentShader;
 
 	// attributes
-	GLint positionAttrib, texCoordAttrib;
+	GLint positionAttrib, texCoordAttrib, colorAttrib;
 
 	// uniforms
-	GLint mvpMatrixUniform, textureUniform;
+	GLint mvpMatrixUniform, textureUniform, useTextureUniform, useLightingUniform;
 
 	// fps tracking
 	unsigned long int lastCheck;

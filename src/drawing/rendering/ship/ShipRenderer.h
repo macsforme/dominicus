@@ -17,10 +17,11 @@
 #include "drawing/ShaderTools.h"
 #include "geometry/Mesh.h"
 #include "math/MatrixMath.h"
-#include "math/ScalarMath.h"
 #include "math/VectorMath.h"
+#include "math/ScalarMath.h"
 #include "platform/OpenGLHeaders.h"
 #include "platform/Platform.h"
+#include "state/Ship.h"
 
 // library headers
 #include <stdint.h>
@@ -28,6 +29,7 @@
 #include <vector>
 
 // global variables
+extern GamePrefs gamePrefs;
 extern Platform platform;
 extern ProgramLog programLog;
 
@@ -37,22 +39,26 @@ private:
 	GLuint modelProgram, modelVertexShader, modelFragmentShader;
 	GLuint wireframeProgram, wireframeVertexShader, wireframeFragmentShader;
 
-	// vertex/element buffers
-//	GLuint vertexBuffer;
-//	std::map<std::string,GLuint> elementBuffers;
-
 	// attributes
-	GLint positionAttrib, normalAttrib, texCoordAttrib;
+	GLint positionAttrib, normalAttrib, texCoordAttrib, colorAttrib;
 
 	// uniforms
-	GLint mvpMatrixUniform, textureUniform, clockUniform;
+	GLint mvpMatrixUniform, useTextureUniform, textureUniform;
+	GLint useLightingUniform, ambientColorUniform, lightPositionUniform, lightColorUniform;
+	GLint specularColorUniform, shininessUniform;
 
 	// texture IDs
 	std::map<std::string,GLuint> textureIDs;
 
+	// buffers
+	GLuint vertDataBuffer;
+	std::map<std::string,GLuint> vertElementBuffers;
+
 	// view switches
 	bool viewModel;
 	bool viewWireFrame;
+
+	Vector3 leftPropellerOrigin, rightPropellerOrigin;
 
 public:
 	Mesh ship;
@@ -60,7 +66,7 @@ public:
 	ShipRenderer();
 	~ShipRenderer();
 
-	void render(Matrix4 mvpMatrix);
+	void render(Matrix4 mvMatrix, Matrix4 pMatrix);
 };
 
 #endif

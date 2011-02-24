@@ -34,8 +34,10 @@ private:
 	Matrix4 cameraOrientation;
 
 public:
-	Matrix4 terrainVPMatrix;
-	Matrix4 shipVPMatrix;
+	Matrix4 terrainVMatrix;
+	Matrix4 shipVMatrix;
+
+	Matrix4 pMatrix;
 
 	BackCamera();
 

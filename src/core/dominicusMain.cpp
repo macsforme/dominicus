@@ -25,8 +25,8 @@ bool keepDominicusAlive;	// global flag to continue game
 
 // main game function
 int dominicusMain(int argc, char* argv[]) {
-	// let the platform init what it needs to after the main is called since the constructor happens before the main
-
+	// let the platform init what it needs to after the main is called since the
+	// constructor happens before the main
 	platform.init();
 
 	// initialize our system information now that SDL_Init() has been called

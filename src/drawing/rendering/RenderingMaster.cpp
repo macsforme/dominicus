@@ -16,7 +16,7 @@ RenderingMaster::RenderingMaster() {
 
 	cameraToggleKeyTrap = new KeyTrap("toggleCamera");
 
-	activeMatrix = &(bCamera->terrainVPMatrix);
+	activeMatrix = &(bCamera->terrainVMatrix);
 }
 
 void RenderingMaster::loop() {
@@ -28,16 +28,19 @@ void RenderingMaster::loop() {
 
 	// toggle cameras if necessary
 	if(cameraToggleKeyTrap->newPress()) {
-		if(activeMatrix == &(bCamera->terrainVPMatrix))
+		if(activeMatrix == &(bCamera->terrainVMatrix))
 			activeMatrix = &(fpCamera->vpMatrix);
 		else if(activeMatrix == &(fpCamera->vpMatrix))
 			activeMatrix = &(wvCamera->vpMatrix);
 		else if(activeMatrix == &(wvCamera->vpMatrix))
-			activeMatrix = &(bCamera->terrainVPMatrix);
+			activeMatrix = &(bCamera->terrainVMatrix);
 	}
 
 //	skyRenderer.render(*activeMatrix);
-	terrainRenderer.render(*activeMatrix);
-	if(activeMatrix == &(bCamera->terrainVPMatrix))
-		shipRenderer.render(bCamera->shipVPMatrix);
+	if(activeMatrix == &(bCamera->terrainVMatrix)) {
+		terrainRenderer.render(bCamera->terrainVMatrix * bCamera->pMatrix);
+		shipRenderer.render(bCamera->shipVMatrix, bCamera->pMatrix);
+	} else {
+		terrainRenderer.render(*activeMatrix);
+	}
 }

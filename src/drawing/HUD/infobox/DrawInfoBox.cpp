@@ -41,14 +41,18 @@ DrawInfoBox::DrawInfoBox(HUDArrangement* hudArrangement, FontManager* fontManage
 	// set attribute locations
 	positionAttrib = 0;
 	texCoordAttrib = 1;
+	colorAttrib = 2;
 	glBindAttribLocation(program, 0, "position");
 	glBindAttribLocation(program, 1, "texCoord");
+	glBindAttribLocation(program, 2, "color");
 
 	ShaderTools::linkProgram(program);
 
 	// get uniform locations
 	mvpMatrixUniform = glGetUniformLocation(program, "mvpMatrix");
 	textureUniform = glGetUniformLocation(program, "texture");
+	useTextureUniform = glGetUniformLocation(program, "useTexture");
+	useLightingUniform = glGetUniformLocation(program, "useLighting");
 
 	float insideColor[4] = { 0.0f, 0.01f, 0.13f, 0.8f };
 	float highlightColor[4] = { 0.29f, 0.31f, 0.42f, 1.0f };
@@ -93,14 +97,16 @@ void DrawInfoBox::draw() {
 			Vector2(containerPadding.x, contentSize.y),
 			180.0f,
 			false,
-			0.0f);
+			0.0f
+		);
 	containerUtility->drawBorder(
 			Vector2(myElement->position.x + contentSize.x / 2.0f +
 				containerPadding.x / 2.0f, myElement->position.y),
 			Vector2(containerPadding.x, contentSize.y),
 			0.0f,
 			false,
-			0.0f);
+			0.0f
+		);
 
 	containerUtility->drawBorder(
 			Vector2(myElement->position.x, myElement->position.y -
@@ -108,14 +114,16 @@ void DrawInfoBox::draw() {
 			Vector2(contentSize.x, containerPadding.y),
 			270.0f,
 			false,
-			0.005f);
+			0.005f
+		);
 	containerUtility->drawBorder(
 			Vector2(myElement->position.x, myElement->position.y +
 					contentSize.y / 2.0f + containerPadding.y / 2.0f),
 			Vector2(contentSize.x, containerPadding.y),
 			90.0f,
 			false,
-			0.005f);
+			0.005f
+		);
 
 	// corners
 	containerUtility->drawCurve(
@@ -217,6 +225,11 @@ void DrawInfoBox::draw() {
 			0.0f, 0.0f, 0.0f, 1.0f
 		};
 	glUniformMatrix4fv(mvpMatrixUniform, 1, GL_FALSE, mvpMatrixArray);
+
+	glUniform1i(useTextureUniform, 1);
+	glUniform1i(useLightingUniform, 0);
+
+	glVertexAttrib4f(colorAttrib, 1.0f, 1.0f, 1.0f, 1.0f);
 
 	GLuint textureID = fontManager->textureIDs[fontSize];
 
