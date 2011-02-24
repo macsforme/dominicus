@@ -36,13 +36,14 @@ void Platform::init()
 		std::string d = appName;
 		d += "\\data\\";
 		if (GetFileAttributes(d.c_str()) != INVALID_FILE_ATTRIBUTES)
-			dataPath = d;
+			dataPath = appName;
 		else
 		{
+			strcat(appName,"\\..");
 			d = appName;
-			d += "\\..\\data\\";
+			d += "\\data\\";
 			if (GetFileAttributes(d.c_str()) != INVALID_FILE_ATTRIBUTES)
-				dataPath = d;
+				dataPath = appName;
 		}
 	}
 }
@@ -60,7 +61,7 @@ unsigned int Platform::getExecMills() {
 }
 
 void Platform::sleepMills(unsigned int mills) {
-	Sleep(micros);
+	Sleep(mills);
 }
 
 void Platform::loadExtensions(){

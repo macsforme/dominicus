@@ -199,6 +199,9 @@
     <ClCompile Include="..\src\drawing\rendering\RenderingMaster.cpp">
       <Filter>Source Files\drawing</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\drawing\texture\TextureUtils.cpp">
+      <Filter>Source Files\drawing</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\core\BuildVersion.h">

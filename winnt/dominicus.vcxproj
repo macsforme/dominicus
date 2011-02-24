@@ -49,7 +49,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../src/core;../src/drawing;../src/drawing/HUD;../src/drawing/rendering;../src/drawing/HUD/console;../src/drawing/controlbox;../src/drawing/HUD/infobox;../src/drawing/rendering/cameras;../src/drawing/rendering/ship;../src/drawing/rendering/terrain;../src/drawing/rendering/sky;../src/drawing/text;../src/drawing/texture;../src/geometry;../src/input;../src/math;../src/platform;../src/platform/winnt;../src/state;../src/UI;../src/windowing;../deps/sdl;../deps/freetype/include;../src/drawing/cursor;../deps/sdl/SDL;../deps/glew/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../src/;../deps/sdl/;../deps/sdl/SDL;../deps/glew/include;../deps/freetype/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -111,6 +111,7 @@
     <ClCompile Include="..\src\drawing\ShaderTools.cpp" />
     <ClCompile Include="..\src\drawing\texture\BMPImage.cpp" />
     <ClCompile Include="..\src\drawing\texture\Texture.cpp" />
+    <ClCompile Include="..\src\drawing\texture\TextureUtils.cpp" />
     <ClCompile Include="..\src\drawing\text\FontManager.cpp" />
     <ClCompile Include="..\src\drawing\text\TextBlock.cpp" />
     <ClCompile Include="..\src\geometry\DiamondSquare.cpp" />
