@@ -11,7 +11,7 @@ void main() {
 
 	vec3 color = vec3(0.0, 0.0, 0.0);
 	float maxAlpha = 0.6;
-	
+
 	if(distance(vec2(0.0, 0.0), absCoord) <= spotSize) {
 		gl_FragColor = vec4(color, maxAlpha);
 	} else if(
@@ -25,7 +25,7 @@ void main() {
 				cornerBegin != 1.0 ?
 				distance(vec2(cornerBegin), absCoord) / (1.0 - cornerBegin) :
 				0.0);
-		
+
 		if(distOver < 1.0)
 			discard;
 		else

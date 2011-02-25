@@ -53,7 +53,7 @@ DrawConsole::DrawConsole(HUDArrangement* hudArrangement, FontManager* fontManage
 	textureUniform = glGetUniformLocation(program, "texture");
 	useTextureUniform = glGetUniformLocation(program, "useTexture");
 	useLightingUniform = glGetUniformLocation(program, "useLighting");
-	
+
 	float insideColor[4] = { 0.0f, 0.01f, 0.13f, 0.8f };
 	float highlightColor[4] = { 0.29f, 0.31f, 0.42f, 1.0f };
 	float borderColor[4] = { 0.52f, 0.57f, 0.54f, 1.0f };
