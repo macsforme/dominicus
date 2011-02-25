@@ -40,7 +40,6 @@
 		03C806F1130E50CB0037D309 /* HUDArrangement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032B9B9F129A94BD00E5F5FB /* HUDArrangement.cpp */; };
 		03C806F2130E50CB0037D309 /* Ship.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 035F214612A39233008DA566 /* Ship.cpp */; };
 		03C806F3130E50CC0037D309 /* TerrainRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03DA5BC9127AA84C003814F7 /* TerrainRenderer.cpp */; };
-		03C806F4130E50CD0037D309 /* Console.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 036A4D2112757E5F00CEED79 /* Console.cpp */; };
 		03C806F5130E50CD0037D309 /* SkyRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03E09B8412F55A8100AE6306 /* SkyRenderer.cpp */; };
 		03C806F7130E50D00037D309 /* Mouse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 035A3C4512841B390001E186 /* Mouse.cpp */; };
 		03C806F9130E50D10037D309 /* ShaderTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 030F91931265152000190225 /* ShaderTools.cpp */; };
@@ -142,8 +141,6 @@
 		0369DEA41285964500355C4E /* DrawHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawHUD.h; sourceTree = "<group>"; };
 		0369DF081285AB9400355C4E /* HUDArrangement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUDArrangement.h; sourceTree = "<group>"; };
 		0369DF0B1285ABA600355C4E /* HUDElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUDElement.h; sourceTree = "<group>"; };
-		036A4D2112757E5F00CEED79 /* Console.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Console.cpp; sourceTree = "<group>"; };
-		036A4D2212757E5F00CEED79 /* Console.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Console.h; sourceTree = "<group>"; };
 		036E68BE128831880084C49C /* DrawHUDEnclosure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawHUDEnclosure.h; sourceTree = "<group>"; };
 		036E68BF128831880084C49C /* DrawHUDEnclosure.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawHUDEnclosure.cpp; sourceTree = "<group>"; };
 		0388867C12A0D2AF0079CBB3 /* DrawConsole.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawConsole.cpp; sourceTree = "<group>"; };
@@ -176,8 +173,6 @@
 		03DA5BC9127AA84C003814F7 /* TerrainRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TerrainRenderer.cpp; path = terrain/TerrainRenderer.cpp; sourceTree = "<group>"; };
 		03DF59FF12797B4D003C2134 /* DrawingMaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawingMaster.cpp; sourceTree = "<group>"; };
 		03DF5A0012797B4D003C2134 /* DrawingMaster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawingMaster.h; sourceTree = "<group>"; };
-		03DF5A0612797B4D003C2134 /* TerrainDevelopment.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TerrainDevelopment.cpp; sourceTree = "<group>"; };
-		03DF5A0712797B4D003C2134 /* TerrainDevelopment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TerrainDevelopment.h; sourceTree = "<group>"; };
 		03E09B8412F55A8100AE6306 /* SkyRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SkyRenderer.cpp; sourceTree = "<group>"; };
 		03E09B8512F55A8100AE6306 /* SkyRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkyRenderer.h; sourceTree = "<group>"; };
 		03E6C23B12D9AFAF0093B629 /* BuildVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BuildVersion.h; sourceTree = "<group>"; };
@@ -380,16 +375,6 @@
 			name = state;
 			sourceTree = "<group>";
 		};
-		036A4D2012757E5F00CEED79 /* UI */ = {
-			isa = PBXGroup;
-			children = (
-				036A4D2212757E5F00CEED79 /* Console.h */,
-				036A4D2112757E5F00CEED79 /* Console.cpp */,
-			);
-			name = UI;
-			path = src/UI;
-			sourceTree = "<group>";
-		};
 		0388867B12A0D2AF0079CBB3 /* console */ = {
 			isa = PBXGroup;
 			children = (
@@ -477,7 +462,6 @@
 				03DF5A0212797B4D003C2134 /* ship */,
 				03DA5C15127AAEDB003814F7 /* terrain */,
 				03E09B8312F55A8100AE6306 /* sky */,
-				03DF5A0512797B4D003C2134 /* testing */,
 			);
 			path = rendering;
 			sourceTree = "<group>";
@@ -489,15 +473,6 @@
 				03A8763312A691070078E049 /* ShipRenderer.cpp */,
 			);
 			path = ship;
-			sourceTree = "<group>";
-		};
-		03DF5A0512797B4D003C2134 /* testing */ = {
-			isa = PBXGroup;
-			children = (
-				03DF5A0712797B4D003C2134 /* TerrainDevelopment.h */,
-				03DF5A0612797B4D003C2134 /* TerrainDevelopment.cpp */,
-			);
-			path = testing;
 			sourceTree = "<group>";
 		};
 		03E09B8312F55A8100AE6306 /* sky */ = {
@@ -519,7 +494,6 @@
 				035AB02F127577B1006257C1 /* state */,
 				030F8F6C1264E10500190225 /* windowing */,
 				030F8F3B1264DD1300190225 /* input */,
-				036A4D2012757E5F00CEED79 /* UI */,
 				030F8EB41264D05800190225 /* drawing */,
 				032B8B351263DF5900DDE564 /* README.txt */,
 				030F8DE31264BFAA00190225 /* TODO.txt */,
@@ -626,7 +600,6 @@
 				03C806F1130E50CB0037D309 /* HUDArrangement.cpp in Sources */,
 				03C806F2130E50CB0037D309 /* Ship.cpp in Sources */,
 				03C806F3130E50CC0037D309 /* TerrainRenderer.cpp in Sources */,
-				03C806F4130E50CD0037D309 /* Console.cpp in Sources */,
 				03C806F5130E50CD0037D309 /* SkyRenderer.cpp in Sources */,
 				03C806F7130E50D00037D309 /* Mouse.cpp in Sources */,
 				03C806F9130E50D10037D309 /* ShaderTools.cpp in Sources */,
