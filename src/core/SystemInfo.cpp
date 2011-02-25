@@ -37,7 +37,7 @@ void SystemInfo::check() {
 
 	// OpenGL version
 	std::string openGLVersionStr = (char*) glGetString(GL_VERSION);
-	float openGLVersion = (float)atof(openGLVersionStr.substr(0, openGLVersionStr.find(' ')).c_str());
+	float openGLVersion = (float) atof(openGLVersionStr.substr(0, openGLVersionStr.find(' ')).c_str());
 
 	if(openGLVersion < 2.0f) {
 		std::stringstream err;
