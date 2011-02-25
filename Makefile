@@ -10,7 +10,6 @@ SOURCES = \
 	./src/input/Mouse.cpp \
 	./src/input/KeyTrap.cpp \
 	./src/input/Keyboard.cpp \
-	./src/UI/Console.cpp \
 	./src/state/Terrain.cpp \
 	./src/state/Ship.cpp \
 	./src/state/ShipControl.cpp \

@@ -32,7 +32,7 @@
 #define MESH_H
 
 // program headers
-#include "VectorMath.h"
+#include "math/VectorMath.h"
 
 // library headers
 #include <map>
