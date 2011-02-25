@@ -14,23 +14,23 @@ void FirstPersonCamera::loop() {
 	vpMatrix.identity();
 
 	// translate terrain opposite ship's position
-	translateMatrix(-ship.position.x, -ship.position.y, -ship.position.z, vpMatrix);
+	translateMatrix(-ship->position.x, -ship->position.y, -ship->position.z, vpMatrix);
 
 	// transpose the ship's orientation
 	vpMatrix *= Matrix4(
-			ship.orientation.m11,
-			ship.orientation.m21,
-			ship.orientation.m31,
+			ship->orientation.m11,
+			ship->orientation.m21,
+			ship->orientation.m31,
 			0.0f,
 
-			ship.orientation.m12,
-			ship.orientation.m22,
-			ship.orientation.m32,
+			ship->orientation.m12,
+			ship->orientation.m22,
+			ship->orientation.m32,
 			0.0f,
 
-			ship.orientation.m13,
-			ship.orientation.m23,
-			ship.orientation.m33,
+			ship->orientation.m13,
+			ship->orientation.m23,
+			ship->orientation.m33,
 			0.0f,
 
 			0.0f,
@@ -40,9 +40,9 @@ void FirstPersonCamera::loop() {
 		);
 
 	// perspective projection
-	const float fov = gamePrefs.getFloat("perspectiveFOV");
-	const float nClip = gamePrefs.getFloat("perspectiveNearClip");
-	const float fClip = gamePrefs.getFloat("perspectiveFarClip");
+	const float fov = gamePrefs->getFloat("perspectiveFOV");
+	const float nClip = gamePrefs->getFloat("perspectiveNearClip");
+	const float fClip = gamePrefs->getFloat("perspectiveFarClip");
 
 	vpMatrix *= Matrix4(
 	        1.0/tan(radians(fov)), 0.0, 0.0, 0.0,

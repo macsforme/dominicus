@@ -11,7 +11,9 @@
 #define PLATFORM_H
 
 // this should be the one and only compile-time determination system-wide
-// of what architecture the program is being compiled for
+// of what architecture the program is being compiled for (generally the
+// code should not have platform-specific behavior outside of Platform,
+// but we accept that there must be exceptions
 #if defined(__APPLE__) && defined(__MACH__)
 	#define PROGRAM_ARCH_MACOSX
 	#define PROGRAM_ARCH_STR "MacOSX"
@@ -26,6 +28,9 @@
 	#define PROGRAM_ARCH_STR "Unknown"
 #endif
 
+// forward declarations
+class ProgramLog;
+
 // program headers
 #include "core/ProgramLog.h"
 
@@ -35,7 +40,7 @@
 #include <string>
 
 // global variables
-extern ProgramLog programLog;
+extern ProgramLog* programLog;
 
 class Platform {
 public:
@@ -43,7 +48,8 @@ public:
 
 	Platform();
 
-	void init();
+	// static system console output function
+	static void consoleOut(std::string output);
 
 	// input functions
 	void hideCursor();

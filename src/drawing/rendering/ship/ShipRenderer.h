@@ -29,9 +29,9 @@
 #include <vector>
 
 // global variables
-extern GamePrefs gamePrefs;
-extern Platform platform;
-extern ProgramLog programLog;
+extern GamePrefs* gamePrefs;
+extern Platform* platform;
+extern ProgramLog* programLog;
 
 class ShipRenderer {
 private:

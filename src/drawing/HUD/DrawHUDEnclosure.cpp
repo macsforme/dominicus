@@ -52,8 +52,8 @@ DrawHUDEnclosure::DrawHUDEnclosure(HUDArrangement* hudArrangement) : hudArrangem
 void DrawHUDEnclosure::draw() {
 	float aspectRatio = (float) gameWindow->aspectRatio;
 	Vector2 elementPadding(
-			gamePrefs.getFloat("elementPadding") / aspectRatio,
-			gamePrefs.getFloat("elementPadding")
+			gamePrefs->getFloat("elementPadding") / aspectRatio,
+			gamePrefs->getFloat("elementPadding")
 		);
 	elementPadding /= 2.0f;
 

@@ -30,7 +30,7 @@ GLuint ShaderTools::makeShader(const char* filename, GLenum shaderType) {
 	if(fileLines.size() > 0)
 		fileLines.pop_back();
 	else
-		programLog.report(ProgramLog::LOG_FATAL,
+		programLog->report(ProgramLog::LOG_FATAL,
 				std::string("The GLSL shader " +
 						std::string(filename) +
 						" could not be opened for reading.").c_str()
@@ -98,7 +98,7 @@ GLuint ShaderTools::makeShader(const char* filename, GLenum shaderType) {
 
 		free(logLines);
 
-		programLog.report(ProgramLog::LOG_FATAL, err.str().c_str());
+		programLog->report(ProgramLog::LOG_FATAL, err.str().c_str());
 	}
 
 	return shader;
@@ -126,7 +126,7 @@ void ShaderTools::linkProgram(GLuint program) {
 
 		free(logLines);
 
-		programLog.report(ProgramLog::LOG_FATAL, err.str().c_str());
+		programLog->report(ProgramLog::LOG_FATAL, err.str().c_str());
 	}
 }
 

@@ -37,8 +37,8 @@ HUDArrangement::HUDArrangement() {
 	// set our variables
 	float aspectRatio = (float) gameWindow->width / (float) gameWindow->height;
 	elementPadding = Vector2(
-			gamePrefs.getFloat("elementPadding") / aspectRatio,
-			gamePrefs.getFloat("elementPadding")
+			gamePrefs->getFloat("elementPadding") / aspectRatio,
+			gamePrefs->getFloat("elementPadding")
 		);
 
 }

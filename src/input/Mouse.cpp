@@ -25,7 +25,7 @@ void Mouse::loop() {
 		case SDL_MOUSEBUTTONUP:
 			break;
 		default:
-			programLog.report(ProgramLog::LOG_DEBUG, "Received unhandled mouse event.");
+			programLog->report(ProgramLog::LOG_DEBUG, "Received unhandled mouse event.");
 
 			break;
 

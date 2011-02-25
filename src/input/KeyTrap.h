@@ -18,7 +18,6 @@
 #include <string>
 
 // global variables
-extern GamePrefs gamePrefs;
 extern InputHandler* inputHandler;
 
 class KeyTrap {

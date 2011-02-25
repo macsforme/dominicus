@@ -12,11 +12,11 @@
 SkyRenderer::SkyRenderer() {
 	// set up the shader program
 	vertexShader = ShaderTools::makeShader(
-			std::string(platform.dataPath +  "/shaders/sky.vertex.glsl").c_str(),
+			std::string(platform->dataPath +  "/shaders/sky.vertex.glsl").c_str(),
 			GL_VERTEX_SHADER
 		);
 	fragmentShader = ShaderTools::makeShader(
-			std::string(platform.dataPath + "/shaders/sky.fragment.glsl").c_str(),
+			std::string(platform->dataPath + "/shaders/sky.fragment.glsl").c_str(),
 			GL_FRAGMENT_SHADER
 		);
 
@@ -106,19 +106,19 @@ void SkyRenderer::render(Matrix4 vpMatrix) {
 //	glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_BYTE, NULL);
 
 //	glDisableVertexAttribArray(vertDataBuffer);
-printf("rotation %+.2f\n", degrees(asin(ship.orientation.m32)));
+printf("rotation %+.2f\n", degrees(asin(ship->orientation.m32)));
 	glBegin(GL_QUADS);
 
-	glVertexAttrib1f(degreesAttrib, (degrees(asin(ship.orientation.m32)) - 60.0f) / 90.0f);
+	glVertexAttrib1f(degreesAttrib, (degrees(asin(ship->orientation.m32)) - 60.0f) / 90.0f);
 	glVertexAttrib3f(positionAttrib, -1.0f, -1.0f, 0.999999f);
 
-	glVertexAttrib1f(degreesAttrib, (degrees(asin(ship.orientation.m32)) + 60.0f) / 90.0f);
+	glVertexAttrib1f(degreesAttrib, (degrees(asin(ship->orientation.m32)) + 60.0f) / 90.0f);
 	glVertexAttrib3f(positionAttrib, -1.0f, 1.0f, 0.999999f);
 
-	glVertexAttrib1f(degreesAttrib, (degrees(asin(ship.orientation.m32)) + 60.0f) / 90.0f);
+	glVertexAttrib1f(degreesAttrib, (degrees(asin(ship->orientation.m32)) + 60.0f) / 90.0f);
 	glVertexAttrib3f(positionAttrib, 1.0f, 1.0f, 0.999999f);
 
-	glVertexAttrib1f(degreesAttrib, (degrees(asin(ship.orientation.m32)) - 60.0f) / 90.0f);
+	glVertexAttrib1f(degreesAttrib, (degrees(asin(ship->orientation.m32)) - 60.0f) / 90.0f);
 	glVertexAttrib3f(positionAttrib, 1.0f, -1.0f, 0.999999f);
 
 	glEnd();

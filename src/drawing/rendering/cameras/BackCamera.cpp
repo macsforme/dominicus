@@ -10,29 +10,29 @@
 #include "drawing/rendering/cameras/BackCamera.h"
 
 BackCamera::BackCamera() : rotation(0.0f), aspectRatio(gameWindow->aspectRatio) {
-	cameraOrientation = ship.orientation;
+	cameraOrientation = ship->orientation;
 }
 
 void BackCamera::loop() {
 	// the back ship view should trail behind the actual ship orientation and
 	// catch up to it a little bit each frame
 	const float cFactor =
-			(gamePrefs.getFloat("shipFollowLagFactor") != 0.0f ?
-					1.0f / gamePrefs.getFloat("renderingFPS") *
-							gamePrefs.getFloat("shipFollowLagFactor")
+			(gamePrefs->getFloat("shipFollowLagFactor") != 0.0f ?
+					1.0f / gamePrefs->getFloat("renderingFPS") *
+							gamePrefs->getFloat("shipFollowLagFactor")
 					: 1.0f);
 
-	cameraOrientation.m11 = cameraOrientation.m11 * (1.0f - cFactor) + ship.orientation.m11 * cFactor;
-	cameraOrientation.m12 = cameraOrientation.m12 * (1.0f - cFactor) + ship.orientation.m12 * cFactor;
-	cameraOrientation.m13 = cameraOrientation.m13 * (1.0f - cFactor) + ship.orientation.m13 * cFactor;
+	cameraOrientation.m11 = cameraOrientation.m11 * (1.0f - cFactor) + ship->orientation.m11 * cFactor;
+	cameraOrientation.m12 = cameraOrientation.m12 * (1.0f - cFactor) + ship->orientation.m12 * cFactor;
+	cameraOrientation.m13 = cameraOrientation.m13 * (1.0f - cFactor) + ship->orientation.m13 * cFactor;
 
-	cameraOrientation.m21 = cameraOrientation.m21 * (1.0f - cFactor) + ship.orientation.m21 * cFactor;
-	cameraOrientation.m22 = cameraOrientation.m22 * (1.0f - cFactor) + ship.orientation.m22 * cFactor;
-	cameraOrientation.m23 = cameraOrientation.m23 * (1.0f - cFactor) + ship.orientation.m23 * cFactor;
+	cameraOrientation.m21 = cameraOrientation.m21 * (1.0f - cFactor) + ship->orientation.m21 * cFactor;
+	cameraOrientation.m22 = cameraOrientation.m22 * (1.0f - cFactor) + ship->orientation.m22 * cFactor;
+	cameraOrientation.m23 = cameraOrientation.m23 * (1.0f - cFactor) + ship->orientation.m23 * cFactor;
 
-	cameraOrientation.m31 = cameraOrientation.m31 * (1.0f - cFactor) + ship.orientation.m31 * cFactor;
-	cameraOrientation.m32 = cameraOrientation.m32 * (1.0f - cFactor) + ship.orientation.m32 * cFactor;
-	cameraOrientation.m33 = cameraOrientation.m33 * (1.0f - cFactor) + ship.orientation.m33 * cFactor;
+	cameraOrientation.m31 = cameraOrientation.m31 * (1.0f - cFactor) + ship->orientation.m31 * cFactor;
+	cameraOrientation.m32 = cameraOrientation.m32 * (1.0f - cFactor) + ship->orientation.m32 * cFactor;
+	cameraOrientation.m33 = cameraOrientation.m33 * (1.0f - cFactor) + ship->orientation.m33 * cFactor;
 
 	// re-initialize the matrices
 	shipVMatrix.identity();
@@ -42,19 +42,19 @@ void BackCamera::loop() {
 	rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(180.0f), shipVMatrix);
 
 	shipVMatrix *= Matrix4(
-			ship.orientation.m11,
-			ship.orientation.m12,
-			ship.orientation.m13,
+			ship->orientation.m11,
+			ship->orientation.m12,
+			ship->orientation.m13,
 			0.0f,
 
-			ship.orientation.m21,
-			ship.orientation.m22,
-			ship.orientation.m23,
+			ship->orientation.m21,
+			ship->orientation.m22,
+			ship->orientation.m23,
 			0.0f,
 
-			ship.orientation.m31,
-			ship.orientation.m32,
-			ship.orientation.m33,
+			ship->orientation.m31,
+			ship->orientation.m32,
+			ship->orientation.m33,
 			0.0f,
 
 			0.0f,
@@ -74,11 +74,11 @@ void BackCamera::loop() {
 	rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), -radians(angle), shipVMatrix);
 
 	rotateMatrix(Vector3(1.0f, 0.0f, 0.0f),
-			radians(-gamePrefs.getFloat("shipFollowAngle")), shipVMatrix);
-	translateMatrix(0.0f, 0.0f, (float) gamePrefs.getFloat("shipFollowDistance"), shipVMatrix);
+			radians(-gamePrefs->getFloat("shipFollowAngle")), shipVMatrix);
+	translateMatrix(0.0f, 0.0f, (float) gamePrefs->getFloat("shipFollowDistance"), shipVMatrix);
 
 	// terrain camera transformations
-	translateMatrix(-ship.position.x, -ship.position.y, -ship.position.z, terrainVMatrix);
+	translateMatrix(-ship->position.x, -ship->position.y, -ship->position.z, terrainVMatrix);
 
 	Vector3 zVec(cameraOrientation.m31, 0.0f, cameraOrientation.m33);
 	zVec.norm();
@@ -105,13 +105,13 @@ void BackCamera::loop() {
 			1.0f
 		);
 
-	rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(-gamePrefs.getFloat("shipFollowAngle")), terrainVMatrix);
-	translateMatrix(0.0f, 0.0f, (float) gamePrefs.getFloat("shipFollowDistance"), terrainVMatrix);
+	rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(-gamePrefs->getFloat("shipFollowAngle")), terrainVMatrix);
+	translateMatrix(0.0f, 0.0f, (float) gamePrefs->getFloat("shipFollowDistance"), terrainVMatrix);
 
 	// projection matrix
-	const float fov = gamePrefs.getFloat("perspectiveFOV");
-	const float nClip = gamePrefs.getFloat("perspectiveNearClip");
-	const float fClip = gamePrefs.getFloat("perspectiveFarClip");
+	const float fov = gamePrefs->getFloat("perspectiveFOV");
+	const float nClip = gamePrefs->getFloat("perspectiveNearClip");
+	const float fClip = gamePrefs->getFloat("perspectiveFarClip");
 
 	pMatrix.identity();
 

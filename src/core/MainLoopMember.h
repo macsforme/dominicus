@@ -14,7 +14,7 @@
 #include "platform/Platform.h"
 
 // global variables
-extern Platform platform;
+extern Platform* platform;
 
 class MainLoopMember {
 private:

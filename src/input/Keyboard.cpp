@@ -24,12 +24,12 @@ void Keyboard::loop() {
 		switch(event.type) {
 		case SDL_KEYDOWN:
 		case SDL_KEYUP:
-			keyStates[gamePrefs.getBinding(event.key.keysym.sym)] =
+			keyStates[gamePrefs->getBinding(event.key.keysym.sym)] =
 					(event.type == SDL_KEYDOWN ? true : false);
 
 			break;
 		default:
-			programLog.report(ProgramLog::LOG_DEBUG, "Received unhandled keyboard event.");
+			programLog->report(ProgramLog::LOG_DEBUG, "Received unhandled keyboard event.");
 
 			break;
 		}

@@ -29,11 +29,10 @@
 #include <vector>
 
 // global variables
-extern Platform platform;
-extern GamePrefs gamePrefs;
-extern ProgramLog programLog;
-
+extern Platform* platform;
+extern GamePrefs* gamePrefs;
 extern GameWindow* gameWindow;
+extern ProgramLog* programLog;
 
 class DrawConsole {
 private:

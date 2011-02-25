@@ -20,12 +20,6 @@ Platform::Platform() {
 	// determine the resource directory path
 	dataPath = "./data/";
 
-	// initialize the random number generator
-	srand(SDL_GetTicks());
-}
-
-void Platform::init()
-{
 	if (myinstance)
 	{
 		char appName[MAX_PATH];
@@ -45,7 +39,15 @@ void Platform::init()
 			if (GetFileAttributes(d.c_str()) != INVALID_FILE_ATTRIBUTES)
 				dataPath = appName;
 		}
+	} else {
+		programLog->report(ProgramLog::LOG_FATAL, "Could not get path for resource directory.");
 	}
+
+	// initialize the random number generator
+	srand(SDL_GetTicks());
+}
+
+void Platform::consoleOut(std::string output) {
 }
 
 void Platform::hideCursor() {

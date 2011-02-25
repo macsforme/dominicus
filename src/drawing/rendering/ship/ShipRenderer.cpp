@@ -21,9 +21,9 @@ ShipRenderer::ShipRenderer() {
 
 	std::string groupName = "SUBJECT";
 
-	objFile.open(std::string(platform.dataPath + "/data/models/ship.obj").c_str());
+	objFile.open(std::string(platform->dataPath + "/data/models/ship.obj").c_str());
 	if(! objFile.is_open())
-		programLog.report(ProgramLog::LOG_FATAL, "Unable to load ship model from file.");
+		programLog->report(ProgramLog::LOG_FATAL, "Unable to load ship model from file.");
 
 	while(! objFile.eof()) {
 		std::getline(objFile, line);
@@ -94,7 +94,7 @@ ShipRenderer::ShipRenderer() {
 								normal > ship.normals.size() ||
 								texCoord > ship.texCoords.size()
 							)
-							programLog.report(
+							programLog->report(
 									ProgramLog::LOG_FATAL,
 									"Model face specification has out-of-bounds index."
 								);
@@ -107,7 +107,7 @@ ShipRenderer::ShipRenderer() {
 								vertex > ship.vertices.size() ||
 								normal > ship.normals.size()
 							)
-							programLog.report(
+							programLog->report(
 									ProgramLog::LOG_FATAL,
 									"Model face specification has out-of-bounds index."
 								);
@@ -117,13 +117,13 @@ ShipRenderer::ShipRenderer() {
 					} else if(sscanf(subjs[i],"%u", &vertex)) {
 						// line has just the vertex
 						if(vertex > ship.vertices.size())
-								programLog.report(
+								programLog->report(
 										ProgramLog::LOG_FATAL,
 										"Model face specification has out-of-bounds index."
 									);
 						faceVertices[i] = vertex;
 					} else {
-							programLog.report(
+							programLog->report(
 									ProgramLog::LOG_FATAL,
 									"Model face specification has an invalid format."
 								);
@@ -239,11 +239,11 @@ ShipRenderer::ShipRenderer() {
 
 	// set up the model shader program
 	modelVertexShader = ShaderTools::makeShader(
-			std::string(platform.dataPath +  "/shaders/default.vertex.glsl").c_str(),
+			std::string(platform->dataPath +  "/shaders/default.vertex.glsl").c_str(),
 			GL_VERTEX_SHADER
 		);
 	modelFragmentShader = ShaderTools::makeShader(
-			std::string(platform.dataPath + "/shaders/default.fragment.glsl").c_str(),
+			std::string(platform->dataPath + "/shaders/default.fragment.glsl").c_str(),
 			GL_FRAGMENT_SHADER
 		);
 
@@ -286,7 +286,7 @@ ShipRenderer::ShipRenderer() {
 		) {
 		std::stringstream filename;
 		filename <<
-				platform.dataPath <<
+				platform->dataPath <<
 				"/data/textures/ship/" <<
 				itr->first.c_str() <<
 				".bmp";
@@ -471,8 +471,8 @@ void ShipRenderer::render(Matrix4 mvMatrix, Matrix4 pMatrix) {
 					Vector3(0.0f, 1.0f, 0.0f),
 					radians(
 							-360.0f *
-							(float) platform.getExecMills() / 1000.0f *
-							gamePrefs.getFloat("shipPropellerRPM")
+							(float) platform->getExecMills() / 1000.0f *
+							gamePrefs->getFloat("shipPropellerRPM")
 						),
 					baseMatrix
 				);
@@ -491,8 +491,8 @@ void ShipRenderer::render(Matrix4 mvMatrix, Matrix4 pMatrix) {
 					Vector3(0.0f, 1.0f, 0.0f),
 					radians(
 							-360.0f *
-							(float) platform.getExecMills() / 1000.0f *
-							gamePrefs.getFloat("shipPropellerRPM")
+							(float) platform->getExecMills() / 1000.0f *
+							gamePrefs->getFloat("shipPropellerRPM")
 						),
 					baseMatrix
 				);

@@ -21,15 +21,15 @@ unsigned int Ship::execute() {
 	shipControl->loop();
 
 	// get our delta T
-	static float lastUpdate = (float) platform.getExecMills();
-	float dt = platform.getExecMills() - lastUpdate;
+	static float lastUpdate = (float) platform->getExecMills();
+	float dt = platform->getExecMills() - lastUpdate;
 	lastUpdate += dt;
 
 	// update the position
 	position += (Vector4(0.0f, 0.0f, 1.0f, 0.0f) * ((float) dt / 1000.0f * speed)) * orientation;
 
 	// calculate and return sleep time from superclass
-	unsigned int frequency = (unsigned int) gamePrefs.getFloat("shipUpdateFrequency");
+	unsigned int frequency = (unsigned int) gamePrefs->getFloat("shipUpdateFrequency");
 	static const unsigned int idealSleepTime = (
 			frequency != 0 ?
 			1000 / frequency : 0

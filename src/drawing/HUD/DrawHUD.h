@@ -25,9 +25,8 @@
 #include <vector>
 
 // global variables
-extern Platform platform;
-
 extern GameWindow* gameWindow;
+extern Platform* platform;
 
 class DrawHUD {
 private:

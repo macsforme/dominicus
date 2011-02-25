@@ -21,7 +21,8 @@ Platform::Platform() {
 	srand(time(NULL));
 }
 
-void Platform::init(){
+void Platform::consoleOut(std::string output) {
+	std::cout << output;
 }
 
 void Platform::hideCursor() {

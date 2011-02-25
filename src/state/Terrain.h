@@ -25,9 +25,6 @@
 // library headers
 #include <vector>
 
-// global variables
-extern Platform platform;
-
 class Terrain {
 public:
 	Mesh mesh;

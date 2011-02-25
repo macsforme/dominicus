@@ -12,11 +12,11 @@
 DrawControlBox::DrawControlBox() {
 	// set up the shader program
 	vertexShader = ShaderTools::makeShader(
-			std::string(platform.dataPath +  "/shaders/controlBox.vertex.glsl").c_str(),
+			std::string(platform->dataPath +  "/shaders/controlBox.vertex.glsl").c_str(),
 			GL_VERTEX_SHADER
 		);
 	fragmentShader = ShaderTools::makeShader(
-			std::string(platform.dataPath + "/shaders/controlBox.fragment.glsl").c_str(),
+			std::string(platform->dataPath + "/shaders/controlBox.fragment.glsl").c_str(),
 			GL_FRAGMENT_SHADER
 		);
 
@@ -40,8 +40,8 @@ DrawControlBox::DrawControlBox() {
 
 void DrawControlBox::draw() {
 	// calculate the geomtery values
-	float totalControlBoxSize = gamePrefs.getFloat("controlBoxSize");
-	float spotSize = gamePrefs.getFloat("controlSpotSize") / totalControlBoxSize;
+	float totalControlBoxSize = gamePrefs->getFloat("controlBoxSize");
+	float spotSize = gamePrefs->getFloat("controlSpotSize") / totalControlBoxSize;
 
 	Vector2 dims(
 			totalControlBoxSize * 2.0f / (float) gameWindow->aspectRatio,

@@ -20,7 +20,7 @@
 #include <SDL/SDL.h>
 
 // global variables
-extern ProgramLog programLog;
+extern ProgramLog* programLog;
 
 class GamePrefs {
 private:

@@ -9,8 +9,6 @@
 
 #include "core/ProgramLog.h"
 
-std::vector<std::string> ProgramLog::logStrings;
-
 void ProgramLog::report(LogDetail detail, const char* report) {
 	std::string fullReport = "";
 	if(detail == LOG_INFO)
@@ -23,12 +21,12 @@ void ProgramLog::report(LogDetail detail, const char* report) {
 		fullReport += "INTERNAL ERROR: ";
 
 	fullReport += report;
+
 	logStrings.push_back(fullReport);
 
 	if(detail != LOG_INFO) {
-#ifndef _WIN32
-		std::cout << fullReport << std::endl;
-#endif
+		Platform::consoleOut(fullReport + "\n");
+
 		if(detail != LOG_DEBUG)
 			exit(1);
 	}

@@ -9,11 +9,7 @@
 
 #include "core/SystemInfo.h"
 
-void SystemInfo::init() {
-	// this functionality cannot be placed in a constructor because
-	// this class is instantiated before SDL_Init() is called from the
-	// main loop
-
+SystemInfo::SystemInfo() {
 	// report the build version
 	std::stringstream buildInfo;
 	buildInfo <<
@@ -22,15 +18,15 @@ void SystemInfo::init() {
 			buildVersion.classification << " " <<
 			buildVersion.architecture << " " <<
 			buildVersion.buildDate;
-	programLog.report(ProgramLog::LOG_INFO, buildInfo.str().c_str());
+	programLog->report(ProgramLog::LOG_INFO, buildInfo.str().c_str());
 
 	// the first call to SDL_getVideoInfo gives us the width and height of the desktop
 	SDL_VideoInfo* vidInfo = (SDL_VideoInfo*) SDL_GetVideoInfo();
 	if(vidInfo == NULL)
-		programLog.report(ProgramLog::LOG_FATAL, "Could not obtain screen resolution from SDL.");
+		programLog->report(ProgramLog::LOG_FATAL, "Could not obtain screen resolution from SDL.");
 
-	screenWidth = (uint16_t) vidInfo->current_w;
-	screenHeight = (uint16_t) vidInfo->current_h;
+	screenWidth = (unsigned short int) vidInfo->current_w;
+	screenHeight = (unsigned short int) vidInfo->current_h;
 }
 
 void SystemInfo::check() {
@@ -48,12 +44,12 @@ void SystemInfo::check() {
 		err << "OpenGL version 2.0 or greater required, and only version " <<
 				openGLVersionStr.substr(0, openGLVersionStr.find(' ')) <<
 				" detected.";
-		programLog.report(ProgramLog::LOG_FATAL, err.str().c_str());
+		programLog->report(ProgramLog::LOG_FATAL, err.str().c_str());
 	} else {
 		std::stringstream err;
 		err << "OpenGL Version: " <<
 				openGLVersion;
-		programLog.report(
+		programLog->report(
 				ProgramLog::LOG_INFO,
 				err.str().c_str()
 			);
@@ -67,16 +63,16 @@ void SystemInfo::check() {
 		err << "GLSL version 1.10 or greater required, and only version " <<
 				(char*) glGetString(GL_SHADING_LANGUAGE_VERSION) <<
 				" detected.";
-		programLog.report(ProgramLog::LOG_FATAL, err.str().c_str());
+		programLog->report(ProgramLog::LOG_FATAL, err.str().c_str());
 	} else {
-		programLog.report(
+		programLog->report(
 				ProgramLog::LOG_INFO,
 				std::string("GLSL Version: " + std::string((char*) glGetString(GL_SHADING_LANGUAGE_VERSION))).c_str()
 			);
 	}
 
 	// OpenGL Renderer (no check, report only)
-	programLog.report(
+	programLog->report(
 			ProgramLog::LOG_INFO,
 			std::string("OpenGL Renderer: " + std::string((char*) glGetString(GL_RENDERER))).c_str()
 		);
@@ -90,12 +86,12 @@ void SystemInfo::check() {
 		err << "OpenGL implementation supports only " <<
 				maxTexUnits <<
 				" texture units, whereas 8 are required.";
-		programLog.report(ProgramLog::LOG_FATAL, err.str().c_str());
+		programLog->report(ProgramLog::LOG_FATAL, err.str().c_str());
 	} else {
 		std::stringstream err;
 		err << "OpenGL Texture Units Supported: " <<
 				maxTexUnits;
-		programLog.report(
+		programLog->report(
 				ProgramLog::LOG_INFO,
 				err.str().c_str()
 			);
@@ -104,8 +100,8 @@ void SystemInfo::check() {
 	// anisotropic filtering extension
 	if(strstr((const char*)glGetString(GL_EXTENSIONS),
 			"GL_EXT_texture_filter_anisotropic") == NULL)
-		programLog.report(ProgramLog::LOG_FATAL,
+		programLog->report(ProgramLog::LOG_FATAL,
 				"OpenGL extension not supported: GL_EXT_texture_filter_anisotropic");
 	else
-		programLog.report(ProgramLog::LOG_INFO, "OpenGL Extension Found: GL_EXT_texture_filter_anisotropic");
+		programLog->report(ProgramLog::LOG_INFO, "OpenGL Extension Found: GL_EXT_texture_filter_anisotropic");
 }

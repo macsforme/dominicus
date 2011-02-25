@@ -24,11 +24,11 @@ DrawConsole::DrawConsole(HUDArrangement* hudArrangement, FontManager* fontManage
 
 	// set up the shader program
 	vertexShader = ShaderTools::makeShader(
-			std::string(platform.dataPath +  "/shaders/default.vertex.glsl").c_str(),
+			std::string(platform->dataPath +  "/shaders/default.vertex.glsl").c_str(),
 			GL_VERTEX_SHADER
 		);
 	fragmentShader = ShaderTools::makeShader(
-			std::string(platform.dataPath + "/shaders/default.fragment.glsl").c_str(),
+			std::string(platform->dataPath + "/shaders/default.fragment.glsl").c_str(),
 			GL_FRAGMENT_SHADER
 		);
 
@@ -160,13 +160,13 @@ void DrawConsole::draw() {
 	// update the text block if we need to
 	static unsigned int numLogLines = 0;
 
-	if(textBlock == NULL || numLogLines != programLog.logStrings.size()) {
+	if(textBlock == NULL || numLogLines != programLog->logStrings.size()) {
 		// create a string of combined log lines
 		std::string logString = "";
 
 		for(
-				std::vector<std::string>::iterator itr = programLog.logStrings.begin();
-				itr != programLog.logStrings.end();
+				std::vector<std::string>::iterator itr = programLog->logStrings.begin();
+				itr != programLog->logStrings.end();
 				++itr
 			)
 			logString += *itr + "\n";
@@ -181,13 +181,13 @@ void DrawConsole::draw() {
 				(unsigned int)((myElement->size.x  - containerPadding.x * 2.0f) / 2.0f * gameWindow->width),
 				(unsigned int)((myElement->size.y  - containerPadding.y * 2.0f) / 2.0f * gameWindow->height),
 				fontManager,
-				(int) gamePrefs.getFloat("fontStandardSize")
+				(int) gamePrefs->getFloat("fontStandardSize")
 		);
-		numLogLines = programLog.logStrings.size();
+		numLogLines = programLog->logStrings.size();
 	}
 
 	// draw the text
-	unsigned int fontSize = (unsigned int) gamePrefs.getFloat("fontStandardSize");
+	unsigned int fontSize = (unsigned int) gamePrefs->getFloat("fontStandardSize");
 
 	glUseProgram(program);
 

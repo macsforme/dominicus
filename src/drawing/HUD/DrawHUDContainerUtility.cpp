@@ -25,11 +25,11 @@ DrawHUDContainerUtility::DrawHUDContainerUtility(
 
 	// set up container shader
 	containerVertexShader = ShaderTools::makeShader(
-			std::string(platform.dataPath +  "/shaders/hudContainer.vertex.glsl").c_str(),
+			std::string(platform->dataPath +  "/shaders/hudContainer.vertex.glsl").c_str(),
 			GL_VERTEX_SHADER
 		);
 	containerFragmentShader = ShaderTools::makeShader(
-			std::string(platform.dataPath + "/shaders/hudContainer.fragment.glsl").c_str(),
+			std::string(platform->dataPath + "/shaders/hudContainer.fragment.glsl").c_str(),
 			GL_FRAGMENT_SHADER
 		);
 

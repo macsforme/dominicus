@@ -11,13 +11,13 @@
 
 MainLoopMember::MainLoopMember() {
 	// variable initialization
-	now = platform.getExecMills();
+	now = platform->getExecMills();
 	last = now;
 	sleepMills = 1.0f;
 }
 
 unsigned int MainLoopMember::getSleepTime(unsigned int idealSleepTime) {
-	now = platform.getExecMills();
+	now = platform->getExecMills();
 	unsigned int timeDiff = (now - last);
 
 	// adjust the target sleep micros by the factor we are off by

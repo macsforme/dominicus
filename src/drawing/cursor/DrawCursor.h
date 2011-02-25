@@ -19,10 +19,9 @@
 #include "windowing/GameWindow.h"
 
 // global variables
-extern InputHandler* inputHandler;
-extern Platform platform;
-
 extern GameWindow* gameWindow;
+extern InputHandler* inputHandler;
+extern Platform* platform;
 
 class DrawCursor {
 private:

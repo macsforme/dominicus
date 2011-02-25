@@ -22,8 +22,6 @@
 #include "windowing/GameWindow.h"
 
 // global variables
-extern Keyboard keyboard;
-
 extern GameWindow* gameWindow;
 
 class RenderingMaster {

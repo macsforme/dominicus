@@ -19,7 +19,7 @@
 #include <vector>
 
 // global variables
-extern ProgramLog programLog;
+extern ProgramLog* programLog;
 
 class Console {
 private:

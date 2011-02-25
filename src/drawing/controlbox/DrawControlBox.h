@@ -19,10 +19,8 @@
 #include "windowing/GameWindow.h"
 
 // global variables
-extern Mouse mouse;
-extern Platform platform;
-
 extern GameWindow* gameWindow;
+extern Platform* platform;
 
 class DrawControlBox {
 private:

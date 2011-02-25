@@ -22,7 +22,7 @@
 #include <string.h>
 
 // global variables
-extern Platform platform;
+extern Platform* platform;
 
 class DrawHUDContainerUtility {
 private:

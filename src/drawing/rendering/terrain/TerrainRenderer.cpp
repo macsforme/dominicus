@@ -12,11 +12,11 @@
 TerrainRenderer::TerrainRenderer() {
 	// set up the shader program
 	vertexShader = ShaderTools::makeShader(
-			std::string(platform.dataPath +  "/shaders/terrain.vertex.glsl").c_str(),
+			std::string(platform->dataPath +  "/shaders/terrain.vertex.glsl").c_str(),
 			GL_VERTEX_SHADER
 		);
 	fragmentShader = ShaderTools::makeShader(
-			std::string(platform.dataPath + "/shaders/terrain.fragment.glsl").c_str(),
+			std::string(platform->dataPath + "/shaders/terrain.fragment.glsl").c_str(),
 			GL_FRAGMENT_SHADER
 		);
 
@@ -45,7 +45,7 @@ TerrainRenderer::TerrainRenderer() {
 	for(unsigned int i = 0; i < 4; ++i) {
 		std::stringstream filename;
 		filename <<
-				platform.dataPath <<
+				platform->dataPath <<
 				"/data/textures/terrain/" <<
 				i <<
 				".bmp";
@@ -84,8 +84,8 @@ TerrainRenderer::TerrainRenderer() {
 	}
 
 	// load the noise texture into OpenGL
-	const size_t dsDensity = (size_t) gamePrefs.getFloat("renderingNoiseDensity");
-	DiamondSquare diamondSquare(dsDensity, gamePrefs.getFloat("renderingNoiseRoughness"));
+	const size_t dsDensity = (size_t) gamePrefs->getFloat("renderingNoiseDensity");
+	DiamondSquare diamondSquare(dsDensity, gamePrefs->getFloat("renderingNoiseRoughness"));
 	Texture texture(dsDensity, dsDensity, Texture::FORMAT_RGBA);
 	for(size_t i = 0; i < dsDensity; ++i)
 		for(size_t p = 0; p < dsDensity; ++p)
@@ -97,7 +97,7 @@ TerrainRenderer::TerrainRenderer() {
 					(uint8_t) (diamondSquare.data[i][p] * 128.0f + 127.0f),
 					0xFF
 				);
-	setTextureDepth(&texture, (unsigned int) gamePrefs.getFloat("renderingNoiseDepth"));
+	setTextureDepth(&texture, (unsigned int) gamePrefs->getFloat("renderingNoiseDepth"));
 
 	glGenTextures(1, &noiseTextureID);
 	glBindTexture(GL_TEXTURE_2D, noiseTextureID);
@@ -192,7 +192,7 @@ void TerrainRenderer::render(Matrix4 vpMatrix) {
 	glEnableVertexAttribArray(positionAttrib);
 	glEnableVertexAttribArray(texCoordAttrib);
 
-	glDrawElements(GL_TRIANGLES, terrain.mesh.faceGroups.begin()->second.size() * 3, GL_UNSIGNED_INT, NULL);
+	glDrawElements(GL_TRIANGLES, terrain->mesh.faceGroups.begin()->second.size() * 3, GL_UNSIGNED_INT, NULL);
 
 	glDisableVertexAttribArray(positionAttrib);
 	glDisableVertexAttribArray(texCoordAttrib);
@@ -202,7 +202,7 @@ void TerrainRenderer::render(Matrix4 vpMatrix) {
 
 void TerrainRenderer::reloadGeometry(bool firstLoad) {
 	const float texDivisor =
-			gamePrefs.getFloat("renderingTerrainTextureRepeat"); // texture coordinate divisor
+			gamePrefs->getFloat("renderingTerrainTextureRepeat"); // texture coordinate divisor
 
 	// set up the buffers
 	if(! firstLoad && glIsBuffer(vertDataBuffer))
@@ -217,32 +217,32 @@ void TerrainRenderer::reloadGeometry(bool firstLoad) {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertElementBuffer);
 
 	// prepare arrays of vertex data and element data
-	std::vector<Mesh::Face>* faces = &(terrain.mesh.faceGroups.begin()->second);
+	std::vector<Mesh::Face>* faces = &(terrain->mesh.faceGroups.begin()->second);
 
 	size_t vertDataBufferArraySize =
 			(size_t) 15 * faces->size() * sizeof(GLfloat); // 3 vertices + 2 texcoords * 3 per face
 	GLfloat* vertDataBufferArray = (GLfloat*) malloc(vertDataBufferArraySize);
 	for(size_t i = 0; i < faces->size(); ++i) {
-		vertDataBufferArray[i * 15 + 0] = terrain.mesh.vertices[(*faces)[i].vertices[0]].x;
-		vertDataBufferArray[i * 15 + 1] = terrain.mesh.vertices[(*faces)[i].vertices[0]].y;
-		vertDataBufferArray[i * 15 + 2] = terrain.mesh.vertices[(*faces)[i].vertices[0]].z;
+		vertDataBufferArray[i * 15 + 0] = terrain->mesh.vertices[(*faces)[i].vertices[0]].x;
+		vertDataBufferArray[i * 15 + 1] = terrain->mesh.vertices[(*faces)[i].vertices[0]].y;
+		vertDataBufferArray[i * 15 + 2] = terrain->mesh.vertices[(*faces)[i].vertices[0]].z;
 
-		vertDataBufferArray[i * 15 + 3] = terrain.mesh.vertices[(*faces)[i].vertices[0]].x / texDivisor;
-		vertDataBufferArray[i * 15 + 4] = terrain.mesh.vertices[(*faces)[i].vertices[0]].z / texDivisor;
+		vertDataBufferArray[i * 15 + 3] = terrain->mesh.vertices[(*faces)[i].vertices[0]].x / texDivisor;
+		vertDataBufferArray[i * 15 + 4] = terrain->mesh.vertices[(*faces)[i].vertices[0]].z / texDivisor;
 
-		vertDataBufferArray[i * 15 + 5] = terrain.mesh.vertices[(*faces)[i].vertices[1]].x;
-		vertDataBufferArray[i * 15 + 6] = terrain.mesh.vertices[(*faces)[i].vertices[1]].y;
-		vertDataBufferArray[i * 15 + 7] = terrain.mesh.vertices[(*faces)[i].vertices[1]].z;
+		vertDataBufferArray[i * 15 + 5] = terrain->mesh.vertices[(*faces)[i].vertices[1]].x;
+		vertDataBufferArray[i * 15 + 6] = terrain->mesh.vertices[(*faces)[i].vertices[1]].y;
+		vertDataBufferArray[i * 15 + 7] = terrain->mesh.vertices[(*faces)[i].vertices[1]].z;
 
-		vertDataBufferArray[i * 15 + 8] = terrain.mesh.vertices[(*faces)[i].vertices[1]].x / texDivisor;
-		vertDataBufferArray[i * 15 + 9] = terrain.mesh.vertices[(*faces)[i].vertices[1]].z / texDivisor;
+		vertDataBufferArray[i * 15 + 8] = terrain->mesh.vertices[(*faces)[i].vertices[1]].x / texDivisor;
+		vertDataBufferArray[i * 15 + 9] = terrain->mesh.vertices[(*faces)[i].vertices[1]].z / texDivisor;
 
-		vertDataBufferArray[i * 15 + 10] = terrain.mesh.vertices[(*faces)[i].vertices[2]].x;
-		vertDataBufferArray[i * 15 + 11] = terrain.mesh.vertices[(*faces)[i].vertices[2]].y;
-		vertDataBufferArray[i * 15 + 12] = terrain.mesh.vertices[(*faces)[i].vertices[2]].z;
+		vertDataBufferArray[i * 15 + 10] = terrain->mesh.vertices[(*faces)[i].vertices[2]].x;
+		vertDataBufferArray[i * 15 + 11] = terrain->mesh.vertices[(*faces)[i].vertices[2]].y;
+		vertDataBufferArray[i * 15 + 12] = terrain->mesh.vertices[(*faces)[i].vertices[2]].z;
 
-		vertDataBufferArray[i * 15 + 13] = terrain.mesh.vertices[(*faces)[i].vertices[2]].x / texDivisor;
-		vertDataBufferArray[i * 15 + 14] = terrain.mesh.vertices[(*faces)[i].vertices[2]].z / texDivisor;
+		vertDataBufferArray[i * 15 + 13] = terrain->mesh.vertices[(*faces)[i].vertices[2]].x / texDivisor;
+		vertDataBufferArray[i * 15 + 14] = terrain->mesh.vertices[(*faces)[i].vertices[2]].z / texDivisor;
 	}
 
 	size_t vertElementBufferArraySize = (size_t) 3 * faces->size() * sizeof(GLuint);

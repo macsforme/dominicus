@@ -20,10 +20,10 @@
 #include <SDL/SDL.h>
 
 // global variables
-extern GamePrefs gamePrefs;
-extern Platform platform;
-extern ProgramLog programLog;
-extern SystemInfo systemInfo;
+extern GamePrefs* gamePrefs;
+extern Platform* platform;
+extern ProgramLog* programLog;
+extern SystemInfo* systemInfo;
 
 class GameWindow {
 public:

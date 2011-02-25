@@ -12,11 +12,11 @@
 DrawCursor::DrawCursor() {
 	// set up the shader program
 	vertexShader = ShaderTools::makeShader(
-			std::string(platform.dataPath +  "/shaders/cursor.vertex.glsl").c_str(),
+			std::string(platform->dataPath +  "/shaders/cursor.vertex.glsl").c_str(),
 			GL_VERTEX_SHADER
 		);
 	fragmentShader = ShaderTools::makeShader(
-			std::string(platform.dataPath + "/shaders/cursor.fragment.glsl").c_str(),
+			std::string(platform->dataPath + "/shaders/cursor.fragment.glsl").c_str(),
 			GL_FRAGMENT_SHADER
 		);
 
@@ -41,8 +41,8 @@ DrawCursor::DrawCursor() {
 void DrawCursor::draw() {
 	// calculate the cursor values
 	Vector2 dims(
-			gamePrefs.getFloat("cursorSize") * 2.0f / (float) gameWindow->aspectRatio,
-			gamePrefs.getFloat("cursorSize") * 2.0f
+			gamePrefs->getFloat("cursorSize") * 2.0f / (float) gameWindow->aspectRatio,
+			gamePrefs->getFloat("cursorSize") * 2.0f
 		);
 	Vector2 middle = inputHandler->mouse.position;
 
@@ -50,7 +50,7 @@ void DrawCursor::draw() {
 	Vector2 ur(middle.x + dims.x / 2.0f, middle.y + dims.y / 2.0f);
 
 	// cursor thickness is a minimum of 2 pixels
-	float thickness = gamePrefs.getFloat("cursorThickness");
+	float thickness = gamePrefs->getFloat("cursorThickness");
 	if(thickness * dims.y / 2.0f * (float) gameWindow->height < 1.0f)
 		thickness = 2.0f / (dims.y / 2.0f * (float) gameWindow->height);
 

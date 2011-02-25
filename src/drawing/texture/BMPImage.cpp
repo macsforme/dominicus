@@ -18,7 +18,7 @@ BMPImage::BMPImage(std::string filename) {
 
 	// ensure the file was successfully opened
 	if(! fileStream.is_open()) {
-		programLog.report(
+		programLog->report(
 				ProgramLog::LOG_FATAL,
 				std::string("The BMP image file " +
 						std::string(filename) +
@@ -81,7 +81,7 @@ BMPImage::BMPImage(std::string filename) {
 		);
 
 	if(fileMagic.magic[0] == 'B' && fileMagic.magic[1] == 'M') {
-		programLog.report(
+		programLog->report(
 				ProgramLog::LOG_FATAL,
 				std::string("The BMP image file " +
 						std::string(filename) +
@@ -98,7 +98,7 @@ BMPImage::BMPImage(std::string filename) {
 
 	// We only support the BITMAPINFOHEADER file format
 	if(fileBMPHeader.dataOffset - sizeof(fileMagic) - sizeof(fileBMPHeader) != 40) {
-		programLog.report(
+		programLog->report(
 				ProgramLog::LOG_FATAL,
 				std::string("The BMP image file " +
 						std::string(filename) +
@@ -114,7 +114,7 @@ BMPImage::BMPImage(std::string filename) {
 		);
 	// Check again that we are using the BITMAPINFOHEADER file format
 	if(fileDIBHeader.headerSize != 40) {
-		programLog.report(
+		programLog->report(
 				ProgramLog::LOG_FATAL,
 				std::string("The BMP image file " +
 						std::string(filename) +
@@ -124,7 +124,7 @@ BMPImage::BMPImage(std::string filename) {
 
 	// We don't support compressed bitmaps, only BI_RGB method
 	if(fileDIBHeader.compressionMethod != 0) {
-		programLog.report(
+		programLog->report(
 				ProgramLog::LOG_FATAL,
 				std::string("The BMP image file " +
 						std::string(filename) +
@@ -134,7 +134,7 @@ BMPImage::BMPImage(std::string filename) {
 
 	// We will probably never use indexed bitmaps, so we don't support them
 	if(fileDIBHeader.numIndexedColors > 0) {
-		programLog.report(
+		programLog->report(
 				ProgramLog::LOG_FATAL,
 				std::string("The BMP image file " +
 						std::string(filename) +
@@ -147,7 +147,7 @@ BMPImage::BMPImage(std::string filename) {
 			fileDIBHeader.bpp != 24 &&
 			fileDIBHeader.bpp != 32
 		) {
-		programLog.report(
+		programLog->report(
 				ProgramLog::LOG_FATAL,
 				std::string("The BMP image file " +
 						std::string(filename) +
@@ -211,7 +211,7 @@ BMPImage::BMPImage(std::string filename) {
 								<< fileDIBHeader.imageHeight <<
 								").";
 
-						programLog.report(ProgramLog::LOG_FATAL, err.str().c_str());
+						programLog->report(ProgramLog::LOG_FATAL, err.str().c_str());
 					}
 
 					// Pixel data starting point
@@ -246,7 +246,7 @@ BMPImage::BMPImage(std::string filename) {
 						<< (shortfall < 0 ? "short of" : "in excess of")
 						<< " the expected data length.";
 
-				programLog.report(ProgramLog::LOG_FATAL, err.str().c_str());
+				programLog->report(ProgramLog::LOG_FATAL, err.str().c_str());
 			}
 
 			break;

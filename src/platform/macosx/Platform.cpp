@@ -24,7 +24,7 @@ Platform::Platform() {
 	char detectedDataPath[PATH_MAX];
 	if(! CFURLGetFileSystemRepresentation(resources, TRUE,
 			(UInt8 *)detectedDataPath, PATH_MAX))
-		programLog.report(ProgramLog::LOG_FATAL, "Could not get path for resource directory.");
+		programLog->report(ProgramLog::LOG_FATAL, "Could not get path for resource directory.");
 	CFRelease(resources);
 
 	dataPath = detectedDataPath;
@@ -33,7 +33,8 @@ Platform::Platform() {
 	srand(time(NULL));
 }
 
-void Platform::init(){
+void Platform::consoleOut(std::string output) {
+	std::cout << output;
 }
 
 void Platform::hideCursor() {
@@ -51,7 +52,7 @@ unsigned int Platform::getExecMills() {
 	kern_return_t error = mach_timebase_info(&timeInfo);
 
 	if(error)
-		programLog.report(ProgramLog::LOG_FATAL,
+		programLog->report(ProgramLog::LOG_FATAL,
 				"An error occurred when attempting to retrieve the time.");
 
 	return (unsigned int) (

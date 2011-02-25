@@ -20,8 +20,8 @@
 #include "state/Ship.h"
 
 // global variables
-extern Platform platform;
-extern Ship ship;
+extern Platform* platform;
+extern Ship* ship;
 
 class SkyRenderer {
 private:

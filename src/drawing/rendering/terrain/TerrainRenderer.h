@@ -33,9 +33,9 @@
 #include "state/Terrain.h"
 
 // global variables
-extern GamePrefs gamePrefs;
-extern Platform platform;
-extern Terrain terrain;
+extern GamePrefs* gamePrefs;
+extern Platform* platform;
+extern Terrain* terrain;
 
 class TerrainRenderer {
 private:

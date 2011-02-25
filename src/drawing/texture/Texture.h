@@ -18,7 +18,7 @@
 #include <stdint.h>
 
 // global variables
-extern ProgramLog programLog;
+extern ProgramLog* programLog;
 
 class Texture {
 public:

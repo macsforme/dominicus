@@ -22,7 +22,7 @@
 #include <string>
 
 // global variables
-extern ProgramLog programLog;
+extern ProgramLog* programLog;
 
 class BMPImage : public Texture {
 public:

@@ -19,14 +19,14 @@ DrawingMaster::DrawingMaster() {
 	drawCursor = new DrawCursor();
 
 	// initialize fonts
-	fontManager->populateCommonChars((int) gamePrefs.getFloat("fontStandardSize"));
+	fontManager->populateCommonChars((int) gamePrefs->getFloat("fontStandardSize"));
 
 	// set the OpenGL viewport size
 	setViewPortSize(gameWindow->width, gameWindow->height);
 
 	// set the FPS cap key trap
 	fpsCapKeyTrap = new KeyTrap("toggleFPSCap");
-	capFPS = gamePrefs.getBool("renderingCapFPS");
+	capFPS = gamePrefs->getBool("renderingCapFPS");
 }
 
 DrawingMaster::~DrawingMaster() {
@@ -60,7 +60,7 @@ void DrawingMaster::preFrame() {
 //	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 	glClearColor(0.58f, 0.71f, 0.79f, 1.0f);
 //	glClearColor(0.0f, 0.02f, 0.24f, 1.0f);
-
+//glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 	// clear the screen
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
@@ -83,7 +83,7 @@ void DrawingMaster::postFrame() {
 		std::stringstream err;
 		err << "OpenGL returned an error: "
 				<< renderingError;
-		programLog.report(ProgramLog::LOG_DEBUG, err.str().c_str());
+		programLog->report(ProgramLog::LOG_DEBUG, err.str().c_str());
 
 		renderingError = glGetError();
 	}
@@ -111,7 +111,7 @@ unsigned int DrawingMaster::execute() {
 		return 0;
 
 	// calculate and return sleep time from superclass
-	unsigned int frequency = (unsigned int) gamePrefs.getFloat("renderingFPS");
+	unsigned int frequency = (unsigned int) gamePrefs->getFloat("renderingFPS");
 	unsigned int idealSleepTime = (
 			frequency != 0 ?
 			1000 / frequency : 0

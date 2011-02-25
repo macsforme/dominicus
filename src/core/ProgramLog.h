@@ -10,6 +10,12 @@
 #ifndef PROGRAMLOG_H
 #define PROGRAMLOG_H
 
+// forward declarations
+class Platform;
+
+// program headers
+#include "platform/Platform.h"
+
 // library headers
 #include <cstdlib>
 #include <iostream>
@@ -25,9 +31,9 @@ public:
 		LOG_INTERNALERROR	// safety mechanisms in case of internal bugs (no external libs or files)
 	};
 
-	static std::vector<std::string> logStrings;
+	std::vector<std::string> logStrings;
 
-	static void report(LogDetail detail, const char* report);
+	void report(LogDetail detail, const char* report);
 };
 
 #endif

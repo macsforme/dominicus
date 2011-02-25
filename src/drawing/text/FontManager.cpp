@@ -12,24 +12,24 @@
 FontManager::FontManager() {
 	// initialize the freetype library
 	if(FT_Init_FreeType(&library))
-		programLog.report(ProgramLog::LOG_FATAL, "The FreeType2 library could not be initialized.");
+		programLog->report(ProgramLog::LOG_FATAL, "The FreeType2 library could not be initialized.");
 
 	// load the font face
 	if(
 			FT_New_Face(
 					library,
-					std::string(platform.dataPath +
+					std::string(platform->dataPath +
 							"/data/fonts/" +
-							gamePrefs.getString("fontFile")).c_str(),
+							gamePrefs->getString("fontFile")).c_str(),
 					0,
 					&fontFace
 				)
 		)
-		programLog.report(ProgramLog::LOG_FATAL,
+		programLog->report(ProgramLog::LOG_FATAL,
 				std::string("The font face could not be loaded from " +
-						platform.dataPath +
+						platform->dataPath +
 						"/data/fonts/" +
-						gamePrefs.getString("fontFile")).c_str()
+						gamePrefs->getString("fontFile")).c_str()
 			);
 
 	// set a default size
@@ -37,16 +37,16 @@ FontManager::FontManager() {
 			FT_Set_Char_Size(
 					fontFace,
 					0,
-					(int) gamePrefs.getFloat("fontStandardSize") * 64,
+					(int) gamePrefs->getFloat("fontStandardSize") * 64,
 					0,
 					0
 				)
 		)
-		programLog.report(ProgramLog::LOG_FATAL, "The default font size could not be set.");
+		programLog->report(ProgramLog::LOG_FATAL, "The default font size could not be set.");
 
 	// confirm that the face is scalable
 	if(! FT_IS_SCALABLE(fontFace))
-		programLog.report(ProgramLog::LOG_FATAL,
+		programLog->report(ProgramLog::LOG_FATAL,
 				std::string("The specified font face is not a scalable font.").c_str()
 			);
 }
@@ -193,7 +193,7 @@ void FontManager::buildChar(const char character, unsigned int size) {
 				character <<
 				"'.";
 
-		programLog.report(ProgramLog::LOG_FATAL, err.str().c_str());
+		programLog->report(ProgramLog::LOG_FATAL, err.str().c_str());
 	}
 
 	// store the line height for this size
@@ -204,12 +204,12 @@ void FontManager::buildChar(const char character, unsigned int size) {
 	if(FT_Load_Glyph(fontFace, glyphIndex, FT_LOAD_DEFAULT)) {
 		std::stringstream err;
 		err << "Unable to load glyph for character '" << character << "'.";
-		programLog.report(ProgramLog::LOG_FATAL, err.str().c_str());
+		programLog->report(ProgramLog::LOG_FATAL, err.str().c_str());
 	}
 	if(FT_Render_Glyph(fontFace->glyph, FT_RENDER_MODE_NORMAL)) {
 		std::stringstream err;
 		err << "Unable to render glyph for character '" << character << "'.";
-		programLog.report(ProgramLog::LOG_FATAL, err.str().c_str());
+		programLog->report(ProgramLog::LOG_FATAL, err.str().c_str());
 	}
 
 	// Here we extract the bitmap info from the rendered glyph into a texture,

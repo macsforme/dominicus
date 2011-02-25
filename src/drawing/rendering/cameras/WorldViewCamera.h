@@ -25,10 +25,9 @@ const float zoomFactor = 0.25f;	// total zoom distance
 const float zoomPeriod = 1.0f;	// time in seconds to complete a zoom cycle
 
 // global variables
-extern GamePrefs gamePrefs;
-extern Platform platform;
-
+extern GamePrefs* gamePrefs;
 extern GameWindow* gameWindow;
+extern Platform* platform;
 
 class WorldViewCamera : Camera {
 private:

@@ -22,10 +22,9 @@
 class Ship;
 
 // global variables
-extern GamePrefs gamePrefs;
-extern InputHandler* inputHandler;
-
+extern GamePrefs* gamePrefs;
 extern GameWindow* gameWindow;
+extern InputHandler* inputHandler;
 
 class ShipControl {
 public:

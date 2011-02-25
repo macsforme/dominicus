@@ -24,11 +24,11 @@ DrawInfoBox::DrawInfoBox(HUDArrangement* hudArrangement, FontManager* fontManage
 
 	// set up the shader program
 	vertexShader = ShaderTools::makeShader(
-			std::string(platform.dataPath +  "/shaders/default.vertex.glsl").c_str(),
+			std::string(platform->dataPath +  "/shaders/default.vertex.glsl").c_str(),
 			GL_VERTEX_SHADER
 		);
 	fragmentShader = ShaderTools::makeShader(
-			std::string(platform.dataPath + "/shaders/default.fragment.glsl").c_str(),
+			std::string(platform->dataPath + "/shaders/default.fragment.glsl").c_str(),
 			GL_FRAGMENT_SHADER
 		);
 
@@ -169,11 +169,11 @@ void DrawInfoBox::draw() {
 	std::string outputLines = "";
 
 	// update the FPS
-	if(platform.getExecMills() - lastCheck >
-			(1000 / (unsigned int) gamePrefs.getFloat("renderingDisplayUpdateFrequency"))) {
-		currentFPS = (unsigned int) (frameCount * gamePrefs.getFloat("renderingDisplayUpdateFrequency"));
+	if(platform->getExecMills() - lastCheck >
+			(1000 / (unsigned int) gamePrefs->getFloat("renderingDisplayUpdateFrequency"))) {
+		currentFPS = (unsigned int) (frameCount * gamePrefs->getFloat("renderingDisplayUpdateFrequency"));
 		frameCount = 0;
-		lastCheck = platform.getExecMills();
+		lastCheck = platform->getExecMills();
 
 		delete(textBlock);
 		textBlock = NULL;
@@ -186,8 +186,8 @@ void DrawInfoBox::draw() {
 	outputLines += fpsLine.str();
 
 	// update the execution time
-	if(platform.getExecMills() - (unsigned int) (currentExecTime * 1000.0f) > 100) {
-		currentExecTime = round((float) platform.getExecMills() / 1000.0f, 3);
+	if(platform->getExecMills() - (unsigned int) (currentExecTime * 1000.0f) > 100) {
+		currentExecTime = round((float) platform->getExecMills() / 1000.0f, 3);
 
 		delete(textBlock);
 		textBlock = NULL;
@@ -210,11 +210,11 @@ void DrawInfoBox::draw() {
 				(unsigned int)((myElement->size.x  - containerPadding.x * 2.0f) / 2.0f * gameWindow->width),
 				(unsigned int)((myElement->size.y  - containerPadding.y * 2.0f) / 2.0f * gameWindow->height),
 				fontManager,
-				(int) gamePrefs.getFloat("fontStandardSize")
+				(int) gamePrefs->getFloat("fontStandardSize")
 			);
 
 	// draw the text
-	unsigned int fontSize = (unsigned int) gamePrefs.getFloat("fontStandardSize");
+	unsigned int fontSize = (unsigned int) gamePrefs->getFloat("fontStandardSize");
 
 	glUseProgram(program);
 

@@ -30,8 +30,8 @@
 #include <string.h>
 
 // global variables
-extern Platform platform;
-extern ProgramLog programLog;
+extern Platform* platform;
+extern ProgramLog* programLog;
 
 class BuildVersion {
 public:

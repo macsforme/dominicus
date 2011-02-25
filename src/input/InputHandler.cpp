@@ -37,7 +37,7 @@ unsigned int InputHandler::execute() {
 	mouse.loop();
 
 	// calculate and return sleep time from superclass
-	unsigned int frequency = (unsigned int) gamePrefs.getFloat("inputPollingFrequency");
+	unsigned int frequency = (unsigned int) gamePrefs->getFloat("inputPollingFrequency");
 	static const unsigned int idealSleepTime = (
 			frequency  != 0 ?
 			1000 / frequency : 0

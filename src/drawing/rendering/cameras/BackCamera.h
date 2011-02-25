@@ -20,11 +20,10 @@
 #include "windowing/GameWindow.h"
 
 // global variables
-extern GamePrefs gamePrefs;
-extern Platform platform;
-extern Ship ship;
-
+extern GamePrefs* gamePrefs;
 extern GameWindow* gameWindow;
+extern Platform* platform;
+extern Ship* ship;
 
 class BackCamera : Camera {
 private:

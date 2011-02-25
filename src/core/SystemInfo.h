@@ -20,14 +20,14 @@
 #include <sstream>
 
 // global variables
-extern ProgramLog programLog;
+extern ProgramLog* programLog;
 
 class SystemInfo {
 public:
 	BuildVersion buildVersion;
 	unsigned short int screenWidth, screenHeight;
 
-	void init();
+	SystemInfo();
 	void check();
 };
 

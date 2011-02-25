@@ -12,11 +12,11 @@
 void ShipControl::loop() {
 	// determine how much further we can rotate around the +X axis
 	float displacePercent = degrees(asin(ship->orientation.m32)) /
-			gamePrefs.getFloat("shipMaxAngle");
+			gamePrefs->getFloat("shipMaxAngle");
 
 	// get our delta T
-	static float lastUpdate = (float)platform.getExecMills();
-	float dt = platform.getExecMills() - lastUpdate;
+	static float lastUpdate = (float) platform->getExecMills();
+	float dt = platform->getExecMills() - lastUpdate;
 	lastUpdate += dt;
 
 	// create directional vectors for the relative +Z and +X axises
@@ -40,9 +40,9 @@ void ShipControl::loop() {
 		);
 
 	if(distance(zeroVec, posVec) >
-			gamePrefs.getFloat("controlSpotSize") / gamePrefs.getFloat("controlBoxSize")) {
-		xMovement = posVec.x / (gamePrefs.getFloat("controlBoxSize"));
-		yMovement =	-posVec.y /	(gamePrefs.getFloat("controlBoxSize"));
+			gamePrefs->getFloat("controlSpotSize") / gamePrefs->getFloat("controlBoxSize")) {
+		xMovement = posVec.x / (gamePrefs->getFloat("controlBoxSize"));
+		yMovement =	-posVec.y /	(gamePrefs->getFloat("controlBoxSize"));
 	}
 
 	// keyboard steering
@@ -65,20 +65,20 @@ void ShipControl::loop() {
 
 	rotateMatrix(
 			yVec,
-			radians(xMovement * gamePrefs.getFloat("shipTurnRate") * (float) dt / 1000.0f),
+			radians(xMovement * gamePrefs->getFloat("shipTurnRate") * (float) dt / 1000.0f),
 			ship->orientation
 		);
 	rotateMatrix(
 			xVec,
-			radians(yMovement * gamePrefs.getFloat("shipTurnRate") * (float) dt / 1000.0f),
+			radians(yMovement * gamePrefs->getFloat("shipTurnRate") * (float) dt / 1000.0f),
 			ship->orientation
 		);
 
 	// ship velocity
 	if(inputHandler->keyboard.getKeyState("speed+"))
-		if(ship->speed < gamePrefs.getFloat("shipMaxAccel"))
-			ship->speed += gamePrefs.getFloat("shipMaxAccel") * (float) dt / 1000.0f;
+		if(ship->speed < gamePrefs->getFloat("shipMaxAccel"))
+			ship->speed += gamePrefs->getFloat("shipMaxAccel") * (float) dt / 1000.0f;
 	if(inputHandler->keyboard.getKeyState("speed-"))
-		if(ship->speed > -gamePrefs.getFloat("shipMaxAccel"))
-			ship->speed -= gamePrefs.getFloat("shipMaxAccel") * (float) dt / 1000.0f;
+		if(ship->speed > -gamePrefs->getFloat("shipMaxAccel"))
+			ship->speed -= gamePrefs->getFloat("shipMaxAccel") * (float) dt / 1000.0f;
 }

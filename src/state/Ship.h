@@ -23,9 +23,8 @@
 class ShipControl;
 
 // global variables
-extern GamePrefs gamePrefs;
-extern Mouse mouse;
-extern Platform platform;
+extern GamePrefs* gamePrefs;
+extern Platform* platform;
 
 class Ship : public MainLoopMember {
 public:

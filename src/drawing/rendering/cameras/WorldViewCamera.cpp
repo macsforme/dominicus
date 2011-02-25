@@ -11,8 +11,8 @@
 
 void WorldViewCamera::loop() {
 	// get our delta T
-	static float lastUpdate = (float)platform.getExecMills();
-	float dt = (float)platform.getExecMills() - lastUpdate;
+	static float lastUpdate = (float)platform->getExecMills();
+	float dt = (float) platform->getExecMills() - lastUpdate;
 	lastUpdate += dt;
 
 	// do math on variables
@@ -20,7 +20,7 @@ void WorldViewCamera::loop() {
 	if(rotation > 360.0f)
 		rotation -= 360.0f;
 	zoom = 1.0f + zoomFactor *
-			cos((float) (platform.getExecMills() % 1000) / 1000.0f / zoomPeriod) / 2.0f;
+			cos((float) (platform->getExecMills() % 1000) / 1000.0f / zoomPeriod) / 2.0f;
 
 	// re-initialize the matrix
 	vpMatrix.identity();
@@ -32,9 +32,9 @@ void WorldViewCamera::loop() {
 	scaleMatrix(zoom, zoom, zoom, vpMatrix); // dynamic zoom
 
 	// perspective projection
-	const float fov = gamePrefs.getFloat("perspectiveFOV");
-	const float nClip = gamePrefs.getFloat("perspectiveNearClip");
-	const float fClip = gamePrefs.getFloat("perspectiveFarClip");
+	const float fov = gamePrefs->getFloat("perspectiveFOV");
+	const float nClip = gamePrefs->getFloat("perspectiveNearClip");
+	const float fClip = gamePrefs->getFloat("perspectiveFarClip");
 
 	vpMatrix *= Matrix4(
 	        1.0f/tan(radians(fov)), 0.0, 0.0, 0.0,
