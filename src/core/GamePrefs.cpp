@@ -109,6 +109,21 @@ const std::string GamePrefs::getString(std::string key) const {
 	}
 }
 
+const Vector4 GamePrefs::getColor(std::string key) const {
+	if(getString(key) == "")
+		return Vector4(0.0f, 0.0f, 0.0f, 0.0f);
+
+	int colors[4];
+	sscanf(getString(key).c_str(), "%2x%2x%2x%2x", &colors[0], &colors[1], &colors[2], &colors[3]);
+
+	return Vector4(
+			(float) colors[0] / 255.0f,
+			(float) colors[1] / 255.0f,
+			(float) colors[2] / 255.0f,
+			(float) colors[3] / 255.0f
+		);
+}
+
 const float GamePrefs::getFloat(std::string key) const {
 	return (float) atof(getString(key).c_str());
 }

@@ -33,9 +33,11 @@
 
 // program headers
 #include "core/ProgramLog.h"
+#include "math/VectorMath.h"
 
 // library headers
 #include <map>
+#include <stdio.h>
 #include <sstream>
 #include <string>
 #include <SDL/SDL.h>
@@ -54,6 +56,7 @@ public:
 
 	// preferences
 	const std::string getString(std::string key) const;
+	const Vector4 getColor(std::string key) const;
 	const float getFloat(std::string key) const;
 	const bool getBool(std::string key) const;
 	void set(std::string value, std::string key);
