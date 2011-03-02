@@ -44,6 +44,7 @@
 #include "state/ShipControl.h"
 #include "windowing/GameWindow.h"
 
+// main game function declaration
 int dominicusMain(int argc, char* argv[]);
 
 #endif

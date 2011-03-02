@@ -39,10 +39,12 @@ Platform* platform = NULL;
 ProgramLog* programLog = NULL;
 SystemInfo* systemInfo = NULL;
 
+// state variables (will be replaced by better state management)
 Ship* ship = NULL;
 Terrain* terrain = NULL;
 
-bool keepDominicusAlive;	// global flag to continue game
+// global main loop continuation flag
+bool keepDominicusAlive;
 
 // main game function
 int dominicusMain(int argc, char* argv[]) {
@@ -52,14 +54,18 @@ int dominicusMain(int argc, char* argv[]) {
 	systemInfo = new SystemInfo();
 	gamePrefs = new GamePrefs();
 
-	// initialize graphics, platform extensions, and then check system compatibility
+	// initialize graphics and platform extensions
 	gameWindow = new GameWindow(gamePrefs->getBool("windowStartFullScreen") ? true : false);
 	platform->loadExtensions();
+
+	// check system compatibility
 	systemInfo->check();
 
-	// initialize state
+	// initialize state variables
 	terrain = new Terrain();
 	ship = new Ship(Vector4(0.0f, 2.0f, -500.0f, 0.0f));
+
+	// create sole controller (will be replaced later by more flexible controller system)
 	ShipControl shipControl(ship);
 
 	// initialize input and prepare drawing
@@ -105,27 +111,25 @@ int dominicusMain(int argc, char* argv[]) {
 			drawingMaster->renderingMaster->terrainRenderer.reloadGeometry();
 		}
 
-		// if the next execution time for any module is less than now, run it
-		unsigned int nextPlannedLoop = -1;	// this will be set to the minimum sleep time
-		unsigned int now;
+		// if the next execution time for any module is less than now, run it,
+		// and calculate the maximum possible sleep time
+		unsigned int nextPlannedLoop = -1;
 
 		for(
 				std::map<MainLoopMember*, unsigned int>::iterator itr = mainLoopModules.begin();
 				itr != mainLoopModules.end();
 				++itr
 			) {
-			now = platform->getExecMills();
-
-			if(itr->second < now)
-				itr->second = now + (itr->first)->execute();
+			if(itr->second < platform->getExecMills())
+				itr->second = itr->first->execute() + platform->getExecMills();
 
 			if(itr->second < nextPlannedLoop)
 				nextPlannedLoop = itr->second;
 		}
 
 		// sleep the loop if we're not already overdue for something
-		if(nextPlannedLoop > now)
-			platform->sleepMills(nextPlannedLoop - now);
+		if(nextPlannedLoop > platform->getExecMills())
+			platform->sleepMills(nextPlannedLoop - platform->getExecMills());
 	}
 
 	// clean up objects in reverse order
