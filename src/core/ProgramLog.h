@@ -44,7 +44,6 @@ class Platform;
 
 class ProgramLog {
 public:
-
 	enum LogDetail {
 		LOG_INFO,	// verbose information that users generally don't need to see
 		LOG_DEBUG,	// problems that shouldn't normally happen
