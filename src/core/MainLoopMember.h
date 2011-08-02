@@ -43,14 +43,14 @@ private:
 	unsigned int last;
 	float sleepMills;
 
-protected:
-	unsigned int getSleepTime(unsigned int idealSleepTime);
-
 public:
 	MainLoopMember();
 
 	// returns milliseconds to sleep
 	virtual unsigned int execute() { return 0; };
+
+protected:
+	unsigned int getSleepTime(unsigned int idealSleepTime);
 };
 
 #endif

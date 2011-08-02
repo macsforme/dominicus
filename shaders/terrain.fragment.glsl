@@ -1,38 +1,42 @@
 #version 110
 
+// uniforms
+uniform mat4 mvpMatrix;
 uniform sampler2D textures[4];
-uniform sampler2D noiseTexture;
+uniform vec3 lightColor;
+uniform float depth;
+uniform float height;
 
-uniform float totalWidth;
-uniform float totalHeight;
-
+// varyings
+varying float yCoordInterpol;
+varying vec3 normalInterpol;
 varying vec2 texCoordInterpol;
-varying vec3 coord;
+varying vec2 rotTexCoordInterpol;
+varying vec3 lightVectorInterpol;
 
+// main loop
 void main() {
-	float alpha = 1.0;
-	if (coord.y < 2.0) alpha = (coord.y / 2.0);
+	// initial color
+	vec4 calculatedColor = vec4(1.0, 1.0, 1.0, 1.0);
 
-	if(coord.y <= 0.0)
-		discard;
-	else
-		gl_FragColor =
-				vec4(
-						mix(
-								mix(
-										texture2D(textures[0], texCoordInterpol).rgb,
-										texture2D(textures[1], texCoordInterpol).rgb,
-										texture2D(noiseTexture, coord.xz / totalWidth).rgb
-									),
-								mix(
-										texture2D(textures[2], texCoordInterpol).rgb,
-										texture2D(textures[3], texCoordInterpol).rgb,
-										texture2D(noiseTexture, coord.xz / totalWidth).rgb
-									),
-								coord.y / totalHeight
-							),
-					alpha);
+	// fade the underground portion
+	if(yCoordInterpol < 0.0)
+		calculatedColor.a *= (depth + yCoordInterpol) / depth;
 
-// -
-//				vec4(coord.y, coord.y, coord.y, 0.0) / (totalHeight * 2.0);
+	// texture it
+	calculatedColor *= mix(
+			texture2D(textures[1], texCoordInterpol),
+			texture2D(textures[2], texCoordInterpol),
+			texture2D(textures[3], texCoordInterpol / 10.0).x
+		);
+
+	vec3 lightVectorNorm = normalize(lightVectorInterpol);
+	vec3 normalNorm = normalize(normalInterpol);
+
+	float lightFactor = pow(max(dot(lightVectorNorm, normalNorm), 0.0), 3.0);
+	lightFactor = max(0.5, lightFactor);
+	calculatedColor *= vec4(min(vec3(lightFactor) * /*lightColor*/ vec3(1.0, 1.0, 1.0), vec3(1.0)), 1.0);
+
+	// final setting
+	gl_FragColor = calculatedColor;
 }

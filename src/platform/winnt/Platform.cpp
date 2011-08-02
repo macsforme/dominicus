@@ -61,7 +61,8 @@ Platform::Platform() {
 				dataPath = appName;
 		}
 	} else {
-		programLog->report(ProgramLog::LOG_FATAL, "Could not get path for resource directory.");
+		// no GameSystem to log yet so just exit
+		exit(1)
 	}
 
 	// initialize the random number generator
@@ -69,14 +70,6 @@ Platform::Platform() {
 }
 
 void Platform::consoleOut(std::string output) {
-}
-
-void Platform::hideCursor() {
-	SDL_ShowCursor(SDL_DISABLE);
-}
-
-void Platform::warpCursor(unsigned int x, unsigned int y) {
-	SDL_WarpMouse(x, y);
 }
 
 unsigned int Platform::getExecMills() {

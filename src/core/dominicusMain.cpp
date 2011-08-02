@@ -31,86 +31,48 @@
 #include "core/dominicusMain.h"
 
 // global variable declarations
-InputHandler* inputHandler = NULL;
-DrawingMaster* drawingMaster = NULL;
-GamePrefs* gamePrefs = NULL;
-GameWindow* gameWindow = NULL;
-Platform* platform = NULL;
-ProgramLog* programLog = NULL;
-SystemInfo* systemInfo = NULL;
+GameGraphics* gameGraphics;
+GameLogic* gameLogic;
+GameState* gameState;
+GameSystem* gameSystem;
+InputHandler* inputHandler;
+Platform* platform;
 
-// state variables (will be replaced by better state management)
-Ship* ship = NULL;
-Terrain* terrain = NULL;
+// main loop modules (should only be modified by the main loop or GameLogic)
+std::map<MainLoopMember*,unsigned int> mainLoopModules;
 
 // global main loop continuation flag
 bool keepDominicusAlive;
 
 // main game function
 int dominicusMain(int argc, char* argv[]) {
-	// initialize our core system now that SDL_Init() has been called
-	programLog = new ProgramLog();
-	platform = new Platform();
-	systemInfo = new SystemInfo();
-	gamePrefs = new GamePrefs();
+	// nullify
+	gameGraphics = NULL;
+	gameSystem = NULL;
+	inputHandler = NULL;
+	platform = NULL;
 
-	// initialize graphics and platform extensions
-	gameWindow = new GameWindow(gamePrefs->getBool("windowStartFullScreen") ? true : false);
+	// finish SDL-related initialization
+	SDL_EnableUNICODE(1);
+
+	// initialize our common objects
+	platform = new Platform();
+	gameSystem = new GameSystem();
+
+	gameGraphics = new GameGraphics(gameSystem->getBool("displayStartFullScreen"), true);
 	platform->loadExtensions();
 
-	// check system compatibility
-	systemInfo->check();
-
-	// initialize state variables
-	terrain = new Terrain();
-	ship = new Ship(Vector4(0.0f, 2.0f, -500.0f, 0.0f));
-
-	// create sole controller (will be replaced later by more flexible controller system)
-	ShipControl shipControl(ship);
-
-	// initialize input and prepare drawing
 	inputHandler = new InputHandler();
-	drawingMaster = new DrawingMaster();
+	gameLogic = new GameLogic();
 
-	// prepare a map of modules to be executed up to once per loop
-	std::map<MainLoopMember*,unsigned int> mainLoopModules;
-
+	// prepare a map of modules which are executed up to once per loop
 	mainLoopModules[inputHandler] = 0;
-	mainLoopModules[drawingMaster] = 0;
-	mainLoopModules[ship] = 0;
+	mainLoopModules[gameLogic] = 0;
 
 	// main program loop
 	keepDominicusAlive = true;
 
-	while(keepDominicusAlive && ! inputHandler->keyboard.getKeyState("quit")) {
-		// see if we need to change the fullscreen status
-		static KeyTrap fullScreenKeyTrap("toggleFullScreen");
-		fullScreenKeyTrap.loop();
-
-		if(fullScreenKeyTrap.newPress()) {
-			bool currentFullScreen = gameWindow->fullScreen;
-
-			mainLoopModules.erase(mainLoopModules.find(drawingMaster));
-
-			delete(drawingMaster);
-			delete(gameWindow);
-
-			gameWindow = new GameWindow(!currentFullScreen);
-			drawingMaster = new DrawingMaster();
-
-			mainLoopModules[drawingMaster] = 0;
-		}
-
-		// or regenerate the terrain
-		static KeyTrap newTerrainKeyTrap("newTerrain");
-		newTerrainKeyTrap.loop();
-
-		if(newTerrainKeyTrap.newPress()) {
-			terrain = new Terrain();
-
-			drawingMaster->renderingMaster->terrainRenderer.reloadGeometry();
-		}
-
+	while(keepDominicusAlive) {
 		// if the next execution time for any module is less than now, run it,
 		// and calculate the maximum possible sleep time
 		unsigned int nextPlannedLoop = -1;
@@ -133,12 +95,11 @@ int dominicusMain(int argc, char* argv[]) {
 	}
 
 	// clean up objects in reverse order
-	delete(drawingMaster);
+	delete(gameLogic);
 	delete(inputHandler);
-	delete(gameWindow);
-	delete(systemInfo);
+	delete(gameGraphics);
+	delete(gameSystem);
 	delete(platform);
-	delete(programLog);
 
 	return 0;
 }

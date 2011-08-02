@@ -77,20 +77,20 @@ public:
 
 // non-member vector-related functions
 inline Vector2 operator * (float scal, const Vector2& vec) { return Vector2(scal * vec.x, scal * vec.y); }
-inline float dot(Vector2& vec1, Vector2& vec2) { return vec1.x * vec2.x + vec1.y * vec2.y; }
+inline float dot(Vector2 vec1, Vector2 vec2) { return vec1.x * vec2.x + vec1.y * vec2.y; }
 inline Vector2 cross(Vector2& vec1, Vector2& vec2) {
 	return Vector2(
 			vec1.y * vec2.x - vec1.x * vec2.y,
 			vec1.x * vec2.y - vec1.y * vec2.x
 		);
 }
-inline float distance(Vector2& vec1, Vector2& vec2) {
+inline float distance(Vector2 vec1, Vector2 vec2) {
 	float distX = vec1.x - vec2.x;
 	float distY = vec1.y - vec2.y;
 
 	return sqrt(distX * distX + distY * distY);
 }
-inline float mag(Vector2& vec) {
+inline float mag(Vector2 vec) {
 	Vector2 midPoint(0.0f, 0.0f);
 
 	return absolute(distance(midPoint, vec));
@@ -137,7 +137,7 @@ public:
 
 // non-member vector-related functions
 inline Vector3 operator * (float scal, const Vector3& vec) { return Vector3(scal * vec.x, scal * vec.y, scal * vec.z); }
-inline float dot(Vector3& vec1, Vector3& vec2) { return vec1.x * vec2.x + vec1.y * vec2.y + vec1.z * vec2.z; }
+inline float dot(Vector3 vec1, Vector3 vec2) { return vec1.x * vec2.x + vec1.y * vec2.y + vec1.z * vec2.z; }
 inline Vector3 cross(Vector3& vec1, Vector3& vec2) {
 	return Vector3(
 			vec1.y * vec2.z - vec1.z * vec2.y,
@@ -145,17 +145,20 @@ inline Vector3 cross(Vector3& vec1, Vector3& vec2) {
 			vec1.x * vec2.y - vec1.y * vec2.x
 		);
 }
-inline float distance(Vector3& vec1, Vector3& vec2) {
+inline float distance(Vector3 vec1, Vector3 vec2) {
 	float distX = vec1.x - vec2.x;
 	float distY = vec1.y - vec2.y;
 	float distZ = vec1.z - vec2.z;
 
 	return sqrt(distX * distX + distY * distY + distZ * distZ);
 }
-inline float mag(Vector3& vec) {
+inline float mag(Vector3 vec) {
 	Vector3 midPoint(0.0f, 0.0f, 0.0f);
 
 	return absolute(distance(midPoint, vec));
+}
+inline Vector3 reflect(Vector3 vec, Vector3 normal) {
+	return 2.0f * dot(normal, vec) * normal - vec;
 }
 
 class Vector4 {
@@ -200,7 +203,7 @@ public:
 
 // non-member vector-related functions
 inline Vector4 operator * (float scal, const Vector4& vec) { return Vector4(scal * vec.x, scal * vec.y, scal * vec.z, scal * vec.w); }
-inline float dot(Vector4& vec1, Vector4& vec2) { return vec1.x * vec2.x + vec1.y * vec2.y + vec1.z * vec2.z + vec1.w * vec2.w; }
+inline float dot(Vector4 vec1, Vector4 vec2) { return vec1.x * vec2.x + vec1.y * vec2.y + vec1.z * vec2.z + vec1.w * vec2.w; }
 inline Vector4 cross(Vector4& vec1, Vector4& vec2) {
 	return Vector4(
 			vec1.y * vec2.z - vec1.z * vec2.y,
@@ -209,7 +212,7 @@ inline Vector4 cross(Vector4& vec1, Vector4& vec2) {
 			vec1.x * vec2.y - vec1.y * vec2.x
 		);
 }
-inline float distance(Vector4& vec1, Vector4& vec2) {
+inline float distance(Vector4 vec1, Vector4 vec2) {
 	float distX = vec1.x - vec2.x;
 	float distY = vec1.y - vec2.y;
 	float distZ = vec1.z - vec2.z;
@@ -217,7 +220,7 @@ inline float distance(Vector4& vec1, Vector4& vec2) {
 
 	return sqrt(distX * distX + distY * distY + distZ * distZ + distW * distW);
 }
-inline float mag(Vector4& vec) {
+inline float mag(Vector4 vec) {
 	Vector4 midPoint(0.0f, 0.0f, 0.0f, 0.0f);
 
 	return absolute(distance(midPoint, vec));

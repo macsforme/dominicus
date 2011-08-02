@@ -46,18 +46,16 @@ void Platform::consoleOut(std::string output) {
 	std::cout << output;
 }
 
-void Platform::hideCursor() {
-	SDL_ShowCursor(SDL_DISABLE);
-}
-
-void Platform::warpCursor(unsigned int x, unsigned int y) {
-	SDL_WarpMouse(x, y);
-}
-
 unsigned int Platform::getExecMills() {
 	timeval tv;
-	if(gettimeofday(&tv, NULL) == -1)
-		programLog->report(ProgramLog::LOG_FATAL, "An error occurred when attempting to retrieve the time.");
+	if(gettimeofday(&tv, NULL) == -1) {
+		if(gameSystem != NULL) {
+			gameSystem->log(GameSystem::LOG_FATAL,
+					"An error occurred when attempting to retrieve the time.");
+		} else {
+			std::cout << "Could not get path for resource directory." << std::endl;
+			exit(1);
+	}
 
 	static unsigned int beginning = tv.tv_sec * 1000 + tv.tv_usec / 1000;
 	unsigned int now = tv.tv_sec * 1000 + tv.tv_usec / 1000;

@@ -128,7 +128,7 @@ DiamondSquare::DiamondSquare(unsigned int size, float roughness) :
 		displaceRange *= roughness;
 	}
 
-	// re-map all the values to +1.0f, -1.0f
+	// re-map all the values to the range +1.0f, -1.0f
 	float min = 0.0f, max = 0.0f;
 
 	for(unsigned int i = 0; i < size; ++i) {

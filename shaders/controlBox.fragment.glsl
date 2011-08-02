@@ -1,6 +1,7 @@
 #version 110
 
 uniform float spotSize;
+uniform vec4 color;
 
 varying vec2 boxCoordInterpol;
 
@@ -9,11 +10,8 @@ void main() {
 	float cornerBegin = 0.65;
 	float squareTriHypotenuse = 1.414213562;
 
-	vec3 color = vec3(0.0, 0.0, 0.0);
-	float maxAlpha = 0.6;
-
 	if(distance(vec2(0.0, 0.0), absCoord) <= spotSize) {
-		gl_FragColor = vec4(color, maxAlpha);
+		gl_FragColor = color;
 	} else if(
 			(absCoord.x > cornerBegin && absCoord.y <= cornerBegin) ||
 			(absCoord.y > cornerBegin && absCoord.x <= cornerBegin) ||
@@ -29,10 +27,6 @@ void main() {
 		if(distOver < 1.0)
 			discard;
 		else
-			gl_FragColor = vec4(
-					color,
-//					(distOver - 1.0) / (squareTriHypotenuse - 1.0)
-					maxAlpha
-				);
+			gl_FragColor = color;
 	}
 }

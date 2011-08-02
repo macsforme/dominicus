@@ -31,33 +31,48 @@
 #ifndef SHIP_H
 #define SHIP_H
 
+// forward declarations
+class GameState;
+
 // program headers
-#include "core/GamePrefs.h"
-#include "core/MainLoopMember.h"
-#include "input/Mouse.h"
+#include "core/GameSystem.h"
+#include "geometry/Mesh.h"
 #include "math/MatrixMath.h"
 #include "math/VectorMath.h"
 #include "platform/Platform.h"
-#include "state/ShipControl.h"
-
-// forward declarations
-class ShipControl;
+#include "state/Collisions.h"
+#include "state/GameState.h"
 
 // global variables
-extern GamePrefs* gamePrefs;
+extern GameState* gameState;
+extern GameSystem* gameSystem;
 extern Platform* platform;
 
-class Ship : public MainLoopMember {
+class Ship {
 public:
-	Vector4 position;
-	Matrix4 orientation;
+	enum Team {
+		TEAM_DESERT,
+		TEAM_FOREST,
+		TEAM_AQUA
+	};
+
+	Team team;
+	float power;
+	Vector3 position;
+	Vector3 direction;
+	float pitch, roll;
 	float speed;
 
-	ShipControl* shipControl;
+	bool acceleration;
+	Vector2 steering;
 
-	Ship(Vector4 position);
+private:
+	unsigned int lastUpdate;
 
-	unsigned int execute();
+public:
+	Ship();
+
+	void execute();
 };
 
 #endif

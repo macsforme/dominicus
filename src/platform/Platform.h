@@ -34,7 +34,7 @@
 // this should be the one and only compile-time determination system-wide
 // of what architecture the program is being compiled for (generally the
 // code should not have platform-specific behavior outside of Platform,
-// but we accept that there must be exceptions
+// but we acknowledge that there must be exceptions
 #if defined(__APPLE__) && defined(__MACH__)
 	#define PROGRAM_ARCH_MACOSX
 	#define PROGRAM_ARCH_STR "MacOSX"
@@ -50,10 +50,10 @@
 #endif
 
 // forward declarations
-class ProgramLog;
+class GameSystem;
 
 // program headers
-#include "core/ProgramLog.h"
+#include "GameSystem.h"
 
 // library headers
 #include <map>
@@ -61,7 +61,7 @@ class ProgramLog;
 #include <string>
 
 // global variables
-extern ProgramLog* programLog;
+extern GameSystem* gameSystem;
 
 class Platform {
 public:
@@ -71,10 +71,6 @@ public:
 
 	// static system console output function
 	static void consoleOut(std::string output);
-
-	// input functions
-	void hideCursor();
-	void warpCursor(unsigned int x, unsigned int y);
 
 	// time functions
 	unsigned int getExecMills();

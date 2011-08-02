@@ -30,20 +30,17 @@
 
 // program headers
 #include "core/dominicusMain.h"
-#include "core/ProgramLog.h"
 
 // library headers
+#include <iostream>
 #include <SDL/SDL.h>
 
 int main(int argc, char* argv[]) {
 	// initialize SDL
 	if(SDL_Init(SDL_INIT_VIDEO) == -1) {
-		if(programLog == NULL) {	// should always be true here
-			programLog = new ProgramLog();
-
-			// this is debug only because the program will exit immediately anyway
-			programLog->report(ProgramLog::LOG_DEBUG, "SDL could not be initialized.");
-		}
+		// no GameSystem to log yet so just print and exit
+		std::cout << "SDL could not be initialized." << std::endl;
+		exit(1);
 	}
 
 	// call the main program routine

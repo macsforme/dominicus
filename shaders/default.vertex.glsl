@@ -2,7 +2,10 @@
 
 // uniforms
 uniform mat4 mvpMatrix;
+
 uniform bool useTexture;
+
+uniform bool useColor;
 
 uniform bool useLighting;
 uniform vec3 lightPosition;
@@ -28,9 +31,14 @@ void main() {
     gl_Position = mvpMatrix * vec4(position, 1.0);
 
 	// set varyings
-	normalInterpol = rotationMatrix * normal;
-    texCoordInterpol = texCoord;
-	colorInterpol = color;
+	if(useLighting) {
+		normalInterpol = rotationMatrix * normal;
+		lightVectorInterpol = lightPosition - position;
+	}
 
-	lightVectorInterpol = lightPosition - position;
+	if(useTexture)
+		texCoordInterpol = texCoord;
+
+	if(useColor)
+		colorInterpol = color;
 }

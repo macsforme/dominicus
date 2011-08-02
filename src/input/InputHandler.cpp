@@ -30,6 +30,16 @@
 
 #include "input/InputHandler.h"
 
+InputHandler::InputHandler() {
+	keyboard = new Keyboard();
+	mouse = new Mouse();
+}
+
+InputHandler::~InputHandler() {
+	delete(keyboard);
+	delete(mouse);
+}
+
 unsigned int InputHandler::execute() {
 	// poll SDL for events and forward the ones we use to the appropriate
 	// input handler
@@ -39,13 +49,12 @@ unsigned int InputHandler::execute() {
 		switch(event.type) {
 		case SDL_KEYDOWN:
 		case SDL_KEYUP:
-			keyboard.eventStack.push_back(event);
+			keyboard->eventStack.push_back(event);
 
 			break;
 		case SDL_MOUSEMOTION:
 		case SDL_MOUSEBUTTONDOWN:
-		case SDL_MOUSEBUTTONUP:
-			mouse.eventStack.push_back(event);
+			mouse->eventStack.push_back(event);
 
 			break;
 		default:
@@ -54,11 +63,11 @@ unsigned int InputHandler::execute() {
 	}
 
 	// run the input handlers
-	keyboard.loop();
-	mouse.loop();
+	keyboard->execute();
+	mouse->execute();
 
 	// calculate and return sleep time from superclass
-	unsigned int frequency = (unsigned int) gamePrefs->getFloat("inputPollingFrequency");
+	unsigned int frequency = (unsigned int) gameSystem->getFloat("inputPollingFrequency");
 	static const unsigned int idealSleepTime = (
 			frequency  != 0 ?
 			1000 / frequency : 0

@@ -47,6 +47,15 @@ configuration files, and other files included in any source, build,
 documentation, web site, or other distribution is Copyright 2010-2011 Joshua
 Bodine, or their creators/contributors.
 
+ONLINE RESOURCES
+
+Game-related resources and information can be found on the following web sites:
+
+http://games.fairserve.net (home page, game info, screenshots, videos)
+http://codaset.com/macsforme/dominicus (source code, development info, tracker)
+https://www.ohloh.net/p/dominicus (code analysis and statistics)
+https://groups.google.com/forum/#!forum/dominicus-development (mailing list)
+
 OBTAINING BINARY DISTRIBUTIONS
 
 Currently, no binary releases have been made. Please build from source code
@@ -184,10 +193,10 @@ DEDICATION
 Dominicus is dedicated to Sergeant Sean Drenth #6894 of the Phoenix Police
 Department, EOW October 18, 2010.
 
-Miss you, boss. Rest well.
+Miss you, boss.
 
 CHANGELOG
 
 Dominicus 0.x "Conception"
-	.0
+	.1
 		* Initial version for original development.

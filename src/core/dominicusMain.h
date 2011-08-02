@@ -32,17 +32,19 @@
 #define DOMINICUSMAIN_H
 
 // program headers
-#include "core/GamePrefs.h"
-#include "core/SystemInfo.h"
-#include "drawing/DrawingMaster.h"
-#include "state/Terrain.h"
+#include "core/GameSystem.h"
+#include "graphics/GameGraphics.h"
 #include "input/InputHandler.h"
-#include "input/KeyTrap.h"
+#include "input/KeyBoard.h"
+#include "logic/GameLogic.h"
 #include "math/VectorMath.h"
 #include "platform/Platform.h"
-#include "state/Ship.h"
-#include "state/ShipControl.h"
-#include "windowing/GameWindow.h"
+#include "state/GameState.h"
+
+// library headers
+#include <map>
+#include <SDL/SDL.h>
+#include <vector>
 
 // main game function declaration
 int dominicusMain(int argc, char* argv[]);

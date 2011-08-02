@@ -46,14 +46,9 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	myinstance = hInstance;
 
 	// initialize SDL
-	if(SDL_Init(SDL_INIT_VIDEO) == -1) {
-		if(programLog == NULL) {	// should always be true here
-			programLog = new ProgramLog();
-
-			// this is debug only because the program will exit immediately anyway
-			programLog->report(ProgramLog::LOG_DEBUG, "SDL could not be initialized.");
-		}
-	}
+	if(SDL_Init(SDL_INIT_VIDEO) == -1)
+		// no GameSystem to log yet so just exit
+		exit(1);
 
 	// call the main program routine
 	int returnVal = dominicusMain(0, NULL);
