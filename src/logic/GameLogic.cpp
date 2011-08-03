@@ -643,9 +643,8 @@ unsigned int GameLogic::execute() {
 						gameSystem->getFloat("hudElementMargin") / gameGraphics->resolutionY)
 			);
 
-		joinButtonEntry.second["containerTimer"] = &(gameGraphics->waveTimer);
-		quitButtonEntry.second["containerTimer"] = &(gameGraphics->waveTimer);
 		hintEntry.second["containerTimer"] = &(gameGraphics->hardTimer);
+		hintEntry.second["textTimer"] = &(gameGraphics->hardTimer);
 
 		reScheme();
 		needRedraw = true;

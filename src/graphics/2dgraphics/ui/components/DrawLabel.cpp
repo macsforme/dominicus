@@ -430,7 +430,7 @@ void DrawLabel::execute(std::map<std::string, void*> arguments) {
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, quadVertices.size() * sizeof(GLuint), elementBufferArray,
 			GL_STREAM_DRAW);
 
-	delete(elementBufferArray);
+	delete[] elementBufferArray;
 
 	size_t vertexBufferArraySize = quadVertices.size() * 9;
 	GLfloat* vertexBufferArray = new GLfloat[vertexBufferArraySize];
@@ -458,7 +458,7 @@ void DrawLabel::execute(std::map<std::string, void*> arguments) {
 	glBufferData(GL_ARRAY_BUFFER, vertexBufferArraySize * sizeof(GL_FLOAT), vertexBufferArray,
 			GL_STREAM_DRAW);
 
-	delete(vertexBufferArray);
+	delete[] vertexBufferArray;
 
 	// state
 	glEnable(GL_TEXTURE_2D);

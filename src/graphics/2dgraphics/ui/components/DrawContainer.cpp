@@ -142,7 +142,7 @@ void DrawContainer::execute(std::map<std::string, void*> arguments) {
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, quadVertices.size() * sizeof(GLuint), elementBufferArray,
 			GL_STREAM_DRAW);
 
-	delete(elementBufferArray);
+	delete[] elementBufferArray;
 
 	size_t vertexBufferArraySize = quadVertices.size() * 10;
 	GLfloat* vertexBufferArray = new GLfloat[vertexBufferArraySize];
@@ -177,7 +177,7 @@ printf("vertex posX %.4f\tposY %.4f\tprimX %.4f\tprimY %.4f\tcOrigX %.4f\tcOrigY
 	glBufferData(GL_ARRAY_BUFFER, vertexBufferArraySize * sizeof(GLfloat), vertexBufferArray,
 			GL_STREAM_DRAW);
 
-	delete(vertexBufferArray);
+	delete[] vertexBufferArray;
 
 	// state
 	glEnable(GL_BLEND);
