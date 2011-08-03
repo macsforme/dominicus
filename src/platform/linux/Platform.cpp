@@ -31,6 +31,7 @@
 #include "platform/Platform.h"
 
 // platform-specific headers
+#include <iostream>
 #include <SDL/SDL.h>
 #include <sys/time.h>
 
@@ -55,13 +56,14 @@ unsigned int Platform::getExecMills() {
 		} else {
 			std::cout << "Could not get path for resource directory." << std::endl;
 			exit(1);
+		}
 	}
 
 	static unsigned int beginning = tv.tv_sec * 1000 + tv.tv_usec / 1000;
 	unsigned int now = tv.tv_sec * 1000 + tv.tv_usec / 1000;
 
 	return now - beginning;
-}
+	}
 
 void Platform::sleepMills(unsigned int mills) {
 	timespec delayTime;

@@ -32,7 +32,7 @@
 #define KEYBOARD_H
 
 // program headers
-#include "GameSystem.h"
+#include "core/GameSystem.h"
 
 // library headers
 #include <map>

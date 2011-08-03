@@ -35,7 +35,7 @@
 #include "core/GameSystem.h"
 #include "graphics/GameGraphics.h"
 #include "input/InputHandler.h"
-#include "input/KeyBoard.h"
+#include "input/Keyboard.h"
 #include "logic/GameLogic.h"
 #include "math/VectorMath.h"
 #include "platform/Platform.h"

@@ -6,46 +6,44 @@ LIBS = -lGL -lSDL `freetype-config --libs`
 HEADERS = -I src
 
 SOURCES = \
-	./src/input/InputHandler.cpp \
-	./src/input/Mouse.cpp \
-	./src/input/KeyTrap.cpp \
-	./src/input/Keyboard.cpp \
-	./src/state/Terrain.cpp \
-	./src/state/Ship.cpp \
-	./src/state/ShipControl.cpp \
 	./src/platform/linux/Platform.cpp \
 	./src/platform/linux/main.cpp \
-	./src/core/GamePrefs.cpp \
-	./src/core/ProgramLog.cpp \
+	./src/logic/Schemes.cpp \
+	./src/logic/GameLogic.cpp \
+	./src/logic/cameras/FollowCamera.cpp \
+	./src/logic/cameras/Camera.cpp \
+	./src/logic/cameras/TestCameras.cpp \
+	./src/logic/UILayoutAuthority.cpp \
+	./src/graphics/3dgraphics/renderers/ShipRenderer.cpp \
+	./src/graphics/3dgraphics/renderers/TerrainRenderer.cpp \
+	./src/graphics/3dgraphics/renderers/WaterRenderer.cpp \
+	./src/graphics/texture/Texture.cpp \
+	./src/graphics/2dgraphics/cursor/DrawCursor.cpp \
+	./src/graphics/2dgraphics/ui/DrawGrayOut.cpp \
+	./src/graphics/2dgraphics/ui/DrawRadar.cpp \
+	./src/graphics/2dgraphics/ui/BaseUIElement.cpp \
+	./src/graphics/2dgraphics/ui/components/DrawLabel.cpp \
+	./src/graphics/2dgraphics/ui/components/DrawButton.cpp \
+	./src/graphics/2dgraphics/ui/components/DrawTexture.cpp \
+	./src/graphics/2dgraphics/ui/components/DrawField.cpp \
+	./src/graphics/2dgraphics/ui/components/DrawContainer.cpp \
+	./src/graphics/2dgraphics/controlbox/DrawControlBox.cpp \
+	./src/graphics/2dgraphics/splash/DrawSplash.cpp \
+	./src/graphics/GameGraphics.cpp \
+	./src/graphics/BaseDrawNode.cpp \
+	./src/graphics/text/FontManager.cpp \
+	./src/graphics/text/TextBlock.cpp \
+	./src/input/Keyboard.cpp \
+	./src/input/Mouse.cpp \
+	./src/input/InputHandler.cpp \
+	./src/geometry/DiamondSquare.cpp \
+	./src/state/Collisions.cpp \
+	./src/state/Ship.cpp \
+	./src/state/World.cpp \
+	./src/state/GameState.cpp \
+	./src/core/GameSystem.cpp \
 	./src/core/dominicusMain.cpp \
-	./src/core/SystemInfo.cpp \
-	./src/core/BuildVersion.cpp \
-	./src/core/MainLoopMember.cpp \
-	./src/windowing/GameWindow.cpp \
-	./src/drawing/DrawingMaster.cpp \
-	./src/drawing/rendering/RenderingMaster.cpp \
-	./src/drawing/rendering/cameras/WorldViewCamera.cpp \
-	./src/drawing/rendering/cameras/Camera.cpp \
-	./src/drawing/rendering/cameras/FirstPersonCamera.cpp \
-	./src/drawing/rendering/cameras/BackCamera.cpp \
-	./src/drawing/rendering/terrain/TerrainRenderer.cpp \
-	./src/drawing/rendering/ship/ShipRenderer.cpp \
-	./src/drawing/rendering/sky/SkyRenderer.cpp \
-	./src/drawing/text/FontManager.cpp \
-	./src/drawing/text/TextBlock.cpp \
-	./src/drawing/texture/Texture.cpp \
-	./src/drawing/texture/TextureUtils.cpp \
-	./src/drawing/texture/BMPImage.cpp \
-	./src/drawing/HUD/DrawHUDContainerUtility.cpp \
-	./src/drawing/HUD/DrawHUD.cpp \
-	./src/drawing/HUD/infobox/DrawInfoBox.cpp \
-	./src/drawing/HUD/HUDArrangement.cpp \
-	./src/drawing/HUD/console/DrawConsole.cpp \
-	./src/drawing/HUD/DrawHUDEnclosure.cpp \
-	./src/drawing/cursor/DrawCursor.cpp \
-	./src/drawing/controlbox/DrawControlBox.cpp \
-	./src/drawing/ShaderTools.cpp \
-	./src/geometry/DiamondSquare.cpp
+	./src/core/MainLoopMember.cpp
 
 all: $(PROGRAM)
 

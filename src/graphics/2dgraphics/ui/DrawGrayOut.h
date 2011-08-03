@@ -34,7 +34,7 @@
 // program headers
 #include "core/GameSystem.h"
 #include "graphics/GameGraphics.h"
-#include "graphics/2dgraphics/UI/BaseUIElement.h"
+#include "graphics/2dgraphics/ui/BaseUIElement.h"
 #include "math/VectorMath.h"
 #include "logic/UILayoutAuthority.h"
 #include "platform/OpenGLHeaders.h"

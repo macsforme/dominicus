@@ -30,7 +30,7 @@
 
 // program headers
 #include "core/dominicusMain.h"
-#include "core/ProgramLog.h"
+#include "core/GameSystem.h"
 
 // library headers
 #include <iostream>

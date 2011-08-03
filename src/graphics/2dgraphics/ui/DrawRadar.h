@@ -34,7 +34,7 @@
 // program headers
 #include "graphics/GameGraphics.h"
 #include "graphics/texture/Texture.h"
-#include "graphics/2dgraphics/UI/BaseUIElement.h"
+#include "graphics/2dgraphics/ui/BaseUIElement.h"
 #include "logic/UILayoutAuthority.h"
 #include "math/MatrixMath.h"
 #include "math/MiscMath.h"

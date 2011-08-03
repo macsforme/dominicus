@@ -47,9 +47,9 @@
 class Platform;
 
 // program headers
-#include "OpenGLHeaders.h"
-#include "Platform.h"
-#include "VectorMath.h"
+#include "platform/OpenGLHeaders.h"
+#include "platform/Platform.h"
+#include "math/VectorMath.h"
 
 // library headers
 #include <map>

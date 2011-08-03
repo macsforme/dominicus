@@ -37,9 +37,9 @@ class DrawLabel;
 
 // program headers
 #include "graphics/GameGraphics.h"
-#include "graphics/2dgraphics/UI/BaseUIElement.h"
-#include "graphics/2dgraphics/UI/components/DrawContainer.h"
-#include "graphics/2dgraphics/UI/components/DrawLabel.h"
+#include "graphics/2dgraphics/ui/BaseUIElement.h"
+#include "graphics/2dgraphics/ui/components/DrawContainer.h"
+#include "graphics/2dgraphics/ui/components/DrawLabel.h"
 #include "logic/UILayoutAuthority.h"
 #include "math/VectorMath.h"
 #include "platform/OpenGLHeaders.h"

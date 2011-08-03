@@ -61,7 +61,7 @@ class InputHandler;
 #include "input/InputHandler.h"
 #include "logic/GameLogic.h"
 #include "math/MatrixMath.h"
-#include "VectorMath.h"
+#include "math/VectorMath.h"
 #include "platform/OpenGLHeaders.h"
 #include "platform/Platform.h"
 

@@ -35,7 +35,7 @@
 #include "graphics/GameGraphics.h"
 #include "graphics/text/FontManager.h"
 #include "graphics/text/TextBlock.h"
-#include "graphics/2dgraphics/UI/BaseUIElement.h"
+#include "graphics/2dgraphics/ui/BaseUIElement.h"
 #include "logic/UILayoutAuthority.h"
 #include "math/VectorMath.h"
 #include "platform/OpenGLHeaders.h"
