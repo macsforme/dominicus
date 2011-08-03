@@ -36,7 +36,7 @@ void main() {
 
 		float lightFactor = max(dot(lightVectorNorm, normalNorm), 0.0);
 
-		calculatedColor *= vec4(min(vec3(lightFactor) * lightColor + colorInterpol.rgb, vec3(1.0)), 1.0);
+		calculatedColor *= vec4(min(vec3(lightFactor) * lightColor, vec3(1.0)), 1.0);
 
 		vec3 refLight = reflect(lightVectorNorm, normalNorm);
 		vec3 specularFactor = pow(max(dot(refLight, vec3(0.0, 0.0, 1.0)), 0.0), shininess) * specularColor;
