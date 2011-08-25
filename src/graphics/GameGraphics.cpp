@@ -269,8 +269,9 @@ printf("FBR %.2f %.2f %.2f\n", fbr.x / fbr.w, fbr.y / fbr.w, fbr.z / fbr.w);
 	drawers["radar"] = new DrawRadar();
 	drawers["grayOut"] = new DrawGrayOut();
 
-	drawers["terrainRenderer"] = new TerrainRenderer();
+	drawers["skyRenderer"] = new SkyRenderer();
 	drawers["waterRenderer"] = new WaterRenderer();
+	drawers["terrainRenderer"] = new TerrainRenderer();
 	drawers["shipRenderer"] = new ShipRenderer();
 }
 

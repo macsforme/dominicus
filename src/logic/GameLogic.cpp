@@ -290,9 +290,11 @@ GameLogic::GameLogic() {
 
 	ship1Entry.first = "shipRenderer";
 
-	terrain1Entry.first = "terrainRenderer";
-
 	waterEntry.first = "waterRenderer";
+
+	skyEntry.first = "skyRenderer";
+
+	terrain1Entry.first = "terrainRenderer";
 
 	// set initial logic
 	lastClockUpdate = 0;

@@ -32,40 +32,29 @@
 #define SKYRENDERER_H
 
 // program headers
-#include "drawing/texture/BMPImage.h"
-#include "drawing/ShaderTools.h"
-#include "math/MatrixMath.h"
-#include "math/VectorMath.h"
+#include "graphics/BaseDrawNode.h"
+#include "graphics/GameGraphics.h"
 #include "platform/OpenGLHeaders.h"
 #include "platform/Platform.h"
-#include "state/Ship.h"
+#include "state/GameState.h"
+
+// library headers
+#include <map>
+#include <sstream>
+#include <string>
+#include <vector>
 
 // global variables
-extern Platform* platform;
-extern Ship* ship;
+extern GameGraphics* gameGraphics;
+extern GameState* gameState;
 
-class SkyRenderer {
-private:
-	// program/shader names
-	GLuint program, vertexShader, fragmentShader;
-
-	// attributes
-	GLint positionAttrib, degreesAttrib;
-
-	// uniforms
-	GLint mvpMatrixUniform, horizonColorUniform, skyColorUniform;
-
-	// texture IDs
-	GLuint textureID;
-
-	// buffers
-	GLuint vertDataBuffer, vertElementBuffer;
-
+// class definition
+class SkyRenderer : public BaseDrawNode {
 public:
 	SkyRenderer();
 	~SkyRenderer();
 
-	void render(Matrix4 mvpMatrix);
+	void execute(std::map<std::string, void*> arguments);
 };
 
-#endif
+#endif // SKYRENDERER_H

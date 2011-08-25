@@ -56,6 +56,7 @@
 		03CAB6CC1371541000C52A90 /* TerrainRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03CAB6C81371541000C52A90 /* TerrainRenderer.cpp */; };
 		03D0B3C4131F769900100010 /* DrawCursor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03BB9B58131F3F50009DFC8B /* DrawCursor.cpp */; };
 		03EA006313839E1F00791980 /* Collisions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03EA006213839E1F00791980 /* Collisions.cpp */; };
+		03EA2DE11406212800372BDB /* SkyRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03CAB6C61371541000C52A90 /* SkyRenderer.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -602,6 +603,7 @@
 				03ABD53013A99B9C00CF79B5 /* WaterRenderer.cpp in Sources */,
 				031DB09513AB515A00FE0F76 /* DrawRadar.cpp in Sources */,
 				037542F913B3260100AEE260 /* DrawGrayOut.cpp in Sources */,
+				03EA2DE11406212800372BDB /* SkyRenderer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

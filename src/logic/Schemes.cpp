@@ -435,14 +435,17 @@ void Schemes::playingScheme(
 	std::string fontColorMedium = gameSystem->getString("fontColorMedium");
 	std::stringstream textLines;
 
+	// sky
+	gameLogic->drawStack.push_back(gameLogic->skyEntry);
+
 	// water
 	gameLogic->drawStack.push_back(gameLogic->waterEntry);
 
-	// ships
-	gameLogic->drawStack.push_back(gameLogic->ship1Entry);
-
 	// terrains
 	gameLogic->drawStack.push_back(gameLogic->terrain1Entry);
+
+	// ships
+	gameLogic->drawStack.push_back(gameLogic->ship1Entry);
 
 	// control box
 	*((float*) gameLogic->controlBoxEntry.second["spotSize"]) = gameSystem->getFloat("hudControlBoxSpotSize");

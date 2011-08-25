@@ -51,8 +51,9 @@ class FollowCamera;
 #include "graphics/2dgraphics/ui/components/DrawLabel.h"
 #include "graphics/2dgraphics/ui/components/DrawTexture.h"
 #include "graphics/3dgraphics/renderers/ShipRenderer.h"
-#include "graphics/3dgraphics/renderers/TerrainRenderer.h"
+#include "graphics/3dgraphics/renderers/SkyRenderer.h"
 #include "graphics/3dgraphics/renderers/WaterRenderer.h"
+#include "graphics/3dgraphics/renderers/TerrainRenderer.h"
 #include "graphics/texture/Texture.h"
 #include "input/InputHandler.h"
 #include "input/Keyboard.h"
@@ -154,10 +155,13 @@ public:
 	DrawStackEntry ship1Entry;
 	DrawStackEntry ship2Entry;
 
+	DrawStackEntry skyEntry;
+
+	DrawStackEntry waterEntry;
+
 	DrawStackEntry terrain1Entry;
 	DrawStackEntry terrain2Entry;
 
-	DrawStackEntry waterEntry;
 
 	// stack of stuff to render each frame
 	DrawStack drawStack;
