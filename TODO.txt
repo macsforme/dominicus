@@ -1,0 +1,2 @@
+This file exists in the git repository so that build tools can reference the
+local copy belonging to each developer, but the repo copy is not maintained.

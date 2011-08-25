@@ -33,6 +33,20 @@
 FollowCamera::FollowCamera(Ship* ship) : ship(ship) { }
 
 void FollowCamera::execute() {
+	// update camera position
+	float xzAngle = getAngle(Vector2(ship->direction.x, ship->direction.z)) - 90.0f;
+
+	Matrix3 positionMatrix;
+	positionMatrix.identity();
+	rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(-xzAngle), positionMatrix);
+	rotateMatrix(
+			Vector3(positionMatrix.m11, positionMatrix.m12, positionMatrix.m13),
+			radians(gameSystem->getFloat("renderingCameraAngle")),
+			positionMatrix
+		);
+	Vector3 newPosition(0.0f, 0.0f, -gameSystem->getFloat("renderingCameraFollowDistance"));
+	position = newPosition * positionMatrix + ship->position;
+
 	// generate the actual ship orientation matrix from the direction
 	Matrix3 shipOrientation = completeMatrix(ship->direction);
 	shipOrientation = Matrix3(
@@ -54,7 +68,7 @@ void FollowCamera::execute() {
 
 	rotateMatrix(Vector3(1.0f, 0.0f, 0.0f),
 			radians(-gameSystem->getFloat("renderingCameraAngle")), shipMatrix);
-	translateMatrix(0.0f, 0.0f, (float) gameSystem->getFloat("renderingCameraFollowDistance"), shipMatrix);
+	translateMatrix(0.0f, 0.0f, gameSystem->getFloat("renderingCameraFollowDistance"), shipMatrix);
 
 	shipMatrix *= gameGraphics->ppMatrix;
 

@@ -37,6 +37,7 @@
 // class definition
 class Camera {
 public:
+	Vector3 position;
 	Matrix4 shipMatrix, terrainMatrix;
 
 	virtual void execute() = 0;

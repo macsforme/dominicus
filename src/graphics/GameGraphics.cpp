@@ -150,23 +150,19 @@ GameGraphics::GameGraphics(bool fullScreen, bool testSystem) : fullScreen(fullSc
 	}
 
 	// set up matrices
-	const float fov = gameSystem->getFloat("renderingPerspectiveFOV");
-	const float nClip = gameSystem->getFloat("renderingPerspectiveNearClip");
-	const float fClip = gameSystem->getFloat("renderingPerspectiveFarClip");
-
-	ppMatrix = Matrix4(
-	        1.0f/tan(radians(fov)), 0.0, 0.0, 0.0,
-	        0.0, aspectRatio/tan(radians(fov)), 0.0, 0.0,
-	        0.0, 0.0, (fClip + nClip) / (fClip - nClip), 1.0f,
-	        0.0, 0.0, -2.0f * fClip * nClip / (fClip - nClip), 0.0
+	idMatrix = Matrix4(
+			1.0, 0.0f, 0.0f, 0.0f,
+			0.0f, 1.0f, 0.0f, 0.0f,
+			0.0f, 0.0f, 1.0f, 0.0f,
+			0.0f, 0.0f, 0.0f, 1.0f
 		);
-	float ppMatrixArrayVals[] = {
-			ppMatrix.m11, ppMatrix.m12, ppMatrix.m13, ppMatrix.m14,
-			ppMatrix.m21, ppMatrix.m22, ppMatrix.m23, ppMatrix.m24,
-			ppMatrix.m31, ppMatrix.m32, ppMatrix.m33, ppMatrix.m34,
-			ppMatrix.m41, ppMatrix.m42, ppMatrix.m43, ppMatrix.m44
+	float idMatrixArrayVals[] = {
+			idMatrix.m11, idMatrix.m12, idMatrix.m13, idMatrix.m14,
+			idMatrix.m21, idMatrix.m22, idMatrix.m23, idMatrix.m24,
+			idMatrix.m31, idMatrix.m32, idMatrix.m33, idMatrix.m34,
+			idMatrix.m41, idMatrix.m42, idMatrix.m43, idMatrix.m44
 		};
-	memcpy((void*) ppMatrixArray, (void*) ppMatrixArrayVals, 16 * sizeof(float));
+	memcpy((void*) idMatrixArray, (void*) idMatrixArrayVals, 16 * sizeof(float));
 
 	opMatrix = Matrix4(
 			(float) resolutionY / (float) resolutionX, 0.0f, 0.0f, 0.0f,
@@ -182,20 +178,65 @@ GameGraphics::GameGraphics(bool fullScreen, bool testSystem) : fullScreen(fullSc
 		};
 	memcpy((void*) opMatrixArray, (void*) opMatrixArrayVals, 16 * sizeof(float));
 
-	idMatrix = Matrix4(
-			1.0, 0.0f, 0.0f, 0.0f,
-			0.0f, 1.0f, 0.0f, 0.0f,
-			0.0f, 0.0f, 1.0f, 0.0f,
-			0.0f, 0.0f, 0.0f, 1.0f
-		);
-	float idMatrixArrayVals[] = {
-			idMatrix.m11, idMatrix.m12, idMatrix.m13, idMatrix.m14,
-			idMatrix.m21, idMatrix.m22, idMatrix.m23, idMatrix.m24,
-			idMatrix.m31, idMatrix.m32, idMatrix.m33, idMatrix.m34,
-			idMatrix.m41, idMatrix.m42, idMatrix.m43, idMatrix.m44
-		};
-	memcpy((void*) idMatrixArray, (void*) idMatrixArrayVals, 16 * sizeof(float));
+	const float fov = gameSystem->getFloat("renderingPerspectiveFOV");
+	const float nClip = gameSystem->getFloat("renderingPerspectiveNearClip");
+	const float fClip = gameSystem->getFloat("renderingPerspectiveFarClip");
 
+	ppMatrix = Matrix4(
+			1.0f / tan(radians(fov)), 0.0f, 0.0f, 0.0f,
+			0.0f, aspectRatio / tan(radians(fov)), 0.0f, 0.0f,
+			0.0f, 0.0f, (fClip + nClip) / (fClip - nClip), 1.0f,
+			0.0f, 0.0f, -2.0f * fClip * nClip / (fClip - nClip), 0.0f
+		);
+
+	float ppMatrixArrayVals[] = {
+			ppMatrix.m11, ppMatrix.m12, ppMatrix.m13, ppMatrix.m14,
+			ppMatrix.m21, ppMatrix.m22, ppMatrix.m23, ppMatrix.m24,
+			ppMatrix.m31, ppMatrix.m32, ppMatrix.m33, ppMatrix.m34,
+			ppMatrix.m41, ppMatrix.m42, ppMatrix.m43, ppMatrix.m44
+		};
+	memcpy((void*) ppMatrixArray, (void*) ppMatrixArrayVals, 16 * sizeof(float));
+
+	ppMatrixInverse = Matrix4(
+			tan(radians(fov)) / 1.0f, 0.0f, 0.0f, 0.0f,
+			0.0f, tan(radians(fov)) / aspectRatio, 0.0f, 0.0f,
+			0.0f, 0.0f, 0.0f, -(fClip - nClip) / (2.0f * fClip * nClip),
+			0.0f, 0.0f, 1.0f, (fClip + nClip) / (2.0f * fClip * nClip)
+		);
+
+	float ppMatrixInverseArrayVals[] = {
+			ppMatrixInverse.m11, ppMatrixInverse.m12, ppMatrixInverse.m13, ppMatrixInverse.m14,
+			ppMatrixInverse.m21, ppMatrixInverse.m22, ppMatrixInverse.m23, ppMatrixInverse.m24,
+			ppMatrixInverse.m31, ppMatrixInverse.m32, ppMatrixInverse.m33, ppMatrixInverse.m34,
+			ppMatrixInverse.m41, ppMatrixInverse.m42, ppMatrixInverse.m43, ppMatrixInverse.m44
+		};
+	memcpy((void*) ppMatrixInverseArray, (void*) ppMatrixInverseArrayVals, 16 * sizeof(float));
+
+/*
+Vector4 rbl = Vector4(-1.0f, -1.0f, -1.0f, 1.0f) * ppMatrixInverse;
+printf("RBL %.2f %.2f %.2f\n", rbl.x / rbl.w, rbl.y / rbl.w, rbl.z / rbl.w);
+
+Vector4 rtl = Vector4(-1.0f, 1.0f, -1.0f, 1.0f) * ppMatrixInverse;
+printf("RTL %.2f %.2f %.2f\n", rtl.x / rtl.w, rtl.y / rtl.w, rtl.z / rtl.w);
+
+Vector4 rtr = Vector4(1.0f, 1.0f, -1.0f, 1.0f) * ppMatrixInverse;
+printf("RTR %.2f %.2f %.2f\n", rtr.x / rtr.w, rtr.y / rtr.w, rtr.z / rtr.w);
+
+Vector4 rbr = Vector4(1.0f, -1.0f, -1.0f, 1.0f) * ppMatrixInverse;
+printf("RBR %.2f %.2f %.2f\n", rbr.x / rbr.w, rbr.y / rbr.w, rbr.z / rbr.w);
+
+Vector4 fbl = Vector4(-1.0f, -1.0f, 1.0f, 1.0f) * ppMatrixInverse;
+printf("FBL %.2f %.2f %.2f\n", fbl.x / fbl.w, fbl.y / fbl.w, fbl.z / fbl.w);
+
+Vector4 ftl = Vector4(-1.0f, 1.0f, 1.0f, 1.0f) * ppMatrixInverse;
+printf("FTL %.2f %.2f %.2f\n", ftl.x / ftl.w, ftl.y / ftl.w, ftl.z / ftl.w);
+
+Vector4 ftr = Vector4(1.0f, 1.0f, 1.0f, 1.0f) * ppMatrixInverse;
+printf("FTR %.2f %.2f %.2f\n", ftr.x / ftr.w, ftr.y / ftr.w, ftr.z / ftr.w);
+
+Vector4 fbr = Vector4(1.0f, -1.0f, 1.0f, 1.0f) * ppMatrixInverse;
+printf("FBR %.2f %.2f %.2f\n", fbr.x / fbr.w, fbr.y / fbr.w, fbr.z / fbr.w);
+*/
 	// set up fonts
 	fontManager = new FontManager();
 	fontManager->populateCommonChars((unsigned int) gameSystem->getFloat("fontSizeSmall"));

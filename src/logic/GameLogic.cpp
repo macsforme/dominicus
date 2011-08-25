@@ -631,7 +631,7 @@ unsigned int GameLogic::execute() {
 		if(isInMainLoopModules)
 			mainLoopModules[gameGraphics] = 0;
 
-		if(currentScheme == SCHEME_PLAYING) {
+		if(currentScheme == SCHEME_PLAYING || currentScheme == SCHEME_DASHBOARD) {
 			((TerrainRenderer*) gameGraphics->drawers["terrainRenderer"])->reloadGraphics();
 			((DrawRadar*) gameGraphics->drawers["radar"])->reloadGraphics();
 

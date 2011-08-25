@@ -89,8 +89,8 @@ public:
 	float aspectRatio;
 	bool fullScreen;
 
-	Matrix4 ppMatrix, opMatrix, idMatrix;
-	float ppMatrixArray[16], opMatrixArray[16], idMatrixArray[16];
+	Matrix4 idMatrix, opMatrix, ppMatrix, ppMatrixInverse;
+	float idMatrixArray[16], opMatrixArray[16], ppMatrixArray[16], ppMatrixInverseArray[16];
 
 	// other info
 	FontManager* fontManager;

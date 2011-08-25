@@ -49,6 +49,7 @@
 #include "math/MiscMath.h"
 #include "math/VectorMath.h"
 #include "platform/OpenGLHeaders.h"
+#include "platform/Platform.h"
 #include "state/GameState.h"
 #include "state/Ship.h"
 
@@ -61,6 +62,7 @@
 // global variables
 extern GameGraphics* gameGraphics;
 extern GameState* gameState;
+extern Platform* platform;
 
 // class definition
 class WaterRenderer : public BaseDrawNode {

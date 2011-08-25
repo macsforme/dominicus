@@ -35,24 +35,18 @@ WaterRenderer::WaterRenderer() {
 	GLuint shaderID = 0;
 	std::vector<GLuint> shaderIDs;
 
-	shaderID = gameGraphics->getShaderID(GL_VERTEX_SHADER, "default"); shaderIDs.push_back(shaderID);
-	shaderID = gameGraphics->getShaderID(GL_FRAGMENT_SHADER, "default"); shaderIDs.push_back(shaderID);
+	shaderID = gameGraphics->getShaderID(GL_VERTEX_SHADER, "water"); shaderIDs.push_back(shaderID);
+	shaderID = gameGraphics->getShaderID(GL_FRAGMENT_SHADER, "water"); shaderIDs.push_back(shaderID);
 	shaderProgram = gameGraphics->makeProgram(shaderIDs);
 
 	// set up uniforms and attributes
+	uniforms["timer"] = glGetUniformLocation(shaderProgram, "timer");
 	uniforms["mvpMatrix"] = glGetUniformLocation(shaderProgram, "mvpMatrix");
-	uniforms["useTexture"] = glGetUniformLocation(shaderProgram, "useTexture");
-	uniforms["texture"] = glGetUniformLocation(shaderProgram, "texture");
-	uniforms["useColor"] = glGetUniformLocation(shaderProgram, "useColor");
-	uniforms["useLighting"] = glGetUniformLocation(shaderProgram, "useLighting");
-	uniforms["lightPosition"] = glGetUniformLocation(shaderProgram, "lightPosition");
-	uniforms["lightColor"] = glGetUniformLocation(shaderProgram, "lightColor");
-	uniforms["specularColor"] = glGetUniformLocation(shaderProgram, "specularColor");
-	uniforms["shininess"] = glGetUniformLocation(shaderProgram, "shininess");
+//	uniforms["color"] = glGetUniformLocation(shaderProgram, "color");
+//	uniforms["highlightColor"] = glGetUniformLocation(shaderProgram, "highlightColor");
+	uniforms["cameraPosition"] = glGetUniformLocation(shaderProgram, "cameraPosition");
 
 	attributes["position"] = glGetAttribLocation(shaderProgram, "position");
-	attributes["color"] = glGetAttribLocation(shaderProgram, "color");
-	attributes["texCoord"] = glGetAttribLocation(shaderProgram, "texCoord");
 
 	// set up vertex buffers
 	glGenBuffers(1, &(vertexBuffers["vertices"]));
@@ -61,11 +55,13 @@ WaterRenderer::WaterRenderer() {
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexBuffers["elements"]);
 
+	float vDist = gameSystem->getFloat("renderingPerspectiveFarClip") * 3.0f;
+
 	GLfloat vertDataBufferArray[] = {
-			-10000.0f, 0.0f, -10000.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
-			-10000.0f, 0.0f, 10000.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 50.0f,
-			10000.0f, 0.0f, 10000.0f, 1.0f, 1.0f, 1.0f, 1.0f, 50.0f, 50.0f,
-			10000.0f, 0.0f, -10000.0f, 1.0f, 1.0f, 1.0f, 1.0f, 50.0f, 0.0f
+			-vDist, 0.0f, -vDist,
+			-vDist, 0.0f, vDist,
+			vDist, 0.0f, vDist,
+			vDist, 0.0f, -vDist
 		};
 
 	GLushort vertElementBufferArray[] = {
@@ -99,10 +95,6 @@ void WaterRenderer::execute(std::map<std::string, void*> arguments) {
 		};
 
 	// state
-	glEnable(GL_TEXTURE_2D);
-//	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
-	glFrontFace(GL_CW);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -110,60 +102,25 @@ void WaterRenderer::execute(std::map<std::string, void*> arguments) {
 	glUseProgram(shaderProgram);
 
 	// set uniforms
+	glUniform1f(uniforms["timer"], (float) (platform->getExecMills() % 3000) / 3000.0f);
 	glUniformMatrix4fv(uniforms["mvpMatrix"], 1, GL_FALSE, mvpMatrixArray);
-/*
-	Matrix3 orientation = completeMatrix(gameState->ships[0]->direction);
-	orientation = Matrix3(
-			-orientation.m31, orientation.m32, -orientation.m33,
-			orientation.m21, orientation.m22, orientation.m23,
-			orientation.m11, orientation.m12, orientation.m13
-		);
-	orientation.transpose();
-	Vector3 lightPosition(1.0f, 1.0f, -1.0f);
-	lightPosition.norm();
-	lightPosition = lightPosition * orientation;
-*/
-	glUniform1i(uniforms["useLighting"], 0);
-	glUniform1i(uniforms["useTexture"], 1);
-	glUniform1i(uniforms["useColor"], 1);
-
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, gameGraphics->getTextureID("water/water"));
-	glUniform1i(uniforms["texture"], 0);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-	float maxAniso;
-	glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAniso);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, maxAniso);
+//	glUniform4f(uniforms["color"], 0.0314f, 0.0392f, 0.2470f, 1.0f);
+//	Vector4 highlightColor = gameSystem->getColor("colorClear");
+//	glUniform4f(uniforms["highlightColor"], highlightColor.x, highlightColor.y, highlightColor.z, 1.0f);
+	glUniform3f(uniforms["cameraPosition"],  camera->position.x, camera->position.y, camera->position.z);
 
 	// draw the data stored in GPU memory
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexBuffers["elements"]);
 
-	glVertexAttribPointer(attributes["position"], 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GL_FLOAT), (void*) 0);
-	glVertexAttribPointer(attributes["color"], 4, GL_FLOAT, GL_FALSE, 9 * sizeof(GL_FLOAT),
-			(GLvoid*) (3 * sizeof(GLfloat)));
-	glVertexAttribPointer(attributes["texCoord"], 2, GL_FLOAT, GL_FALSE, 9 * sizeof(GL_FLOAT),
-			(GLvoid*) (7 * sizeof(GLfloat)));
+	glVertexAttribPointer(attributes["position"], 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GL_FLOAT), (GLvoid*) 0);
 
 	glEnableVertexAttribArray(attributes["position"]);
-	glEnableVertexAttribArray(attributes["color"]);
-	glEnableVertexAttribArray(attributes["texCoord"]);
 
-	glDrawElements(GL_QUADS, 4, GL_UNSIGNED_SHORT, NULL);
+	glDrawElements(GL_QUADS, 4, GL_UNSIGNED_SHORT, (GLvoid*) 0);
 
 	glDisableVertexAttribArray(attributes["position"]);
-	glDisableVertexAttribArray(attributes["color"]);
-	glDisableVertexAttribArray(attributes["texCoord"]);
 
 	// undo state
-	glDisable(GL_TEXTURE_2D);
-//	glDisable(GL_DEPTH_TEST);
-	glDisable(GL_CULL_FACE);
 	glDisable(GL_BLEND);
 }
