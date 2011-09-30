@@ -125,8 +125,6 @@
 		032B8AE212639AC300DDE564 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		032B8B1512639AED00DDE564 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		032B8B351263DF5900DDE564 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
-		0338164E12A4DAEF003DA262 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		0338164F12A4DAEF003DA262 /* Platform.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Platform.cpp; sourceTree = "<group>"; };
 		0353D4B8127B0A43002340BF /* World.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = World.h; path = src/state/World.h; sourceTree = "<group>"; };
 		0353D4B9127B0A43002340BF /* World.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = World.cpp; path = src/state/World.cpp; sourceTree = "<group>"; };
 		0358003012E2DC8E00CB625F /* MiscMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiscMath.h; sourceTree = "<group>"; };
@@ -172,8 +170,6 @@
 		03CAB6C71371541000C52A90 /* SkyRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkyRenderer.h; sourceTree = "<group>"; };
 		03CAB6C81371541000C52A90 /* TerrainRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TerrainRenderer.cpp; sourceTree = "<group>"; };
 		03CAB6C91371541000C52A90 /* TerrainRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TerrainRenderer.h; sourceTree = "<group>"; };
-		03CC3690130CDB960049C4E1 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		03CC3691130CDB960049C4E1 /* Platform.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Platform.cpp; sourceTree = "<group>"; };
 		03D47B7D1263E27F001755A6 /* dominicus.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = dominicus.icns; sourceTree = "<group>"; };
 		03D8C0781264BEBA00F26DC9 /* licenses */ = {isa = PBXFileReference; lastKnownFileType = folder; path = licenses; sourceTree = "<group>"; };
 		03EA006113839E1F00791980 /* Collisions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Collisions.h; path = src/state/Collisions.h; sourceTree = "<group>"; };
@@ -232,8 +228,6 @@
 				030F8E8B1264CD7700190225 /* Platform.h */,
 				038FC1DE12A0EA3A00AE328B /* OpenGLHeaders.h */,
 				030F8E131264C0FF00190225 /* macosx */,
-				0338164D12A4DAEF003DA262 /* linux */,
-				03CC368F130CDB960049C4E1 /* winnt */,
 			);
 			name = platform;
 			path = src/platform;
@@ -332,15 +326,6 @@
 				030F8F2F1264DC2200190225 /* libz.a */,
 			);
 			name = frameworks;
-			sourceTree = "<group>";
-		};
-		0338164D12A4DAEF003DA262 /* linux */ = {
-			isa = PBXGroup;
-			children = (
-				0338164E12A4DAEF003DA262 /* main.cpp */,
-				0338164F12A4DAEF003DA262 /* Platform.cpp */,
-			);
-			path = linux;
 			sourceTree = "<group>";
 		};
 		035AB02F127577B1006257C1 /* state */ = {
@@ -467,15 +452,6 @@
 				0315B61F134C2C4B002AD1CE /* components */,
 			);
 			path = ui;
-			sourceTree = "<group>";
-		};
-		03CC368F130CDB960049C4E1 /* winnt */ = {
-			isa = PBXGroup;
-			children = (
-				03CC3690130CDB960049C4E1 /* main.cpp */,
-				03CC3691130CDB960049C4E1 /* Platform.cpp */,
-			);
-			path = winnt;
 			sourceTree = "<group>";
 		};
 		29B97314FDCFA39411CA2CEA /* dominicus */ = {
