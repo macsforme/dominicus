@@ -532,15 +532,15 @@ void Schemes::playingScheme(
 		char execTimeStr[13];
 		sprintf(execTimeStr, "%1.1f", round((float) platform->getExecMills() / 1000.0f, 1));
 		textLines << "\\" << fontColorMedium << "Execution Time: " << "\\" << fontColorLight <<
-				execTimeStr << "\n";
-
+				execTimeStr;
+/*
 		textLines <<
 				"\\ff0000ff" << "C" <<
 				"\\00ff00ff" << "O" <<
 				"\\0000ffff" << "L" <<
 				"\\ff00ffff" << "O" <<
 				"\\ffff00ff" << "R";
-
+*/
 		*((std::string*) gameLogic->debugInfoEntry.second["text"]) = textLines.str();
 		*((float*) gameLogic->debugInfoEntry.second["wrap"]) = 2.0f -
 						gameSystem->getFloat("hudElementMargin") * 2.0f / (float) gameGraphics->resolutionX -

@@ -227,7 +227,6 @@ printf("loopCount %i\n", loopCount);
 		}
 	}
 
-//printf("\n");
 loopCount = 0;
 
 	// I like to move it, move it
