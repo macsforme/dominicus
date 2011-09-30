@@ -117,10 +117,6 @@
 		0326DBD1137211D7003D2BA3 /* FollowCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FollowCamera.h; sourceTree = "<group>"; };
 		0326DBD2137211D7003D2BA3 /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
 		0326DBD3137211D7003D2BA3 /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
-		0326DBD4137211D7003D2BA3 /* FirstPersonCamera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FirstPersonCamera.cpp; sourceTree = "<group>"; };
-		0326DBD5137211D7003D2BA3 /* FirstPersonCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FirstPersonCamera.h; sourceTree = "<group>"; };
-		0326DBD6137211D7003D2BA3 /* WorldCamera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldCamera.cpp; sourceTree = "<group>"; };
-		0326DBD7137211D7003D2BA3 /* WorldCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorldCamera.h; sourceTree = "<group>"; };
 		032B8AD112639A4600DDE564 /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = Library/Frameworks/SDL.framework; sourceTree = SDKROOT; };
 		032B8AE212639AC300DDE564 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		032B8B1512639AED00DDE564 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
@@ -307,10 +303,6 @@
 				03A66762137BEC7B00E21708 /* TestCameras.cpp */,
 				0326DBD1137211D7003D2BA3 /* FollowCamera.h */,
 				0326DBD0137211D7003D2BA3 /* FollowCamera.cpp */,
-				0326DBD5137211D7003D2BA3 /* FirstPersonCamera.h */,
-				0326DBD4137211D7003D2BA3 /* FirstPersonCamera.cpp */,
-				0326DBD7137211D7003D2BA3 /* WorldCamera.h */,
-				0326DBD6137211D7003D2BA3 /* WorldCamera.cpp */,
 			);
 			name = cameras;
 			path = src/logic/cameras;
