@@ -52,7 +52,7 @@ ONLINE RESOURCES
 Game-related resources and information can be found on the following web sites:
 
 http://games.fairserve.net (home page, game info, screenshots, videos)
-http://codaset.com/macsforme/dominicus (source code, development info, tracker)
+http://code.google.com/p/dominicus (source code, development info, tracker)
 https://www.ohloh.net/p/dominicus (code analysis and statistics)
 https://groups.google.com/forum/#!forum/dominicus-development (mailing list)
 
@@ -64,12 +64,12 @@ instead.
 OBTAINING SOURCE CODE
 
 Dominicus development source code can be obtained via a git public repository
-hosted courtesy of Codaset (http://codaset.com). Development source code should
-be considered unstable, but contains new or experimental features and/or
+hosted courtesy of Google (http://code.google.com). Development source code
+should be considered unstable, but contains new or experimental features and/or
 corrections to known issues, allowing you to preview how future releases may
 look or to assist with testing or development. To obtain a copy of the source
 code, install your favorite git client and clone the following repository:
-git@codaset.com:macsforme/dominicus.git
+https://code.google.com/p/dominicus/
 
 BUILDING DOMINICUS
 
@@ -84,13 +84,13 @@ Dominicus has the following external library dependencies on all platforms:
 
 Dominicus should build with the most current stable release for these
 libraries. If it does not, please submit a support ticket with a full error
-message and description at http://codaset.com/macsforme/dominicus#tickets and I
+message and description at http://code.google.com/p/dominicus/issues/list and I
 will take a look.
 
 BUILDING DOMINICUS ON MAC OS X
 
 Dominicus is built on Mac OS X using the Xcode IDE. The project file should be
-compatible with Xcode 3.1 and later 3.x versions, which means it can be
+compatible with Xcode 3.1 and later 3.x versions, which means it can be built
 on Mac OS X 10.5 Leopard and later operating system versions.
 
 The Xcode project file is set to look for required library files in certain
@@ -167,12 +167,6 @@ BUILDING DOMINICUS ON WINDOWS
 
 The MSVC project files and dependencies for building Dominicus on Windows are
 still in development.
-
-DEVELOPMENT
-
-To assist with debugging, or to contribute code, please see the file
-DEVELOPMENT.txt for code standards and styles used, as well as general build
-and release information.
 
 CREDITS
 
