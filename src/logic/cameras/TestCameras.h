@@ -1,11 +1,10 @@
-/*
- *  TestCameras.h
- *  dominicus
- *
- *  Created by Joshua Bodine on 5/12/11.
- *  Copyright 2011 Joshua Bodine. All rights reserved.
- *
- */
+// TestCameras.h
+//
+// Dominicus
+// Copyright 2010-2011, Joshua Bodine
+//
+// Released under the terms of the "Simplified BSD License." See the file
+// licenses/DOMINICUS.txt for the license text.
 
 #ifndef TESTCAMERAS_H
 #define TESTCAMERAS_H

@@ -1,11 +1,10 @@
-/*
- *  TestCameras.cpp
- *  dominicus
- *
- *  Created by Joshua Bodine on 5/12/11.
- *  Copyright 2011 Joshua Bodine. All rights reserved.
- *
- */
+// TestCameras.cpp
+//
+// Dominicus
+// Copyright 2010-2011, Joshua Bodine
+//
+// Released under the terms of the "Simplified BSD License." See the file
+// licenses/DOMINICUS.txt for the license text.
 
 #include "logic/cameras/TestCameras.h"
 
