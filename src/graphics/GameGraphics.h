@@ -47,7 +47,7 @@ class InputHandler;
 // library headers
 #include <fstream>
 #include <map>
-#include <SDL/SDL.h>
+#include <SDL.h>
 #include <sstream>
 #include <stdint.h>
 #include <string>

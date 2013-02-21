@@ -20,7 +20,7 @@ class Mouse;
 #include "input/Mouse.h"
 
 // library headers
-#include <SDL/SDL.h>
+#include <SDL.h>
 
 // global variables
 extern GameSystem* gameSystem;

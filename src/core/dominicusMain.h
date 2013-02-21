@@ -22,7 +22,7 @@
 
 // library headers
 #include <map>
-#include <SDL/SDL.h>
+#include <SDL.h>
 #include <vector>
 
 // main game function declaration

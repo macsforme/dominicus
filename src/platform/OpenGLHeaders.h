@@ -15,6 +15,7 @@
 
 #if defined(PROGRAM_ARCH_MACOSX)
 #include <OpenGL/OpenGL.h>
+#include <OpenGL/gl.h>
 #elif defined(PROGRAM_ARCH_WINNT)
 #include <Windows.h>
 #include "GL/glew.h"

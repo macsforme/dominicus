@@ -90,7 +90,7 @@ Vector2 DrawLabel::getSize(std::map<std::string, void*> arguments) {
 			}
 		}
 
-		std::string sections[numSections];
+		std::string* sections = new std::string[numSections];
 
 		size_t currentSection = 0;
 
@@ -124,6 +124,8 @@ Vector2 DrawLabel::getSize(std::map<std::string, void*> arguments) {
 					(unsigned int) *fontSize
 				);
 
+        delete[] sections;
+        
 		size_t totalWidth = 0, totalHeight = 0, maxOriginY = 0;
 
 		for(size_t i = 0; i < numSections; ++i) {
@@ -239,7 +241,7 @@ void DrawLabel::execute(std::map<std::string, void*> arguments) {
 			}
 		}
 
-		std::string sections[numSections];
+		std::string* sections = new std::string[numSections];
 
 		size_t currentSection = 0;
 
@@ -273,11 +275,13 @@ void DrawLabel::execute(std::map<std::string, void*> arguments) {
 					gameGraphics->fontManager,
 					(unsigned int) *fontSize
 				);
-
+            
 //printf("textBlock size: %u %u\n", (unsigned int) textBlocks[i]->width, (unsigned int) textBlocks[i]->height);
 		}
 //printf("\n");
 
+        
+        delete[] sections;
 //textBlock = *(textBlocks[0]);
 
 		size_t totalWidth = 0, totalHeight = 0, maxOriginY = 0;

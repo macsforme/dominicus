@@ -12,7 +12,7 @@
 #include <CoreFoundation/CoreFoundation.h>
 #include <iostream>
 #include <mach/mach_time.h>
-#include <SDL/SDL.h>
+#include <SDL.h>
 #include <stdint.h>
 #include <time.h>
 

@@ -50,7 +50,7 @@ class FollowCamera;
 
 // library headers
 #include <map>
-#include <SDL/SDL.h>
+#include <SDL.h>
 #include <sstream>
 #include <string>
 #include <vector>

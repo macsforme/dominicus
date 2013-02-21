@@ -7,9 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0302A0EA16D37BF100729281 /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0302A0E916D37BF100729281 /* libz.1.2.5.dylib */; };
+		0302A0EC16D37C0800729281 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0302A0EB16D37C0800729281 /* Cocoa.framework */; };
+		0302A0EE16D37C1B00729281 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0302A0ED16D37C1B00729281 /* OpenGL.framework */; };
+		0302A0F016D37C7000729281 /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0302A0EF16D37C7000729281 /* SDL.framework */; };
 		0303151A131F99D6009B9AFD /* DrawControlBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03BB9B55131F3F50009DFC8B /* DrawControlBox.cpp */; };
 		0303173213204F1F009B9AFD /* GameLogic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0303173013204F1F009B9AFD /* GameLogic.cpp */; };
-		030318BA1320CDF1009B9AFD /* SDL.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 032B8AD112639A4600DDE564 /* SDL.framework */; };
 		0315B60B134C2AB8002AD1CE /* UILayoutAuthority.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0315B609134C2AB8002AD1CE /* UILayoutAuthority.cpp */; };
 		0315B626134C2C4B002AD1CE /* DrawContainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0315B620134C2C4B002AD1CE /* DrawContainer.cpp */; };
 		0315B627134C2C4B002AD1CE /* DrawLabel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0315B622134C2C4B002AD1CE /* DrawLabel.cpp */; };
@@ -46,11 +49,7 @@
 		03C806F2130E50CB0037D309 /* Ship.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 035F214612A39233008DA566 /* Ship.cpp */; };
 		03C806F7130E50D00037D309 /* Mouse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 035A3C4512841B390001E186 /* Mouse.cpp */; };
 		03C80701130E50D90037D309 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 030F8E1E1264C3E800190225 /* main.cpp */; };
-		03C8073A130E51830037D309 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 032B8AE212639AC300DDE564 /* Cocoa.framework */; };
-		03C8074D130E518A0037D309 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 032B8B1512639AED00DDE564 /* OpenGL.framework */; };
-		03C80752130E51B20037D309 /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 032B8AD112639A4600DDE564 /* SDL.framework */; };
 		03C80756130E51C20037D309 /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 030F8F001264DBF300190225 /* libfreetype.a */; };
-		03C8075A130E51CD0037D309 /* libz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 030F8F2F1264DC2200190225 /* libz.a */; };
 		03C8075E130E52030037D309 /* SDLMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 030F8E151264C0FF00190225 /* SDLMain.m */; };
 		03C9206C13693A51000C4373 /* GameState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03C9206B13693A51000C4373 /* GameState.cpp */; };
 		03CAB6CC1371541000C52A90 /* TerrainRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03CAB6C81371541000C52A90 /* TerrainRenderer.cpp */; };
@@ -66,13 +65,16 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				030318BA1320CDF1009B9AFD /* SDL.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0302A0E916D37BF100729281 /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = ../../../../usr/lib/libz.1.2.5.dylib; sourceTree = "<group>"; };
+		0302A0EB16D37C0800729281 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = ../../../../System/Library/Frameworks/Cocoa.framework; sourceTree = "<group>"; };
+		0302A0ED16D37C1B00729281 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = ../../../../System/Library/Frameworks/OpenGL.framework; sourceTree = "<group>"; };
+		0302A0EF16D37C7000729281 /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = ../../../../Library/Frameworks/SDL.framework; sourceTree = "<group>"; };
 		0303173013204F1F009B9AFD /* GameLogic.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameLogic.cpp; path = src/logic/GameLogic.cpp; sourceTree = "<group>"; };
 		0303173113204F1F009B9AFD /* GameLogic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameLogic.h; path = src/logic/GameLogic.h; sourceTree = "<group>"; };
 		030D18BE12D0792200DA9B7B /* InputHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputHandler.h; sourceTree = "<group>"; };
@@ -94,7 +96,6 @@
 		030F8EB11264CFFC00190225 /* VectorMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VectorMath.h; sourceTree = "<group>"; };
 		030F8EC51264D4BC00190225 /* Mesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mesh.h; sourceTree = "<group>"; };
 		030F8F001264DBF300190225 /* libfreetype.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfreetype.a; path = /usr/local/lib/libfreetype.a; sourceTree = "<absolute>"; };
-		030F8F2F1264DC2200190225 /* libz.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libz.a; path = /usr/local/lib/libz.a; sourceTree = "<absolute>"; };
 		030F8F3C1264DD1300190225 /* Keyboard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Keyboard.cpp; sourceTree = "<group>"; };
 		030F8F3D1264DD1300190225 /* Keyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Keyboard.h; sourceTree = "<group>"; };
 		0315B609134C2AB8002AD1CE /* UILayoutAuthority.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UILayoutAuthority.cpp; path = src/logic/UILayoutAuthority.cpp; sourceTree = "<group>"; };
@@ -117,9 +118,6 @@
 		0326DBD1137211D7003D2BA3 /* FollowCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FollowCamera.h; sourceTree = "<group>"; };
 		0326DBD2137211D7003D2BA3 /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
 		0326DBD3137211D7003D2BA3 /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
-		032B8AD112639A4600DDE564 /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = Library/Frameworks/SDL.framework; sourceTree = SDKROOT; };
-		032B8AE212639AC300DDE564 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
-		032B8B1512639AED00DDE564 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		032B8B351263DF5900DDE564 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 		0353D4B8127B0A43002340BF /* World.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = World.h; path = src/state/World.h; sourceTree = "<group>"; };
 		0353D4B9127B0A43002340BF /* World.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = World.cpp; path = src/state/World.cpp; sourceTree = "<group>"; };
@@ -179,11 +177,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				03C8073A130E51830037D309 /* Cocoa.framework in Frameworks */,
-				03C8074D130E518A0037D309 /* OpenGL.framework in Frameworks */,
-				03C80752130E51B20037D309 /* SDL.framework in Frameworks */,
 				03C80756130E51C20037D309 /* libfreetype.a in Frameworks */,
-				03C8075A130E51CD0037D309 /* libz.a in Frameworks */,
+				0302A0EA16D37BF100729281 /* libz.1.2.5.dylib in Frameworks */,
+				0302A0EC16D37C0800729281 /* Cocoa.framework in Frameworks */,
+				0302A0EE16D37C1B00729281 /* OpenGL.framework in Frameworks */,
+				0302A0F016D37C7000729281 /* SDL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -311,11 +309,11 @@
 		032B8AE812639AC900DDE564 /* frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				032B8AE212639AC300DDE564 /* Cocoa.framework */,
-				032B8B1512639AED00DDE564 /* OpenGL.framework */,
-				032B8AD112639A4600DDE564 /* SDL.framework */,
+				0302A0EB16D37C0800729281 /* Cocoa.framework */,
+				0302A0ED16D37C1B00729281 /* OpenGL.framework */,
+				0302A0EF16D37C7000729281 /* SDL.framework */,
 				030F8F001264DBF300190225 /* libfreetype.a */,
-				030F8F2F1264DC2200190225 /* libz.a */,
+				0302A0E916D37BF100729281 /* libz.1.2.5.dylib */,
 			);
 			name = frameworks;
 			sourceTree = "<group>";
@@ -502,7 +500,11 @@
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "dominicus" */;
 			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* dominicus */;
 			productRefGroup = 29B97314FDCFA39411CA2CEA /* dominicus */;
 			projectDirPath = "";
@@ -602,12 +604,7 @@
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = "dominicus-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					AppKit,
-				);
+				OTHER_LDFLAGS = "";
 				PREBINDING = NO;
 				PRODUCT_NAME = dominicus;
 			};
@@ -625,12 +622,7 @@
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = "dominicus-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					AppKit,
-				);
+				OTHER_LDFLAGS = "";
 				PREBINDING = NO;
 				PRODUCT_NAME = dominicus;
 				ZERO_LINK = NO;
@@ -642,6 +634,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CURRENT_PROJECT_VERSION = "";
+				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = NO;
@@ -650,15 +643,13 @@
 				HEADER_SEARCH_PATHS = (
 					src,
 					"/usr/local/include/**",
+					/Library/Frameworks/SDL.framework/Headers,
 				);
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
-				SDKROOT = macosx10.6;
-				WARNING_CFLAGS = (
-					"-Werror",
-					"-Wall",
-				);
+				SDKROOT = macosx;
+				WARNING_CFLAGS = "-Wall";
 			};
 			name = Debug;
 		};
@@ -666,16 +657,18 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					src,
 					"/usr/local/include/**",
+					/Library/Frameworks/SDL.framework/Headers,
 				);
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				PREBINDING = NO;
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};

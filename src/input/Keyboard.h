@@ -14,7 +14,7 @@
 
 // library headers
 #include <map>
-#include <SDL/SDL.h>
+#include <SDL.h>
 #include <sstream>
 #include <stdint.h>
 #include <string>

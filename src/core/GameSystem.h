@@ -32,7 +32,7 @@ class Platform;
 // library headers
 #include <map>
 #include <stdint.h>
-#include <SDL/SDL.h>
+#include <SDL.h>
 #include <sstream>
 #include <string>
 #include <vector>
