@@ -1,7 +1,7 @@
 #version 110
 
-uniform vec4 color;
+varying vec4 colorInterpol;
 
 void main() {
-	gl_FragColor = color;
+	gl_FragColor = colorInterpol;
 }

@@ -153,7 +153,7 @@ static int loopCount = 0;
 					testTriangleSphereCollision(triangle, position + effectiveMovement * (float) i, SHIPRADIUS)
 				) {
 ++loopCount;
-printf("loopCount %i\n", loopCount);
+//printf("loopCount %i\n", loopCount);
 
 //				setReorientation(reflect(-direction, normal));
 				speed /= 2.0f;
@@ -195,7 +195,7 @@ printf("loopCount %i\n", loopCount);
 					testTriangleSphereCollision(triangle, /*position +*/ effectiveMovement * (float) i, SHIPRADIUS)
 				) {
 ++loopCount;
-printf("loopCount %i\n", loopCount);
+//printf("loopCount %i\n", loopCount);
 
 //				setReorientation(reflect(-direction, normal));
 				speed /= 2.0f;

@@ -13,19 +13,17 @@ DrawTexture::DrawTexture() {
 	GLuint shaderID = 0;
 	std::vector<GLuint> shaderIDs;
 
-	shaderID = gameGraphics->getShaderID(GL_VERTEX_SHADER, "default"); shaderIDs.push_back(shaderID);
-	shaderID = gameGraphics->getShaderID(GL_FRAGMENT_SHADER, "default"); shaderIDs.push_back(shaderID);
+	shaderID = gameGraphics->getShaderID(GL_VERTEX_SHADER, "colorTexture"); shaderIDs.push_back(shaderID);
+	shaderID = gameGraphics->getShaderID(GL_FRAGMENT_SHADER, "colorTexture"); shaderIDs.push_back(shaderID);
 	shaderProgram = gameGraphics->makeProgram(shaderIDs);
 
 	// set up uniforms and attributes
 	uniforms["mvpMatrix"] = glGetUniformLocation(shaderProgram, "mvpMatrix");
-	uniforms["useTexture"] = glGetUniformLocation(shaderProgram, "useTexture");
 	uniforms["texture"] = glGetUniformLocation(shaderProgram, "texture");
-	uniforms["useColor"] = glGetUniformLocation(shaderProgram, "useColor");
-	uniforms["useLighting"] = glGetUniformLocation(shaderProgram, "useLighting");
 
 	attributes["position"] = glGetAttribLocation(shaderProgram, "position");
 	attributes["texCoord"] = glGetAttribLocation(shaderProgram, "texCoord");
+	attributes["color"] = glGetAttribLocation(shaderProgram, "color");
 
 	// set up vertex buffers
 	glGenBuffers(1, &(vertexBuffers["vertices"]));
@@ -80,16 +78,28 @@ void DrawTexture::execute(std::map<std::string, void*> arguments) {
 			0.0f,
 			0.0f,
 			0.0f,
+			1.0f,
+			1.0f,
+			1.0f,
+			1.0f,
 
 			metrics->position.x - actualSize.x / 2.0f,
 			metrics->position.y + actualSize.y / 2.0f,
 			0.0f,
 			0.0f,
 			1.0f,
+			1.0f,
+			1.0f,
+			1.0f,
+			1.0f,
 
 			metrics->position.x + actualSize.x / 2.0f,
 			metrics->position.y + actualSize.y / 2.0f,
 			0.0f,
+			1.0f,
+			1.0f,
+			1.0f,
+			1.0f,
 			1.0f,
 			1.0f,
 
@@ -97,10 +107,14 @@ void DrawTexture::execute(std::map<std::string, void*> arguments) {
 			metrics->position.y - actualSize.y / 2.0f,
 			0.0f,
 			1.0f,
-			0.0f
+			0.0f,
+			1.0f,
+			1.0f,
+			1.0f,
+			1.0f
 		};
 
-	glBufferData(GL_ARRAY_BUFFER, 20 * sizeof(GL_FLOAT), vertexBufferArray, GL_STREAM_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexBufferArray), vertexBufferArray, GL_STREAM_DRAW);
 
 	// state
 	glEnable(GL_TEXTURE_2D);
@@ -112,10 +126,7 @@ void DrawTexture::execute(std::map<std::string, void*> arguments) {
 
 	// set uniforms
 	glUniformMatrix4fv(uniforms["mvpMatrix"], 1, GL_FALSE, gameGraphics->idMatrixArray);
-	glUniform1i(uniforms["useTexture"], 1);
 	glUniform1i(uniforms["texture"], 0);
-	glUniform1i(uniforms["useColor"], 0);
-	glUniform1i(uniforms["useLighting"], 0);
 
 	// activate the texture
 	glActiveTexture(GL_TEXTURE0);
@@ -128,17 +139,21 @@ void DrawTexture::execute(std::map<std::string, void*> arguments) {
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexBuffers["elements"]);
 
-	glVertexAttribPointer(attributes["position"], 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GL_FLOAT), (void*) 0);
-	glVertexAttribPointer(attributes["texCoord"], 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GL_FLOAT),
+	glVertexAttribPointer(attributes["position"], 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GL_FLOAT), (void*) 0);
+	glVertexAttribPointer(attributes["texCoord"], 2, GL_FLOAT, GL_FALSE, 9 * sizeof(GL_FLOAT),
 			(GLvoid*) (3 * sizeof(GLfloat)));
+	glVertexAttribPointer(attributes["color"], 4, GL_FLOAT, GL_FALSE, 9 * sizeof(GL_FLOAT),
+			(GLvoid*) (5 * sizeof(GLfloat)));
 
 	glEnableVertexAttribArray(attributes["position"]);
 	glEnableVertexAttribArray(attributes["texCoord"]);
+	glEnableVertexAttribArray(attributes["color"]);
 
 	glDrawElements(GL_QUADS, 4, GL_UNSIGNED_SHORT, NULL);
 
 	glDisableVertexAttribArray(attributes["position"]);
 	glDisableVertexAttribArray(attributes["texCoord"]);
+	glDisableVertexAttribArray(attributes["color"]);
 
 	// undo state
 	glDisable(GL_TEXTURE_2D);

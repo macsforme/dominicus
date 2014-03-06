@@ -711,7 +711,7 @@ unsigned int GameLogic::execute() {
 		// test key
 		if(testKeyListener->popKey() != SDLK_UNKNOWN) {
 //			rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(-3.0f), *((Matrix4*) terrainEntry.second["mvpMatrix"]));
-			printf("T key press\n");
+//			printf("T key press\n");
 //while(1) ;
 			delete(gameState->world);
 			gameState->world = new World();

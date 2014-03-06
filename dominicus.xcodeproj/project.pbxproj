@@ -7,10 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0302A0EA16D37BF100729281 /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0302A0E916D37BF100729281 /* libz.1.2.5.dylib */; };
-		0302A0EC16D37C0800729281 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0302A0EB16D37C0800729281 /* Cocoa.framework */; };
-		0302A0EE16D37C1B00729281 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0302A0ED16D37C1B00729281 /* OpenGL.framework */; };
-		0302A0F016D37C7000729281 /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0302A0EF16D37C7000729281 /* SDL.framework */; };
 		0303151A131F99D6009B9AFD /* DrawControlBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03BB9B55131F3F50009DFC8B /* DrawControlBox.cpp */; };
 		0303173213204F1F009B9AFD /* GameLogic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0303173013204F1F009B9AFD /* GameLogic.cpp */; };
 		0315B60B134C2AB8002AD1CE /* UILayoutAuthority.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0315B609134C2AB8002AD1CE /* UILayoutAuthority.cpp */; };
@@ -25,6 +21,13 @@
 		0326DBD9137211D7003D2BA3 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0326DBD2137211D7003D2BA3 /* Camera.cpp */; };
 		0326DC0F137282DE003D2BA3 /* ShipRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03CAB6C41371541000C52A90 /* ShipRenderer.cpp */; };
 		0330C498133A2AB6006199BE /* TextBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03BB9B83131F3F50009DFC8B /* TextBlock.cpp */; };
+		0353219118C931EF002FC13A /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0353219018C931EF002FC13A /* Cocoa.framework */; };
+		0353219318C93204002FC13A /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0353219218C93204002FC13A /* OpenGL.framework */; };
+		0353219518C93216002FC13A /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0353219418C93216002FC13A /* SDL.framework */; };
+		0353219718C93238002FC13A /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0353219618C93238002FC13A /* libz.1.2.5.dylib */; };
+		0353219918C934A7002FC13A /* libbz2.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0353219818C934A7002FC13A /* libbz2.1.0.dylib */; };
+		0353219B18C93516002FC13A /* libpng16.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0353219A18C93516002FC13A /* libpng16.a */; };
+		0353219C18C936C9002FC13A /* SDL.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0353219418C93216002FC13A /* SDL.framework */; };
 		03590F84131E446000EDF7A7 /* GameSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03590EED131E181C00EDF7A7 /* GameSystem.cpp */; };
 		037542F913B3260100AEE260 /* DrawGrayOut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 037542F013B3250B00AEE260 /* DrawGrayOut.cpp */; };
 		03A66763137BEC7B00E21708 /* TestCameras.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03A66762137BEC7B00E21708 /* TestCameras.cpp */; };
@@ -65,16 +68,13 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				0353219C18C936C9002FC13A /* SDL.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0302A0E916D37BF100729281 /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = ../../../../usr/lib/libz.1.2.5.dylib; sourceTree = "<group>"; };
-		0302A0EB16D37C0800729281 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = ../../../../System/Library/Frameworks/Cocoa.framework; sourceTree = "<group>"; };
-		0302A0ED16D37C1B00729281 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = ../../../../System/Library/Frameworks/OpenGL.framework; sourceTree = "<group>"; };
-		0302A0EF16D37C7000729281 /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = ../../../../Library/Frameworks/SDL.framework; sourceTree = "<group>"; };
 		0303173013204F1F009B9AFD /* GameLogic.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameLogic.cpp; path = src/logic/GameLogic.cpp; sourceTree = "<group>"; };
 		0303173113204F1F009B9AFD /* GameLogic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameLogic.h; path = src/logic/GameLogic.h; sourceTree = "<group>"; };
 		030D18BE12D0792200DA9B7B /* InputHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputHandler.h; sourceTree = "<group>"; };
@@ -119,6 +119,12 @@
 		0326DBD2137211D7003D2BA3 /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
 		0326DBD3137211D7003D2BA3 /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
 		032B8B351263DF5900DDE564 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
+		0353219018C931EF002FC13A /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = ../../../../../../System/Library/Frameworks/Cocoa.framework; sourceTree = "<group>"; };
+		0353219218C93204002FC13A /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = ../../../../../../System/Library/Frameworks/OpenGL.framework; sourceTree = "<group>"; };
+		0353219418C93216002FC13A /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = ../../../../../../Library/Frameworks/SDL.framework; sourceTree = "<group>"; };
+		0353219618C93238002FC13A /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = ../../../../../../usr/lib/libz.1.2.5.dylib; sourceTree = "<group>"; };
+		0353219818C934A7002FC13A /* libbz2.1.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libbz2.1.0.dylib; path = ../../../../../../usr/lib/libbz2.1.0.dylib; sourceTree = "<group>"; };
+		0353219A18C93516002FC13A /* libpng16.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpng16.a; path = ../../../../../../usr/local/lib/libpng16.a; sourceTree = "<group>"; };
 		0353D4B8127B0A43002340BF /* World.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = World.h; path = src/state/World.h; sourceTree = "<group>"; };
 		0353D4B9127B0A43002340BF /* World.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = World.cpp; path = src/state/World.cpp; sourceTree = "<group>"; };
 		0358003012E2DC8E00CB625F /* MiscMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiscMath.h; sourceTree = "<group>"; };
@@ -177,11 +183,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0353219518C93216002FC13A /* SDL.framework in Frameworks */,
 				03C80756130E51C20037D309 /* libfreetype.a in Frameworks */,
-				0302A0EA16D37BF100729281 /* libz.1.2.5.dylib in Frameworks */,
-				0302A0EC16D37C0800729281 /* Cocoa.framework in Frameworks */,
-				0302A0EE16D37C1B00729281 /* OpenGL.framework in Frameworks */,
-				0302A0F016D37C7000729281 /* SDL.framework in Frameworks */,
+				0353219918C934A7002FC13A /* libbz2.1.0.dylib in Frameworks */,
+				0353219718C93238002FC13A /* libz.1.2.5.dylib in Frameworks */,
+				0353219118C931EF002FC13A /* Cocoa.framework in Frameworks */,
+				0353219318C93204002FC13A /* OpenGL.framework in Frameworks */,
+				0353219B18C93516002FC13A /* libpng16.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -309,11 +317,13 @@
 		032B8AE812639AC900DDE564 /* frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				0302A0EB16D37C0800729281 /* Cocoa.framework */,
-				0302A0ED16D37C1B00729281 /* OpenGL.framework */,
-				0302A0EF16D37C7000729281 /* SDL.framework */,
+				0353219018C931EF002FC13A /* Cocoa.framework */,
+				0353219218C93204002FC13A /* OpenGL.framework */,
+				0353219418C93216002FC13A /* SDL.framework */,
+				0353219618C93238002FC13A /* libz.1.2.5.dylib */,
+				0353219818C934A7002FC13A /* libbz2.1.0.dylib */,
 				030F8F001264DBF300190225 /* libfreetype.a */,
-				0302A0E916D37BF100729281 /* libz.1.2.5.dylib */,
+				0353219A18C93516002FC13A /* libpng16.a */,
 			);
 			name = frameworks;
 			sourceTree = "<group>";
@@ -596,6 +606,10 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
@@ -616,6 +630,10 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
@@ -632,7 +650,7 @@
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD)";
 				CURRENT_PROJECT_VERSION = "";
 				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -645,10 +663,11 @@
 					"/usr/local/include/**",
 					/Library/Frameworks/SDL.framework/Headers,
 				);
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
-				SDKROOT = macosx;
+				SDKROOT = macosx10.8;
 				WARNING_CFLAGS = "-Wall";
 			};
 			name = Debug;
@@ -656,7 +675,7 @@
 		C01FCF5008A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD)";
 				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -666,9 +685,10 @@
 					"/usr/local/include/**",
 					/Library/Frameworks/SDL.framework/Headers,
 				);
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				PREBINDING = NO;
-				SDKROOT = macosx;
+				SDKROOT = macosx10.8;
 			};
 			name = Release;
 		};

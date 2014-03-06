@@ -13,15 +13,12 @@ DrawGrayOut::DrawGrayOut() {
 	GLuint shaderID = 0;
 	std::vector<GLuint> shaderIDs;
 
-	shaderID = gameGraphics->getShaderID(GL_VERTEX_SHADER, "default"); shaderIDs.push_back(shaderID);
-	shaderID = gameGraphics->getShaderID(GL_FRAGMENT_SHADER, "default"); shaderIDs.push_back(shaderID);
+	shaderID = gameGraphics->getShaderID(GL_VERTEX_SHADER, "color"); shaderIDs.push_back(shaderID);
+	shaderID = gameGraphics->getShaderID(GL_FRAGMENT_SHADER, "color"); shaderIDs.push_back(shaderID);
 	shaderProgram = gameGraphics->makeProgram(shaderIDs);
 
 	// set up uniforms and attributes
 	uniforms["mvpMatrix"] = glGetUniformLocation(shaderProgram, "mvpMatrix");
-	uniforms["useTexture"] = glGetUniformLocation(shaderProgram, "useTexture");
-	uniforms["useColor"] = glGetUniformLocation(shaderProgram, "useColor");
-	uniforms["useLighting"] = glGetUniformLocation(shaderProgram, "useLighting");
 
 	attributes["position"] = glGetAttribLocation(shaderProgram, "position");
 	attributes["color"] = glGetAttribLocation(shaderProgram, "color");
@@ -84,9 +81,6 @@ void DrawGrayOut::execute(std::map<std::string, void*> arguments) {
 
 	// set uniforms
 	glUniformMatrix4fv(uniforms["mvpMatrix"], 1, GL_FALSE, gameGraphics->idMatrixArray);
-	glUniform1i(uniforms["useTexture"], 0);
-	glUniform1i(uniforms["useColor"], 1);
-	glUniform1i(uniforms["useLighting"], 0);
 
 	// draw the data stored in GPU memory
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);

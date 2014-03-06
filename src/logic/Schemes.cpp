@@ -654,23 +654,25 @@ textLines <<
 			"GENERAL CONTROLS\n\n" <<
 			"Toggle Dashboard:\tShift\n" <<
 			"Toggle Fullscreen:\tF1\n" <<
-			"Minimize:\tF2\n" <<
-			"Quit:\tF12\n"
-			"Cancel:\tesc\n\n" <<
+//			"Minimize:\tF2\n" <<
+			"Quit:\tF12\n\n"
+//			"Cancel:\tesc\n\n" <<
 			"PLAYING CONTROLS\n\n" <<
 			"Accelerate:\tSpace, Mouse Button 2\n" <<
-			"Primary Fire:\tD, Mouse Button 1\n" <<
-			"Secondary Fire:\tF, Mouse Button 3\n" <<
+//			"Primary Fire:\tD, Mouse Button 1\n" <<
+//			"Secondary Fire:\tF, Mouse Button 3\n" <<
 			"Movement:\tArrow Keys, Mouse\n\n" <<
-			"Toggle Info Display:\tF3\n" <<
-			"Toggle Radar Display:\tF4\n" <<
-			"Toggle Extended Info Display:\tF5\n\n" <<
-			"DASHBOARD CONTROLS\n\n" <<
-			"Send Public Message:\tReturn\n" <<
-			"Send Team Message:\tC\n" <<
-			"Send Admin Report:\tX\n" <<
-			"Send Server Command:\tZ";
-
+//			"Toggle Info Display:\tF3\n" <<
+//			"Toggle Radar Display:\tF4\n" <<
+//			"Toggle Extended Info Display:\tF5\n\n" <<
+//			"DASHBOARD CONTROLS\n\n" <<
+//			"Send Public Message:\tReturn\n" <<
+//			"Send Team Message:\tC\n" <<
+//			"Send Admin Report:\tX\n" <<
+//			"Send Server Command:\tZ\n\n" <<
+			"DEBUGGING CONTROLS\n\n" <<
+			"Regenerate Terrain\tT";
+    
 	*((std::string*) gameLogic->controlsHelpEntry.second["text"]) = textLines.str();
 	*((float*) gameLogic->controlsHelpEntry.second["wrap"]) = 2.0f -
 			gameSystem->getFloat("hudElementMargin") * 2.0f / (float) gameGraphics->resolutionX -

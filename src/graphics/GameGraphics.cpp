@@ -484,7 +484,7 @@ GLuint GameGraphics::getTextureID(std::string filename) {
 	Texture texture(filenameStream.str().c_str());
 
 	// load the texture into OpenGL
-	glEnable(GL_TEXTURE_2D);
+//	glEnable(GL_TEXTURE_2D);
 
 	GLuint textureID = 0;
 	glGenTextures(1, &textureID);
@@ -504,7 +504,7 @@ GLuint GameGraphics::getTextureID(std::string filename) {
 
 	glGenerateMipmap(GL_TEXTURE_2D);
 
-	glDisable(GL_TEXTURE_2D);
+//	glDisable(GL_TEXTURE_2D);
 
 	textureIDs[filename] = textureID;
 

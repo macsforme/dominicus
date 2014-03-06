@@ -240,16 +240,13 @@ ShipRenderer::ShipRenderer() {
 	GLuint shaderID = 0;
 	std::vector<GLuint> shaderIDs;
 
-	shaderID = gameGraphics->getShaderID(GL_VERTEX_SHADER, "default"); shaderIDs.push_back(shaderID);
-	shaderID = gameGraphics->getShaderID(GL_FRAGMENT_SHADER, "default"); shaderIDs.push_back(shaderID);
+	shaderID = gameGraphics->getShaderID(GL_VERTEX_SHADER, "colorTextureLighting"); shaderIDs.push_back(shaderID);
+	shaderID = gameGraphics->getShaderID(GL_FRAGMENT_SHADER, "colorTextureLighting"); shaderIDs.push_back(shaderID);
 	shaderProgram = gameGraphics->makeProgram(shaderIDs);
 
 	// set up uniforms and attributes
 	uniforms["mvpMatrix"] = glGetUniformLocation(shaderProgram, "mvpMatrix");
-	uniforms["useTexture"] = glGetUniformLocation(shaderProgram, "useTexture");
 	uniforms["texture"] = glGetUniformLocation(shaderProgram, "texture");
-	uniforms["useColor"] = glGetUniformLocation(shaderProgram, "useColor");
-	uniforms["useLighting"] = glGetUniformLocation(shaderProgram, "useLighting");
 	uniforms["lightPosition"] = glGetUniformLocation(shaderProgram, "lightPosition");
 	uniforms["lightColor"] = glGetUniformLocation(shaderProgram, "lightColor");
 	uniforms["specularColor"] = glGetUniformLocation(shaderProgram, "specularColor");
@@ -258,6 +255,7 @@ ShipRenderer::ShipRenderer() {
 	attributes["position"] = glGetAttribLocation(shaderProgram, "position");
 	attributes["normal"] = glGetAttribLocation(shaderProgram, "normal");
 	attributes["texCoord"] = glGetAttribLocation(shaderProgram, "texCoord");
+	attributes["color"] = glGetAttribLocation(shaderProgram, "color");
 
 	// set up vertex buffers
 	glGenBuffers(1, &(vertexBuffers["vertices"]));
@@ -272,7 +270,7 @@ ShipRenderer::ShipRenderer() {
 		)
 		totalFaces += itr->second.size();
 
-	GLfloat* vertDataBufferArray = new GLfloat[totalFaces * 24];	// 3 vertices + 3 normals + 2 texcoords * 3 faces
+	GLfloat* vertDataBufferArray = new GLfloat[totalFaces * 36];	// 3 vertices + 3 normals + 2 texcoords + 4 colors * 3 faces
 	unsigned int bufferIndex = 0;
 
 	for(
@@ -286,16 +284,21 @@ ShipRenderer::ShipRenderer() {
 		// insert the vertex attribute data
 		for(size_t i = 0; i < itr->second.size(); ++i) {
 			for(size_t p = 0; p < 3; ++p) {
-				vertDataBufferArray[bufferIndex * 24 + p * 8 + 0] = shipMesh.vertices[itr->second[i].vertices[p]].x;
-				vertDataBufferArray[bufferIndex * 24 + p * 8 + 1] = shipMesh.vertices[itr->second[i].vertices[p]].y;
-				vertDataBufferArray[bufferIndex * 24 + p * 8 + 2] = shipMesh.vertices[itr->second[i].vertices[p]].z;
+				vertDataBufferArray[bufferIndex * 36 + p * 12 + 0] = shipMesh.vertices[itr->second[i].vertices[p]].x;
+				vertDataBufferArray[bufferIndex * 36 + p * 12 + 1] = shipMesh.vertices[itr->second[i].vertices[p]].y;
+				vertDataBufferArray[bufferIndex * 36 + p * 12 + 2] = shipMesh.vertices[itr->second[i].vertices[p]].z;
 
-				vertDataBufferArray[bufferIndex * 24 + p * 8 + 3] = shipMesh.normals[itr->second[i].normals[p]].x;
-				vertDataBufferArray[bufferIndex * 24 + p * 8 + 4] = shipMesh.normals[itr->second[i].normals[p]].y;
-				vertDataBufferArray[bufferIndex * 24 + p * 8 + 5] = shipMesh.normals[itr->second[i].normals[p]].z;
+				vertDataBufferArray[bufferIndex * 36 + p * 12 + 3] = shipMesh.normals[itr->second[i].normals[p]].x;
+				vertDataBufferArray[bufferIndex * 36 + p * 12 + 4] = shipMesh.normals[itr->second[i].normals[p]].y;
+				vertDataBufferArray[bufferIndex * 36 + p * 12 + 5] = shipMesh.normals[itr->second[i].normals[p]].z;
 
-				vertDataBufferArray[bufferIndex * 24 + p * 8 + 6] = shipMesh.texCoords[itr->second[i].texCoords[p]].x;
-				vertDataBufferArray[bufferIndex * 24 + p * 8 + 7] = shipMesh.texCoords[itr->second[i].texCoords[p]].y;
+				vertDataBufferArray[bufferIndex * 36 + p * 12 + 6] = shipMesh.texCoords[itr->second[i].texCoords[p]].x;
+				vertDataBufferArray[bufferIndex * 36 + p * 12 + 7] = shipMesh.texCoords[itr->second[i].texCoords[p]].y;
+
+				vertDataBufferArray[bufferIndex * 36 + p * 12 + 8] = 1.0f;
+				vertDataBufferArray[bufferIndex * 36 + p * 12 + 9] = 1.0f;
+				vertDataBufferArray[bufferIndex * 36 + p * 12 + 10] = 1.0f;
+				vertDataBufferArray[bufferIndex * 36 + p * 12 + 11] = 1.0f;
 			}
 
 			++bufferIndex;
@@ -317,7 +320,7 @@ ShipRenderer::ShipRenderer() {
 	}
 
 	// send the buffer data
-	glBufferData(GL_ARRAY_BUFFER, totalFaces * 24 * sizeof(GLfloat), vertDataBufferArray, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, totalFaces * 36 * sizeof(GLfloat), vertDataBufferArray, GL_STATIC_DRAW);
 
 	delete[] vertDataBufferArray;
 }
@@ -368,11 +371,7 @@ void ShipRenderer::execute(std::map<std::string, void*> arguments) {
 	glUseProgram(shaderProgram);
 
 	// set uniforms
-	glUniform1i(uniforms["useTexture"], 1);
 	glUniform1i(uniforms["texture"], 0);
-	glUniform1i(uniforms["useColor"], 0);
-	glUniform1i(uniforms["useLighting"], 1);
-
 	glUniform3f(uniforms["lightPosition"], 1.0f, 1.0f, 0.0f);
 	glUniform3f(uniforms["lightColor"], 0.8f, 0.8f, 1.0f);
 	glUniform3f(uniforms["specularColor"], 0.3f, 0.3f, 0.3f);
@@ -380,15 +379,18 @@ void ShipRenderer::execute(std::map<std::string, void*> arguments) {
 	// set the overall drawing state
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);
 
-	glVertexAttribPointer(attributes["position"], 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GL_FLOAT), (GLvoid*) 0);
-	glVertexAttribPointer(attributes["normal"], 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GL_FLOAT),
+	glVertexAttribPointer(attributes["position"], 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GL_FLOAT), (GLvoid*) 0);
+	glVertexAttribPointer(attributes["normal"], 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GL_FLOAT),
 			(GLvoid*) (3 * sizeof(GLfloat)));
-	glVertexAttribPointer(attributes["texCoord"], 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GL_FLOAT),
+	glVertexAttribPointer(attributes["texCoord"], 2, GL_FLOAT, GL_FALSE, 12 * sizeof(GL_FLOAT),
 			(GLvoid*) (6 * sizeof(GLfloat)));
+	glVertexAttribPointer(attributes["color"], 4, GL_FLOAT, GL_FALSE, 12 * sizeof(GL_FLOAT),
+			(GLvoid*) (8 * sizeof(GLfloat)));
 
 	glEnableVertexAttribArray(attributes["position"]);
 	glEnableVertexAttribArray(attributes["normal"]);
 	glEnableVertexAttribArray(attributes["texCoord"]);
+	glEnableVertexAttribArray(attributes["color"]);
 
 	for(
 			std::map<std::string, std::vector<Mesh::Face> >::iterator itr =
@@ -477,6 +479,7 @@ void ShipRenderer::execute(std::map<std::string, void*> arguments) {
 	glDisableVertexAttribArray(attributes["position"]);
 	glDisableVertexAttribArray(attributes["normal"]);
 	glDisableVertexAttribArray(attributes["texCoord"]);
+	glDisableVertexAttribArray(attributes["color"]);
 
 	// undo state
 	glDisable(GL_TEXTURE_2D);
