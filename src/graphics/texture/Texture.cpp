@@ -278,8 +278,11 @@ Texture::Texture(std::string filename) {
 			sizeof(fileBMPHeader)
 		);
 
-	// We only support the BITMAPINFOHEADER file format
-	if(fileBMPHeader.dataOffset - sizeof(fileMagic) - sizeof(fileBMPHeader) != 40) {
+	// We only support the BITMAPINFOHEADER file format (actually BITMAPV4HEADER seems to work too)
+	if(
+			fileBMPHeader.dataOffset - sizeof(fileMagic) - sizeof(fileBMPHeader) != 40 &&
+			fileBMPHeader.dataOffset - sizeof(fileMagic) - sizeof(fileBMPHeader) != 108
+       ) {
 		gameSystem->log(
 				GameSystem::LOG_FATAL,
 				std::string("The BMP image file " +
@@ -294,8 +297,9 @@ Texture::Texture(std::string filename) {
 			(void*) (fileContents + sizeof(fileMagic) + sizeof(fileBMPHeader)),
 			sizeof(fileDIBHeader)
 		);
-	// Check again that we are using the BITMAPINFOHEADER file format
-	if(fileDIBHeader.headerSize != 40) {
+
+	// Check again that we are using the BITMAPINFOHEADER or BITMAPV4HEADER file format
+	if(fileDIBHeader.headerSize != 40 && fileDIBHeader.headerSize != 108) {
 		gameSystem->log(
 				GameSystem::LOG_FATAL,
 				std::string("The BMP image file " +
