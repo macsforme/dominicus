@@ -536,6 +536,8 @@ unsigned int GameGraphics::execute() {
 		drawers[itr->first]->execute(itr->second);
 
 	// swap buffers
+    if(mainLoopModules.find(gameGraphics) == mainLoopModules.end())
+        glFinish();
 	SDL_GL_SwapBuffers();
 
 	// check for OpenGL errors
