@@ -56,6 +56,12 @@ public:
 
 	// GL context function
 	void loadExtensions();
+    
+    // application preferences
+	std::string getPreferenceString(const char* key);
+	float getPreferenceFloat(const char* key);
+	void setPreference(const char* key, const char* value);
+	void setPreference(const char* key, float value);
 };
 
 #endif

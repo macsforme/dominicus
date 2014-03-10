@@ -11,6 +11,7 @@
 // platform-specific headers
 #include <CoreFoundation/CoreFoundation.h>
 #include <iostream>
+#include <sstream>
 #include <mach/mach_time.h>
 #include <SDL.h>
 #include <stdint.h>
@@ -71,5 +72,44 @@ void Platform::sleepMills(unsigned int mills) {
 }
 
 void Platform::loadExtensions(){
+	;
 }
 
+std::string Platform::getPreferenceString(const char* key) {
+	std::string toReturn = std::string("");
+	CFStringRef keyRef = CFStringCreateWithCString(NULL, key, kCFStringEncodingASCII);
+	CFPropertyListRef value = CFPreferencesCopyAppValue(keyRef, kCFPreferencesCurrentApplication);
+	if(value != NULL) {
+		if(CFGetTypeID(value) == CFStringGetTypeID()) {
+			char buffer[1025];
+			buffer[0] = '\0';
+			CFStringGetCString((CFStringRef) value, buffer, 1025, kCFStringEncodingASCII);
+			toReturn = std::string(buffer);
+		}
+	}
+	CFRelease(keyRef);
+	CFRelease(value);
+	return toReturn;
+}
+
+float Platform::getPreferenceFloat(const char* key) {
+	return atof(getPreferenceString(key).c_str());
+}
+
+void Platform::setPreference(const char* key, const char* value) {
+	CFStringRef keyRef = CFStringCreateWithCString(NULL, key, kCFStringEncodingASCII);
+	CFDataRef dataRef = CFDataCreate(NULL, (Uint8*) value, strlen(value));
+	CFPropertyListRef propertyList = CFPropertyListCreateWithData(NULL, dataRef, kCFPropertyListImmutable, NULL, NULL);
+	CFPreferencesSetAppValue(keyRef, propertyList, kCFPreferencesCurrentApplication);
+	CFPreferencesSynchronize(kCFPreferencesCurrentApplication, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
+
+	CFRelease(keyRef);
+	CFRelease(dataRef);
+	CFRelease(propertyList);
+}
+
+void Platform::setPreference(const char* key, float value) {
+	std::stringstream stringValue;
+	stringValue << value;
+	setPreference(key, stringValue.str().c_str());
+}
