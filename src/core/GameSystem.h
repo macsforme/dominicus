@@ -10,7 +10,7 @@
 #define GAMESYSTEM_H
 
 // Game identifier string
-#define PROGRAM_IDENTIFIER "Dominicus Conception"
+#define PROGRAM_IDENTIFIER "Crucible Island"
 
 // Major version (non-negative integer)
 #define PROGRAM_VERSION 0
@@ -79,6 +79,8 @@ public:
 
 	std::vector<std::string> logLines;
 
+	void log(LogDetail detail, std::string report);
+
 	// standards retrieval
 	bool isStandard(const char* key) const;
 
@@ -92,18 +94,21 @@ public:
 	bool getBool(const char* key);
 
 	// standards manipulation
-	void setStandard(const char* key, const char* value, const char* description, bool locked);
-	void setStandard(const char* key, Vector4 value, const char* description, bool locked);
-	void setStandard(const char* key, float value, const char* description, bool locked);
-	void setStandard(const char* key, bool value, const char* description, bool locked);
+	void setStandard(const char* key, const char* value, const char* description, bool locked = false);
+	void setStandard(const char* key, Vector4 value, const char* description, bool locked = false);
+	void setStandard(const char* key, float value, const char* description, bool locked = false);
+	void setStandard(const char* key, bool value, const char* description, bool locked = false);
 
+	// standards/preferences integration
+	void flushPreferences();
+	
 	// input device bindings
 	std::vector<SDLKey> getBindingKeys(std::string action);
 	std::vector<Uint8> getBindingMouseButtons(std::string action);
 
-	// logging
-	void log(LogDetail detail, std::string report);
-
+	// high score data
+	std::vector< std::pair<unsigned int, std::string> > highScores;
+	
 	// object management
 	GameSystem();
 };

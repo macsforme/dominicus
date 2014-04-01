@@ -44,7 +44,7 @@ bool GameSystem::getBool(const char* key) {
 }
 
 void GameSystem::setStandard(const char* key, const char* value,
-		const char* description, bool locked = false) {
+		const char* description, bool locked) {
 	StandardEntry entry;
 
 	entry.value = value;
@@ -55,7 +55,7 @@ void GameSystem::setStandard(const char* key, const char* value,
 }
 
 void GameSystem::setStandard(const char* key, Vector4 value,
-		const char* description, bool locked = false) {
+		const char* description, bool locked) {
 	char str[9];
 	sprintf(
 			str,
@@ -70,7 +70,7 @@ void GameSystem::setStandard(const char* key, Vector4 value,
 }
 
 void GameSystem::setStandard(const char* key, float value,
-		const char* description, bool locked = false) {
+		const char* description, bool locked) {
 	std::stringstream str;
 	str << value;
 
@@ -78,8 +78,26 @@ void GameSystem::setStandard(const char* key, float value,
 }
 
 void GameSystem::setStandard(const char* key, bool value,
-		const char* description, bool locked = false) {
+		const char* description, bool locked) {
 	setStandard(key, (value != false ? "true" : "false"), description, locked);
+}
+
+void GameSystem::flushPreferences() {
+	platform->setPreference("preferencesVersion", 1.0f);
+	platform->setPreference("displayStartFullscreen", (getBool("displayStartFullscreen") == true ? 1.0f : 0.0f));
+	platform->setPreference("audioMusicVolume", getFloat("audioMusicVolume"));
+	platform->setPreference("audioEffectsVolume", getFloat("audioEffectsVolume"));
+	platform->setPreference("gameStartingLevel", getString("gameStartingLevel").c_str());
+	if(highScores.size() == 0) {
+		platform->setPreference("highScores", "");
+	} else {
+		std::stringstream stringStream;
+		stringStream << "\"";
+		for(size_t i = 0; i < highScores.size(); ++i)
+			stringStream << (i > 0 ? "\n" : "") << highScores[i].second << "\t" << highScores[i].first;
+		stringStream << "\"";
+		platform->setPreference("highScores", stringStream.str().c_str());
+	}
 }
 
 std::vector<SDLKey> GameSystem::getBindingKeys(std::string action) {
@@ -183,6 +201,7 @@ GameSystem::GameSystem() :
 			"Number of times per second to poll the input devices.",
 			true
 		);
+/*
 	setStandard(
 			"inputAllowedCallsignChars",
 			"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-_ ",
@@ -195,8 +214,9 @@ GameSystem::GameSystem() :
 			"Characters allowed to be used in passwords.",
 			true
 		);
-
+*/
 	// ship state and control standards
+/*
 	setStandard(
 			"shipUpdateFrequency",
 			60.0f,
@@ -227,7 +247,7 @@ GameSystem::GameSystem() :
 			"Maximum pitch or roll a ship can tilt in degrees.",
 			true
 		);
-
+*/
 	// display and drawing standards
 	setStandard(
 			"displayFPSCap",
@@ -240,7 +260,7 @@ GameSystem::GameSystem() :
 			"Number of frames per second to draw."
 		);
 	setStandard(
-			"displayStartFullScreen",
+			"displayStartFullscreen",
 			false,
 			"Whether or not to start the program in full screen mode."
 		);
@@ -259,8 +279,14 @@ GameSystem::GameSystem() :
 			24.0f,
 			"Color depth of display (may only affect full screen mode)."
 		);
+	setStandard(
+			"colorClear",
+			Vector4(174.0f / 255.0f, 187.0f / 255.0f, 224.0f / 255.0f, 1.0f),
+			"Color of empty space."
+		);
 
 	// scene rendering standards
+/*
 	setStandard(
 			"renderingPerspectiveFOV",
 			30.0f,
@@ -279,8 +305,9 @@ GameSystem::GameSystem() :
 			"Far clip distance for perspective projection.",
 			true
 		);
-
+*/
 	// scene rendering camera standards
+/*
 	setStandard(
 			"renderingCameraFollowDistance",
 			5.0f,
@@ -299,8 +326,9 @@ GameSystem::GameSystem() :
 			"How many seconds worth of turning the camera should lag behind the ship.",
 			true
 		);
-
+*/
 	// scene rendering effect standards
+/*
 	setStandard(
 			"shipPropellerRPM",
 			1.0f,
@@ -337,13 +365,14 @@ GameSystem::GameSystem() :
 			"Terrain mixing noise texture color depth.",
 			true
 		);
-
+*/
 	// HUD standards
 	setStandard(
 			"hudFPSTestFrequency",
 			1.0f,
 			"Frequency per second of the FPS test."
 		);
+/*
 	setStandard(
 			"hudCursorSize",
 			100.0f,
@@ -389,41 +418,54 @@ GameSystem::GameSystem() :
 			35.0f,
 			"Size of radar in percentage of screen height."
 		);
+*/
 	setStandard(
 			"hudElementMargin",
-			40.0f,
+			36.0f,
 			"Space between HUD elements in pixels."
 		);
+/*
 	setStandard(
 			"hudContainerPadding",
 			12.0f,
 			"Space between HUD elements' external border and content in pixels."
 		);
+*/
 	setStandard(
 			"hudButtonPadding",
 			8.0f,
 			"Space between HUD buttons' external border and content in pixels."
 		);
 	setStandard(
+			"hudBigButtonPadding",
+			16.0f,
+			"Space between large HUD buttons' external border and content in pixels."
+		);
+/*
+	setStandard(
 			"hudContainerBorder",
-			2.0f,
+			6.0f,
 			"Thickness in pixels of HUD container element borders."
 		);
+*/
 	setStandard(
 			"hudContainerInsideColor",
-			Vector4(0.031f, 0.075f, 0.184f, 0.752f),
-			"Background color of HUD container elements."
-		);
-	setStandard(
-			"hudContainerAltInsideColor",
 			Vector4(0.2f, 0.2f, 0.2f, 0.7f),
 			"Background color of HUD container elements."
 		);
+/*
+	setStandard(
+			"hudContainerAltInsideColor",
+			Vector4(0.031f, 0.075f, 0.184f, 0.752f),
+			"Background color of HUD container elements."
+		);
+*/
 	setStandard(
 			"hudContainerHighlightColor",
 			Vector4(0.863f, 0.863f, 0.863f, 0.247f),
 			"Highlight background color of HUD container elements."
 		);
+/*
 	setStandard(
 			"hudContainerBorderColor",
 			Vector4(0.918f, 1.0f, 0.945f, 0.714),
@@ -444,6 +486,7 @@ GameSystem::GameSystem() :
 			Vector4(0.0f, 0.0f, 1.0f, 1.0f),
 			"Background color for active text fields."
 		);
+*/
 
 	// font standards
 	setStandard(
@@ -454,17 +497,22 @@ GameSystem::GameSystem() :
 	setStandard(
 			"fontSizeSmall",
 			14.0f,
+			"Font size for small display in points (1/72 inch)."
+		);
+	setStandard(
+			"fontSizeMedium",
+			24.0f,
 			"Font size for standard display in points (1/72 inch)."
 		);
 	setStandard(
 			"fontSizeLarge",
-			42.0f,
+			34.0f,
 			"Font size for enlarged display in points (1/72 inch)."
 		);
 	setStandard(
-			"fontColorDark",
-			Vector4(0.725f, 0.725f, 0.725f, 1.0f),
-			"Dark font color."
+			"fontSizeSuper",
+			46.0f,
+			"Font size for title display in points (1/72 inch)."
 		);
 	setStandard(
 			"fontColorLight",
@@ -472,29 +520,45 @@ GameSystem::GameSystem() :
 			"Light font color."
 		);
 	setStandard(
-			"fontColorMedium",
-//			Vector4(0.863f, 0.863f, 0.863f, 1.0f),
-			Vector4(0.675f, 0.722f, 0.722f, 1.0f),
+			"fontColorDark",
+			Vector4(0.5f, 0.5f, 0.5f, 1.0f),
 			"Medium font color."
 		);
 
-	// game color standards
+	// audio standards
 	setStandard(
-			"colorClear",
-//			Vector4(0.0f, 0.0f, 0.0f, 1.0f),
-//			Vector4(1.0f, 1.0f, 1.0f, 1.0f),
-//			Vector4(0.447058823529412f, 0.407843137254902f, 0.298039215686275f, 1.0f),
-//			Vector4(0.3f, 0.3f, 0.3f, 1.0f),
-//			Vector4(0.58f, 0.71f, 0.79f, 1.0f),
-			Vector4(174.0f / 255.0f, 187.0f / 255.0f, 224.0f / 255.0f, 1.0f),
-			"Color of empty space."
+			"audioMusicVolume",
+			0.5f,
+			"Music volume."
+		);
+	setStandard(
+			"audioEffectsVolume",
+			0.5f,
+			"Audio effects volume."
+		);
+
+	// general game standards
+	setStandard(
+			"gameStartingLevel",
+			"Easy",
+			"Starting difficulty level"
+		);
+	setStandard(
+			"islandMaximumWidth",
+			1000.0f,
+			"Maximum island width"
+		);
+	setStandard(
+			"islandMaximumHeight",
+			100.0f,
+			"Maximum island height"
 		);
 
 	// key bindings
-	keyBindings.push_back(std::make_pair("quit", SDLK_F12));
-	keyBindings.push_back(std::make_pair("fullScreenToggle", SDLK_F1));
-	keyBindings.push_back(std::make_pair("dashboardToggle", SDLK_LSHIFT));
-	keyBindings.push_back(std::make_pair("dashboardToggle", SDLK_RSHIFT));
+//	keyBindings.push_back(std::make_pair("quit", SDLK_F12));
+//	keyBindings.push_back(std::make_pair("fullScreenToggle", SDLK_F1));
+//	keyBindings.push_back(std::make_pair("dashboardToggle", SDLK_LSHIFT));
+//	keyBindings.push_back(std::make_pair("dashboardToggle", SDLK_RSHIFT));
 //	keyBindings.push_back(std::make_pair("cancel", SDLK_ESCAPE));
 //	keyBindings.push_back(std::make_pair("playerInfoDisplayToggle", SDLK_F3));
 //	keyBindings.push_back(std::make_pair("radarDisplayToggle", SDLK_F4));
@@ -508,8 +572,43 @@ GameSystem::GameSystem() :
 //	keyBindings.push_back(std::make_pair("pitchDown", SDLK_DOWN));
 
 	// temporary key bindings for development
-	keyBindings.push_back(std::make_pair("cameraSwitch", SDLK_k));
-	keyBindings.push_back(std::make_pair("fpsCapToggle", SDLK_c));
+//	keyBindings.push_back(std::make_pair("cameraSwitch", SDLK_k));
+//	keyBindings.push_back(std::make_pair("fpsCapToggle", SDLK_c));
+/*
+std::pair<unsigned int, std::string> highScoresPair;
+highScoresPair = std::make_pair(10, "kierra"); highScores.push_back(highScoresPair);
+highScoresPair = std::make_pair(9, "snick"); highScores.push_back(highScoresPair);
+highScoresPair = std::make_pair(8, "orbit"); highScores.push_back(highScoresPair);
+highScoresPair = std::make_pair(7, "contamination"); highScores.push_back(highScoresPair);
+highScoresPair = std::make_pair(6, "Bulldozer"); highScores.push_back(highScoresPair);
+highScoresPair = std::make_pair(5, "Augustus"); highScores.push_back(highScoresPair);
+highScoresPair = std::make_pair(4, "Constitution"); highScores.push_back(highScoresPair);
+highScoresPair = std::make_pair(3, "Wasp^32"); highScores.push_back(highScoresPair);
+highScoresPair = std::make_pair(2, "Hornet"); highScores.push_back(highScoresPair);
+highScoresPair = std::make_pair(1, "Josh"); highScores.push_back(highScoresPair);
+*/
+//highScores.clear();
+
+	// load standards from preferences (or save standard preferences if no file)
+	if(platform->getPreferenceFloat("preferencesVersion") == 1.0f) {
+		setStandard("displayStartFullscreen", (platform->getPreferenceFloat("displayStartFullscreen")  == 1.0f ? true : false), "");
+		setStandard("audioMusicVolume", platform->getPreferenceFloat("audioMusicVolume"), "");
+		setStandard("audioEffectsVolume", platform->getPreferenceFloat("audioEffectsVolume"), "");
+		setStandard("gameStartingLevel", platform->getPreferenceString("gameStartingLevel").c_str(), "");
+		std::string highScoresString = platform->getPreferenceString("highScores");
+		size_t i = highScoresString.find('\t');
+		while(i != std::string::npos) {
+			std::string highScoreName = highScoresString.substr(0, i);
+			highScoresString = highScoresString.substr(i + 1);
+			i = highScoresString.find('\n');
+			std::string highScoreScore = highScoresString.substr(0, i);
+			highScoresString = highScoresString.substr(i + 1);
+			i = highScoresString.find('\t');
+			highScores.push_back(std::make_pair((unsigned int) atoi(highScoreScore.c_str()), highScoreName));
+		}
+	} else {
+		flushPreferences();
+	}
 
 	// get the display resolution
 	SDL_VideoInfo* vidInfo = (SDL_VideoInfo*) SDL_GetVideoInfo();

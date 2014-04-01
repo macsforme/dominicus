@@ -37,7 +37,7 @@ int dominicusMain(int argc, char* argv[]) {
 	platform = new Platform();
 	gameSystem = new GameSystem();
 
-	gameGraphics = new GameGraphics(gameSystem->getBool("displayStartFullScreen"), true);
+	gameGraphics = new GameGraphics(gameSystem->getBool("displayStartFullscreen"), true);
 	platform->loadExtensions();
 
 	inputHandler = new InputHandler();
