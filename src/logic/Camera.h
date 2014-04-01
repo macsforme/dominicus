@@ -1,4 +1,4 @@
-// TestCameras.h
+// Camera.h
 //
 // Dominicus
 // Copyright 2010-2011, Joshua Bodine
@@ -6,26 +6,32 @@
 // Released under the terms of the "Simplified BSD License." See the file
 // licenses/DOMINICUS.txt for the license text.
 
-#ifndef TESTCAMERAS_H
-#define TESTCAMERAS_H
+#ifndef CAMERA_H
+#define CAMERA_H
 
 // program headers
+#include "core/GameSystem.h"
 #include "geometry/Mesh.h"
 #include "graphics/GameGraphics.h"
-#include "logic/cameras/Camera.h"
 #include "math/MatrixMath.h"
 #include "math/MiscMath.h"
 #include "math/VectorMath.h"
 #include "platform/Platform.h"
 #include "state/GameState.h"
-#include "state/Ship.h"
 
 // global variables
 extern GameGraphics* gameGraphics;
-extern GameState* gameState;
-extern Platform* platform;
+extern GameSystem* gameSystem;
 
 // class definitions
+class Camera {
+public:
+	Vector3 position;
+	Matrix4 shipMatrix, terrainMatrix;
+
+	virtual void execute() = 0;
+};
+
 class ShipRelativeCamera : public Camera {
 private:
 	Ship* ship;
@@ -46,4 +52,14 @@ public:
 	void execute();
 };
 
-#endif // TESTCAMERAS_H
+class FollowCamera : public Camera {
+private:
+	Ship* ship;
+
+public:
+	FollowCamera(Ship* ship);
+
+	void execute();
+};
+
+#endif
