@@ -51,7 +51,8 @@ Vector2 DrawLabel::getSize(std::map<std::string, void*> arguments) {
 	unsigned int widthWrap = gameGraphics->resolutionX;
 	if(arguments.find("wrap") != arguments.end())
 		widthWrap = (unsigned int) (*((float*) arguments["wrap"]) / 2.0f * (float) widthWrap);
-
+	if(widthWrap == 0)
+		widthWrap = gameGraphics->resolutionX;
 	TextBlock textBlock(
 			text->c_str(),
 			widthWrap,
@@ -131,51 +132,18 @@ Vector2 DrawLabel::getSize(std::map<std::string, void*> arguments) {
 
 			totalWidth += textBlocks[i]->width;
 
-			if(textBlocks[i]->height /*- textBlocks[i]->originY*/ > (int) totalHeight)
-				totalHeight = textBlocks[i]->height /*- textBlocks[i]->originY*/;
+			if(textBlocks[i]->height > (int) totalHeight)
+				totalHeight = textBlocks[i]->height;
 
 			if(textBlocks[i]->originY > maxOriginY)
 				maxOriginY = textBlocks[i]->originY;
 		}
-//		totalHeight += maxOriginY;
 
 		textBlock.width = totalWidth;
 		textBlock.height = totalHeight;
-/*
-		textBlock.entries.clear();
 
-		size_t penX = 0, penY = 0;
+		// skip part that actually sets text positions
 
-		for(size_t i = 0; i < numSections; ++i) {
-			penY = totalHeight - textBlocks[i]->height;
-
-			for(size_t p = 0; p < textBlocks[i]->entries.size(); ++p) {
-				TextBlock::CharEntry thisEntry = textBlocks[i]->entries[p];
-
-				thisEntry.sX = (thisEntry.sX * 0.5f + 0.5f) * (float) textBlocks[i]->width;
-				thisEntry.sX += (float) penX;
-				thisEntry.sX = thisEntry.sX / (float) totalWidth * 2.0f - 1.0f;
-
-				thisEntry.eX = (thisEntry.eX * 0.5f + 0.5f) * (float) textBlocks[i]->width;
-				thisEntry.eX += (float) penX;
-				thisEntry.eX = thisEntry.eX / (float) totalWidth * 2.0f - 1.0f;
-
-				thisEntry.sY = (thisEntry.sY * 0.5f + 0.5f) * (float) textBlocks[i]->height;
-				thisEntry.sY += (float) penY;
-				thisEntry.sY = thisEntry.sY / (float) totalHeight * 2.0f - 1.0f;
-
-				thisEntry.eY = (thisEntry.eY * 0.5f + 0.5f) * (float) textBlocks[i]->height;
-				thisEntry.eY += (float) penY;
-				thisEntry.eY = thisEntry.eY / (float) totalHeight * 2.0f - 1.0f;
-
-				textBlock.entries.push_back(thisEntry);
-			}
-
-			penX +=
-					textBlocks[i]->width +
-					gameGraphics->fontManager->fontData[' '][(unsigned int) *fontSize].advanceX * 8;
-		}
-*/
 		for(size_t i = 0; i < numSections; ++i)
 			delete(textBlocks[i]);
 	}
@@ -202,6 +170,8 @@ void DrawLabel::execute(std::map<std::string, void*> arguments) {
 	unsigned int widthWrap = gameGraphics->resolutionX;
 	if(arguments.find("wrap") != arguments.end())
 		widthWrap = (unsigned int) (*((float*) arguments["wrap"]) / 2.0f * (float) widthWrap);
+	if(widthWrap == 0)
+		widthWrap = gameGraphics->resolutionX;
 
 	TextBlock textBlock(
 			text->c_str(),
@@ -261,7 +231,6 @@ void DrawLabel::execute(std::map<std::string, void*> arguments) {
 			while(sections[i].substr(sections[i].size() - 1, std::string::npos) == "\n")
 				sections[i] = sections[i].substr(0, sections[i].size() - 1);
 
-//printf("SECTIONS\n"); for(size_t i = 0; i < numSections; ++i) printf("%u \"%s\"\n", (unsigned int) i, sections[i].c_str());
 		TextBlock* textBlocks[numSections];
 
 		for(size_t i = 0; i < numSections; ++i) {
@@ -272,14 +241,9 @@ void DrawLabel::execute(std::map<std::string, void*> arguments) {
 					gameGraphics->fontManager,
 					(unsigned int) *fontSize
 				);
-            
-//printf("textBlock size: %u %u\n", (unsigned int) textBlocks[i]->width, (unsigned int) textBlocks[i]->height);
 		}
-//printf("\n");
-
         
         delete[] sections;
-//textBlock = *(textBlocks[0]);
 
 		size_t totalWidth = 0, totalHeight = 0, maxOriginY = 0;
 
@@ -295,10 +259,6 @@ void DrawLabel::execute(std::map<std::string, void*> arguments) {
 			if(textBlocks[i]->originY > maxOriginY)
 				maxOriginY = textBlocks[i]->originY;
 		}
-//		totalHeight += maxOriginY;
-
-//printf("total dimensions: %u %u\n\n", (unsigned int) totalWidth, (unsigned int) totalHeight);
-
 
 		textBlock.entries.clear();
 		textBlock.width = totalWidth;
@@ -307,22 +267,8 @@ void DrawLabel::execute(std::map<std::string, void*> arguments) {
 		size_t penX = 0, penY = 0;
 
 		for(size_t i = 0; i < numSections; ++i) {
-			penY = totalHeight - textBlocks[i]->height/*textBlocks[i]->originY*/;
-//			penY = totalHeight - (maxOriginY - textBlocks[i]->originY + textBlocks[i]->height);
+			penY = totalHeight - textBlocks[i]->height;
 
-/*
-			size_t leadingReturns = 0;
-			for(size_t p = 0; p < textBlocks[i]->entries.size(); ++p)
-				if(textBlocks[i]->entries[p].character == '\n')
-					++leadingReturns;
-				else
-					break;
-*/
-
-//printf("section %u, penY %u\n", (unsigned int) i, (unsigned int) penY);
-//printf("maxOriginY %u, this originY %u\n", (unsigned int) maxOriginY, textBlocks[i]->originY);
-//printf("dimensions %u, %u\n", textBlocks[i]->width, textBlocks[i]->height);
-//printf("line height %u\n", gameGraphics->fontManager->lineHeights[(unsigned int) *fontSize]);
 			for(size_t p = 0; p < textBlocks[i]->entries.size(); ++p) {
 				TextBlock::CharEntry thisEntry = textBlocks[i]->entries[p];
 
@@ -454,6 +400,10 @@ void DrawLabel::execute(std::map<std::string, void*> arguments) {
 	// activate the texture
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, gameGraphics->fontManager->textureIDs[(unsigned int) *fontSize]);
+	
+	// texture parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	// draw the data stored in GPU memory
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);
