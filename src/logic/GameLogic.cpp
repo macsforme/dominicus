@@ -15,46 +15,113 @@ GameLogic::GameLogic() {
 					gameSystem->getFloat("hudElementMargin") / gameGraphics->resolutionY)
 		);
 
-	// add key listeners
+	// independent key listeners
 	std::vector<SDLKey> keysVector;
 
-	keysVector = gameSystem->getBindingKeys("quit");
+	keysVector.push_back(SDLK_F12);
 	quitKeyListener = new KeyListener(keysVector);
 	keysVector.clear();
 
-	keysVector = gameSystem->getBindingKeys("fullScreenToggle");
+	keysVector.push_back(SDLK_F1);
 	fullScreenKeyListener = new KeyListener(keysVector);
 	keysVector.clear();
 
-	keysVector = gameSystem->getBindingKeys("dashboardToggle");
-	dashboardKeyListener = new KeyListener(keysVector);
-	keysVector.clear();
+	// initialize draw info/listeners for all schemes
+	mouseMotionListener = new MouseMotionListener();
 
-	keysVector.push_back(SDLK_BACKSPACE);
-	deleteKeyListener = new KeyListener(keysVector);
-	keysVector.clear();
+	std::vector<SDLKey> mainMenuKeys;
+	mainMenuKeys.push_back(SDLK_UP);
+	mainMenuKeys.push_back(SDLK_DOWN);
+	mainMenuKeys.push_back(SDLK_RETURN);
+	mainMenuKeyListener = new KeyListener(mainMenuKeys);
 
-	keysVector.push_back(SDLK_t);
-	testKeyListener = new KeyListener(keysVector);
-	keysVector.clear();
-
-	testKeyAbsoluteListener = new KeyAbsoluteListener(SDLK_SPACE);
-
-	// add mouse listeners
-	cursorMovementListener = new MouseMotionListener();
-	quitButtonZoneListener = new MouseZoneListener();
-	quitButtonClickListener = new MouseButtonListener();
-	startButtonZoneListener = new MouseZoneListener();
-	startButtonClickListener = new MouseButtonListener();
-
-	// specify draw stack entry draw node types and initialize memory
 	splashEntry.first = "splash";
+
+	brandEntry.first = "texture";
+	brandEntry.second["metrics"] = (void*) new UIMetrics;
+	brandEntry.second["texture"] = (void*) new std::string;
+
+	presentsEntry.first = "label";
+	presentsEntry.second["metrics"] = (void*) new UIMetrics;
+	presentsEntry.second["fontSize"] = (void*) new float;
+	presentsEntry.second["fontColor"] = (void*) new Vector4;
+	presentsEntry.second["text"] = (void*) new std::string;
 
 	titleEntry.first = "label";
 	titleEntry.second["metrics"] = (void*) new UIMetrics;
 	titleEntry.second["fontSize"] = (void*) new float;
 	titleEntry.second["fontColor"] = (void*) new Vector4;
 	titleEntry.second["text"] = (void*) new std::string;
+
+	logoEntry.first = "texture";
+	logoEntry.second["metrics"] = (void*) new UIMetrics;
+	logoEntry.second["texture"] = (void*) new std::string;
+
+	mainMenuSpacerMetrics = new UIMetrics;
+
+	playButtonEntry.first = "button";
+	playButtonEntry.second["metrics"] = (void*) new UIMetrics;
+	playButtonEntry.second["fontSize"] = (void*) new float;
+	playButtonEntry.second["fontColor"] = (void*) new Vector4;
+	playButtonEntry.second["text"] = (void*) new std::string;
+	playButtonEntry.second["insideColor"] = (void*) new Vector4;
+	playButtonEntry.second["highlightColor"] = (void*) new Vector4;
+	playButtonEntry.second["borderColor"] = (void*) new Vector4;
+	playButtonEntry.second["outsideColor"] = (void*) new Vector4;
+	playButtonEntry.second["padding"] = (void*) new float;
+	playButtonEntry.second["border"] = (void*) new float;
+	playButtonEntry.second["containerTimer"] = NULL;
+	playButtonEntry.second["textTimer"] = NULL;
+	playButtonZoneListener = new MouseZoneListener();
+	playButtonClickListener = new MouseButtonListener();
+
+	settingsButtonEntry.first = "button";
+	settingsButtonEntry.second["metrics"] = (void*) new UIMetrics;
+	settingsButtonEntry.second["fontSize"] = (void*) new float;
+	settingsButtonEntry.second["fontColor"] = (void*) new Vector4;
+	settingsButtonEntry.second["text"] = (void*) new std::string;
+	settingsButtonEntry.second["insideColor"] = (void*) new Vector4;
+	settingsButtonEntry.second["highlightColor"] = (void*) new Vector4;
+	settingsButtonEntry.second["borderColor"] = (void*) new Vector4;
+	settingsButtonEntry.second["outsideColor"] = (void*) new Vector4;
+	settingsButtonEntry.second["padding"] = (void*) new float;
+	settingsButtonEntry.second["border"] = (void*) new float;
+	settingsButtonEntry.second["containerTimer"] = NULL;
+	settingsButtonEntry.second["textTimer"] = NULL;
+	settingsButtonZoneListener = new MouseZoneListener();
+	settingsButtonClickListener = new MouseButtonListener();
+
+	helpButtonEntry.first = "button";
+	helpButtonEntry.second["metrics"] = (void*) new UIMetrics;
+	helpButtonEntry.second["fontSize"] = (void*) new float;
+	helpButtonEntry.second["fontColor"] = (void*) new Vector4;
+	helpButtonEntry.second["text"] = (void*) new std::string;
+	helpButtonEntry.second["insideColor"] = (void*) new Vector4;
+	helpButtonEntry.second["highlightColor"] = (void*) new Vector4;
+	helpButtonEntry.second["borderColor"] = (void*) new Vector4;
+	helpButtonEntry.second["outsideColor"] = (void*) new Vector4;
+	helpButtonEntry.second["padding"] = (void*) new float;
+	helpButtonEntry.second["border"] = (void*) new float;
+	helpButtonEntry.second["containerTimer"] = NULL;
+	helpButtonEntry.second["textTimer"] = NULL;
+	helpButtonZoneListener = new MouseZoneListener();
+	helpButtonClickListener = new MouseButtonListener();
+
+	highScoresButtonEntry.first = "button";
+	highScoresButtonEntry.second["metrics"] = (void*) new UIMetrics;
+	highScoresButtonEntry.second["fontSize"] = (void*) new float;
+	highScoresButtonEntry.second["fontColor"] = (void*) new Vector4;
+	highScoresButtonEntry.second["text"] = (void*) new std::string;
+	highScoresButtonEntry.second["insideColor"] = (void*) new Vector4;
+	highScoresButtonEntry.second["highlightColor"] = (void*) new Vector4;
+	highScoresButtonEntry.second["borderColor"] = (void*) new Vector4;
+	highScoresButtonEntry.second["outsideColor"] = (void*) new Vector4;
+	highScoresButtonEntry.second["padding"] = (void*) new float;
+	highScoresButtonEntry.second["border"] = (void*) new float;
+	highScoresButtonEntry.second["containerTimer"] = NULL;
+	highScoresButtonEntry.second["textTimer"] = NULL;
+	highScoresButtonZoneListener = new MouseZoneListener();
+	highScoresButtonClickListener = new MouseButtonListener();
 
 	quitButtonEntry.first = "button";
 	quitButtonEntry.second["metrics"] = (void*) new UIMetrics;
@@ -69,425 +136,199 @@ GameLogic::GameLogic() {
 	quitButtonEntry.second["border"] = (void*) new float;
 	quitButtonEntry.second["containerTimer"] = NULL;
 	quitButtonEntry.second["textTimer"] = NULL;
+	quitButtonZoneListener = new MouseZoneListener();
+	quitButtonClickListener = new MouseButtonListener();
 
-	logoEntry.first = "texture";
-	logoEntry.second["metrics"] = (void*) new UIMetrics;
-	logoEntry.second["texture"] = (void*) new std::string;
+	menuTip1Entry.first = "label";
+	menuTip1Entry.second["metrics"] = (void*) new UIMetrics;
+	menuTip1Entry.second["fontSize"] = (void*) new float;
+	menuTip1Entry.second["fontColor"] = (void*) new Vector4;
+	menuTip1Entry.second["text"] = (void*) new std::string;
 
-	joinContainerEntry.first = "container";
-	joinContainerEntry.second["metrics"] = (void*) new UIMetrics;
-	joinContainerEntry.second["insideColor"] = (void*) new Vector4;
-	joinContainerEntry.second["highlightColor"] = (void*) new Vector4;
-	joinContainerEntry.second["borderColor"] = (void*) new Vector4;
-	joinContainerEntry.second["outsideColor"] = (void*) new Vector4;
-	joinContainerEntry.second["padding"] = (void*) new float;
-	joinContainerEntry.second["border"] = (void*) new float;
-	joinContainerEntry.second["containerTimer"] = NULL;
-	joinContainerEntry.second["textTimer"] = NULL;
+	menuTip2Entry.first = "label";
+	menuTip2Entry.second["metrics"] = (void*) new UIMetrics;
+	menuTip2Entry.second["fontSize"] = (void*) new float;
+	menuTip2Entry.second["fontColor"] = (void*) new Vector4;
+	menuTip2Entry.second["text"] = (void*) new std::string;
 
-	joinHeaderLabelEntry.first = "label";
-	joinHeaderLabelEntry.second["metrics"] = (void*) new UIMetrics;
-	joinHeaderLabelEntry.second["fontSize"] = (void*) new float;
-	joinHeaderLabelEntry.second["fontColor"] = (void*) new Vector4;
-	joinHeaderLabelEntry.second["text"] = (void*) new std::string;
+	menuTip3Entry.first = "label";
+	menuTip3Entry.second["metrics"] = (void*) new UIMetrics;
+	menuTip3Entry.second["fontSize"] = (void*) new float;
+	menuTip3Entry.second["fontColor"] = (void*) new Vector4;
+	menuTip3Entry.second["text"] = (void*) new std::string;
 
-	joinCallsignLabelEntry.first = "label";
-	joinCallsignLabelEntry.second["metrics"] = (void*) new UIMetrics;
-	joinCallsignLabelEntry.second["fontSize"] = (void*) new float;
-	joinCallsignLabelEntry.second["fontColor"] = (void*) new Vector4;
-	joinCallsignLabelEntry.second["text"] = (void*) new std::string;
+	std::vector<SDLKey> helpMenuKeys;
+	helpMenuKeys.push_back(SDLK_UP);
+	helpMenuKeys.push_back(SDLK_DOWN);
+	helpMenuKeys.push_back(SDLK_ESCAPE);
+	helpMenuKeys.push_back(SDLK_RETURN);
+	helpMenuKeyListener = new KeyListener(helpMenuKeys);
 
-	joinCallsignFieldEntry.first = "field";
-	joinCallsignFieldEntry.second["metrics"] = (void*) new UIMetrics;
-	joinCallsignFieldEntry.second["fontSize"] = (void*) new float;
-	joinCallsignFieldEntry.second["fontColor"] = (void*) new Vector4;
-	joinCallsignFieldEntry.second["text"] = (void*) new std::string;
-	joinCallsignFieldEntry.second["boxColor"] = (void*) new Vector4;
-	joinCallsignFieldEntry.second["boxPadding"] = (void*) new float;
+	helpTitleEntry.first = "label";
+	helpTitleEntry.second["metrics"] = (void*) new UIMetrics;
+	helpTitleEntry.second["fontSize"] = (void*) new float;
+	helpTitleEntry.second["fontColor"] = (void*) new Vector4;
+	helpTitleEntry.second["text"] = (void*) new std::string;
 
-	joinTeamLabelEntry.first = "label";
-	joinTeamLabelEntry.second["metrics"] = (void*) new UIMetrics;
-	joinTeamLabelEntry.second["fontSize"] = (void*) new float;
-	joinTeamLabelEntry.second["fontColor"] = (void*) new Vector4;
-	joinTeamLabelEntry.second["text"] = (void*) new std::string;
+	controlsTitleEntry.first = "label";
+	controlsTitleEntry.second["metrics"] = (void*) new UIMetrics;
+	controlsTitleEntry.second["fontSize"] = (void*) new float;
+	controlsTitleEntry.second["fontColor"] = (void*) new Vector4;
+	controlsTitleEntry.second["text"] = (void*) new std::string;
 
-	joinTeamMenuEntry.first = "menu";
+	controlsEntry.first = "label";
+	controlsEntry.second["metrics"] = (void*) new UIMetrics;
+	controlsEntry.second["fontSize"] = (void*) new float;
+	controlsEntry.second["fontColor"] = (void*) new Vector4;
+	controlsEntry.second["text"] = (void*) new std::string;
 
-	joinButtonEntry.first = "button";
-	joinButtonEntry.second["metrics"] = (void*) new UIMetrics;
-	joinButtonEntry.second["fontSize"] = (void*) new float;
-	joinButtonEntry.second["fontColor"] = (void*) new Vector4;
-	joinButtonEntry.second["text"] = (void*) new std::string;
-	joinButtonEntry.second["insideColor"] = (void*) new Vector4;
-	joinButtonEntry.second["highlightColor"] = (void*) new Vector4;
-	joinButtonEntry.second["borderColor"] = (void*) new Vector4;
-	joinButtonEntry.second["outsideColor"] = (void*) new Vector4;
-	joinButtonEntry.second["padding"] = (void*) new float;
-	joinButtonEntry.second["border"] = (void*) new float;
-	joinButtonEntry.second["containerTimer"] = NULL;
-	joinButtonEntry.second["textTimer"] = NULL;
+	instructionsTitleEntry.first = "label";
+	instructionsTitleEntry.second["metrics"] = (void*) new UIMetrics;
+	instructionsTitleEntry.second["fontSize"] = (void*) new float;
+	instructionsTitleEntry.second["fontColor"] = (void*) new Vector4;
+	instructionsTitleEntry.second["text"] = (void*) new std::string;
 
-	joinStatusLabelEntry.first = "label";
-	joinStatusLabelEntry.second["metrics"] = (void*) new UIMetrics;
-	joinStatusLabelEntry.second["fontSize"] = (void*) new float;
-	joinStatusLabelEntry.second["fontColor"] = (void*) new Vector4;
-	joinStatusLabelEntry.second["text"] = (void*) new std::string;
+	instructionsEntry.first = "label";
+	instructionsEntry.second["metrics"] = (void*) new UIMetrics;
+	instructionsEntry.second["fontSize"] = (void*) new float;
+	instructionsEntry.second["fontColor"] = (void*) new Vector4;
+	instructionsEntry.second["wrap"] = (void*) new float;
+	instructionsEntry.second["text"] = (void*) new std::string;
 
-	welcomeHelpEntry.first = "button";
-	welcomeHelpEntry.second["metrics"] = (void*) new UIMetrics;
-	welcomeHelpEntry.second["fontSize"] = (void*) new float;
-	welcomeHelpEntry.second["fontColor"] = (void*) new Vector4;
-	welcomeHelpEntry.second["text"] = (void*) new std::string;
-	welcomeHelpEntry.second["wrap"] = (void*) new float;
-	welcomeHelpEntry.second["insideColor"] = (void*) new Vector4;
-	welcomeHelpEntry.second["highlightColor"] = (void*) new Vector4;
-	welcomeHelpEntry.second["borderColor"] = (void*) new Vector4;
-	welcomeHelpEntry.second["outsideColor"] = (void*) new Vector4;
-	welcomeHelpEntry.second["padding"] = (void*) new float;
-	welcomeHelpEntry.second["border"] = (void*) new float;
-	welcomeHelpEntry.second["containerTimer"] = NULL;
-	welcomeHelpEntry.second["textTimer"] = NULL;
+	creditsTitleEntry.first = "label";
+	creditsTitleEntry.second["metrics"] = (void*) new UIMetrics;
+	creditsTitleEntry.second["fontSize"] = (void*) new float;
+	creditsTitleEntry.second["fontColor"] = (void*) new Vector4;
+	creditsTitleEntry.second["text"] = (void*) new std::string;
 
-	consoleEntry.first = "button";
-	consoleEntry.second["metrics"] = (void*) new UIMetrics;
-	consoleEntry.second["fontSize"] = (void*) new float;
-	consoleEntry.second["fontColor"] = (void*) new Vector4;
-	consoleEntry.second["text"] = (void*) new std::string;
-	consoleEntry.second["wrap"] = (void*) new float;
-	consoleEntry.second["insideColor"] = (void*) new Vector4;
-	consoleEntry.second["highlightColor"] = (void*) new Vector4;
-	consoleEntry.second["borderColor"] = (void*) new Vector4;
-	consoleEntry.second["outsideColor"] = (void*) new Vector4;
-	consoleEntry.second["padding"] = (void*) new float;
-	consoleEntry.second["border"] = (void*) new float;
-	consoleEntry.second["containerTimer"] = NULL;
-	consoleEntry.second["textTimer"] = NULL;
+	creditsEntry.first = "label";
+	creditsEntry.second["metrics"] = (void*) new UIMetrics;
+	creditsEntry.second["fontSize"] = (void*) new float;
+	creditsEntry.second["fontColor"] = (void*) new Vector4;
+	creditsEntry.second["wrap"] = (void*) new float;
+	creditsEntry.second["text"] = (void*) new std::string;
+	
+	backButtonEntry.first = "button";
+	backButtonEntry.second["metrics"] = (void*) new UIMetrics;
+	backButtonEntry.second["fontSize"] = (void*) new float;
+	backButtonEntry.second["fontColor"] = (void*) new Vector4;
+	backButtonEntry.second["text"] = (void*) new std::string;
+	backButtonEntry.second["insideColor"] = (void*) new Vector4;
+	backButtonEntry.second["highlightColor"] = (void*) new Vector4;
+	backButtonEntry.second["borderColor"] = (void*) new Vector4;
+	backButtonEntry.second["outsideColor"] = (void*) new Vector4;
+	backButtonEntry.second["padding"] = (void*) new float;
+	backButtonEntry.second["border"] = (void*) new float;
+	backButtonEntry.second["containerTimer"] = NULL;
+	backButtonEntry.second["textTimer"] = NULL;
+	backButtonZoneListener = new MouseZoneListener();
+	backButtonClickListener = new MouseButtonListener();
 
-	playerInfoEntry.first = "button";
-	playerInfoEntry.second["metrics"] = (void*) new UIMetrics;
-	playerInfoEntry.second["fontSize"] = (void*) new float;
-	playerInfoEntry.second["fontColor"] = (void*) new Vector4;
-	playerInfoEntry.second["text"] = (void*) new std::string;
-	playerInfoEntry.second["wrap"] = (void*) new float;
-	playerInfoEntry.second["insideColor"] = (void*) new Vector4;
-	playerInfoEntry.second["highlightColor"] = (void*) new Vector4;
-	playerInfoEntry.second["borderColor"] = (void*) new Vector4;
-	playerInfoEntry.second["outsideColor"] = (void*) new Vector4;
-	playerInfoEntry.second["padding"] = (void*) new float;
-	playerInfoEntry.second["border"] = (void*) new float;
-	playerInfoEntry.second["containerTimer"] = NULL;
-	playerInfoEntry.second["textTimer"] = NULL;
+	std::vector<SDLKey> settingsMenuKeys;
+	settingsMenuKeys.push_back(SDLK_UP);
+	settingsMenuKeys.push_back(SDLK_DOWN);
+	settingsMenuKeys.push_back(SDLK_RIGHT);
+	settingsMenuKeys.push_back(SDLK_LEFT);
+	settingsMenuKeys.push_back(SDLK_ESCAPE);
+	settingsMenuKeys.push_back(SDLK_RETURN);
+	settingsMenuKeyListener = new KeyListener(settingsMenuKeys);
 
-	debugInfoEntry.first = "button";
-	debugInfoEntry.second["metrics"] = (void*) new UIMetrics;
-	debugInfoEntry.second["fontSize"] = (void*) new float;
-	debugInfoEntry.second["fontColor"] = (void*) new Vector4;
-	debugInfoEntry.second["text"] = (void*) new std::string;
-	debugInfoEntry.second["wrap"] = (void*) new float;
-	debugInfoEntry.second["insideColor"] = (void*) new Vector4;
-	debugInfoEntry.second["highlightColor"] = (void*) new Vector4;
-	debugInfoEntry.second["borderColor"] = (void*) new Vector4;
-	debugInfoEntry.second["outsideColor"] = (void*) new Vector4;
-	debugInfoEntry.second["padding"] = (void*) new float;
-	debugInfoEntry.second["border"] = (void*) new float;
-	debugInfoEntry.second["containerTimer"] = NULL;
-	debugInfoEntry.second["textTimer"] = NULL;
+	settingsMenuTitleEntry.first = "label";
+	settingsMenuTitleEntry.second["metrics"] = (void*) new UIMetrics;
+	settingsMenuTitleEntry.second["fontSize"] = (void*) new float;
+	settingsMenuTitleEntry.second["fontColor"] = (void*) new Vector4;
+	settingsMenuTitleEntry.second["wrap"] = (void*) new float;
+	settingsMenuTitleEntry.second["text"] = (void*) new std::string;
 
-	grayOutEntry.first = "grayOut";
-	grayOutEntry.second["color"] = (void*) new Vector4;
+	levelSettingEntry.first = "label";
+	levelSettingEntry.second["metrics"] = (void*) new UIMetrics;
+	levelSettingEntry.second["fontSize"] = (void*) new float;
+	levelSettingEntry.second["fontColor"] = (void*) new Vector4;
+	levelSettingEntry.second["wrap"] = (void*) new float;
+	levelSettingEntry.second["text"] = (void*) new std::string;
+	levelButtonZoneListener = new MouseZoneListener();
+	levelButtonClickListener = new MouseButtonListener();
 
-	controlsHelpEntry.first = "button";
-	controlsHelpEntry.second["metrics"] = (void*) new UIMetrics;
-	controlsHelpEntry.second["fontSize"] = (void*) new float;
-	controlsHelpEntry.second["fontColor"] = (void*) new Vector4;
-	controlsHelpEntry.second["text"] = (void*) new std::string;
-	controlsHelpEntry.second["wrap"] = (void*) new float;
-	controlsHelpEntry.second["insideColor"] = (void*) new Vector4;
-	controlsHelpEntry.second["highlightColor"] = (void*) new Vector4;
-	controlsHelpEntry.second["borderColor"] = (void*) new Vector4;
-	controlsHelpEntry.second["outsideColor"] = (void*) new Vector4;
-	controlsHelpEntry.second["padding"] = (void*) new float;
-	controlsHelpEntry.second["border"] = (void*) new float;
-	controlsHelpEntry.second["containerTimer"] = NULL;
-	controlsHelpEntry.second["textTimer"] = NULL;
+	musicSettingEntry.first = "label";
+	musicSettingEntry.second["metrics"] = (void*) new UIMetrics;
+	musicSettingEntry.second["fontSize"] = (void*) new float;
+	musicSettingEntry.second["fontColor"] = (void*) new Vector4;
+	musicSettingEntry.second["wrap"] = (void*) new float;
+	musicSettingEntry.second["text"] = (void*) new std::string;
+	musicButtonZoneListener = new MouseZoneListener();
+	musicButtonClickListener = new MouseButtonListener();
 
-	scoreboardEntry.first = "button";
-	scoreboardEntry.second["metrics"] = (void*) new UIMetrics;
-	scoreboardEntry.second["fontSize"] = (void*) new float;
-	scoreboardEntry.second["fontColor"] = (void*) new Vector4;
-	scoreboardEntry.second["text"] = (void*) new std::string;
-	scoreboardEntry.second["wrap"] = (void*) new float;
-	scoreboardEntry.second["insideColor"] = (void*) new Vector4;
-	scoreboardEntry.second["highlightColor"] = (void*) new Vector4;
-	scoreboardEntry.second["borderColor"] = (void*) new Vector4;
-	scoreboardEntry.second["outsideColor"] = (void*) new Vector4;
-	scoreboardEntry.second["padding"] = (void*) new float;
-	scoreboardEntry.second["border"] = (void*) new float;
-	scoreboardEntry.second["containerTimer"] = NULL;
-	scoreboardEntry.second["textTimer"] = NULL;
+	audioEffectsSettingEntry.first = "label";
+	audioEffectsSettingEntry.second["metrics"] = (void*) new UIMetrics;
+	audioEffectsSettingEntry.second["fontSize"] = (void*) new float;
+	audioEffectsSettingEntry.second["fontColor"] = (void*) new Vector4;
+	audioEffectsSettingEntry.second["wrap"] = (void*) new float;
+	audioEffectsSettingEntry.second["text"] = (void*) new std::string;
+	audioEffectsButtonZoneListener = new MouseZoneListener();
+	audioEffectsButtonClickListener = new MouseButtonListener();
 
-	controlBoxEntry.first = "controlBox";
-	controlBoxEntry.second["spotSize"] = (void*) new float;
-	controlBoxEntry.second["boxSize"] = (void*) new float;
-	controlBoxEntry.second["color"] = (void*) new Vector4;
+	fullscreenSettingEntry.first = "label";
+	fullscreenSettingEntry.second["metrics"] = (void*) new UIMetrics;
+	fullscreenSettingEntry.second["fontSize"] = (void*) new float;
+	fullscreenSettingEntry.second["fontColor"] = (void*) new Vector4;
+	fullscreenSettingEntry.second["wrap"] = (void*) new float;
+	fullscreenSettingEntry.second["text"] = (void*) new std::string;
+	fullscreenButtonZoneListener = new MouseZoneListener();
+	fullscreenButtonClickListener = new MouseButtonListener();
+	
+	resetHighScoresEntry.first = "button";
+	resetHighScoresEntry.second["metrics"] = (void*) new UIMetrics;
+	resetHighScoresEntry.second["fontSize"] = (void*) new float;
+	resetHighScoresEntry.second["fontColor"] = (void*) new Vector4;
+	resetHighScoresEntry.second["text"] = (void*) new std::string;
+	resetHighScoresEntry.second["insideColor"] = (void*) new Vector4;
+	resetHighScoresEntry.second["highlightColor"] = (void*) new Vector4;
+	resetHighScoresEntry.second["borderColor"] = (void*) new Vector4;
+	resetHighScoresEntry.second["outsideColor"] = (void*) new Vector4;
+	resetHighScoresEntry.second["padding"] = (void*) new float;
+	resetHighScoresEntry.second["border"] = (void*) new float;
+	resetHighScoresEntry.second["containerTimer"] = NULL;
+	resetHighScoresEntry.second["textTimer"] = NULL;
+	resetHighScoresButtonZoneListener = new MouseZoneListener();
+	resetHighScoresButtonClickListener = new MouseButtonListener();
 
-	cursorEntry.first = "cursor";
-	cursorEntry.second["size"] = (void*) new float;
-	cursorEntry.second["thickness"] = (void*) new float;
-	cursorEntry.second["color"] = (void*) new Vector4;
-	cursorEntry.second["position"] = (void*) new Vector2*;
+	std::vector<SDLKey> highScoresMenuKeys;
+	highScoresMenuKeys.push_back(SDLK_UP);
+	highScoresMenuKeys.push_back(SDLK_DOWN);
+	highScoresMenuKeys.push_back(SDLK_ESCAPE);
+	highScoresMenuKeys.push_back(SDLK_RETURN);
+	highScoresMenuKeyListener = new KeyListener(highScoresMenuKeys);
 
-	hintEntry.first = "button";
-	hintEntry.second["metrics"] = (void*) new UIMetrics;
-	hintEntry.second["fontSize"] = (void*) new float;
-	hintEntry.second["fontColor"] = (void*) new Vector4;
-	hintEntry.second["text"] = (void*) new std::string;
-	hintEntry.second["wrap"] = (void*) new float;
-	hintEntry.second["insideColor"] = (void*) new Vector4;
-	hintEntry.second["highlightColor"] = (void*) new Vector4;
-	hintEntry.second["borderColor"] = (void*) new Vector4;
-	hintEntry.second["outsideColor"] = (void*) new Vector4;
-	hintEntry.second["padding"] = (void*) new float;
-	hintEntry.second["border"] = (void*) new float;
-	hintEntry.second["containerTimer"] = &(gameGraphics->hardTimer);
-	hintEntry.second["textTimer"] = &(gameGraphics->hardTimer);
+	highScoresTitleEntry.first = "label";
+	highScoresTitleEntry.second["metrics"] = (void*) new UIMetrics;
+	highScoresTitleEntry.second["fontSize"] = (void*) new float;
+	highScoresTitleEntry.second["fontColor"] = (void*) new Vector4;
+	highScoresTitleEntry.second["text"] = (void*) new std::string;
 
-	radarContainerEntry.first = "container";
-	radarContainerEntry.second["metrics"] = (void*) new UIMetrics;
-	radarContainerEntry.second["insideColor"] = (void*) new Vector4;
-	radarContainerEntry.second["highlightColor"] = (void*) new Vector4;
-	radarContainerEntry.second["borderColor"] = (void*) new Vector4;
-	radarContainerEntry.second["outsideColor"] = (void*) new Vector4;
-	radarContainerEntry.second["padding"] = (void*) new float;
-	radarContainerEntry.second["border"] = (void*) new float;
-	radarContainerEntry.second["containerTimer"] = NULL;
-	radarContainerEntry.second["textTimer"] = NULL;
+	highScoresLabelEntry.first = "label";
+	highScoresLabelEntry.second["metrics"] = (void*) new UIMetrics;
+	highScoresLabelEntry.second["fontSize"] = (void*) new float;
+	highScoresLabelEntry.second["fontColor"] = (void*) new Vector4;
+	highScoresLabelEntry.second["text"] = (void*) new std::string;
 
-	radarEntry.first = "radar";
-	radarEntry.second["metrics"] = (void*) new UIMetrics;
-
-	ship1Entry.first = "shipRenderer";
-
-	waterEntry.first = "waterRenderer";
-
-	skyEntry.first = "skyRenderer";
-
-	terrain1Entry.first = "terrainRenderer";
-
-	// set initial logic
-	lastClockUpdate = 0;
-	myCallsign = "";
-	lastFrameTime = 0;
-	hintExpiration = 0;
-
-	// bad programming practice, but set the global variable to us since
-	// we should only exist once, and both gameGraphics and schemes need
-	// to find us
+	// set global variable
 	gameLogic = this;
 
 	// build the initial draw stack
-	currentScheme = SCHEME_WELCOME;
+	currentScheme = SCHEME_MAINMENU;
+	activeMenuSelection = &playButtonEntry;
 	reScheme();
 
 	// draw the initial frame
 	gameGraphics->execute();
 
-//*((std::string*) joinCallsignFieldEntry.second["text"]) = "Augustus";
-//startButtonClickListener->buttonHit = true;
+	// clear the motion listener
+	inputHandler->execute();
+	mouseMotionListener->wasMoved();
 }
 
 GameLogic::~GameLogic() {
-	// remove key listeners
-	inputHandler->keyboard->removeListener(quitKeyListener);
-	delete(quitKeyListener);
-	inputHandler->keyboard->removeListener(fullScreenKeyListener);
-	delete(fullScreenKeyListener);
-	inputHandler->keyboard->removeListener(dashboardKeyListener);
-	delete(dashboardKeyListener);
-	inputHandler->keyboard->removeListener(deleteKeyListener);
-	delete(deleteKeyListener);
-	inputHandler->keyboard->removeListener(testKeyListener);
-	delete(testKeyListener);
-
-	// remove mouse listeners
-	inputHandler->mouse->removeListener(cursorMovementListener);
-	delete(cursorMovementListener);
-
-	inputHandler->mouse->removeListener(quitButtonClickListener);
-	delete(quitButtonClickListener);
-
-	inputHandler->mouse->removeListener(quitButtonZoneListener);
-	delete(quitButtonZoneListener);
-
-	inputHandler->mouse->removeListener(startButtonZoneListener);
-	delete(startButtonZoneListener);
-
-	inputHandler->mouse->removeListener(startButtonClickListener);
-	delete(startButtonClickListener);
-
-	// free memory allocated in drawing stack entries
-	delete((UIMetrics*) titleEntry.second["metrics"]);
-	delete((float*) titleEntry.second["fontSize"]);
-	delete((Vector4*) titleEntry.second["fontColor"]);
-	delete((std::string*) titleEntry.second["text"]);
-
-	delete((UIMetrics*) quitButtonEntry.second["metrics"]);
-	delete((float*) quitButtonEntry.second["fontSize"]);
-	delete((Vector4*) quitButtonEntry.second["fontColor"]);
-	delete((std::string*) quitButtonEntry.second["text"]);
-	delete((Vector4*) quitButtonEntry.second["insideColor"]);
-	delete((Vector4*) quitButtonEntry.second["highlightColor"]);
-	delete((Vector4*) quitButtonEntry.second["borderColor"]);
-	delete((Vector4*) quitButtonEntry.second["outsideColor"]);
-	delete((float*) quitButtonEntry.second["padding"]);
-	delete((float*) quitButtonEntry.second["border"]);
-
-	delete((UIMetrics*) logoEntry.second["metrics"]);
-	delete((std::string*) logoEntry.second["texture"]);
-
-	delete((UIMetrics*) joinContainerEntry.second["metrics"]);
-	delete((Vector4*) joinContainerEntry.second["insideColor"]);
-	delete((Vector4*) joinContainerEntry.second["highLightColor"]);
-	delete((Vector4*) joinContainerEntry.second["borderColor"]);
-	delete((Vector4*) joinContainerEntry.second["outsideColor"]);
-	delete((float*) joinContainerEntry.second["padding"]);
-	delete((float*) joinContainerEntry.second["border"]);
-
-	delete((UIMetrics*) joinHeaderLabelEntry.second["metrics"]);
-	delete((float*) joinHeaderLabelEntry.second["fontSize"]);
-	delete((Vector4*) joinHeaderLabelEntry.second["fontColor"]);
-	delete((std::string*) joinHeaderLabelEntry.second["text"]);
-
-	delete((UIMetrics*) joinCallsignLabelEntry.second["metrics"]);
-	delete((float*) joinCallsignLabelEntry.second["fontSize"]);
-	delete((Vector4*) joinCallsignLabelEntry.second["fontColor"]);
-	delete((std::string*) joinCallsignLabelEntry.second["text"]);
-
-	delete((UIMetrics*) joinTeamLabelEntry.second["metrics"]);
-	delete((float*) joinTeamLabelEntry.second["fontSize"]);
-	delete((Vector4*) joinTeamLabelEntry.second["fontColor"]);
-	delete((std::string*) joinTeamLabelEntry.second["text"]);
-
-	delete ((UIMetrics*) joinButtonEntry.second["metrics"]);
-	delete ((float*) joinButtonEntry.second["fontSize"]);
-	delete ((Vector4*) joinButtonEntry.second["fontColor"]);
-	delete ((std::string*) joinButtonEntry.second["text"]);
-	delete ((Vector4*) joinButtonEntry.second["insideColor"]);
-	delete ((Vector4*) joinButtonEntry.second["highlightColor"]);
-	delete ((Vector4*) joinButtonEntry.second["borderColor"]);
-	delete ((Vector4*) joinButtonEntry.second["outsideColor"]);
-	delete ((float*) joinButtonEntry.second["padding"]);
-	delete ((float*) joinButtonEntry.second["border"]);
-
-	delete((UIMetrics*) joinStatusLabelEntry.second["metrics"]);
-	delete((float*) joinStatusLabelEntry.second["fontSize"]);
-	delete((Vector4*) joinStatusLabelEntry.second["fontColor"]);
-	delete((std::string*) joinStatusLabelEntry.second["text"]);
-
-	delete((UIMetrics*) welcomeHelpEntry.second["metrics"]);
-	delete((float*) welcomeHelpEntry.second["fontSize"]);
-	delete((Vector4*) welcomeHelpEntry.second["fontColor"]);
-	delete((std::string*) welcomeHelpEntry.second["text"]);
-	delete((float*) welcomeHelpEntry.second["wrap"]);
-	delete((Vector4*) welcomeHelpEntry.second["insideColor"]);
-	delete((Vector4*) welcomeHelpEntry.second["highLightColor"]);
-	delete((Vector4*) welcomeHelpEntry.second["borderColor"]);
-	delete((Vector4*) welcomeHelpEntry.second["outsideColor"]);
-	delete((float*) welcomeHelpEntry.second["padding"]);
-	delete((float*) welcomeHelpEntry.second["border"]);
-
-	delete((UIMetrics*) consoleEntry.second["metrics"]);
-	delete((float*) consoleEntry.second["fontSize"]);
-	delete((Vector4*) consoleEntry.second["fontColor"]);
-	delete((std::string*) consoleEntry.second["text"]);
-	delete((float*) consoleEntry.second["wrap"]);
-	delete((Vector4*) consoleEntry.second["insideColor"]);
-	delete((Vector4*) consoleEntry.second["highLightColor"]);
-	delete((Vector4*) consoleEntry.second["borderColor"]);
-	delete((Vector4*) consoleEntry.second["outsideColor"]);
-	delete((float*) consoleEntry.second["padding"]);
-	delete((float*) consoleEntry.second["border"]);
-
-	delete((UIMetrics*) playerInfoEntry.second["metrics"]);
-	delete((float*) playerInfoEntry.second["fontSize"]);
-	delete((Vector4*) playerInfoEntry.second["fontColor"]);
-	delete((std::string*) playerInfoEntry.second["text"]);
-	delete((float*) playerInfoEntry.second["wrap"]);
-	delete((Vector4*) playerInfoEntry.second["insideColor"]);
-	delete((Vector4*) playerInfoEntry.second["highLightColor"]);
-	delete((Vector4*) playerInfoEntry.second["borderColor"]);
-	delete((Vector4*) playerInfoEntry.second["outsideColor"]);
-	delete((float*) playerInfoEntry.second["padding"]);
-	delete((float*) playerInfoEntry.second["border"]);
-
-	delete((UIMetrics*) debugInfoEntry.second["metrics"]);
-	delete((float*) debugInfoEntry.second["fontSize"]);
-	delete((Vector4*) debugInfoEntry.second["fontColor"]);
-	delete((std::string*) debugInfoEntry.second["text"]);
-	delete((float*) debugInfoEntry.second["wrap"]);
-	delete((Vector4*) debugInfoEntry.second["insideColor"]);
-	delete((Vector4*) debugInfoEntry.second["highLightColor"]);
-	delete((Vector4*) debugInfoEntry.second["borderColor"]);
-	delete((Vector4*) debugInfoEntry.second["outsideColor"]);
-	delete((float*) debugInfoEntry.second["padding"]);
-	delete((float*) debugInfoEntry.second["border"]);
-
-	delete((Vector4*) grayOutEntry.second["color"]);
-
-	delete((UIMetrics*) controlsHelpEntry.second["metrics"]);
-	delete((float*) controlsHelpEntry.second["fontSize"]);
-	delete((Vector4*) controlsHelpEntry.second["fontColor"]);
-	delete((std::string*) controlsHelpEntry.second["text"]);
-	delete((float*) controlsHelpEntry.second["wrap"]);
-	delete((Vector4*) controlsHelpEntry.second["insideColor"]);
-	delete((Vector4*) controlsHelpEntry.second["highLightColor"]);
-	delete((Vector4*) controlsHelpEntry.second["borderColor"]);
-	delete((Vector4*) controlsHelpEntry.second["outsideColor"]);
-	delete((float*) controlsHelpEntry.second["padding"]);
-	delete((float*) controlsHelpEntry.second["border"]);
-
-	delete((UIMetrics*) scoreboardEntry.second["metrics"]);
-	delete((float*) scoreboardEntry.second["fontSize"]);
-	delete((Vector4*) scoreboardEntry.second["fontColor"]);
-	delete((std::string*) scoreboardEntry.second["text"]);
-	delete((float*) scoreboardEntry.second["wrap"]);
-	delete((Vector4*) scoreboardEntry.second["insideColor"]);
-	delete((Vector4*) scoreboardEntry.second["highLightColor"]);
-	delete((Vector4*) scoreboardEntry.second["borderColor"]);
-	delete((Vector4*) scoreboardEntry.second["outsideColor"]);
-	delete((float*) scoreboardEntry.second["padding"]);
-	delete((float*) scoreboardEntry.second["border"]);
-
-	delete((float*) controlBoxEntry.second["spotSize"]);
-	delete((float*) controlBoxEntry.second["boxSize"]);
-	delete((Vector4*) controlBoxEntry.second["color"]);
-
-	delete((float*) cursorEntry.second["size"]);
-	delete((float*) cursorEntry.second["thickness"]);
-	delete((Vector4*) cursorEntry.second["color"]);
-	delete((Vector2**) cursorEntry.second["position"]);
-
-	delete((UIMetrics*) hintEntry.second["metrics"]);
-	delete((float*) hintEntry.second["fontSize"]);
-	delete((Vector4*) hintEntry.second["fontColor"]);
-	delete((std::string*) hintEntry.second["text"]);
-	delete((float*) hintEntry.second["wrap"]);
-	delete((Vector4*) hintEntry.second["insideColor"]);
-	delete((Vector4*) hintEntry.second["highLightColor"]);
-	delete((Vector4*) hintEntry.second["borderColor"]);
-	delete((Vector4*) hintEntry.second["outsideColor"]);
-	delete((float*) hintEntry.second["padding"]);
-	delete((float*) hintEntry.second["border"]);
-
-	delete((UIMetrics*) radarContainerEntry.second["metrics"]);
-	delete((Vector4*) radarContainerEntry.second["insideColor"]);
-	delete((Vector4*) radarContainerEntry.second["highLightColor"]);
-	delete((Vector4*) radarContainerEntry.second["borderColor"]);
-	delete((Vector4*) radarContainerEntry.second["outsideColor"]);
-	delete((float*) radarContainerEntry.second["padding"]);
-	delete((float*) radarContainerEntry.second["border"]);
-
-	delete((UIMetrics*) radarEntry.second["metrics"]);
+// mega fixme here
 }
 
 void GameLogic::reScheme() {
@@ -497,8 +338,24 @@ void GameLogic::reScheme() {
 	inputHandler->keyboard->clearListeners();
 	inputHandler->mouse->clearListeners();
 
-	// run the appropriate scheme
+	// call the appropriate scheme function and do any associated logic
 	switch (currentScheme) {
+	case SCHEME_MAINMENU:
+		Schemes::mainMenuScheme();
+		break;
+
+	case SCHEME_SETTINGS:
+		Schemes::settingsScheme();
+		break;
+		
+	case SCHEME_HELP:
+		Schemes::helpScheme();
+		break;
+
+	case SCHEME_HIGHSCORES:
+		Schemes::highScoresScheme();
+		break;
+
 	case SCHEME_WELCOME:
 		SDL_ShowCursor(1);
 
@@ -532,32 +389,450 @@ void GameLogic::reScheme() {
 unsigned int GameLogic::execute() {
 	bool needRedraw = false;
 
-	// do timed events
-	if(platform->getExecMills() - lastClockUpdate > 1000.0f) {
-		reScheme();
-
-		lastClockUpdate = platform->getExecMills();
-	}
-
-	if(lastFrameTime != gameGraphics->frameTime) {
-		reScheme();
-
-		lastFrameTime = gameGraphics->frameTime;
-	}
-
-	if(hintExpiration != 0 && hintExpiration <= platform->getExecMills()) {
-		reScheme();
-
-		hintExpiration = 0;
-	}
-
-	// see if we need to quit
-	if(
-			quitKeyListener->popKey() != SDLK_UNKNOWN ||
-			quitButtonClickListener->wasClicked()
-		)
+	// independent logic
+	if(quitKeyListener->popKey() != SDLK_UNKNOWN )
 		keepDominicusAlive = false;
+	if(fullScreenKeyListener->popKey() != SDLK_UNKNOWN) {
+		bool fullScreenGraphics = ! gameGraphics->fullScreen;
 
+		bool isInMainLoopModules = (mainLoopModules.find(gameGraphics) != mainLoopModules.end());
+		if(isInMainLoopModules)
+			mainLoopModules.erase(mainLoopModules.find(gameGraphics));
+
+		delete(gameGraphics);
+		gameGraphics = new GameGraphics(fullScreenGraphics);
+		
+		if(isInMainLoopModules)
+			mainLoopModules[gameGraphics] = 0;
+
+//		if(currentScheme == SCHEME_PLAYING || currentScheme == SCHEME_DASHBOARD) {
+//			((TerrainRenderer*) gameGraphics->drawers["terrainRenderer"])->reloadGraphics();
+//			((DrawRadar*) gameGraphics->drawers["radar"])->reloadGraphics();
+//		}
+
+		delete(uiLayoutAuthority);
+		uiLayoutAuthority = new UILayoutAuthority(
+				Vector2(gameSystem->getFloat("hudElementMargin") / (float) gameGraphics->resolutionX,
+						gameSystem->getFloat("hudElementMargin") / (float) gameGraphics->resolutionY)
+			);
+
+//		hintEntry.second["containerTimer"] = &(gameGraphics->hardTimer);
+//		hintEntry.second["textTimer"] = &(gameGraphics->hardTimer);
+
+		reScheme();
+		needRedraw = true;
+	}
+
+	// scheme-specific logic
+	if(currentScheme == SCHEME_MAINMENU) {
+		// button highlight
+		if(mouseMotionListener->wasMoved()) {
+			if(playButtonZoneListener->isEntered) {
+				if(activeMenuSelection != &playButtonEntry) {
+					activeMenuSelection = &playButtonEntry;
+					reScheme();
+					needRedraw = true;
+				}
+			} else if(settingsButtonZoneListener->isEntered) {
+				if(activeMenuSelection != &settingsButtonEntry) {
+					activeMenuSelection = &settingsButtonEntry;
+					reScheme();
+					needRedraw = true;
+				}
+			} else if(helpButtonZoneListener->isEntered) {
+				if(activeMenuSelection != &helpButtonEntry) {
+					activeMenuSelection = &helpButtonEntry;
+					reScheme();
+					needRedraw = true;
+				}
+			} else if(highScoresButtonZoneListener->isEntered) {
+				if(activeMenuSelection != &highScoresButtonEntry) {
+					activeMenuSelection = &highScoresButtonEntry;
+					reScheme();
+					needRedraw = true;
+				}
+			} else if(quitButtonZoneListener->isEntered) {
+				if(activeMenuSelection != &quitButtonEntry) {
+					activeMenuSelection = &quitButtonEntry;
+					reScheme();
+					needRedraw = true;
+				}
+			} else if(activeMenuSelection != NULL) {
+				activeMenuSelection = NULL;
+				reScheme();
+				needRedraw = true;
+			}
+		}
+
+		// button clicks
+		if(playButtonClickListener->wasClicked()) {
+			std::cout << "PLAY" << std::endl;
+		} else if(settingsButtonClickListener->wasClicked()) {
+			currentScheme = SCHEME_SETTINGS;
+			activeMenuSelection = &levelSettingEntry;
+			reScheme();
+			needRedraw = true;
+		} else if(helpButtonClickListener->wasClicked()) {
+			currentScheme = SCHEME_HELP;
+			activeMenuSelection = &backButtonEntry;
+			reScheme();
+			needRedraw = true;
+		} else if(highScoresButtonClickListener->wasClicked()) {
+			currentScheme = SCHEME_HIGHSCORES;
+			activeMenuSelection = &backButtonEntry;
+			reScheme();
+			needRedraw = true;
+		} else if(quitButtonClickListener->wasClicked()) {
+			keepDominicusAlive = false;
+		}
+
+		// key hits
+		for(SDLKey key = mainMenuKeyListener->popKey(); key != SDLK_UNKNOWN; key = mainMenuKeyListener->popKey()) {
+			if(key == SDLK_UP) {
+				if(activeMenuSelection == NULL || activeMenuSelection == &playButtonEntry) {
+					activeMenuSelection = &quitButtonEntry;
+					reScheme();
+					needRedraw = true;
+				} else if(activeMenuSelection == &settingsButtonEntry) {
+					activeMenuSelection = &playButtonEntry;
+					reScheme();
+					needRedraw = true;
+				} else if(activeMenuSelection == &highScoresButtonEntry) {
+					activeMenuSelection = &settingsButtonEntry;
+					reScheme();
+					needRedraw = true;
+				} else if(activeMenuSelection == &helpButtonEntry) {
+					activeMenuSelection = &highScoresButtonEntry;
+					reScheme();
+					needRedraw = true;
+				} else if(activeMenuSelection == &quitButtonEntry) {
+					activeMenuSelection = &helpButtonEntry;
+					reScheme();
+					needRedraw = true;
+				}
+			} else if(key == SDLK_DOWN) {
+				if(activeMenuSelection == NULL || activeMenuSelection == &quitButtonEntry) {
+					activeMenuSelection = &playButtonEntry;
+					reScheme();
+					needRedraw = true;
+				} else if(activeMenuSelection == &playButtonEntry) {
+					activeMenuSelection = &settingsButtonEntry;
+					reScheme();
+					needRedraw = true;
+				} else if(activeMenuSelection == &settingsButtonEntry) {
+					activeMenuSelection = &highScoresButtonEntry;
+					reScheme();
+					needRedraw = true;
+				} else if(activeMenuSelection == &highScoresButtonEntry) {
+					activeMenuSelection = &helpButtonEntry;
+					reScheme();
+					needRedraw = true;
+				} else if(activeMenuSelection == &helpButtonEntry) {
+					activeMenuSelection = &quitButtonEntry;
+					reScheme();
+					needRedraw = true;
+				}
+			} else if(key == SDLK_RETURN) {
+				if(activeMenuSelection == &settingsButtonEntry) {
+					currentScheme = SCHEME_SETTINGS;
+					activeMenuSelection = &levelSettingEntry;
+					reScheme();
+					needRedraw = true;
+				} else if(activeMenuSelection == &helpButtonEntry) {
+					currentScheme = SCHEME_HELP;
+					activeMenuSelection = &backButtonEntry;
+					reScheme();
+					needRedraw = true;
+				} else if(activeMenuSelection == &highScoresButtonEntry) {
+					currentScheme = SCHEME_HIGHSCORES;
+					activeMenuSelection = &backButtonEntry;
+					reScheme();
+					needRedraw = true;
+				} else if(activeMenuSelection == &quitButtonEntry) {
+					keepDominicusAlive = false;
+				}
+			}
+		}
+	} else if(currentScheme == SCHEME_SETTINGS) {
+		// button highlight
+		if(mouseMotionListener->wasMoved()) {
+			if(levelButtonZoneListener->isEntered) {
+				if(activeMenuSelection != &levelSettingEntry) {
+					activeMenuSelection = &levelSettingEntry;
+					reScheme();
+					needRedraw = true;
+				}
+			} else if(musicButtonZoneListener->isEntered) {
+				if(activeMenuSelection != &musicSettingEntry) {
+					activeMenuSelection = &musicSettingEntry;
+					reScheme();
+					needRedraw = true;
+				}
+			} else if(audioEffectsButtonZoneListener->isEntered) {
+				if(activeMenuSelection != &audioEffectsSettingEntry) {
+					activeMenuSelection = &audioEffectsSettingEntry;
+					reScheme();
+					needRedraw = true;
+				}
+			} else if(fullscreenButtonZoneListener->isEntered) {
+				if(activeMenuSelection != &fullscreenSettingEntry) {
+					activeMenuSelection = &fullscreenSettingEntry;
+					reScheme();
+					needRedraw = true;
+				}
+			} else if(backButtonZoneListener->isEntered) {
+				if(activeMenuSelection != &backButtonEntry) {
+					activeMenuSelection = &backButtonEntry;
+					reScheme();
+					needRedraw = true;
+				}
+			} else if(resetHighScoresButtonZoneListener->isEntered) {
+				if(activeMenuSelection != &resetHighScoresEntry) {
+					activeMenuSelection = &resetHighScoresEntry;
+					reScheme();
+					needRedraw = true;
+				}
+			} else if(activeMenuSelection != NULL) {
+				activeMenuSelection = NULL;
+				reScheme();
+				needRedraw = true;
+			}
+		}
+
+		// button clicks
+		if(levelButtonClickListener->wasClicked()) {
+			if(gameSystem->getString("gameStartingLevel") == "Easy") {
+				gameSystem->setStandard("gameStartingLevel", "Medium", "");
+			} else if(gameSystem->getString("gameStartingLevel") == "Medium") {
+				gameSystem->setStandard("gameStartingLevel", "Hard", "");
+			} else if(gameSystem->getString("gameStartingLevel") == "Hard") {
+				gameSystem->setStandard("gameStartingLevel", "Easy", "");
+			}
+			gameSystem->flushPreferences();
+			
+			reScheme();
+			needRedraw = true;
+		} else if(musicButtonClickListener->wasClicked()) {
+			float value = gameSystem->getFloat("audioMusicVolume");
+			value += 0.1f;
+			if(value > 1.0f) value = 0.0f;
+			gameSystem->setStandard("audioMusicVolume", value, "");
+			gameSystem->flushPreferences();
+
+			reScheme();
+			needRedraw = true;
+		} else if(audioEffectsButtonClickListener->wasClicked()) {
+			float value = gameSystem->getFloat("audioEffectsVolume");
+			value += 0.1f;
+			if(value > 1.0f) value = 0.0f;
+			gameSystem->setStandard("audioEffectsVolume", value, "");
+			gameSystem->flushPreferences();
+
+			reScheme();
+			needRedraw = true;
+		} else if(fullscreenButtonClickListener->wasClicked()) {
+			gameSystem->setStandard("displayStartFullscreen", ! gameSystem->getBool("displayStartFullscreen"), "");
+			gameSystem->flushPreferences();
+
+			reScheme();
+			needRedraw = true;
+		} else if(backButtonClickListener->wasClicked()) {
+			currentScheme = SCHEME_MAINMENU;
+			activeMenuSelection = NULL;
+			reScheme();
+			needRedraw = true;
+		} else if(resetHighScoresButtonClickListener->wasClicked()) {
+			gameSystem->highScores.clear();
+			gameSystem->flushPreferences();
+		}
+
+		// key hits
+		for(SDLKey key = settingsMenuKeyListener->popKey(); key != SDLK_UNKNOWN; key = settingsMenuKeyListener->popKey()) {
+			if(key == SDLK_UP) {
+				if(activeMenuSelection == NULL || activeMenuSelection == &levelSettingEntry) {
+					activeMenuSelection = &backButtonEntry;
+					reScheme();
+					needRedraw = true;
+				} else if(activeMenuSelection == &backButtonEntry) {
+					activeMenuSelection = &resetHighScoresEntry;
+					reScheme();
+					needRedraw = true;
+				} else if(activeMenuSelection == &resetHighScoresEntry) {
+					activeMenuSelection = &fullscreenSettingEntry;
+					reScheme();
+					needRedraw = true;
+				} else if(activeMenuSelection == &fullscreenSettingEntry) {
+					activeMenuSelection = &audioEffectsSettingEntry;
+					reScheme();
+					needRedraw = true;
+				} else if(activeMenuSelection == &audioEffectsSettingEntry) {
+					activeMenuSelection = &musicSettingEntry;
+					reScheme();
+					needRedraw = true;
+				} else if(activeMenuSelection == &musicSettingEntry) {
+					activeMenuSelection = &levelSettingEntry;
+					reScheme();
+					needRedraw = true;
+				}
+			} else if(key == SDLK_DOWN) {
+				if(activeMenuSelection == NULL || activeMenuSelection == &backButtonEntry) {
+					activeMenuSelection = &levelSettingEntry;
+					reScheme();
+					needRedraw = true;
+				} else if(activeMenuSelection == &levelSettingEntry) {
+					activeMenuSelection = &musicSettingEntry;
+					reScheme();
+					needRedraw = true;
+				} else if(activeMenuSelection == &musicSettingEntry) {
+					activeMenuSelection = &audioEffectsSettingEntry;
+					reScheme();
+					needRedraw = true;
+				} else if(activeMenuSelection == &audioEffectsSettingEntry) {
+					activeMenuSelection = &fullscreenSettingEntry;
+					reScheme();
+					needRedraw = true;
+				} else if(activeMenuSelection == &fullscreenSettingEntry) {
+					activeMenuSelection = &resetHighScoresEntry;
+					reScheme();
+					needRedraw = true;
+				} else if(activeMenuSelection == &resetHighScoresEntry) {
+					activeMenuSelection = &backButtonEntry;
+					reScheme();
+					needRedraw = true;
+				}
+			} else if(key == SDLK_LEFT || key == SDLK_RIGHT) {
+				if(activeMenuSelection == &levelSettingEntry) {
+					if(gameSystem->getString("gameStartingLevel") == "Easy") {
+						gameSystem->setStandard("gameStartingLevel", (key == SDLK_RIGHT ? "Medium" : "Hard"), "");
+					} else if(gameSystem->getString("gameStartingLevel") == "Medium") {
+						gameSystem->setStandard("gameStartingLevel", (key == SDLK_RIGHT ? "Hard" : "Easy"), "");
+					} else if(gameSystem->getString("gameStartingLevel") == "Hard") {
+						gameSystem->setStandard("gameStartingLevel", (key == SDLK_RIGHT ? "Easy" : "Medium"), "");
+					}
+					gameSystem->flushPreferences();
+			
+					reScheme();
+					needRedraw = true;
+				} else if(activeMenuSelection == &musicSettingEntry) {
+					float value = gameSystem->getFloat("audioMusicVolume");
+					value += (key == SDLK_RIGHT ? 0.1f : -0.1f);
+					if(value > 1.0f) value = 0.0f;
+					if(value < 0.0f) value = 1.0f;
+					gameSystem->setStandard("audioMusicVolume", value, "");
+					gameSystem->flushPreferences();
+
+					reScheme();
+					needRedraw = true;
+				} else if(activeMenuSelection == &audioEffectsSettingEntry) {
+					float value = gameSystem->getFloat("audioEffectsVolume");
+					value += (key == SDLK_RIGHT ? 0.1f : -0.1f);
+					if(value > 1.0f) value = 0.0f;
+					if(value < 0.0f) value = 1.0f;
+					gameSystem->setStandard("audioEffectsVolume", value, "");
+					gameSystem->flushPreferences();
+
+					reScheme();
+					needRedraw = true;
+				} else if(activeMenuSelection == &fullscreenSettingEntry) {
+					gameSystem->setStandard("displayStartFullscreen", ! gameSystem->getBool("displayStartFullscreen"), "");
+					gameSystem->flushPreferences();
+
+					reScheme();
+					needRedraw = true;
+				}
+			} else if(key == SDLK_RETURN) {
+				if(activeMenuSelection == &resetHighScoresEntry) {
+					gameSystem->highScores.clear();
+					gameSystem->flushPreferences();
+				} else if(activeMenuSelection == &backButtonEntry) {
+					currentScheme = SCHEME_MAINMENU;
+					activeMenuSelection = &playButtonEntry;
+					reScheme();
+					needRedraw = true;
+				}
+			} else if (key == SDLK_ESCAPE) {
+				currentScheme = SCHEME_MAINMENU;
+				activeMenuSelection = &playButtonEntry;
+				reScheme();
+				needRedraw = true;
+			}
+		}
+	} else if(currentScheme == SCHEME_HELP) {
+		// button highlight
+		if(mouseMotionListener->wasMoved()) {
+			if(backButtonZoneListener->isEntered) {
+				if(activeMenuSelection != &backButtonEntry) {
+					activeMenuSelection = &backButtonEntry;
+					reScheme();
+					needRedraw = true;
+				}
+			} else if(activeMenuSelection != NULL) {
+				activeMenuSelection = NULL;
+				reScheme();
+				needRedraw = true;
+			}
+		}
+
+		// button clicks
+		if(backButtonClickListener->wasClicked()) {
+			currentScheme = SCHEME_MAINMENU;
+			activeMenuSelection = &playButtonEntry;
+			reScheme();
+			needRedraw = true;
+		}
+
+		// key hits
+		for(SDLKey key = helpMenuKeyListener->popKey(); key != SDLK_UNKNOWN; key = helpMenuKeyListener->popKey()) {
+			if((key == SDLK_UP || key == SDLK_DOWN) && activeMenuSelection != &backButtonEntry) {
+				activeMenuSelection = &backButtonEntry;
+				reScheme();
+				needRedraw = true;
+			} else if((key == SDLK_RETURN && activeMenuSelection == &backButtonEntry) || key == SDLK_ESCAPE) {
+				currentScheme = SCHEME_MAINMENU;
+				activeMenuSelection = &playButtonEntry;
+				reScheme();
+				needRedraw = true;
+			}
+		}
+	} else if(currentScheme == SCHEME_HIGHSCORES) {
+		// button highlight
+		if(mouseMotionListener->wasMoved()) {
+			if(backButtonZoneListener->isEntered) {
+				if(activeMenuSelection != &backButtonEntry) {
+					activeMenuSelection = &backButtonEntry;
+					reScheme();
+					needRedraw = true;
+				}
+			} else if(activeMenuSelection != NULL) {
+				activeMenuSelection = NULL;
+				reScheme();
+				needRedraw = true;
+			}
+		}
+
+		// button clicks
+		if(backButtonClickListener->wasClicked()) {
+			currentScheme = SCHEME_MAINMENU;
+			activeMenuSelection = &playButtonEntry;
+			reScheme();
+			needRedraw = true;
+		}
+
+		// key hits
+		for(SDLKey key = highScoresMenuKeyListener->popKey(); key != SDLK_UNKNOWN; key = highScoresMenuKeyListener->popKey()) {
+			if((key == SDLK_UP || key == SDLK_DOWN) && activeMenuSelection != &backButtonEntry) {
+				activeMenuSelection = &backButtonEntry;
+				reScheme();
+				needRedraw = true;
+			} else if((key == SDLK_RETURN && activeMenuSelection == &backButtonEntry) || key == SDLK_ESCAPE) {
+				currentScheme = SCHEME_MAINMENU;
+				activeMenuSelection = &playButtonEntry;
+				reScheme();
+				needRedraw = true;
+			}
+		}
+	}
+/*
 	// see if we need to start the game
 	if(startButtonClickListener->wasClicked()) {
 		gameState = new GameState();
@@ -597,39 +872,6 @@ unsigned int GameLogic::execute() {
 		reScheme();
 	}
 
-	// see if we need to toggle fullscreen
-	if(fullScreenKeyListener->popKey() != SDLK_UNKNOWN) {
-		bool fullScreenGraphics = ! gameGraphics->fullScreen;
-
-		bool isInMainLoopModules = (mainLoopModules.find(gameGraphics) != mainLoopModules.end());
-		if(isInMainLoopModules)
-			mainLoopModules.erase(mainLoopModules.find(gameGraphics));
-
-		delete(gameGraphics);
-		gameGraphics = new GameGraphics(fullScreenGraphics);
-
-		if(isInMainLoopModules)
-			mainLoopModules[gameGraphics] = 0;
-
-		if(currentScheme == SCHEME_PLAYING || currentScheme == SCHEME_DASHBOARD) {
-			((TerrainRenderer*) gameGraphics->drawers["terrainRenderer"])->reloadGraphics();
-			((DrawRadar*) gameGraphics->drawers["radar"])->reloadGraphics();
-
-		}
-
-		delete(uiLayoutAuthority);
-		uiLayoutAuthority = new UILayoutAuthority(
-				Vector2(gameSystem->getFloat("hudElementMargin") / gameGraphics->resolutionX,
-						gameSystem->getFloat("hudElementMargin") / gameGraphics->resolutionY)
-			);
-
-		hintEntry.second["containerTimer"] = &(gameGraphics->hardTimer);
-		hintEntry.second["textTimer"] = &(gameGraphics->hardTimer);
-
-		reScheme();
-		needRedraw = true;
-	}
-
 	// see if we need to toggle the dashboard
 	if(dashboardKeyListener->popKey() != SDLK_UNKNOWN) {
 		if(currentScheme == SCHEME_PLAYING)
@@ -641,20 +883,8 @@ unsigned int GameLogic::execute() {
 
 		reScheme();
 	}
-
-	// multi-scheme UI logic
-	if(
-			quitButtonZoneListener->wasChanged()
-		) {
-		reScheme();
-//printf("quit button zone hit\n");
-		if(currentScheme == SCHEME_WELCOME)
-			needRedraw = true;
-	}
-
-
-	// scheme-specific logic
-	if(currentScheme == SCHEME_WELCOME) {
+	if (currentScheme == SCHEME_MAINMENU) {
+	} else if(currentScheme == SCHEME_WELCOME) {
 		// update text field
 		if(inputHandler->keyboard->unicodeChars.length() > 0) {
 			*((std::string*) joinCallsignFieldEntry.second["text"]) += inputHandler->keyboard->unicodeChars;
@@ -676,12 +906,6 @@ unsigned int GameLogic::execute() {
 			}
 		}
 
-		// update buttons
-		if(
-				startButtonZoneListener->wasChanged()
-			) {
-			reScheme();
-			needRedraw = true;
 		}
 	} else if (currentScheme == SCHEME_PLAYING) {
 		// cursor movement and ship steering
@@ -738,7 +962,8 @@ unsigned int GameLogic::execute() {
 			reScheme();
 		}
 	}
-//keepDominicusAlive = false;
+
+*/
 
 	// see if we need to redraw graphics, if we're still in the menus
 	if(needRedraw && mainLoopModules.find(gameGraphics) == mainLoopModules.end())

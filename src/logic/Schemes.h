@@ -45,6 +45,11 @@ private:
 	static void addRadar();
 
 public:
+	static void mainMenuScheme();
+	static void settingsScheme();
+	static void helpScheme();
+	static void highScoresScheme();
+	
 	static void welcomeScheme(
 			std::string callsignText
 		);

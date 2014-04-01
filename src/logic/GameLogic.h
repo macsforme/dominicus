@@ -67,40 +67,90 @@ extern std::map<MainLoopMember*,unsigned int> mainLoopModules;
 // class definition
 class GameLogic : public MainLoopMember {
 public:
-	// key listeners
+	// UI elements
+	UILayoutAuthority* uiLayoutAuthority;
+
+	typedef std::map<std::string, void*> DrawStackArgList;
+	typedef std::pair< std::string, DrawStackArgList > DrawStackEntry;
+	typedef std::vector<DrawStackEntry> DrawStack;
+
 	KeyListener* quitKeyListener;
-	KeyListener* deleteKeyListener;
 	KeyListener* fullScreenKeyListener;
+
+	MouseMotionListener* mouseMotionListener;
+	DrawStackEntry* activeMenuSelection;
+	KeyListener* mainMenuKeyListener;
+	DrawStackEntry splashEntry;
+	DrawStackEntry brandEntry;
+	DrawStackEntry presentsEntry;
+	DrawStackEntry titleEntry;
+	DrawStackEntry logoEntry;
+	UIMetrics* mainMenuSpacerMetrics;
+	DrawStackEntry playButtonEntry;
+	MouseZoneListener* playButtonZoneListener;
+	MouseButtonListener* playButtonClickListener;
+	DrawStackEntry settingsButtonEntry;
+	MouseZoneListener* settingsButtonZoneListener;
+	MouseButtonListener* settingsButtonClickListener;
+	DrawStackEntry helpButtonEntry;
+	MouseZoneListener* helpButtonZoneListener;
+	MouseButtonListener* helpButtonClickListener;
+	DrawStackEntry highScoresButtonEntry;
+	MouseZoneListener* highScoresButtonZoneListener;
+	MouseButtonListener* highScoresButtonClickListener;
+	DrawStackEntry quitButtonEntry;
+	MouseZoneListener* quitButtonZoneListener;
+	MouseButtonListener* quitButtonClickListener;
+	DrawStackEntry menuTip1Entry;
+	DrawStackEntry menuTip2Entry;
+	DrawStackEntry menuTip3Entry;
+
+	KeyListener* helpMenuKeyListener;
+	DrawStackEntry helpTitleEntry;
+	DrawStackEntry controlsTitleEntry;
+	DrawStackEntry controlsEntry;
+	DrawStackEntry instructionsTitleEntry;
+	DrawStackEntry instructionsEntry;
+	DrawStackEntry creditsTitleEntry;
+	DrawStackEntry creditsEntry;
+	DrawStackEntry backButtonEntry;
+	MouseZoneListener* backButtonZoneListener;
+	MouseButtonListener* backButtonClickListener;
+	
+	KeyListener* settingsMenuKeyListener;
+	DrawStackEntry settingsMenuTitleEntry;
+	DrawStackEntry levelSettingEntry;
+	MouseZoneListener* levelButtonZoneListener;
+	MouseButtonListener* levelButtonClickListener;
+	DrawStackEntry musicSettingEntry;
+	MouseZoneListener* musicButtonZoneListener;
+	MouseButtonListener* musicButtonClickListener;
+	DrawStackEntry audioEffectsSettingEntry;
+	MouseZoneListener* audioEffectsButtonZoneListener;
+	MouseButtonListener* audioEffectsButtonClickListener;
+	DrawStackEntry fullscreenSettingEntry;
+	MouseZoneListener* fullscreenButtonZoneListener;
+	MouseButtonListener* fullscreenButtonClickListener;
+	DrawStackEntry resetHighScoresEntry;
+	MouseZoneListener* resetHighScoresButtonZoneListener;
+	MouseButtonListener* resetHighScoresButtonClickListener;
+
+	KeyListener* highScoresMenuKeyListener;
+	DrawStackEntry highScoresTitleEntry;
+	DrawStackEntry highScoresLabelEntry;
+	
+	// YUCK
+	
+	MouseMotionListener* cursorMovementListener;
+
+	KeyListener* deleteKeyListener;
 	KeyListener* dashboardKeyListener;
 
 	KeyListener* testKeyListener;
 	KeyAbsoluteListener* testKeyAbsoluteListener;
 
-	// mouse listeners
-	MouseMotionListener* cursorMovementListener;
-
-	MouseButtonListener* quitButtonClickListener;
-	MouseButtonListener* startButtonClickListener;
-
-	MouseZoneListener* quitButtonZoneListener;
 	MouseZoneListener* startButtonZoneListener;
-
-	// UI
-	UILayoutAuthority* uiLayoutAuthority;
-
-	// draw stack types
-	typedef std::map<std::string, void*> DrawStackArgList;
-	typedef std::pair< std::string, DrawStackArgList > DrawStackEntry;
-	typedef std::vector<DrawStackEntry> DrawStack;
-
-	// drawing stack entries for regenerating draw list
-	DrawStackEntry splashEntry;
-
-	DrawStackEntry titleEntry;
-
-	DrawStackEntry quitButtonEntry;
-
-	DrawStackEntry logoEntry;
+	MouseButtonListener* startButtonClickListener;
 
 	DrawStackEntry joinContainerEntry;
 	DrawStackEntry joinHeaderLabelEntry;
@@ -150,10 +200,10 @@ public:
 	FollowCamera* followCamera;
 
 	// general logic info
-	unsigned int lastClockUpdate;
+//	unsigned int lastClockUpdate;
 	std::string myCallsign;
-	unsigned int lastFrameTime;
-	unsigned int hintExpiration;
+//	unsigned int lastFrameTime;
+//	unsigned int hintExpiration;
 
 	// object management
 	GameLogic();
@@ -161,9 +211,13 @@ public:
 
 private:
 	enum {
+			SCHEME_MAINMENU,
+			SCHEME_SETTINGS,
+			SCHEME_HELP,
+			SCHEME_HIGHSCORES,
 			SCHEME_WELCOME,
 			SCHEME_PLAYING,
-			SCHEME_DASHBOARD
+			SCHEME_DASHBOARD,
 		} currentScheme;
 
 	void reScheme();
