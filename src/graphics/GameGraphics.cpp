@@ -218,7 +218,9 @@ printf("FBR %.2f %.2f %.2f\n", fbr.x / fbr.w, fbr.y / fbr.w, fbr.z / fbr.w);
 	// set up fonts
 	fontManager = new FontManager();
 	fontManager->populateCommonChars((unsigned int) gameSystem->getFloat("fontSizeSmall"));
+	fontManager->populateCommonChars((unsigned int) gameSystem->getFloat("fontSizeMedium"));
 	fontManager->populateCommonChars((unsigned int) gameSystem->getFloat("fontSizeLarge"));
+	fontManager->populateCommonChars((unsigned int) gameSystem->getFloat("fontSizeSuper"));
 
 	// initialize FPS tracking
 	lastFPSTest = 0;
