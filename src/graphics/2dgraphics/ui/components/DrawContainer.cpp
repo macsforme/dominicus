@@ -49,7 +49,7 @@ void DrawContainer::execute(std::map<std::string, void*> arguments) {
 	float border = *((float*) arguments["border"]) / *((float*) arguments["padding"]) * 2.0f;
 
 	std::vector<DrawContainer::VertexEntry> quadVertices;
-
+/*
 	drawCurve(
 			&quadVertices,
 			Vector2(-size.x / 2.0f + padding.x / 2.0f, -size.y / 2.0f + padding.y / 2.0f),
@@ -101,11 +101,12 @@ void DrawContainer::execute(std::map<std::string, void*> arguments) {
 			Vector2(size.x - padding.x * 2.0f, padding.y),
 			270.0f
 		);
-
+*/
 	drawFiller(
 			&quadVertices,
 			Vector2(0.0f, 0.0f),
-			size - padding * 2.0f,
+//			size - padding * 2.0f,
+			size,
 			false
 		);
 
