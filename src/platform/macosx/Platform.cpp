@@ -86,9 +86,9 @@ std::string Platform::getPreferenceString(const char* key) {
 			CFStringGetCString((CFStringRef) value, buffer, 1025, kCFStringEncodingASCII);
 			toReturn = std::string(buffer);
 		}
+		CFRelease(value);
 	}
 	CFRelease(keyRef);
-	CFRelease(value);
 	return toReturn;
 }
 
@@ -105,7 +105,8 @@ void Platform::setPreference(const char* key, const char* value) {
 
 	CFRelease(keyRef);
 	CFRelease(dataRef);
-	CFRelease(propertyList);
+	if(propertyList != NULL)
+		CFRelease(propertyList);
 }
 
 void Platform::setPreference(const char* key, float value) {
