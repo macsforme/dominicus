@@ -55,6 +55,7 @@ void Keyboard::removeListener(KeyAbsoluteListener* listener) {
 void Keyboard::clearListeners() {
 	// clear all listeners
 	keyListeners.clear();
+	keyAbsoluteListeners.clear();
 }
 
 void Keyboard::execute() {

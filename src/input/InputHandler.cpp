@@ -25,6 +25,10 @@ unsigned int InputHandler::execute() {
 
 	while(SDL_PollEvent(&event)) {
 		switch(event.type) {
+		case SDL_QUIT:
+			keepDominicusAlive = false;
+			
+			break;
 		case SDL_KEYDOWN:
 		case SDL_KEYUP:
 			keyboard->eventStack.push_back(event);
