@@ -45,6 +45,7 @@ public:
 		fontSize		Font point size for this label (not to be confused with metrics->size)
 		fontColor		Font color
 		text			std::string of text
+		wrap			float with portion of screen (on 2.0 scale) to wrap text to
 	*/
 
 	Vector2 getSize(std::map<std::string, void*> arguments);
