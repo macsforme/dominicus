@@ -11,6 +11,7 @@
 #define DOMINICUSMAIN_H
 
 // program headers
+#include "audio/GameAudio.h"
 #include "core/GameSystem.h"
 #include "graphics/GameGraphics.h"
 #include "input/InputHandler.h"

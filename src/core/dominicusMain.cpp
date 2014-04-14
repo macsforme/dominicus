@@ -9,6 +9,7 @@
 #include "core/dominicusMain.h"
 
 // global variable declarations
+GameAudio* gameAudio;
 GameGraphics* gameGraphics;
 GameLogic* gameLogic;
 GameState* gameState;
@@ -25,6 +26,7 @@ bool keepDominicusAlive;
 // main game function
 int dominicusMain(int argc, char* argv[]) {
 	// nullify
+	gameAudio = NULL;
 	gameGraphics = NULL;
 	gameSystem = NULL;
 	inputHandler = NULL;
@@ -36,10 +38,9 @@ int dominicusMain(int argc, char* argv[]) {
 	// initialize our common objects
 	platform = new Platform();
 	gameSystem = new GameSystem();
-
+	gameAudio = new GameAudio();
 	gameGraphics = new GameGraphics(gameSystem->getBool("displayStartFullscreen"), true);
 	platform->loadExtensions();
-
 	inputHandler = new InputHandler();
 	gameLogic = new GameLogic();
 
@@ -76,6 +77,7 @@ int dominicusMain(int argc, char* argv[]) {
 	delete(gameLogic);
 	delete(inputHandler);
 	delete(gameGraphics);
+	delete(gameAudio);
 	delete(gameSystem);
 	delete(platform);
 

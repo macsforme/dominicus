@@ -256,7 +256,8 @@ GameSystem::GameSystem() :
 		);
 	setStandard(
 			"displayFPS",
-			60.0f,
+//			60.0f,
+1000.0f,
 			"Number of frames per second to draw."
 		);
 	setStandard(
@@ -286,7 +287,7 @@ GameSystem::GameSystem() :
 		);
 
 	// scene rendering standards
-/*
+
 	setStandard(
 			"renderingPerspectiveFOV",
 			30.0f,
@@ -305,7 +306,7 @@ GameSystem::GameSystem() :
 			"Far clip distance for perspective projection.",
 			true
 		);
-*/
+
 	// scene rendering camera standards
 /*
 	setStandard(
@@ -335,6 +336,7 @@ GameSystem::GameSystem() :
 			"Ship propeller spin rate in revolutions per minute.",
 			true
 		);
+*/
 	setStandard(
 			"terrainDepth",
 			5.0f,
@@ -353,6 +355,7 @@ GameSystem::GameSystem() :
 			"Terrain mixing noise texture resolution.",
 			true
 		);
+
 	setStandard(
 			"terrainNoiseTextureRoughness",
 			0.6f,
@@ -365,7 +368,7 @@ GameSystem::GameSystem() :
 			"Terrain mixing noise texture color depth.",
 			true
 		);
-*/
+
 	// HUD standards
 	setStandard(
 			"hudFPSTestFrequency",
@@ -526,6 +529,11 @@ GameSystem::GameSystem() :
 		);
 
 	// audio standards
+	setStandard(
+			"audioTickRate",
+			50.0f,
+			"Audio manager tick rate."
+		);
 	setStandard(
 			"audioMusicVolume",
 			0.5f,

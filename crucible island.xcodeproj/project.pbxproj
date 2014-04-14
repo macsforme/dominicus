@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 45;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -17,8 +17,6 @@
 		0315B84E134C773D002AD1CE /* DrawButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0315B84C134C773D002AD1CE /* DrawButton.cpp */; };
 		0315BA2D134D27B1002AD1CE /* DrawField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0315BA2B134D27B1002AD1CE /* DrawField.cpp */; };
 		031DB09513AB515A00FE0F76 /* DrawRadar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 031DB09313AB515A00FE0F76 /* DrawRadar.cpp */; };
-		0326DBD8137211D7003D2BA3 /* FollowCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0326DBD0137211D7003D2BA3 /* FollowCamera.cpp */; };
-		0326DBD9137211D7003D2BA3 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0326DBD2137211D7003D2BA3 /* Camera.cpp */; };
 		0326DC0F137282DE003D2BA3 /* ShipRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03CAB6C41371541000C52A90 /* ShipRenderer.cpp */; };
 		0330C498133A2AB6006199BE /* TextBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03BB9B83131F3F50009DFC8B /* TextBlock.cpp */; };
 		0353219118C931EF002FC13A /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0353219018C931EF002FC13A /* Cocoa.framework */; };
@@ -29,8 +27,9 @@
 		0353219B18C93516002FC13A /* libpng16.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0353219A18C93516002FC13A /* libpng16.a */; };
 		0353219C18C936C9002FC13A /* SDL.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0353219418C93216002FC13A /* SDL.framework */; };
 		03590F84131E446000EDF7A7 /* GameSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03590EED131E181C00EDF7A7 /* GameSystem.cpp */; };
+		036CFFE118EB5D4800C1B797 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 036CFFDF18EB5D4800C1B797 /* Camera.cpp */; };
 		037542F913B3260100AEE260 /* DrawGrayOut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 037542F013B3250B00AEE260 /* DrawGrayOut.cpp */; };
-		03A66763137BEC7B00E21708 /* TestCameras.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03A66762137BEC7B00E21708 /* TestCameras.cpp */; };
+		0387C28D18F3E2A300565A43 /* GameAudio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0387C28B18F3E2A300565A43 /* GameAudio.cpp */; };
 		03ABD53013A99B9C00CF79B5 /* WaterRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03ABD52E13A99B9C00CF79B5 /* WaterRenderer.cpp */; };
 		03BB9B9B131F3F50009DFC8B /* GameGraphics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03BB9B7E131F3F50009DFC8B /* GameGraphics.cpp */; };
 		03BB9C37131F49CC009DFC8B /* DrawSplash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03BB9C36131F49CB009DFC8B /* DrawSplash.cpp */; };
@@ -42,14 +41,12 @@
 		03C806CD130E50140037D309 /* crucible island.icns in Resources */ = {isa = PBXBuildFile; fileRef = 03D47B7D1263E27F001755A6 /* crucible island.icns */; };
 		03C806CE130E50340037D309 /* shaders in Resources */ = {isa = PBXBuildFile; fileRef = 030F8DEC1264C00100190225 /* shaders */; };
 		03C806CF130E50340037D309 /* data in Resources */ = {isa = PBXBuildFile; fileRef = 030F8DEF1264C01100190225 /* data */; };
-		03C806D4130E509D0037D309 /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0353D4B9127B0A43002340BF /* World.cpp */; };
 		03C806D5130E509E0037D309 /* Platform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 030F8E8C1264CD8D00190225 /* Platform.cpp */; };
 		03C806D6130E509F0037D309 /* InputHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 030D18BF12D0792200DA9B7B /* InputHandler.cpp */; };
 		03C806DC130E50A60037D309 /* Keyboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 030F8F3C1264DD1300190225 /* Keyboard.cpp */; };
 		03C806DF130E50A90037D309 /* dominicusMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 030F8E101264C0FF00190225 /* dominicusMain.cpp */; };
 		03C806E3130E50AD0037D309 /* MainLoopMember.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 035E0E7612DCE54D00F84121 /* MainLoopMember.cpp */; };
 		03C806E9130E50B30037D309 /* DiamondSquare.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 030DEBFF126CDD1B000D87ED /* DiamondSquare.cpp */; };
-		03C806F2130E50CB0037D309 /* Ship.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 035F214612A39233008DA566 /* Ship.cpp */; };
 		03C806F7130E50D00037D309 /* Mouse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 035A3C4512841B390001E186 /* Mouse.cpp */; };
 		03C80701130E50D90037D309 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 030F8E1E1264C3E800190225 /* main.cpp */; };
 		03C80756130E51C20037D309 /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 030F8F001264DBF300190225 /* libfreetype.a */; };
@@ -114,10 +111,6 @@
 		0315BA2C134D27B1002AD1CE /* DrawField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawField.h; sourceTree = "<group>"; };
 		031DB09313AB515A00FE0F76 /* DrawRadar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawRadar.cpp; sourceTree = "<group>"; };
 		031DB09413AB515A00FE0F76 /* DrawRadar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawRadar.h; sourceTree = "<group>"; };
-		0326DBD0137211D7003D2BA3 /* FollowCamera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FollowCamera.cpp; sourceTree = "<group>"; };
-		0326DBD1137211D7003D2BA3 /* FollowCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FollowCamera.h; sourceTree = "<group>"; };
-		0326DBD2137211D7003D2BA3 /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
-		0326DBD3137211D7003D2BA3 /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
 		032B8B351263DF5900DDE564 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 		0353219018C931EF002FC13A /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = ../../../../../../System/Library/Frameworks/Cocoa.framework; sourceTree = "<group>"; };
 		0353219218C93204002FC13A /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = ../../../../../../System/Library/Frameworks/OpenGL.framework; sourceTree = "<group>"; };
@@ -136,11 +129,13 @@
 		035E0E7612DCE54D00F84121 /* MainLoopMember.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MainLoopMember.cpp; sourceTree = "<group>"; };
 		035F214512A39233008DA566 /* Ship.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Ship.h; path = src/state/Ship.h; sourceTree = "<group>"; };
 		035F214612A39233008DA566 /* Ship.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Ship.cpp; path = src/state/Ship.cpp; sourceTree = "<group>"; };
+		036CFFDF18EB5D4800C1B797 /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Camera.cpp; path = src/logic/Camera.cpp; sourceTree = SOURCE_ROOT; };
+		036CFFE018EB5D4800C1B797 /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Camera.h; path = src/logic/Camera.h; sourceTree = SOURCE_ROOT; };
 		037542F013B3250B00AEE260 /* DrawGrayOut.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawGrayOut.cpp; sourceTree = "<group>"; };
 		037542F113B3250B00AEE260 /* DrawGrayOut.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawGrayOut.h; sourceTree = "<group>"; };
+		0387C28B18F3E2A300565A43 /* GameAudio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameAudio.cpp; path = src/audio/GameAudio.cpp; sourceTree = "<group>"; };
+		0387C28C18F3E2A300565A43 /* GameAudio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameAudio.h; path = src/audio/GameAudio.h; sourceTree = "<group>"; };
 		038FC1DE12A0EA3A00AE328B /* OpenGLHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLHeaders.h; sourceTree = "<group>"; };
-		03A66761137BEC7B00E21708 /* TestCameras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestCameras.h; sourceTree = "<group>"; };
-		03A66762137BEC7B00E21708 /* TestCameras.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestCameras.cpp; sourceTree = "<group>"; };
 		03ABD52E13A99B9C00CF79B5 /* WaterRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WaterRenderer.cpp; sourceTree = "<group>"; };
 		03ABD52F13A99B9C00CF79B5 /* WaterRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaterRenderer.h; sourceTree = "<group>"; };
 		03BB9B55131F3F50009DFC8B /* DrawControlBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawControlBox.cpp; sourceTree = "<group>"; };
@@ -205,7 +200,8 @@
 				0315B609134C2AB8002AD1CE /* UILayoutAuthority.cpp */,
 				0315B62F134C2CF7002AD1CE /* Schemes.h */,
 				0315B630134C2CF7002AD1CE /* Schemes.cpp */,
-				0326DBCF137211D7003D2BA3 /* cameras */,
+				036CFFE018EB5D4800C1B797 /* Camera.h */,
+				036CFFDF18EB5D4800C1B797 /* Camera.cpp */,
 			);
 			name = logic;
 			sourceTree = "<group>";
@@ -300,20 +296,6 @@
 			path = components;
 			sourceTree = "<group>";
 		};
-		0326DBCF137211D7003D2BA3 /* cameras */ = {
-			isa = PBXGroup;
-			children = (
-				0326DBD3137211D7003D2BA3 /* Camera.h */,
-				0326DBD2137211D7003D2BA3 /* Camera.cpp */,
-				03A66761137BEC7B00E21708 /* TestCameras.h */,
-				03A66762137BEC7B00E21708 /* TestCameras.cpp */,
-				0326DBD1137211D7003D2BA3 /* FollowCamera.h */,
-				0326DBD0137211D7003D2BA3 /* FollowCamera.cpp */,
-			);
-			name = cameras;
-			path = src/logic/cameras;
-			sourceTree = "<group>";
-		};
 		032B8AE812639AC900DDE564 /* frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -341,6 +323,15 @@
 				03EA006213839E1F00791980 /* Collisions.cpp */,
 			);
 			name = state;
+			sourceTree = "<group>";
+		};
+		0387C28A18F3E27600565A43 /* audio */ = {
+			isa = PBXGroup;
+			children = (
+				0387C28C18F3E2A300565A43 /* GameAudio.h */,
+				0387C28B18F3E2A300565A43 /* GameAudio.cpp */,
+			);
+			name = audio;
 			sourceTree = "<group>";
 		};
 		03BB9B52131F3F50009DFC8B /* graphics */ = {
@@ -465,6 +456,7 @@
 				030F8F3B1264DD1300190225 /* input */,
 				0303172813204EAE009B9AFD /* logic */,
 				03BB9B52131F3F50009DFC8B /* graphics */,
+				0387C28A18F3E27600565A43 /* audio */,
 				032B8B351263DF5900DDE564 /* README.txt */,
 				030F8DE31264BFAA00190225 /* TODO.txt */,
 				8D1107310486CEB800E47090 /* crucible island.plist */,
@@ -506,10 +498,11 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Joshua Bodine";
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "crucible island" */;
-			compatibilityVersion = "Xcode 3.1";
+			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
@@ -544,14 +537,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				03C806D4130E509D0037D309 /* World.cpp in Sources */,
 				03C806D5130E509E0037D309 /* Platform.cpp in Sources */,
 				03C806D6130E509F0037D309 /* InputHandler.cpp in Sources */,
 				03C806DC130E50A60037D309 /* Keyboard.cpp in Sources */,
 				03C806DF130E50A90037D309 /* dominicusMain.cpp in Sources */,
 				03C806E3130E50AD0037D309 /* MainLoopMember.cpp in Sources */,
 				03C806E9130E50B30037D309 /* DiamondSquare.cpp in Sources */,
-				03C806F2130E50CB0037D309 /* Ship.cpp in Sources */,
 				03C806F7130E50D00037D309 /* Mouse.cpp in Sources */,
 				03C80701130E50D90037D309 /* main.cpp in Sources */,
 				03C8075E130E52030037D309 /* SDLMain.m in Sources */,
@@ -559,6 +550,7 @@
 				03BB9B9B131F3F50009DFC8B /* GameGraphics.cpp in Sources */,
 				03BB9C37131F49CC009DFC8B /* DrawSplash.cpp in Sources */,
 				03BB9C66131F4E11009DFC8B /* BaseDrawNode.cpp in Sources */,
+				036CFFE118EB5D4800C1B797 /* Camera.cpp in Sources */,
 				03BB9D26131F5D39009DFC8B /* Texture.cpp in Sources */,
 				03D0B3C4131F769900100010 /* DrawCursor.cpp in Sources */,
 				0303151A131F99D6009B9AFD /* DrawControlBox.cpp in Sources */,
@@ -570,15 +562,13 @@
 				0315B626134C2C4B002AD1CE /* DrawContainer.cpp in Sources */,
 				0315B627134C2C4B002AD1CE /* DrawLabel.cpp in Sources */,
 				0315B628134C2C4B002AD1CE /* DrawTexture.cpp in Sources */,
+				0387C28D18F3E2A300565A43 /* GameAudio.cpp in Sources */,
 				0315B631134C2CF7002AD1CE /* Schemes.cpp in Sources */,
 				0315B84E134C773D002AD1CE /* DrawButton.cpp in Sources */,
 				0315BA2D134D27B1002AD1CE /* DrawField.cpp in Sources */,
 				03C9206C13693A51000C4373 /* GameState.cpp in Sources */,
 				03CAB6CC1371541000C52A90 /* TerrainRenderer.cpp in Sources */,
-				0326DBD8137211D7003D2BA3 /* FollowCamera.cpp in Sources */,
-				0326DBD9137211D7003D2BA3 /* Camera.cpp in Sources */,
 				0326DC0F137282DE003D2BA3 /* ShipRenderer.cpp in Sources */,
-				03A66763137BEC7B00E21708 /* TestCameras.cpp in Sources */,
 				03EA006313839E1F00791980 /* Collisions.cpp in Sources */,
 				03ABD53013A99B9C00CF79B5 /* WaterRenderer.cpp in Sources */,
 				031DB09513AB515A00FE0F76 /* DrawRadar.cpp in Sources */,
@@ -605,6 +595,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -628,6 +619,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -650,12 +642,12 @@
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				CURRENT_PROJECT_VERSION = "";
 				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_WARN_ABOUT_MISSING_NEWLINE = NO;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -668,16 +660,17 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
 				SDKROOT = macosx10.8;
-				WARNING_CFLAGS = "-Wall";
+				WARNING_CFLAGS = "";
 			};
 			name = Debug;
 		};
 		C01FCF5008A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
