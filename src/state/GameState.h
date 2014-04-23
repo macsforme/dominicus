@@ -9,18 +9,13 @@
 #ifndef GAMESTATE_H
 #define GAMESTATE_H
 
-// forward declarations
-class Ship;
-class ShipControl;
-
 // program headers
 #include "core/GameSystem.h"
 #include "core/MainLoopMember.h"
+#include "math/VectorMath.h"
+#include "math/MatrixMath.h"
 #include "geometry/DiamondSquare.h"
 #include "geometry/Mesh.h"
-#include "state/Ship.h"
-#include "state/World.h"
-#include "graphics/texture/Texture.h"
 
 // library headers
 #include <vector>
@@ -28,15 +23,51 @@ class ShipControl;
 // global variables
 extern GameSystem* gameSystem;
 
-// class definition
+// class definitions
+class Fortress {
+public:
+	Vector3 position;
+	float rotation;
+	float tilt;
+
+	float turretRecoil;
+
+	Fortress() : position(Vector3(0.0f, 0.0f, 0.0f)), rotation(0.0f), tilt(0.0f), turretRecoil(0.0f) { };
+};
+
+class Shell {
+public:
+	Vector3 position;
+	Vector3 direction;
+};
+
+class ShockField {
+public:
+	float span;
+};
+
+class Ship {
+public:
+	Vector3 position;
+	float rotation;
+	float originAngle;
+};
+
+class Missile {
+public:
+	Vector3 position;
+	Vector3 direction;
+	float speed;
+};
+
 class GameState : public MainLoopMember {
 public:
-	World* world;
-
-	std::vector<Ship*> ships;
-
-	Texture* noiseTexture;
-	Texture* fourDepthNoiseTexture;
+	Mesh island;
+	Fortress fortress;
+	std::vector<Shell> shells;
+	ShockField shockField;
+	std::vector<Ship> ships;
+	std::vector<Missile> missiles;
 
 	GameState();
 	~GameState();

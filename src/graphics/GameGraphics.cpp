@@ -26,7 +26,11 @@ GameGraphics::GameGraphics(bool fullScreen, bool testSystem) : fullScreen(fullSc
 		))
 		gameSystem->log(GameSystem::LOG_FATAL,
 				"SDL cannot initialize a window with the specified settings.");
+//FIXME do something better with this
+SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 0);
 
+	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, (int) gameSystem->getFloat("displayColorDepth"));
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
@@ -125,6 +129,13 @@ GameGraphics::GameGraphics(bool fullScreen, bool testSystem) : fullScreen(fullSc
 					"OpenGL extension not supported: GL_EXT_framebuffer_object");
 		else
 			gameSystem->log(GameSystem::LOG_VERBOSE, "OpenGL Extension Found: GL_EXT_framebuffer_object");
+		// test and log the presence of the multisample extension
+		if(strstr((const char*) glGetString(GL_EXTENSIONS),
+				"GL_ARB_multisample") == NULL)
+			gameSystem->log(GameSystem::LOG_FATAL,
+					"OpenGL extension not supported: GL_ARB_multisample");
+		else
+			gameSystem->log(GameSystem::LOG_VERBOSE, "OpenGL Extension Found: GL_ARB_multisample");
 	}
 
 	// set up matrices
@@ -190,37 +201,55 @@ GameGraphics::GameGraphics(bool fullScreen, bool testSystem) : fullScreen(fullSc
 		};
 	memcpy((void*) ppMatrixInverseArray, (void*) ppMatrixInverseArrayVals, 16 * sizeof(float));
 
-/*
-Vector4 rbl = Vector4(-1.0f, -1.0f, -1.0f, 1.0f) * ppMatrixInverse;
-printf("RBL %.2f %.2f %.2f\n", rbl.x / rbl.w, rbl.y / rbl.w, rbl.z / rbl.w);
-
-Vector4 rtl = Vector4(-1.0f, 1.0f, -1.0f, 1.0f) * ppMatrixInverse;
-printf("RTL %.2f %.2f %.2f\n", rtl.x / rtl.w, rtl.y / rtl.w, rtl.z / rtl.w);
-
-Vector4 rtr = Vector4(1.0f, 1.0f, -1.0f, 1.0f) * ppMatrixInverse;
-printf("RTR %.2f %.2f %.2f\n", rtr.x / rtr.w, rtr.y / rtr.w, rtr.z / rtr.w);
-
-Vector4 rbr = Vector4(1.0f, -1.0f, -1.0f, 1.0f) * ppMatrixInverse;
-printf("RBR %.2f %.2f %.2f\n", rbr.x / rbr.w, rbr.y / rbr.w, rbr.z / rbr.w);
-
-Vector4 fbl = Vector4(-1.0f, -1.0f, 1.0f, 1.0f) * ppMatrixInverse;
-printf("FBL %.2f %.2f %.2f\n", fbl.x / fbl.w, fbl.y / fbl.w, fbl.z / fbl.w);
-
-Vector4 ftl = Vector4(-1.0f, 1.0f, 1.0f, 1.0f) * ppMatrixInverse;
-printf("FTL %.2f %.2f %.2f\n", ftl.x / ftl.w, ftl.y / ftl.w, ftl.z / ftl.w);
-
-Vector4 ftr = Vector4(1.0f, 1.0f, 1.0f, 1.0f) * ppMatrixInverse;
-printf("FTR %.2f %.2f %.2f\n", ftr.x / ftr.w, ftr.y / ftr.w, ftr.z / ftr.w);
-
-Vector4 fbr = Vector4(1.0f, -1.0f, 1.0f, 1.0f) * ppMatrixInverse;
-printf("FBR %.2f %.2f %.2f\n", fbr.x / fbr.w, fbr.y / fbr.w, fbr.z / fbr.w);
-*/
 	// set up fonts
 	fontManager = new FontManager();
 	fontManager->populateCommonChars((unsigned int) gameSystem->getFloat("fontSizeSmall"));
 	fontManager->populateCommonChars((unsigned int) gameSystem->getFloat("fontSizeMedium"));
 	fontManager->populateCommonChars((unsigned int) gameSystem->getFloat("fontSizeLarge"));
 	fontManager->populateCommonChars((unsigned int) gameSystem->getFloat("fontSizeSuper"));
+
+	// create persistent noise textures
+	unsigned int noiseDensity = (unsigned int) gameSystem->getFloat("terrainNoiseTextureDensity");
+	DiamondSquare noise1(
+			noiseDensity,
+			gameSystem->getFloat("terrainNoiseTextureRoughness")
+		);
+	noiseTexture = new Texture(
+			noiseDensity,
+			noiseDensity,
+			Texture::FORMAT_RGB
+		);
+		for(size_t i = 0; i < (size_t) noiseDensity; ++i)
+			for(size_t p = 0; p < (size_t) noiseDensity; ++p)
+				noiseTexture->setColorAt(
+						i,
+						p,
+						(uint8_t) (noise1.data[i][p] * 128.0f + 127.0f),
+						(uint8_t) (noise1.data[i][p] * 128.0f + 127.0f),
+						(uint8_t) (noise1.data[i][p] * 128.0f + 127.0f),
+						0xFF
+					);
+
+		DiamondSquare noise2(
+				noiseDensity,
+				gameSystem->getFloat("terrainNoiseTextureRoughness")
+			);
+		fourDepthNoiseTexture = new Texture(
+				noiseDensity,
+				noiseDensity,
+				Texture::FORMAT_RGB
+			);
+		for(size_t i = 0; i < (size_t) noiseDensity; ++i)
+			for(size_t p = 0; p < (size_t) noiseDensity; ++p)
+				fourDepthNoiseTexture->setColorAt(
+						i,
+						p,
+						(uint8_t) (noise2.data[i][p] * 128.0f + 127.0f),
+						(uint8_t) (noise2.data[i][p] * 128.0f + 127.0f),
+						(uint8_t) (noise2.data[i][p] * 128.0f + 127.0f),
+						0xFF
+					);
+	fourDepthNoiseTexture->setDepth(16);
 
 	// initialize FPS tracking
 	lastFPSTest = 0;
@@ -250,14 +279,22 @@ printf("FBR %.2f %.2f %.2f\n", fbr.x / fbr.w, fbr.y / fbr.w, fbr.z / fbr.w);
 	drawers["grayOut"] = new DrawGrayOut();
 
 	drawers["skyRenderer"] = new SkyRenderer();
-	drawers["waterRenderer"] = new WaterRenderer();
-	drawers["terrainRenderer"] = new TerrainRenderer();
 	drawers["shipRenderer"] = new ShipRenderer();
+	drawers["terrainRenderer"] = new TerrainRenderer();
+	drawers["towerRenderer"] = new TowerRenderer();
+	drawers["waterRenderer"] = new WaterRenderer();
+
+	// instantiate camera
+	testCamera = new TestCamera();
 }
 
 GameGraphics::~GameGraphics() {
 	// destroy fonts
 	delete(fontManager);
+
+	// destroy textures
+	delete(noiseTexture);
+	delete(fourDepthNoiseTexture);
 
 	// delete drawers
 	delete((DrawSplash*) drawers["splash"]);
@@ -274,6 +311,7 @@ GameGraphics::~GameGraphics() {
 	delete((TerrainRenderer*) drawers["terrainRenderer"]);
 	delete((WaterRenderer*) drawers["waterRenderer"]);
 	delete((ShipRenderer*) drawers["shipRenderer"]);
+	delete((TowerRenderer*) drawers["towerRenderer"]);
 
 	// delete shaders
 	std::map<std::string, GLuint>::iterator shaderItr;
@@ -297,6 +335,9 @@ GameGraphics::~GameGraphics() {
 	for(textureIDItr = textureIDs.begin(); textureIDItr != textureIDs.end(); ++textureIDItr)
 		if(glIsTexture(textureIDItr->second))
 			glDeleteTextures(1, &(textureIDItr->second));
+
+	// destroy camera
+	delete(testCamera);
 }
 
 GLuint GameGraphics::getShaderID(GLenum shaderType, std::string shaderName) {
@@ -514,6 +555,9 @@ GLuint GameGraphics::getTextureID(std::string filename) {
 }
 
 unsigned int GameGraphics::execute() {
+	// update camera
+	testCamera->execute();
+
 	// track the frame time
 	unsigned int frameBeginTime = platform->getExecMills();
 
@@ -561,6 +605,10 @@ unsigned int GameGraphics::execute() {
 		currentFPS = fpsCount * (unsigned int) gameSystem->getFloat("hudFPSTestFrequency");
 		fpsCount = 0;
 //printf("FPS: %u\n", currentFPS);
+if(gameLogic != NULL) {
+	std::stringstream ss; ss << "FPS: " << currentFPS;
+	*((std::string*) gameLogic->fpsEntry.second["text"]) = ss.str().c_str();
+}
 	}
 
 	++fpsCount;

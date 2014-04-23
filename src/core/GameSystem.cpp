@@ -302,7 +302,8 @@ GameSystem::GameSystem() :
 		);
 	setStandard(
 			"renderingPerspectiveFarClip",
-			1500.0f,
+			20000.0f,
+//			6000.0f,
 			"Far clip distance for perspective projection.",
 			true
 		);
@@ -553,12 +554,12 @@ GameSystem::GameSystem() :
 		);
 	setStandard(
 			"islandMaximumWidth",
-			1000.0f,
+			4000.0f,
 			"Maximum island width"
 		);
 	setStandard(
 			"islandMaximumHeight",
-			100.0f,
+			400.0f,
 			"Maximum island height"
 		);
 

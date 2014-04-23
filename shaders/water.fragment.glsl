@@ -2,7 +2,6 @@
 
 // uniforms
 uniform float timer;
-uniform vec3 cameraPosition;
 
 // varyings
 varying vec2 positionInterpol;
@@ -20,7 +19,7 @@ vec2 badNoise(vec2 val) {
 
 // main loop
 void main() {
-	vec2 scaledPosition = positionInterpol / 8.0;
+	vec2 scaledPosition = positionInterpol / 32.0;
 
 	float noiseFactor =
 			mix(badNoise(floor(scaledPosition.x)), badNoise(ceil(scaledPosition.x)), fract(scaledPosition.x));
@@ -32,10 +31,15 @@ void main() {
 			sin(radians(scaledPosition.x * -0.75 + scaledPosition.y * -0.30 + noiseFactor + timer * -1.0) * 360.0) *
 			sin(radians(distance(scaledPosition, vec2(0.0, 0.0)) * 360.0 + timer))
 		) * 0.5 + 0.5;
-
+/*
 	vec4 crest = vec4(0.8, 0.8, 1.0, 1.0);
 	vec4 deep = vec4(0.05, 0.1, 0.3, 1.0);
 	vec4 moderate = vec4(0.0, 0.2, 0.4, 1.0);
+*/
+
+	vec4 crest = vec4(0.4, 0.4, 0.5, 1.0);
+	vec4 deep = vec4(0.025, 0.05, 0.15, 1.0);
+	vec4 moderate = vec4(0.0, 0.1, 0.2, 1.0);
 
 	vec4 waveColor;
 

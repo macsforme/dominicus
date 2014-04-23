@@ -12,6 +12,5 @@ varying vec2 positionInterpol;
 // main function
 void main() {
 	positionInterpol = vec2(position.x, position.z);
-
-	gl_Position = mvpMatrix * vec4(position, 1.0);
+	gl_Position = mvpMatrix * vec4(position, 1.0);;
 }

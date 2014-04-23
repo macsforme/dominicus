@@ -311,7 +311,39 @@ GameLogic::GameLogic() {
 	highScoresLabelEntry.second["fontColor"] = (void*) new Vector4;
 	highScoresLabelEntry.second["text"] = (void*) new std::string;
 
-	// set global variable
+	loadingEntry.first = "label";
+	loadingEntry.second["metrics"] = (void*) new UIMetrics;
+	loadingEntry.second["fontSize"] = (void*) new float;
+	loadingEntry.second["fontColor"] = (void*) new Vector4;
+	loadingEntry.second["text"] = (void*) new std::string;
+
+	std::vector<SDLKey> playingKeys;
+	playingKeys.push_back(SDLK_RETURN);
+	playingKeys.push_back(SDLK_ESCAPE);
+	playingKeyListener = new KeyListener(playingKeys);
+
+	skyEntry.first = "skyRenderer";
+
+	waterEntry.first = "waterRenderer";
+
+	terrainEntry.first = "terrainRenderer";
+
+	shipEntry.first = "shipRenderer";
+
+	towerEntry.first = "towerRenderer";
+
+fpsEntry.first = "label";
+fpsEntry.second["metrics"] = (void*) new UIMetrics;
+((UIMetrics*) fpsEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_BOTTOM;
+((UIMetrics*) fpsEntry.second["metrics"])->bearing2 = UIMetrics::BEARING_RIGHT;
+fpsEntry.second["fontSize"] = (void*) new float;
+*((float*) fpsEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+fpsEntry.second["fontColor"] = (void*) new Vector4;
+*((Vector4*) fpsEntry.second["fontColor"]) = Vector4(0.5f, 0.5f, 0.5f, 1.0f);
+fpsEntry.second["text"] = (void*) new std::string;
+*((std::string*) fpsEntry.second["text"]) = "FPS: 0";
+
+	// set global variable (we only exist once, right?)
 	gameLogic = this;
 
 	// build the initial draw stack
@@ -319,12 +351,33 @@ GameLogic::GameLogic() {
 	activeMenuSelection = &playButtonEntry;
 	reScheme();
 
+	// start audio
+	SDL_LockAudio();
+	gameAudio->setBackgroundMusic("menuSong");
+	SDL_UnlockAudio();
+
 	// draw the initial frame
 	gameGraphics->execute();
 
 	// clear the motion listener
 	inputHandler->execute();
 	mouseMotionListener->wasMoved();
+
+currentScheme = SCHEME_LOADING;
+reScheme();
+gameGraphics->execute();
+gameState = new GameState();
+mainLoopModules[gameState] = 0;
+mainLoopModules[gameGraphics] = 0;
+((TerrainRenderer*) gameGraphics->drawers["terrainRenderer"])->reloadGraphics();
+SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
+currentScheme = SCHEME_PLAYING;
+activeMenuSelection = NULL;
+reScheme();
+SDL_LockAudio();
+gameAudio->setBackgroundMusic("playingSong");
+SDL_UnlockAudio();
+
 }
 
 GameLogic::~GameLogic() {
@@ -333,8 +386,8 @@ GameLogic::~GameLogic() {
 
 void GameLogic::reScheme() {
 	// always clear the current stacks
-	gameLogic->drawStack.clear();
-	gameLogic->uiLayoutAuthority->metrics.clear();
+	drawStack.clear();
+	uiLayoutAuthority->metrics.clear();
 	inputHandler->keyboard->clearListeners();
 	inputHandler->mouse->clearListeners();
 
@@ -356,24 +409,19 @@ void GameLogic::reScheme() {
 		Schemes::highScoresScheme();
 		break;
 
+	case SCHEME_LOADING:
+		Schemes::loadingScheme();
+		break;
+
+	case SCHEME_PLAYING:
+		Schemes::playingScheme();
+		break;
+
 	case SCHEME_WELCOME:
 		SDL_ShowCursor(1);
 
 		Schemes::welcomeScheme(
 				*((std::string*) joinCallsignFieldEntry.second["text"])
-			);
-
-		break;
-	case SCHEME_PLAYING:
-		SDL_ShowCursor(0);
-
-		Schemes::playingScheme(
-				true, //bool showHUD,
-				myCallsign, //std::string callsignText,
-//				"", //std::string team,
-				"", //std::string scoreText,
-				"", //std::string powerText,
-				true //bool showDebugInfo,
 			);
 
 		break;
@@ -384,6 +432,10 @@ void GameLogic::reScheme() {
 
 		break;
 	}
+((UIMetrics*) fpsEntry.second["metrics"])->size = ((DrawLabel*) gameGraphics->drawers["label"])->getSize(fpsEntry.second);
+uiLayoutAuthority->metrics.push_back((UIMetrics*) fpsEntry.second["metrics"]);
+drawStack.push_back(fpsEntry);
+uiLayoutAuthority->rearrange();
 }
 
 unsigned int GameLogic::execute() {
@@ -405,19 +457,16 @@ unsigned int GameLogic::execute() {
 		if(isInMainLoopModules)
 			mainLoopModules[gameGraphics] = 0;
 
-//		if(currentScheme == SCHEME_PLAYING || currentScheme == SCHEME_DASHBOARD) {
-//			((TerrainRenderer*) gameGraphics->drawers["terrainRenderer"])->reloadGraphics();
+		if(currentScheme == SCHEME_PLAYING) {
+			((TerrainRenderer*) gameGraphics->drawers["terrainRenderer"])->reloadGraphics();
 //			((DrawRadar*) gameGraphics->drawers["radar"])->reloadGraphics();
-//		}
+		}
 
 		delete(uiLayoutAuthority);
 		uiLayoutAuthority = new UILayoutAuthority(
 				Vector2(gameSystem->getFloat("hudElementMargin") / (float) gameGraphics->resolutionX,
 						gameSystem->getFloat("hudElementMargin") / (float) gameGraphics->resolutionY)
 			);
-
-//		hintEntry.second["containerTimer"] = &(gameGraphics->hardTimer);
-//		hintEntry.second["textTimer"] = &(gameGraphics->hardTimer);
 
 		reScheme();
 		needRedraw = true;
@@ -466,7 +515,25 @@ unsigned int GameLogic::execute() {
 
 		// button clicks
 		if(playButtonClickListener->wasClicked()) {
-			std::cout << "PLAY" << std::endl;
+			currentScheme = SCHEME_LOADING;
+			reScheme();
+			gameGraphics->execute();
+
+			gameState = new GameState();
+			mainLoopModules[gameState] = 0;
+
+			mainLoopModules[gameGraphics] = 0;
+			((TerrainRenderer*) gameGraphics->drawers["terrainRenderer"])->reloadGraphics();
+//			((DrawRadar*) gameGraphics->drawers["radar"])->reloadGraphics();
+
+			SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
+
+			currentScheme = SCHEME_PLAYING;
+			activeMenuSelection = NULL;
+			reScheme();
+			SDL_LockAudio();
+			gameAudio->setBackgroundMusic("playingSong");
+			SDL_UnlockAudio();
 		} else if(settingsButtonClickListener->wasClicked()) {
 			currentScheme = SCHEME_SETTINGS;
 			activeMenuSelection = &levelSettingEntry;
@@ -533,7 +600,28 @@ unsigned int GameLogic::execute() {
 					needRedraw = true;
 				}
 			} else if(key == SDLK_RETURN) {
-				if(activeMenuSelection == &settingsButtonEntry) {
+				if(activeMenuSelection == &playButtonEntry) {
+					currentScheme = SCHEME_LOADING;
+					reScheme();
+					gameGraphics->execute();
+
+					gameState = new GameState();
+					mainLoopModules[gameState] = 0;
+
+					mainLoopModules[gameGraphics] = 0;
+					((TerrainRenderer*) gameGraphics->drawers["terrainRenderer"])->reloadGraphics();
+//					((DrawRadar*) gameGraphics->drawers["radar"])->reloadGraphics();
+
+					SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
+
+					currentScheme = SCHEME_PLAYING;
+					activeMenuSelection = NULL;
+					reScheme();
+
+					SDL_LockAudio();
+					gameAudio->setBackgroundMusic("playingSong");
+					SDL_UnlockAudio();
+				} else if(activeMenuSelection == &settingsButtonEntry) {
 					currentScheme = SCHEME_SETTINGS;
 					activeMenuSelection = &levelSettingEntry;
 					reScheme();
@@ -551,6 +639,32 @@ unsigned int GameLogic::execute() {
 				} else if(activeMenuSelection == &quitButtonEntry) {
 					keepDominicusAlive = false;
 				}
+			}
+		}
+	} else if(currentScheme == SCHEME_PLAYING) {
+		// key hits
+		for(SDLKey key = playingKeyListener->popKey(); key != SDLK_UNKNOWN; key = playingKeyListener->popKey()) {
+			if(key == SDLK_RETURN) {
+				mainLoopModules.erase(mainLoopModules.find(gameState));
+				delete(gameState);
+				gameState = new GameState();
+				mainLoopModules[gameState] = 0;
+
+				((TerrainRenderer*) gameGraphics->drawers["terrainRenderer"])->reloadGraphics();
+			} else if(key == SDLK_ESCAPE) {
+				mainLoopModules.erase(mainLoopModules.find(gameState));
+				mainLoopModules.erase(mainLoopModules.find(gameGraphics));
+
+				delete(gameState);
+
+				currentScheme = SCHEME_MAINMENU;
+				activeMenuSelection = &playButtonEntry;
+				reScheme();
+				needRedraw = true;
+
+				SDL_LockAudio();
+				gameAudio->setBackgroundMusic("menuSong");
+				SDL_UnlockAudio();
 			}
 		}
 	} else if(currentScheme == SCHEME_SETTINGS) {
@@ -616,7 +730,9 @@ unsigned int GameLogic::execute() {
 			float value = gameSystem->getFloat("audioMusicVolume");
 			value += 0.1f;
 			if(value > 1.0f) value = 0.0f;
+			SDL_LockAudio();
 			gameSystem->setStandard("audioMusicVolume", value, "");
+			SDL_UnlockAudio();
 			gameSystem->flushPreferences();
 
 			reScheme();
@@ -718,7 +834,9 @@ unsigned int GameLogic::execute() {
 					value += (key == SDLK_RIGHT ? 0.1f : -0.1f);
 					if(value > 1.0f) value = 0.0f;
 					if(value < 0.0f) value = 1.0f;
+					SDL_LockAudio();
 					gameSystem->setStandard("audioMusicVolume", value, "");
+					SDL_UnlockAudio();
 					gameSystem->flushPreferences();
 
 					reScheme();
@@ -833,45 +951,6 @@ unsigned int GameLogic::execute() {
 		}
 	}
 /*
-	// see if we need to start the game
-	if(startButtonClickListener->wasClicked()) {
-		gameState = new GameState();
-
-		mainLoopModules[gameState] = 0;
-
-		gameState->ships.push_back(new Ship());
-		(*(gameState->ships.begin()))->position.y = 20.0f;
-		(*(gameState->ships.begin()))->position.z = -gameState->world->diameter / 2.0f;
-
-		shipRelativeCamera = new ShipRelativeCamera(gameState->ships[0]);
-		terrainRelativeCamera = new TerrainRelativeCamera(gameState->ships[0]);
-		followCamera = new FollowCamera(gameState->ships[0]);
-
-		ship1Entry.second["camera"] = terrainRelativeCamera;
-		ship1Entry.second["camera"] = followCamera;
-		terrain1Entry.second["camera"] = terrainRelativeCamera;
-		terrain1Entry.second["camera"] = followCamera;
-		waterEntry.second["camera"] = terrainRelativeCamera;
-		waterEntry.second["camera"] = followCamera;
-
-		mainLoopModules[gameGraphics] = 0;
-		((TerrainRenderer*) gameGraphics->drawers["terrainRenderer"])->reloadGraphics();
-		((DrawRadar*) gameGraphics->drawers["radar"])->reloadGraphics();
-		gameSystem->log(GameSystem::LOG_VERBOSE, "Terrain geometry reloaded in renderer");
-
-		SDL_WarpMouse(
-				gameGraphics->resolutionX / 2,
-				gameGraphics->resolutionY / 2
-			);
-
-		lastClockUpdate = platform->getExecMills();
-		myCallsign = *((std::string*) joinCallsignFieldEntry.second["text"]);
-		hintExpiration = platform->getExecMills() + 10000;
-
-		currentScheme = SCHEME_PLAYING;
-		reScheme();
-	}
-
 	// see if we need to toggle the dashboard
 	if(dashboardKeyListener->popKey() != SDLK_UNKNOWN) {
 		if(currentScheme == SCHEME_PLAYING)

@@ -61,6 +61,7 @@ translateMatrix(0.0f, 0.0f, 1000.0f, terrainMatrix);
 }
 
 void FollowCamera::execute() {
+/*
 	// update camera position
 	float xzAngle = getAngle(Vector2(ship->direction.x, ship->direction.z)) - 90.0f;
 
@@ -82,7 +83,7 @@ void FollowCamera::execute() {
 			shipOrientation.m21, shipOrientation.m22, shipOrientation.m23,
 			shipOrientation.m11, shipOrientation.m12, shipOrientation.m13
 		);
-
+*/
 	// ship speed fraction
 //	float speedFraction = ship->speed / gameSystem->getFloat("shipMaxSpeed");
 
@@ -104,7 +105,7 @@ void FollowCamera::execute() {
 	terrainMatrix.identity();
 
 	translateMatrix(-ship->position.x, -ship->position.y, -ship->position.z, terrainMatrix);
-
+/*
 	Vector3 zVec(shipOrientation.m31, 0.0f, shipOrientation.m33);
 	zVec.norm();
 
@@ -129,10 +130,77 @@ void FollowCamera::execute() {
 			0.0f,
 			1.0f
 		);
-
+*/
 	rotateMatrix(Vector3(1.0f, 0.0f, 0.0f),
 			radians(-gameSystem->getFloat("renderingCameraAngle")), terrainMatrix);
 	translateMatrix(0.0f, 0.0f, (float) gameSystem->getFloat("renderingCameraFollowDistance"), terrainMatrix);
 
 	terrainMatrix *= gameGraphics->ppMatrix;
+}
+
+void TestCamera::execute() {
+	if(gameState == NULL)
+		return;
+
+	// overhead view
+	terrainMatrix.identity();
+//	rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians((float) (platform->getExecMills() % 32000) / 32000.0f * 360.0f), terrainMatrix);
+	rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(-90.0f), terrainMatrix);
+	translateMatrix(0.0f, 0.0f, gameSystem->getFloat("islandMaximumWidth") * 3.0f, terrainMatrix);
+
+	towerMatrix.identity();
+	translateMatrix(gameState->fortress.position.x, gameState->fortress.position.y, gameState->fortress.position.z, towerMatrix);
+//	rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians((float) (platform->getExecMills() % 32000) / 32000.0f * 360.0f), towerMatrix);
+	rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(-90.0f), towerMatrix);
+	translateMatrix(0.0f, 0.0f, gameSystem->getFloat("islandMaximumWidth") * 3.0f, towerMatrix);
+
+	shipMatrix.identity();
+//	rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(90.0f), shipMatrix);
+//	translateMatrix(gameSystem->getFloat("islandMaximumWidth") * 0.5f, 0.0f, 0.0f, shipMatrix);
+//	rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians((float) (platform->getExecMills() % 16000) / 16000.0f * 360.0f), shipMatrix);
+	rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(-90.0f), shipMatrix);
+	translateMatrix(0.0f, 0.0f, gameSystem->getFloat("islandMaximumWidth") * 3.0f, shipMatrix);
+
+return;
+
+	// overall tilted view
+	terrainMatrix.identity();
+//	rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians((float) (platform->getExecMills() % 32000) / 32000.0f * 360.0f), terrainMatrix);
+	rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(-30.0f), terrainMatrix);
+	translateMatrix(0.0f, 0.0f, gameSystem->getFloat("islandMaximumWidth"), terrainMatrix);
+
+	towerMatrix.identity();
+	translateMatrix(gameState->fortress.position.x, gameState->fortress.position.y, gameState->fortress.position.z, towerMatrix);
+//	rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians((float) (platform->getExecMills() % 32000) / 32000.0f * 360.0f), towerMatrix);
+	rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(-30.0f), towerMatrix);
+	translateMatrix(0.0f, 0.0f, gameSystem->getFloat("islandMaximumWidth"), towerMatrix);
+
+	shipMatrix.identity();
+//	rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(90.0f), shipMatrix);
+//	translateMatrix(gameSystem->getFloat("islandMaximumWidth") * 0.5f, 0.0f, 0.0f, shipMatrix);
+//	rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians((float) (platform->getExecMills() % 16000) / 16000.0f * 360.0f), shipMatrix);
+	rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(-30.0f), shipMatrix);
+	translateMatrix(0.0f, 0.0f, gameSystem->getFloat("islandMaximumWidth"), shipMatrix);
+
+return;
+
+	// zoomed in pulsing tower view
+	terrainMatrix.identity();
+	translateMatrix(-gameState->fortress.position.x, -gameState->fortress.position.y, -gameState->fortress.position.z, terrainMatrix);
+	rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians((float) (platform->getExecMills() % 16000) / 16000.0f * 360.0f), terrainMatrix);
+	rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(-30.0f * (sin(PI + (float) (platform->getExecMills() % 16000) / 16000.0f * 2.0f * PI) * 0.5f + 0.5f )), terrainMatrix);
+	translateMatrix(0.0f, 0.0f, 25.0f + (sin(-PI + (float) (platform->getExecMills() % 16000) / 16000.0f * 2.0f * PI) * 0.5f + 0.5f ) * 200.0f, terrainMatrix);
+
+	towerMatrix.identity();
+	rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians((float) (platform->getExecMills() % 16000) / 16000.0f * 360.0f), towerMatrix);
+	rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(-30.0f * (sin(PI + (float) (platform->getExecMills() % 16000) / 16000.0f * 2.0f * PI) * 0.5f + 0.5f )), towerMatrix);
+	translateMatrix(0.0f, 0.0f, 25.0f + (sin(-PI + (float) (platform->getExecMills() % 16000) / 16000.0f * 2.0f * PI) * 0.5f + 0.5f ) * 200.0f, towerMatrix);
+
+	shipMatrix.identity();
+	translateMatrix(0.0f, -gameState->fortress.position.y, 0.0f, shipMatrix);
+	rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(90.0f), shipMatrix);
+	translateMatrix(gameSystem->getFloat("islandMaximumWidth"), 0.0f, 0.0f, shipMatrix);
+	rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians((float) (platform->getExecMills() % 8000) / 8000.0f * 360.0f), shipMatrix);
+	rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(-30.0f * (sin(PI + (float) (platform->getExecMills() % 16000) / 16000.0f * 2.0f * PI) * 0.5f + 0.5f )), shipMatrix);
+	translateMatrix(0.0f, 0.0f, 25.0f + (sin(-PI + (float) (platform->getExecMills() % 16000) / 16000.0f * 2.0f * PI) * 0.5f + 0.5f ) * 200.0f, shipMatrix);
 }

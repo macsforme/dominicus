@@ -21,13 +21,14 @@
 
 // global variables
 extern GameGraphics* gameGraphics;
+extern GameState* gameState;
 extern GameSystem* gameSystem;
 
 // class definitions
 class Camera {
 public:
 	Vector3 position;
-	Matrix4 shipMatrix, terrainMatrix;
+	Matrix4 shipMatrix, terrainMatrix, towerMatrix;
 
 	virtual void execute() = 0;
 };
@@ -58,6 +59,13 @@ private:
 
 public:
 	FollowCamera(Ship* ship);
+
+	void execute();
+};
+
+class TestCamera : public Camera {
+public:
+	TestCamera() { };
 
 	void execute();
 };

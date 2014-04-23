@@ -26,12 +26,14 @@ DrawControlBox::DrawControlBox() {
 	attributes["boxCoord"] = glGetAttribLocation(shaderProgram, "boxCoord");
 
 	// set up texture
+//FIXME WTF is this?
+/*
 	std::stringstream filename;
 	filename <<
 			platform->dataPath <<
 			"/data/textures/splash/splash.bmp";
 	Texture texture(filename.str().c_str());
-
+*/
 	// set up vertex buffers
 	glGenBuffers(1, &(vertexBuffers["vertices"]));
 	glGenBuffers(1, &(vertexBuffers["elements"]));

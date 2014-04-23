@@ -16,6 +16,8 @@ class DrawSplash;
 class GameGraphics;
 class GameLogic;
 class InputHandler;
+class Camera;
+class TestCamera;
 
 // program headers
 #include "core/GameSystem.h"
@@ -33,11 +35,13 @@ class InputHandler;
 #include "graphics/2dgraphics/ui/components/DrawField.h"
 #include "graphics/2dgraphics/ui/components/DrawTexture.h"
 #include "graphics/2dgraphics/splash/DrawSplash.h"
-#include "graphics/3dgraphics/renderers/ShipRenderer.h"
-#include "graphics/3dgraphics/renderers/SkyRenderer.h"
-#include "graphics/3dgraphics/renderers/WaterRenderer.h"
-#include "graphics/3dgraphics/renderers/TerrainRenderer.h"
+#include "graphics/3dgraphics/ShipRenderer.h"
+#include "graphics/3dgraphics/SkyRenderer.h"
+#include "graphics/3dgraphics/WaterRenderer.h"
+#include "graphics/3dgraphics/TerrainRenderer.h"
+#include "graphics/3dgraphics/TowerRenderer.h"
 #include "input/InputHandler.h"
+#include "logic/Camera.h"
 #include "logic/GameLogic.h"
 #include "math/MatrixMath.h"
 #include "math/VectorMath.h"
@@ -73,6 +77,8 @@ public:
 
 	// other info
 	FontManager* fontManager;
+	Texture* noiseTexture;
+	Texture* fourDepthNoiseTexture;
 
 	// FPS tracking
 	unsigned int lastFPSTest;
@@ -86,6 +92,9 @@ public:
 	// timers
 	float waveTimer;
 	float hardTimer;
+
+	// cameras
+	TestCamera* testCamera;
 
 private:
 	std::map<std::string, GLuint> vertexShaderIDs;

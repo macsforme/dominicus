@@ -17,7 +17,6 @@
 		0315B84E134C773D002AD1CE /* DrawButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0315B84C134C773D002AD1CE /* DrawButton.cpp */; };
 		0315BA2D134D27B1002AD1CE /* DrawField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0315BA2B134D27B1002AD1CE /* DrawField.cpp */; };
 		031DB09513AB515A00FE0F76 /* DrawRadar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 031DB09313AB515A00FE0F76 /* DrawRadar.cpp */; };
-		0326DC0F137282DE003D2BA3 /* ShipRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03CAB6C41371541000C52A90 /* ShipRenderer.cpp */; };
 		0330C498133A2AB6006199BE /* TextBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03BB9B83131F3F50009DFC8B /* TextBlock.cpp */; };
 		0353219118C931EF002FC13A /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0353219018C931EF002FC13A /* Cocoa.framework */; };
 		0353219318C93204002FC13A /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0353219218C93204002FC13A /* OpenGL.framework */; };
@@ -30,7 +29,10 @@
 		036CFFE118EB5D4800C1B797 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 036CFFDF18EB5D4800C1B797 /* Camera.cpp */; };
 		037542F913B3260100AEE260 /* DrawGrayOut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 037542F013B3250B00AEE260 /* DrawGrayOut.cpp */; };
 		0387C28D18F3E2A300565A43 /* GameAudio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0387C28B18F3E2A300565A43 /* GameAudio.cpp */; };
-		03ABD53013A99B9C00CF79B5 /* WaterRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03ABD52E13A99B9C00CF79B5 /* WaterRenderer.cpp */; };
+		03ACFE4918FCD8C200A6B447 /* ShipRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03ACFE4118FCD8C200A6B447 /* ShipRenderer.cpp */; };
+		03ACFE4A18FCD8C200A6B447 /* SkyRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03ACFE4318FCD8C200A6B447 /* SkyRenderer.cpp */; };
+		03ACFE4B18FCD8C200A6B447 /* TerrainRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03ACFE4518FCD8C200A6B447 /* TerrainRenderer.cpp */; };
+		03ACFE4C18FCD8C200A6B447 /* WaterRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03ACFE4718FCD8C200A6B447 /* WaterRenderer.cpp */; };
 		03BB9B9B131F3F50009DFC8B /* GameGraphics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03BB9B7E131F3F50009DFC8B /* GameGraphics.cpp */; };
 		03BB9C37131F49CC009DFC8B /* DrawSplash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03BB9C36131F49CB009DFC8B /* DrawSplash.cpp */; };
 		03BB9C66131F4E11009DFC8B /* BaseDrawNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03BB9C65131F4E11009DFC8B /* BaseDrawNode.cpp */; };
@@ -52,10 +54,9 @@
 		03C80756130E51C20037D309 /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 030F8F001264DBF300190225 /* libfreetype.a */; };
 		03C8075E130E52030037D309 /* SDLMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 030F8E151264C0FF00190225 /* SDLMain.m */; };
 		03C9206C13693A51000C4373 /* GameState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03C9206B13693A51000C4373 /* GameState.cpp */; };
-		03CAB6CC1371541000C52A90 /* TerrainRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03CAB6C81371541000C52A90 /* TerrainRenderer.cpp */; };
 		03D0B3C4131F769900100010 /* DrawCursor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03BB9B58131F3F50009DFC8B /* DrawCursor.cpp */; };
+		03E508FA18FE1B340056ECE6 /* TowerRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03E508F818FE1B340056ECE6 /* TowerRenderer.cpp */; };
 		03EA006313839E1F00791980 /* Collisions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03EA006213839E1F00791980 /* Collisions.cpp */; };
-		03EA2DE11406212800372BDB /* SkyRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03CAB6C61371541000C52A90 /* SkyRenderer.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -118,8 +119,6 @@
 		0353219618C93238002FC13A /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = ../../../../../../usr/lib/libz.1.2.5.dylib; sourceTree = "<group>"; };
 		0353219818C934A7002FC13A /* libbz2.1.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libbz2.1.0.dylib; path = ../../../../../../usr/lib/libbz2.1.0.dylib; sourceTree = "<group>"; };
 		0353219A18C93516002FC13A /* libpng16.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpng16.a; path = ../../../../../../usr/local/lib/libpng16.a; sourceTree = "<group>"; };
-		0353D4B8127B0A43002340BF /* World.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = World.h; path = src/state/World.h; sourceTree = "<group>"; };
-		0353D4B9127B0A43002340BF /* World.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = World.cpp; path = src/state/World.cpp; sourceTree = "<group>"; };
 		0358003012E2DC8E00CB625F /* MiscMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiscMath.h; sourceTree = "<group>"; };
 		03590EEC131E181C00EDF7A7 /* GameSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameSystem.h; sourceTree = "<group>"; };
 		03590EED131E181C00EDF7A7 /* GameSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameSystem.cpp; sourceTree = "<group>"; };
@@ -127,8 +126,6 @@
 		035A3C4512841B390001E186 /* Mouse.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Mouse.cpp; sourceTree = "<group>"; };
 		035E0E7512DCE54D00F84121 /* MainLoopMember.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainLoopMember.h; sourceTree = "<group>"; };
 		035E0E7612DCE54D00F84121 /* MainLoopMember.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MainLoopMember.cpp; sourceTree = "<group>"; };
-		035F214512A39233008DA566 /* Ship.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Ship.h; path = src/state/Ship.h; sourceTree = "<group>"; };
-		035F214612A39233008DA566 /* Ship.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Ship.cpp; path = src/state/Ship.cpp; sourceTree = "<group>"; };
 		036CFFDF18EB5D4800C1B797 /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Camera.cpp; path = src/logic/Camera.cpp; sourceTree = SOURCE_ROOT; };
 		036CFFE018EB5D4800C1B797 /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Camera.h; path = src/logic/Camera.h; sourceTree = SOURCE_ROOT; };
 		037542F013B3250B00AEE260 /* DrawGrayOut.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawGrayOut.cpp; sourceTree = "<group>"; };
@@ -136,8 +133,14 @@
 		0387C28B18F3E2A300565A43 /* GameAudio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameAudio.cpp; path = src/audio/GameAudio.cpp; sourceTree = "<group>"; };
 		0387C28C18F3E2A300565A43 /* GameAudio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameAudio.h; path = src/audio/GameAudio.h; sourceTree = "<group>"; };
 		038FC1DE12A0EA3A00AE328B /* OpenGLHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLHeaders.h; sourceTree = "<group>"; };
-		03ABD52E13A99B9C00CF79B5 /* WaterRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WaterRenderer.cpp; sourceTree = "<group>"; };
-		03ABD52F13A99B9C00CF79B5 /* WaterRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaterRenderer.h; sourceTree = "<group>"; };
+		03ACFE4118FCD8C200A6B447 /* ShipRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShipRenderer.cpp; sourceTree = "<group>"; };
+		03ACFE4218FCD8C200A6B447 /* ShipRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShipRenderer.h; sourceTree = "<group>"; };
+		03ACFE4318FCD8C200A6B447 /* SkyRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SkyRenderer.cpp; sourceTree = "<group>"; };
+		03ACFE4418FCD8C200A6B447 /* SkyRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkyRenderer.h; sourceTree = "<group>"; };
+		03ACFE4518FCD8C200A6B447 /* TerrainRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TerrainRenderer.cpp; sourceTree = "<group>"; };
+		03ACFE4618FCD8C200A6B447 /* TerrainRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TerrainRenderer.h; sourceTree = "<group>"; };
+		03ACFE4718FCD8C200A6B447 /* WaterRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WaterRenderer.cpp; sourceTree = "<group>"; };
+		03ACFE4818FCD8C200A6B447 /* WaterRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaterRenderer.h; sourceTree = "<group>"; };
 		03BB9B55131F3F50009DFC8B /* DrawControlBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawControlBox.cpp; sourceTree = "<group>"; };
 		03BB9B56131F3F50009DFC8B /* DrawControlBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawControlBox.h; sourceTree = "<group>"; };
 		03BB9B58131F3F50009DFC8B /* DrawCursor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawCursor.cpp; sourceTree = "<group>"; };
@@ -159,14 +162,10 @@
 		03C806C7130E4FED0037D309 /* crucible island.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "crucible island.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		03C9206A13693A51000C4373 /* GameState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameState.h; path = src/state/GameState.h; sourceTree = "<group>"; };
 		03C9206B13693A51000C4373 /* GameState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameState.cpp; path = src/state/GameState.cpp; sourceTree = "<group>"; };
-		03CAB6C41371541000C52A90 /* ShipRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShipRenderer.cpp; sourceTree = "<group>"; };
-		03CAB6C51371541000C52A90 /* ShipRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShipRenderer.h; sourceTree = "<group>"; };
-		03CAB6C61371541000C52A90 /* SkyRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SkyRenderer.cpp; sourceTree = "<group>"; };
-		03CAB6C71371541000C52A90 /* SkyRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkyRenderer.h; sourceTree = "<group>"; };
-		03CAB6C81371541000C52A90 /* TerrainRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TerrainRenderer.cpp; sourceTree = "<group>"; };
-		03CAB6C91371541000C52A90 /* TerrainRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TerrainRenderer.h; sourceTree = "<group>"; };
 		03D47B7D1263E27F001755A6 /* crucible island.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = "crucible island.icns"; sourceTree = "<group>"; };
 		03D8C0781264BEBA00F26DC9 /* licenses */ = {isa = PBXFileReference; lastKnownFileType = folder; path = licenses; sourceTree = "<group>"; };
+		03E508F818FE1B340056ECE6 /* TowerRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TowerRenderer.cpp; sourceTree = "<group>"; };
+		03E508F918FE1B340056ECE6 /* TowerRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TowerRenderer.h; sourceTree = "<group>"; };
 		03EA006113839E1F00791980 /* Collisions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Collisions.h; path = src/state/Collisions.h; sourceTree = "<group>"; };
 		03EA006213839E1F00791980 /* Collisions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Collisions.cpp; path = src/state/Collisions.cpp; sourceTree = "<group>"; };
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -315,10 +314,6 @@
 			children = (
 				03C9206A13693A51000C4373 /* GameState.h */,
 				03C9206B13693A51000C4373 /* GameState.cpp */,
-				0353D4B8127B0A43002340BF /* World.h */,
-				0353D4B9127B0A43002340BF /* World.cpp */,
-				035F214512A39233008DA566 /* Ship.h */,
-				035F214612A39233008DA566 /* Ship.cpp */,
 				03EA006113839E1F00791980 /* Collisions.h */,
 				03EA006213839E1F00791980 /* Collisions.cpp */,
 			);
@@ -391,24 +386,18 @@
 		03BB9B6A131F3F50009DFC8B /* 3dgraphics */ = {
 			isa = PBXGroup;
 			children = (
-				03BB9B74131F3F50009DFC8B /* renderers */,
+				03ACFE4218FCD8C200A6B447 /* ShipRenderer.h */,
+				03ACFE4118FCD8C200A6B447 /* ShipRenderer.cpp */,
+				03ACFE4418FCD8C200A6B447 /* SkyRenderer.h */,
+				03ACFE4318FCD8C200A6B447 /* SkyRenderer.cpp */,
+				03ACFE4618FCD8C200A6B447 /* TerrainRenderer.h */,
+				03ACFE4518FCD8C200A6B447 /* TerrainRenderer.cpp */,
+				03E508F918FE1B340056ECE6 /* TowerRenderer.h */,
+				03E508F818FE1B340056ECE6 /* TowerRenderer.cpp */,
+				03ACFE4818FCD8C200A6B447 /* WaterRenderer.h */,
+				03ACFE4718FCD8C200A6B447 /* WaterRenderer.cpp */,
 			);
 			path = 3dgraphics;
-			sourceTree = "<group>";
-		};
-		03BB9B74131F3F50009DFC8B /* renderers */ = {
-			isa = PBXGroup;
-			children = (
-				03CAB6C91371541000C52A90 /* TerrainRenderer.h */,
-				03CAB6C81371541000C52A90 /* TerrainRenderer.cpp */,
-				03ABD52F13A99B9C00CF79B5 /* WaterRenderer.h */,
-				03ABD52E13A99B9C00CF79B5 /* WaterRenderer.cpp */,
-				03CAB6C71371541000C52A90 /* SkyRenderer.h */,
-				03CAB6C61371541000C52A90 /* SkyRenderer.cpp */,
-				03CAB6C51371541000C52A90 /* ShipRenderer.h */,
-				03CAB6C41371541000C52A90 /* ShipRenderer.cpp */,
-			);
-			path = renderers;
 			sourceTree = "<group>";
 		};
 		03BB9B80131F3F50009DFC8B /* text */ = {
@@ -541,6 +530,7 @@
 				03C806D6130E509F0037D309 /* InputHandler.cpp in Sources */,
 				03C806DC130E50A60037D309 /* Keyboard.cpp in Sources */,
 				03C806DF130E50A90037D309 /* dominicusMain.cpp in Sources */,
+				03ACFE4B18FCD8C200A6B447 /* TerrainRenderer.cpp in Sources */,
 				03C806E3130E50AD0037D309 /* MainLoopMember.cpp in Sources */,
 				03C806E9130E50B30037D309 /* DiamondSquare.cpp in Sources */,
 				03C806F7130E50D00037D309 /* Mouse.cpp in Sources */,
@@ -566,14 +556,14 @@
 				0315B631134C2CF7002AD1CE /* Schemes.cpp in Sources */,
 				0315B84E134C773D002AD1CE /* DrawButton.cpp in Sources */,
 				0315BA2D134D27B1002AD1CE /* DrawField.cpp in Sources */,
+				03E508FA18FE1B340056ECE6 /* TowerRenderer.cpp in Sources */,
 				03C9206C13693A51000C4373 /* GameState.cpp in Sources */,
-				03CAB6CC1371541000C52A90 /* TerrainRenderer.cpp in Sources */,
-				0326DC0F137282DE003D2BA3 /* ShipRenderer.cpp in Sources */,
+				03ACFE4918FCD8C200A6B447 /* ShipRenderer.cpp in Sources */,
+				03ACFE4A18FCD8C200A6B447 /* SkyRenderer.cpp in Sources */,
+				03ACFE4C18FCD8C200A6B447 /* WaterRenderer.cpp in Sources */,
 				03EA006313839E1F00791980 /* Collisions.cpp in Sources */,
-				03ABD53013A99B9C00CF79B5 /* WaterRenderer.cpp in Sources */,
 				031DB09513AB515A00FE0F76 /* DrawRadar.cpp in Sources */,
 				037542F913B3260100AEE260 /* DrawGrayOut.cpp in Sources */,
-				03EA2DE11406212800372BDB /* SkyRenderer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

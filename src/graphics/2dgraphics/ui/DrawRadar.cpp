@@ -60,6 +60,55 @@ DrawRadar::~DrawRadar() {
 }
 
 void DrawRadar::reloadGraphics() {
+/*
+	// move to radar drawer or logic (from gamestate)
+	// create persistent noise textures
+	Texture* noiseTexture;
+	Texture* fourDepthNoiseTexture;
+
+	unsigned int noiseDensity = (unsigned int) gameSystem->getFloat("terrainNoiseTextureDensity");
+	DiamondSquare noise1(
+			noiseDensity,
+			gameSystem->getFloat("terrainNoiseTextureRoughness")
+		);
+	noiseTexture = new Texture(
+			noiseDensity,
+			noiseDensity,
+			Texture::FORMAT_RGB
+		);
+	for(size_t i = 0; i < (size_t) noiseDensity; ++i)
+		for(size_t p = 0; p < (size_t) noiseDensity; ++p)
+			noiseTexture->setColorAt(
+					i,
+					p,
+					(uint8_t) (noise1.data[i][p] * 128.0f + 127.0f),
+					(uint8_t) (noise1.data[i][p] * 128.0f + 127.0f),
+					(uint8_t) (noise1.data[i][p] * 128.0f + 127.0f),
+					0xFF
+				);
+
+	DiamondSquare noise2(
+			noiseDensity,
+			gameSystem->getFloat("terrainNoiseTextureRoughness")
+		);
+	fourDepthNoiseTexture = new Texture(
+			noiseDensity,
+			noiseDensity,
+			Texture::FORMAT_RGB
+		);
+	for(size_t i = 0; i < (size_t) noiseDensity; ++i)
+		for(size_t p = 0; p < (size_t) noiseDensity; ++p)
+			fourDepthNoiseTexture->setColorAt(
+					i,
+					p,
+					(uint8_t) (noise2.data[i][p] * 128.0f + 127.0f),
+					(uint8_t) (noise2.data[i][p] * 128.0f + 127.0f),
+					(uint8_t) (noise2.data[i][p] * 128.0f + 127.0f),
+					0xFF
+				);
+	fourDepthNoiseTexture->setDepth(16);
+*/
+/*
 	// create a texture with the terrain heightmap for radar
 	size_t resolution = gameState->world->density; //gameSystem->getFloat("radarSize") / 100.0f * (float) gameGraphics->resolutionY;
 	Texture* radarTexture = new Texture(
@@ -116,6 +165,7 @@ void DrawRadar::reloadGraphics() {
 	glDisable(GL_TEXTURE_2D);
 
 	delete(radarTexture);
+*/
 }
 
 Vector2 DrawRadar::getSize(std::map<std::string, void*> arguments) {
@@ -139,7 +189,7 @@ void DrawRadar::execute(std::map<std::string, void*> arguments) {
 	// compute projection matrix
 	Matrix4 projectionMatrix;
 	projectionMatrix.identity();
-
+/*
 	translateMatrix(
 			-gameState->ships[0]->position.x / gameState->world->diameter * 2.0f,
 			-gameState->ships[0]->position.z / gameState->world->diameter * 2.0f,
@@ -151,7 +201,7 @@ void DrawRadar::execute(std::map<std::string, void*> arguments) {
 			radians(getAngle(Vector2(gameState->ships[0]->direction.x, gameState->ships[0]->direction.z)) - 90.0f),
 			projectionMatrix
 		);
-
+*/
 	scaleMatrix(actualSize.x / 2.0f, actualSize.y / 2.0f, 1.0f, projectionMatrix);
 	translateMatrix(metrics->position.x, metrics->position.y, 0.0f, projectionMatrix);
 

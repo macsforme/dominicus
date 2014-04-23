@@ -49,17 +49,11 @@ public:
 	static void settingsScheme();
 	static void helpScheme();
 	static void highScoresScheme();
+	static void loadingScheme();
+	static void playingScheme();
 	
 	static void welcomeScheme(
 			std::string callsignText
-		);
-	static void playingScheme(
-			bool showHUD,
-			std::string callsignText,
-//			std::string team,
-			std::string scoreText,
-			std::string powerText,
-			bool showDebugInfo
 		);
 	static void dashboardScheme();
 };

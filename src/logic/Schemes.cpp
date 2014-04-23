@@ -146,7 +146,7 @@ void Schemes::mainMenuScheme() {
 	gameLogic->drawStack.push_back(gameLogic->splashEntry);
 
 	// brand logo
-	*((std::string*) gameLogic->brandEntry.second["texture"]) = "logo/brand";
+	*((std::string*) gameLogic->brandEntry.second["texture"]) = "branding/brand";
 	((UIMetrics*) gameLogic->brandEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
 	((UIMetrics*) gameLogic->brandEntry.second["metrics"])->size = ((DrawTexture*) gameGraphics->drawers["texture"])->getSize(gameLogic->brandEntry.second);
 	gameLogic->drawStack.push_back(gameLogic->brandEntry);
@@ -171,7 +171,7 @@ void Schemes::mainMenuScheme() {
 	gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->titleEntry.second["metrics"]);
 
 	// game logo
-	*((std::string*) gameLogic->logoEntry.second["texture"]) = "logo/logo";
+	*((std::string*) gameLogic->logoEntry.second["texture"]) = "branding/logo";
 	((UIMetrics*) gameLogic->logoEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
 	((UIMetrics*) gameLogic->logoEntry.second["metrics"])->size = ((DrawTexture*) gameGraphics->drawers["texture"])->getSize(gameLogic->logoEntry.second);
 	gameLogic->drawStack.push_back(gameLogic->logoEntry);
@@ -371,7 +371,7 @@ void Schemes::helpScheme() {
 	// controls label
 	*((float*) gameLogic->controlsEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
 	*((Vector4*) gameLogic->controlsEntry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
-	*((std::string*) gameLogic->controlsEntry.second["text"]) = "Move Turret:\tArrow Keys / Mouse Movement\nFire Cannon:\tSpace / Left Mouse Button\nCharge / Fire Shock Field:\tTab / Right Mouse Button\nPause / Resume:\tesc\nToggle Fullscreen:\tF1\nQuit:\tF12";
+	*((std::string*) gameLogic->controlsEntry.second["text"]) = "Move Turret:\tArrow Keys / Mouse Movement\nFire Cannon:\tSpace / Left Mouse Button\nCharge / Fire Shock Field:\tTab / Right Mouse Button\nPause / Resume:\tesc\nToggle Fullscreen:\tF1\nFast Quit:\tF12";
 	((UIMetrics*) gameLogic->controlsEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
 	((UIMetrics*) gameLogic->controlsEntry.second["metrics"])->size = ((DrawLabel*) gameGraphics->drawers["label"])->getSize(gameLogic->controlsEntry.second);
 	gameLogic->drawStack.push_back(gameLogic->controlsEntry);
@@ -390,7 +390,7 @@ void Schemes::helpScheme() {
 	*((float*) gameLogic->instructionsEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
 	*((Vector4*) gameLogic->instructionsEntry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
 	*((float*) gameLogic->instructionsEntry.second["wrap"]) = 2.0f * (gameGraphics->resolutionX > 1024 ? 1024.0f / (float) gameGraphics->resolutionX : 1.0f) - (gameSystem->getFloat("hudElementMargin") * 2.0f / (float) gameGraphics->resolutionX);
-	*((std::string*) gameLogic->instructionsEntry.second["text"]) = "Welcome to Crucible Island. You occupy a tower atop an island mountain range. Enemy ships circle the island on a mission to destroy you. You must shoot down the missiles they fire at you using your cannon or by deploying shock fields. Firing cannon shells depletes your ammunition reservoir. Deploying shock fields requires a two-second charging period and depletes both your ammunition and health reservoirs by one quarter of their total capacities. A missile impact will deplete your health by one half of its total capacity. Your ammunition and health reservoirs will recharge at a fixed rate. When your health level goes below zero, the game is over. The rate of enemy fire will increase as the game goes on.\n\nYour ammunition level, health level, and shock field charging indicators are at the top left corner of your screen. Your radar and heads-up display show enemy ship and incoming missile positions. You gain one point for every enemy missile you destroy. Good luck!";
+	*((std::string*) gameLogic->instructionsEntry.second["text"]) = "Welcome to Crucible Island. You occupy a tower atop an island mountain range. Enemy ships circle the island on a mission to destroy you. You must shoot down the missiles they fire at you using your cannon or by deploying shock fields. Firing cannon shells depletes your ammunition reservoir. Deploying shock fields requires a two-second charging period and depletes both your ammunition and health reservoirs by a quarter of their total capacities. A missile impact will deplete your health by half of its total capacity. Your ammunition and health reservoirs will recharge at a fixed rate. When your health level reaches zero, the game is over. The rate of enemy fire will increase as the game goes on.\n\nYour ammunition level, health level, and shock field charging indicators are at the top left corner of your screen. Your radar and heads-up display show enemy ship and incoming missile positions. You gain one point for every enemy missile you destroy. Good luck!";
 	((UIMetrics*) gameLogic->instructionsEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
 	((UIMetrics*) gameLogic->instructionsEntry.second["metrics"])->size = ((DrawLabel*) gameGraphics->drawers["label"])->getSize(gameLogic->instructionsEntry.second);
 	gameLogic->drawStack.push_back(gameLogic->instructionsEntry);
@@ -729,6 +729,214 @@ void Schemes::highScoresScheme() {
 	inputHandler->mouse->addListener(gameLogic->backButtonClickListener);
 }
 
+void Schemes::loadingScheme() {
+	// input
+	inputHandler->keyboard->addListener(gameLogic->quitKeyListener);
+	inputHandler->keyboard->addListener(gameLogic->fullScreenKeyListener);
+
+	// splash background
+	gameLogic->drawStack.push_back(gameLogic->splashEntry);
+
+	// loading label
+	*((float*) gameLogic->loadingEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeLarge");
+	*((Vector4*) gameLogic->loadingEntry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
+	*((std::string*) gameLogic->loadingEntry.second["text"]) = "Loading...";
+	((UIMetrics*) gameLogic->loadingEntry.second["metrics"])->size = ((DrawLabel*) gameGraphics->drawers["label"])->getSize(gameLogic->loadingEntry.second);
+	gameLogic->drawStack.push_back(gameLogic->loadingEntry);
+	gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->loadingEntry.second["metrics"]);
+
+	// re-arrange the UI
+	gameLogic->uiLayoutAuthority->rearrange();
+}
+
+void Schemes::playingScheme() {
+	// input
+	inputHandler->keyboard->addListener(gameLogic->quitKeyListener);
+	inputHandler->keyboard->addListener(gameLogic->fullScreenKeyListener);
+	inputHandler->keyboard->addListener(gameLogic->playingKeyListener);
+
+	// sky
+	gameLogic->drawStack.push_back(gameLogic->skyEntry);
+
+	// water
+	gameLogic->drawStack.push_back(gameLogic->waterEntry);
+
+	// terrain
+	gameLogic->drawStack.push_back(gameLogic->terrainEntry);
+
+	// ships
+	gameLogic->drawStack.push_back(gameLogic->shipEntry);
+
+	// tower
+	gameLogic->drawStack.push_back(gameLogic->towerEntry);
+/*
+
+	// repeatedly used variables
+	std::string fontColorLight = gameSystem->getString("fontColorLight");
+	std::string fontColorDark = gameSystem->getString("fontColorDark");
+	std::stringstream textLines;
+
+
+	// control box
+	*((float*) gameLogic->controlBoxEntry.second["spotSize"]) = gameSystem->getFloat("hudControlBoxSpotSize");
+	*((float*) gameLogic->controlBoxEntry.second["boxSize"]) = gameSystem->getFloat("hudControlBoxSize");
+	*((Vector4*) gameLogic->controlBoxEntry.second["color"]) = gameSystem->getColor("hudControlBoxColor");
+
+	gameLogic->drawStack.push_back(gameLogic->controlBoxEntry);
+
+	// player info
+	((UIMetrics*) gameLogic->playerInfoEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_RIGHT;
+	((UIMetrics*) gameLogic->playerInfoEntry.second["metrics"])->bearing2 = UIMetrics::BEARING_TOP;
+	*((float*) gameLogic->playerInfoEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+	*((Vector4*) gameLogic->playerInfoEntry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
+
+	time_t rawTime;
+	struct tm* timeInfo;
+	time(&rawTime);
+	timeInfo = localtime(&rawTime);
+
+	char timeString[26];
+	strftime(timeString, 25, "%a %b %d %Y %H:%M:%S", timeInfo);
+
+	textLines << "\\" << fontColorDark << "Time: " << "\\" << fontColorLight << timeString << "\n\n";
+
+	textLines << "\\" << fontColorDark << "Callsign: " << "\\" << fontColorLight << callsignText << "\n";
+
+	textLines << "\\" << fontColorDark << "Team: " << "\\" << fontColorLight;
+*/
+/*
+	switch(gameState->ships[0]->team) {
+	case Ship::TEAM_DESERT:
+		textLines << "Desert\n";
+
+		break;
+	case Ship::TEAM_FOREST:
+		textLines << "Forest\n";
+
+		break;
+	case Ship::TEAM_AQUA:
+		textLines << "Aqua\n";
+
+		break;
+	}
+
+	textLines << "\\" << fontColorDark << "Score: " << "\\" << fontColorLight << "0 (0 - 0)\n\n";
+
+	textLines << "\\" << fontColorDark << "Power: " << "\\" << fontColorLight << gameState->ships[0]->power * 100.0f << "%";
+*/
+/*
+	*((std::string*) gameLogic->playerInfoEntry.second["text"]) = textLines.str();
+	*((float*) gameLogic->playerInfoEntry.second["wrap"]) = 2.0f -
+			gameSystem->getFloat("hudElementMargin") * 2.0f / (float) gameGraphics->resolutionX -
+			gameSystem->getFloat("hudContainerPadding") * 2.0f / (float) gameGraphics->resolutionX;
+	*((Vector4*) gameLogic->playerInfoEntry.second["insideColor"]) =
+			gameSystem->getColor("hudContainerInsideColor");
+	*((Vector4*) gameLogic->playerInfoEntry.second["highlightColor"]) =
+			gameSystem->getColor("hudContainerHighlightColor");
+	*((Vector4*) gameLogic->playerInfoEntry.second["borderColor"]) =
+			gameSystem->getColor("hudContainerBorderColor");
+	*((Vector4*) gameLogic->playerInfoEntry.second["outsideColor"]) =
+			Vector4(0.0f, 0.0f, 0.0f, 0.0f);
+	*((float*) gameLogic->playerInfoEntry.second["padding"]) =
+			gameSystem->getFloat("hudContainerPadding");
+	*((float*) gameLogic->playerInfoEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
+
+	((UIMetrics*) gameLogic->playerInfoEntry.second["metrics"])->size =
+			((DrawButton*) gameGraphics->drawers["button"])->getSize(gameLogic->playerInfoEntry.second);
+
+	gameLogic->drawStack.push_back(gameLogic->playerInfoEntry);
+	gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->playerInfoEntry.second["metrics"]);
+
+	// debug info
+	if(showDebugInfo) {
+		((UIMetrics*) gameLogic->debugInfoEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_RIGHT;
+		((UIMetrics*) gameLogic->debugInfoEntry.second["metrics"])->bearing2 = UIMetrics::BEARING_TOP;
+		*((float*) gameLogic->debugInfoEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+		*((Vector4*) gameLogic->debugInfoEntry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
+
+		textLines.str("");
+
+		textLines << "\\" << fontColorDark << "FPS: " << "\\" << fontColorLight << gameGraphics->currentFPS << " ";
+		textLines << "\\" << fontColorDark << "(target: " << "\\" << fontColorLight << gameSystem->getFloat("displayFPS") << ")\n";
+
+		textLines << "\\" << fontColorDark << "Frame Time: " << "\\" << fontColorLight << gameGraphics->frameTime << "ms\n";
+
+		char execTimeStr[13];
+		sprintf(execTimeStr, "%1.1f", round((float) platform->getExecMills() / 1000.0f, 1));
+		textLines << "\\" << fontColorDark << "Execution Time: " << "\\" << fontColorLight <<
+				execTimeStr;
+*/
+/*
+		textLines <<
+				"\\ff0000ff" << "C" <<
+				"\\00ff00ff" << "O" <<
+				"\\0000ffff" << "L" <<
+				"\\ff00ffff" << "O" <<
+				"\\ffff00ff" << "R";
+*/
+/*
+		*((std::string*) gameLogic->debugInfoEntry.second["text"]) = textLines.str();
+		*((float*) gameLogic->debugInfoEntry.second["wrap"]) = 2.0f -
+						gameSystem->getFloat("hudElementMargin") * 2.0f / (float) gameGraphics->resolutionX -
+						gameSystem->getFloat("hudContainerPadding") * 2.0f / (float) gameGraphics->resolutionX;
+		*((Vector4*) gameLogic->debugInfoEntry.second["insideColor"]) =
+						gameSystem->getColor("hudContainerInsideColor");
+		*((Vector4*) gameLogic->debugInfoEntry.second["highlightColor"]) =
+						gameSystem->getColor("hudContainerHighlightColor");
+		*((Vector4*) gameLogic->debugInfoEntry.second["borderColor"]) =
+						gameSystem->getColor("hudContainerBorderColor");
+		*((Vector4*) gameLogic->debugInfoEntry.second["outsideColor"]) =
+						Vector4(0.0f, 0.0f, 0.0f, 0.0f);
+		*((float*) gameLogic->debugInfoEntry.second["padding"]) =
+						gameSystem->getFloat("hudContainerPadding");
+		*((float*) gameLogic->debugInfoEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
+
+		((UIMetrics*) gameLogic->debugInfoEntry.second["metrics"])->size =
+						((DrawButton*) gameGraphics->drawers["button"])->getSize(gameLogic->debugInfoEntry.second);
+
+		gameLogic->drawStack.push_back(gameLogic->debugInfoEntry);
+		gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->debugInfoEntry.second["metrics"]);
+	}
+
+	// console
+	addConsole();
+
+	// radar
+	addRadar();
+
+	// cursor
+	*((float*) gameLogic->cursorEntry.second["size"]) = gameSystem->getFloat("hudCursorSize");
+	*((float*) gameLogic->cursorEntry.second["thickness"]) = gameSystem->getFloat("hudCursorThickness");
+	*((Vector4*) gameLogic->cursorEntry.second["color"]) = gameSystem->getColor("hudCursorColor");
+	*((Vector2**) gameLogic->cursorEntry.second["position"]) = &(inputHandler->mouse->position);
+
+	gameLogic->drawStack.push_back(gameLogic->cursorEntry);
+
+	// re-arrange the UI
+	gameLogic->uiLayoutAuthority->rearrange();
+
+	// fix metrics for elements that don't have their own layout authority entry
+	((UIMetrics*) gameLogic->radarEntry.second["metrics"])->position =
+			((UIMetrics*) gameLogic->radarContainerEntry.second["metrics"])->position;
+
+	// listeners
+	inputHandler->keyboard->clearListeners();
+	inputHandler->mouse->clearListeners();
+
+	inputHandler->keyboard->addListener(gameLogic->fullScreenKeyListener);
+	inputHandler->keyboard->addListener(gameLogic->dashboardKeyListener);
+	inputHandler->keyboard->addListener(gameLogic->quitKeyListener);
+	inputHandler->keyboard->addListener(gameLogic->testKeyListener);
+
+	inputHandler->keyboard->unicodeChars = "";
+	inputHandler->keyboard->listenUnicode = false;
+	inputHandler->keyboard->addListener(gameLogic->testKeyAbsoluteListener);
+	inputHandler->mouse->addListener(gameLogic->cursorMovementListener);
+*/
+}
+
+
+
 void Schemes::welcomeScheme(
 			std::string callsignText
 		) {
@@ -944,213 +1152,9 @@ void Schemes::welcomeScheme(
 	inputHandler->mouse->addListener(gameLogic->startButtonClickListener);
 }
 
-void Schemes::playingScheme(
-			bool showHUD,
-			std::string callsignText,
-//			std::string team,
-			std::string scoreText,
-			std::string powerText,
-			bool showDebugInfo
-		) {
-	// repeatedly used variables
-	std::string fontColorLight = gameSystem->getString("fontColorLight");
-	std::string fontColorDark = gameSystem->getString("fontColorDark");
-	std::stringstream textLines;
 
-	// sky
-	gameLogic->drawStack.push_back(gameLogic->skyEntry);
 
-	// water
-	gameLogic->drawStack.push_back(gameLogic->waterEntry);
 
-	// terrains
-	gameLogic->drawStack.push_back(gameLogic->terrain1Entry);
-
-	// ships
-	gameLogic->drawStack.push_back(gameLogic->ship1Entry);
-
-	// control box
-	*((float*) gameLogic->controlBoxEntry.second["spotSize"]) = gameSystem->getFloat("hudControlBoxSpotSize");
-	*((float*) gameLogic->controlBoxEntry.second["boxSize"]) = gameSystem->getFloat("hudControlBoxSize");
-	*((Vector4*) gameLogic->controlBoxEntry.second["color"]) = gameSystem->getColor("hudControlBoxColor");
-
-	gameLogic->drawStack.push_back(gameLogic->controlBoxEntry);
-
-	// player info
-	((UIMetrics*) gameLogic->playerInfoEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_RIGHT;
-	((UIMetrics*) gameLogic->playerInfoEntry.second["metrics"])->bearing2 = UIMetrics::BEARING_TOP;
-	*((float*) gameLogic->playerInfoEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-	*((Vector4*) gameLogic->playerInfoEntry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
-
-	time_t rawTime;
-	struct tm* timeInfo;
-	time(&rawTime);
-	timeInfo = localtime(&rawTime);
-
-	char timeString[26];
-	strftime(timeString, 25, "%a %b %d %Y %H:%M:%S", timeInfo);
-
-	textLines << "\\" << fontColorDark << "Time: " << "\\" << fontColorLight << timeString << "\n\n";
-
-	textLines << "\\" << fontColorDark << "Callsign: " << "\\" << fontColorLight << callsignText << "\n";
-
-	textLines << "\\" << fontColorDark << "Team: " << "\\" << fontColorLight;
-/*
-	switch(gameState->ships[0]->team) {
-	case Ship::TEAM_DESERT:
-		textLines << "Desert\n";
-
-		break;
-	case Ship::TEAM_FOREST:
-		textLines << "Forest\n";
-
-		break;
-	case Ship::TEAM_AQUA:
-		textLines << "Aqua\n";
-
-		break;
-	}
-
-	textLines << "\\" << fontColorDark << "Score: " << "\\" << fontColorLight << "0 (0 - 0)\n\n";
-
-	textLines << "\\" << fontColorDark << "Power: " << "\\" << fontColorLight << gameState->ships[0]->power * 100.0f << "%";
-*/
-	*((std::string*) gameLogic->playerInfoEntry.second["text"]) = textLines.str();
-	*((float*) gameLogic->playerInfoEntry.second["wrap"]) = 2.0f -
-			gameSystem->getFloat("hudElementMargin") * 2.0f / (float) gameGraphics->resolutionX -
-			gameSystem->getFloat("hudContainerPadding") * 2.0f / (float) gameGraphics->resolutionX;
-	*((Vector4*) gameLogic->playerInfoEntry.second["insideColor"]) =
-			gameSystem->getColor("hudContainerInsideColor");
-	*((Vector4*) gameLogic->playerInfoEntry.second["highlightColor"]) =
-			gameSystem->getColor("hudContainerHighlightColor");
-	*((Vector4*) gameLogic->playerInfoEntry.second["borderColor"]) =
-			gameSystem->getColor("hudContainerBorderColor");
-	*((Vector4*) gameLogic->playerInfoEntry.second["outsideColor"]) =
-			Vector4(0.0f, 0.0f, 0.0f, 0.0f);
-	*((float*) gameLogic->playerInfoEntry.second["padding"]) =
-			gameSystem->getFloat("hudContainerPadding");
-	*((float*) gameLogic->playerInfoEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
-
-	((UIMetrics*) gameLogic->playerInfoEntry.second["metrics"])->size =
-			((DrawButton*) gameGraphics->drawers["button"])->getSize(gameLogic->playerInfoEntry.second);
-
-	gameLogic->drawStack.push_back(gameLogic->playerInfoEntry);
-	gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->playerInfoEntry.second["metrics"]);
-
-	// debug info
-	if(showDebugInfo) {
-		((UIMetrics*) gameLogic->debugInfoEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_RIGHT;
-		((UIMetrics*) gameLogic->debugInfoEntry.second["metrics"])->bearing2 = UIMetrics::BEARING_TOP;
-		*((float*) gameLogic->debugInfoEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-		*((Vector4*) gameLogic->debugInfoEntry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
-
-		textLines.str("");
-
-		textLines << "\\" << fontColorDark << "FPS: " << "\\" << fontColorLight << gameGraphics->currentFPS << " ";
-		textLines << "\\" << fontColorDark << "(target: " << "\\" << fontColorLight << gameSystem->getFloat("displayFPS") << ")\n";
-
-		textLines << "\\" << fontColorDark << "Frame Time: " << "\\" << fontColorLight << gameGraphics->frameTime << "ms\n";
-
-		char execTimeStr[13];
-		sprintf(execTimeStr, "%1.1f", round((float) platform->getExecMills() / 1000.0f, 1));
-		textLines << "\\" << fontColorDark << "Execution Time: " << "\\" << fontColorLight <<
-				execTimeStr;
-/*
-		textLines <<
-				"\\ff0000ff" << "C" <<
-				"\\00ff00ff" << "O" <<
-				"\\0000ffff" << "L" <<
-				"\\ff00ffff" << "O" <<
-				"\\ffff00ff" << "R";
-*/
-		*((std::string*) gameLogic->debugInfoEntry.second["text"]) = textLines.str();
-		*((float*) gameLogic->debugInfoEntry.second["wrap"]) = 2.0f -
-						gameSystem->getFloat("hudElementMargin") * 2.0f / (float) gameGraphics->resolutionX -
-						gameSystem->getFloat("hudContainerPadding") * 2.0f / (float) gameGraphics->resolutionX;
-		*((Vector4*) gameLogic->debugInfoEntry.second["insideColor"]) =
-						gameSystem->getColor("hudContainerInsideColor");
-		*((Vector4*) gameLogic->debugInfoEntry.second["highlightColor"]) =
-						gameSystem->getColor("hudContainerHighlightColor");
-		*((Vector4*) gameLogic->debugInfoEntry.second["borderColor"]) =
-						gameSystem->getColor("hudContainerBorderColor");
-		*((Vector4*) gameLogic->debugInfoEntry.second["outsideColor"]) =
-						Vector4(0.0f, 0.0f, 0.0f, 0.0f);
-		*((float*) gameLogic->debugInfoEntry.second["padding"]) =
-						gameSystem->getFloat("hudContainerPadding");
-		*((float*) gameLogic->debugInfoEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
-
-		((UIMetrics*) gameLogic->debugInfoEntry.second["metrics"])->size =
-						((DrawButton*) gameGraphics->drawers["button"])->getSize(gameLogic->debugInfoEntry.second);
-
-		gameLogic->drawStack.push_back(gameLogic->debugInfoEntry);
-		gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->debugInfoEntry.second["metrics"]);
-	}
-
-	// console
-	addConsole();
-
-	// radar
-	addRadar();
-
-	// hint
-/*
-	if(gameLogic->hintExpiration > platform->getExecMills()) {
-		*((float*) gameLogic->hintEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-		*((Vector4*) gameLogic->hintEntry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
-		textLines.str("");
-		textLines << "Press Shift for Dashboard";
-		*((std::string*) gameLogic->hintEntry.second["text"]) = textLines.str();
-		*((float*) gameLogic->hintEntry.second["wrap"]) = 2.0f -
-				gameSystem->getFloat("hudElementMargin") * 2.0f / (float) gameGraphics->resolutionX -
-				gameSystem->getFloat("hudContainerPadding") * 2.0f / (float) gameGraphics->resolutionX;
-		*((Vector4*) gameLogic->hintEntry.second["insideColor"]) =
-				gameSystem->getColor("hudContainerInsideColor");
-		*((Vector4*) gameLogic->hintEntry.second["highlightColor"]) =
-				gameSystem->getColor("hudContainerInsideColor");
-		*((Vector4*) gameLogic->hintEntry.second["borderColor"]) =
-				gameSystem->getColor("hudContainerInsideColor");
-		*((Vector4*) gameLogic->hintEntry.second["outsideColor"]) =
-				Vector4(0.0f, 0.0f, 0.0f, 0.0f);
-		*((float*) gameLogic->hintEntry.second["padding"]) =
-				gameSystem->getFloat("hudContainerPadding");
-		*((float*) gameLogic->hintEntry.second["border"]) = 0.0f;
-
-		((UIMetrics*) gameLogic->hintEntry.second["metrics"])->size =
-				((DrawButton*) gameGraphics->drawers["button"])->getSize(gameLogic->hintEntry.second);
-		((UIMetrics*) gameLogic->hintEntry.second["metrics"])->position = Vector2(0.0f, 0.5f);
-
-		gameLogic->drawStack.push_back(gameLogic->hintEntry);
-	}
-*/
-	// cursor
-	*((float*) gameLogic->cursorEntry.second["size"]) = gameSystem->getFloat("hudCursorSize");
-	*((float*) gameLogic->cursorEntry.second["thickness"]) = gameSystem->getFloat("hudCursorThickness");
-	*((Vector4*) gameLogic->cursorEntry.second["color"]) = gameSystem->getColor("hudCursorColor");
-	*((Vector2**) gameLogic->cursorEntry.second["position"]) = &(inputHandler->mouse->position);
-
-	gameLogic->drawStack.push_back(gameLogic->cursorEntry);
-
-	// re-arrange the UI
-	gameLogic->uiLayoutAuthority->rearrange();
-
-	// fix metrics for elements that don't have their own layout authority entry
-	((UIMetrics*) gameLogic->radarEntry.second["metrics"])->position =
-			((UIMetrics*) gameLogic->radarContainerEntry.second["metrics"])->position;
-
-	// listeners
-	inputHandler->keyboard->clearListeners();
-	inputHandler->mouse->clearListeners();
-
-	inputHandler->keyboard->addListener(gameLogic->fullScreenKeyListener);
-	inputHandler->keyboard->addListener(gameLogic->dashboardKeyListener);
-	inputHandler->keyboard->addListener(gameLogic->quitKeyListener);
-	inputHandler->keyboard->addListener(gameLogic->testKeyListener);
-
-	inputHandler->keyboard->unicodeChars = "";
-	inputHandler->keyboard->listenUnicode = false;
-	inputHandler->keyboard->addListener(gameLogic->testKeyAbsoluteListener);
-	inputHandler->mouse->addListener(gameLogic->cursorMovementListener);
-}
 
 void Schemes::dashboardScheme() {
 	// repeatedly used variables
@@ -1162,10 +1166,10 @@ void Schemes::dashboardScheme() {
 	gameLogic->drawStack.push_back(gameLogic->waterEntry);
 
 	// ships
-	gameLogic->drawStack.push_back(gameLogic->ship1Entry);
+	gameLogic->drawStack.push_back(gameLogic->shipEntry);
 
 	// terrains
-	gameLogic->drawStack.push_back(gameLogic->terrain1Entry);
+	gameLogic->drawStack.push_back(gameLogic->terrainEntry);
 
 	// console
 	addConsole();

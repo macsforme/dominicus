@@ -30,12 +30,14 @@ void main() {
 			texture2D(textures[3], texCoordInterpol / 10.0).x
 		);
 
+//	calculatedColor *= texture2D(textures[3], texCoordInterpol);
+
 	vec3 lightVectorNorm = normalize(lightVectorInterpol);
 	vec3 normalNorm = normalize(normalInterpol);
 
 	float lightFactor = pow(max(dot(lightVectorNorm, normalNorm), 0.0), 3.0);
 	lightFactor = max(0.5, lightFactor);
-	calculatedColor *= vec4(min(vec3(lightFactor) * /*lightColor*/ vec3(1.0, 1.0, 1.0), vec3(1.0)), 1.0);
+	calculatedColor *= vec4(min(vec3(lightFactor) * vec3(1.0, 1.0, 1.0), vec3(1.0)), 1.0);
 
 	// final setting
 	gl_FragColor = calculatedColor;

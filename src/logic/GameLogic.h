@@ -20,6 +20,7 @@ class TerrainRelativeCamera;
 class FollowCamera;
 
 // program headers
+#include "audio/GameAudio.h"
 #include "core/GameSystem.h"
 #include "core/MainLoopMember.h"
 #include "graphics/GameGraphics.h"
@@ -28,18 +29,16 @@ class FollowCamera;
 #include "graphics/2dgraphics/ui/DrawRadar.h"
 #include "graphics/2dgraphics/ui/components/DrawLabel.h"
 #include "graphics/2dgraphics/ui/components/DrawTexture.h"
-#include "graphics/3dgraphics/renderers/ShipRenderer.h"
-#include "graphics/3dgraphics/renderers/SkyRenderer.h"
-#include "graphics/3dgraphics/renderers/WaterRenderer.h"
-#include "graphics/3dgraphics/renderers/TerrainRenderer.h"
+#include "graphics/3dgraphics/ShipRenderer.h"
+#include "graphics/3dgraphics/SkyRenderer.h"
+#include "graphics/3dgraphics/TerrainRenderer.h"
+#include "graphics/3dgraphics/TowerRenderer.h"
+#include "graphics/3dgraphics/WaterRenderer.h"
 #include "graphics/texture/Texture.h"
 #include "input/InputHandler.h"
 #include "input/Keyboard.h"
 #include "input/Mouse.h"
-#include "logic/cameras/Camera.h"
-//#include "logic/cameras/FollowCamera.h"
-#include "logic/cameras/TestCameras.h"
-#include "logic/cameras/FollowCamera.h"
+#include "logic/Camera.h"
 #include "logic/Schemes.h"
 #include "logic/UILayoutAuthority.h"
 #include "math/MatrixMath.h"
@@ -56,6 +55,7 @@ class FollowCamera;
 #include <vector>
 
 // global variables
+extern GameAudio* gameAudio;
 extern GameGraphics* gameGraphics;
 extern GameLogic* gameLogic;
 extern GameState* gameState;
@@ -138,7 +138,17 @@ public:
 	KeyListener* highScoresMenuKeyListener;
 	DrawStackEntry highScoresTitleEntry;
 	DrawStackEntry highScoresLabelEntry;
-	
+
+	DrawStackEntry loadingEntry;
+
+	KeyListener* playingKeyListener;
+	DrawStackEntry skyEntry;
+	DrawStackEntry waterEntry;
+	DrawStackEntry terrainEntry;
+	DrawStackEntry shipEntry;
+	DrawStackEntry towerEntry;
+
+DrawStackEntry fpsEntry;
 	// YUCK
 	
 	MouseMotionListener* cursorMovementListener;
@@ -180,24 +190,9 @@ public:
 	DrawStackEntry radarContainerEntry;
 	DrawStackEntry radarEntry;
 
-	DrawStackEntry ship1Entry;
-	DrawStackEntry ship2Entry;
-
-	DrawStackEntry skyEntry;
-
-	DrawStackEntry waterEntry;
-
-	DrawStackEntry terrain1Entry;
-	DrawStackEntry terrain2Entry;
-
 
 	// stack of stuff to render each frame
 	DrawStack drawStack;
-
-	// cameras
-	ShipRelativeCamera* shipRelativeCamera;
-	TerrainRelativeCamera* terrainRelativeCamera;
-	FollowCamera* followCamera;
 
 	// general logic info
 //	unsigned int lastClockUpdate;
@@ -215,9 +210,10 @@ private:
 			SCHEME_SETTINGS,
 			SCHEME_HELP,
 			SCHEME_HIGHSCORES,
-			SCHEME_WELCOME,
 			SCHEME_PLAYING,
-			SCHEME_DASHBOARD,
+			SCHEME_LOADING,
+			SCHEME_WELCOME,
+			SCHEME_DASHBOARD
 		} currentScheme;
 
 	void reScheme();

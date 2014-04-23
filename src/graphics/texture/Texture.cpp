@@ -333,14 +333,9 @@ Texture::Texture(std::string filename) {
 			fileDIBHeader.bpp != 24 &&
 			fileDIBHeader.bpp != 32
 		) {
-		gameSystem->log(
-				GameSystem::LOG_FATAL,
-				std::string("The BMP image file " +
-						std::string(filename) +
-						" DIB header reports an unsupported pixel depth of " +
-						std::string("" + fileDIBHeader.bpp) +
-						".").c_str()
-				);
+		std::stringstream ss;
+		ss << "The BMP image file " << filename << " DIB header reports an unsupported pixel depth of " << fileDIBHeader.bpp << ".";
+		gameSystem->log(GameSystem::LOG_FATAL, ss.str().c_str());
 	}
 
 	// ===== Reading pixel data =====

@@ -2,7 +2,6 @@
 
 // uniforms
 uniform mat4 mvpMatrix;
-uniform vec3 lightPosition;
 
 // attributes
 attribute vec3 position;
@@ -23,8 +22,8 @@ void main() {
 	yCoordInterpol = position.y;
 
 	mat3 rotationMatrix = mat3(vec3(mvpMatrix[0]), vec3(mvpMatrix[1]), vec3(mvpMatrix[2]));
-	normalInterpol = /*rotationMatrix **/ normal;
-	lightVectorInterpol = vec3(0.0, 1.0, 0.0)/*lightPosition*/ /*- position*/;
+	normalInterpol = normal;
+	lightVectorInterpol = vec3(0.0, 1.0, 0.0);
 
 	texCoordInterpol = texCoord;
 	mat2 texTransform = mat2(cos(radians(45.0)), -sin(radians(45.0)), sin(radians(45.0)), cos(radians(45.0)));
