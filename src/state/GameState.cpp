@@ -188,60 +188,51 @@ GameState::~GameState() {
 
 unsigned int GameState::execute() {
 	// update/add ships as appropriate
-	#define shipOrbitDistance (gameSystem->getFloat("islandMaximumWidth") * 0.5f + 400.0f)
-	#define shipMargin 150.0f
-	#define shipSpeed 800.0f
-	#define shipEntryTime 10.0f
-	#define shipAddRate 1.0f
+	float shipOrbitDistance = (gameSystem->getFloat("islandMaximumWidth") * 0.5f + gameSystem->getFloat("stateShipOrbitMargin"));
 
-	// add a new ship if it's time for one
-	if(platform->getExecMills() / 1000 / shipAddRate + 1 > ships.size()) {
+	if(platform->getExecMills() / 1000 / gameSystem->getFloat("stateShipAddRate") + 1 > ships.size()) {
 		Ship ship;
 static int originAngle = 0.0f; originAngle += 75.0f;
 		ship.originAngle = originAngle;
 		ships.push_back(ship);
-//		std::cout << "time " << (platform->getExecMills() / 1000) << " added a ship; count " << ships.size() << std::endl;
 	}
 
 	for(size_t i = 0; i < ships.size(); ++i) {
 		// determine phase
-		float shipLifeTime = (float) (platform->getExecMills() - i * shipAddRate * 1000) / 1000.0f;
+		float shipLifeTime = (float) (platform->getExecMills() - i * gameSystem->getFloat("stateShipAddRate") * 1000) / 1000.0f;
 
-		if(shipLifeTime > shipEntryTime) {
+		if(shipLifeTime > gameSystem->getFloat("stateShipEntryTime")) {
 			// orbit phase
-			ships[i].position = Vector3(-shipOrbitDistance - shipMargin * (float) i, 0.0f, 0.0f);
+			ships[i].position = Vector3(-shipOrbitDistance - gameSystem->getFloat("stateShipMargin") * (float) i, 0.0f, 0.0f);
 			Matrix3 rotationMatrix; rotationMatrix.identity();
-			rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians((45.0f + (shipLifeTime - shipEntryTime) * shipSpeed / (2.0f * PI * (shipOrbitDistance + shipMargin * (float) i)) * 360.0f) * (i % 2 == 0 ? 1.0f : -1.0f) + ships[i].originAngle), rotationMatrix);
+			rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians((45.0f + (shipLifeTime - gameSystem->getFloat("stateShipEntryTime")) * gameSystem->getFloat("stateShipSpeed") / (2.0f * PI * (shipOrbitDistance + gameSystem->getFloat("stateShipMargin") * (float) i)) * 360.0f) * (i % 2 == 0 ? 1.0f : -1.0f) + ships[i].originAngle), rotationMatrix);
 			ships[i].position = ships[i].position * rotationMatrix;
 
-			ships[i].rotation = (45.0f + (shipLifeTime - shipEntryTime) * shipSpeed / (2.0f * PI * (shipOrbitDistance + shipMargin * (float) i)) * 360.0f - 90.0f) * (i % 2 == 0 ? 1.0f : -1.0f) + ships[i].originAngle;
-//std::cout << "ship " << i << " orbit phase time " << shipLifeTime << " position " << ships[i].position.x << "," << ships[i].position.y << "," << ships[i].position.z << std::endl;
+			ships[i].rotation = (45.0f + (shipLifeTime - gameSystem->getFloat("stateShipEntryTime")) * gameSystem->getFloat("stateShipSpeed") / (2.0f * PI * (shipOrbitDistance + gameSystem->getFloat("stateShipMargin") * (float) i)) * 360.0f - 90.0f) * (i % 2 == 0 ? 1.0f : -1.0f) + ships[i].originAngle;
 		} else {
-			float outerCircleRadius = -(shipOrbitDistance + shipMargin * (float) i) / (cos(radians(45.0f)) - 1.0f) - (shipOrbitDistance + shipMargin * (float) i);
+			float outerCircleRadius = -(shipOrbitDistance + gameSystem->getFloat("stateShipMargin") * (float) i) / (cos(radians(45.0f)) - 1.0f) - (shipOrbitDistance + gameSystem->getFloat("stateShipMargin") * (float) i);
 			float entryPhaseDistance = outerCircleRadius * 2.0f * PI / 8.0f;
-			float entryPhaseTime = entryPhaseDistance / shipSpeed;
+			float entryPhaseTime = entryPhaseDistance / gameSystem->getFloat("stateShipSpeed");
 
-			if((shipEntryTime - shipLifeTime) * shipSpeed <= entryPhaseDistance) {
+			if((gameSystem->getFloat("stateShipEntryTime") - shipLifeTime) * gameSystem->getFloat("stateShipSpeed") <= entryPhaseDistance) {
 				// entry turn phase
 				ships[i].position = Vector3(0.0f, 0.0f, -outerCircleRadius * (i % 2 == 0 ? 1.0f : -1.0f));
 				Matrix3 rotationMatrix; rotationMatrix.identity();
-				rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), -radians((shipLifeTime - (shipEntryTime - entryPhaseTime)) / entryPhaseTime * 45.0f) * (i % 2 == 0 ? 1.0f : -1.0f), rotationMatrix);
+				rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), -radians((shipLifeTime - (gameSystem->getFloat("stateShipEntryTime") - entryPhaseTime)) / entryPhaseTime * 45.0f) * (i % 2 == 0 ? 1.0f : -1.0f), rotationMatrix);
 				ships[i].position = ships[i].position * rotationMatrix;
 				ships[i].position += Vector3(-outerCircleRadius, 0.0f, outerCircleRadius * (i % 2 == 0 ? 1.0f : -1.0f));
 				rotationMatrix.identity(); rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(ships[i].originAngle), rotationMatrix);
 				ships[i].position = ships[i].position * rotationMatrix;
 
-				ships[i].rotation = -((shipLifeTime - (shipEntryTime - entryPhaseTime)) / entryPhaseTime * 45.0f) * (i % 2 == 0 ? 1.0f : -1.0f) + ships[i].originAngle;
-//std::cout << "ship " << i << " entry phase time " << shipLifeTime << " position " << ships[i].position.x << "," << ships[i].position.y << "," << ships[i].position.z << std::endl;
+				ships[i].rotation = -((shipLifeTime - (gameSystem->getFloat("stateShipEntryTime") - entryPhaseTime)) / entryPhaseTime * 45.0f) * (i % 2 == 0 ? 1.0f : -1.0f) + ships[i].originAngle;
 			} else {
 				// approach phase
-				ships[i].position = Vector3(-outerCircleRadius - shipSpeed * (shipEntryTime - entryPhaseTime - shipLifeTime), 0.0f, 0.0f);
+				ships[i].position = Vector3(-outerCircleRadius - gameSystem->getFloat("stateShipSpeed") * (gameSystem->getFloat("stateShipEntryTime") - entryPhaseTime - shipLifeTime), 0.0f, 0.0f);
 				Matrix3 rotationMatrix; rotationMatrix.identity();
 				rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(ships[i].originAngle), rotationMatrix);
 				ships[i].position = ships[i].position * rotationMatrix;
 
 				ships[i].rotation = ships[i].originAngle;
-//std::cout << "ship " << i << " approach phase time " << shipLifeTime << " position " << ships[i].position.x << "," << ships[i].position.y << "," << ships[i].position.z << std::endl;
 			}
 		}
 	}

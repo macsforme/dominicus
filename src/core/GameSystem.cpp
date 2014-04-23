@@ -186,11 +186,41 @@ GameSystem::GameSystem() :
 	sprintf(fullDateString, "%04i-%02i-%02i", year, month, day);
 	buildDate = fullDateString;
 
-	// core standards
+	// state standards
 	setStandard(
 			"stateUpdateFrequency",
 			120.0f,
 			"Number of times per second the core state updates.",
+			true
+		);
+	setStandard(
+			"stateShipOrbitMargin",
+			200.0f,
+			"Radius of margin between maximum edge of island and first ship orbit.",
+			true
+		);
+	setStandard(
+			"stateShipMargin",
+			150.0f,
+			"Lateral distance between ships orbiting island.",
+			true
+		);
+	setStandard(
+			"stateShipSpeed",
+			200.0f,
+			"Ship speed.",
+			true
+		);
+	setStandard(
+			"stateShipEntryTime",
+			20.0f,
+			"Time it takes between ship introduction and beginning of orbit.",
+			true
+		);
+	setStandard(
+			"stateShipAddRate",
+			20.0f,
+			"Time between ships being added to the world.",
 			true
 		);
 
