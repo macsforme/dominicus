@@ -32,7 +32,7 @@ DrawSplash::DrawSplash() {
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexBuffers["elements"]);
 
-	Texture* texture = gameGraphics->getTexture("splash");
+	Texture* texture = gameGraphics->getTexture("branding/splash");
 	float yBump = (
 			((float) gameGraphics->resolutionX / (float) gameGraphics->resolutionY) -
 			((float) texture->width / (float) texture->height)
@@ -76,7 +76,7 @@ void DrawSplash::execute(std::map<std::string, void*> arguments) {
 
 	// activate the texture
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, gameGraphics->getTextureID("splash"));
+	glBindTexture(GL_TEXTURE_2D, gameGraphics->getTextureID("branding/splash"));
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
