@@ -275,6 +275,7 @@ SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 0);
 	drawers["button"] = new DrawButton();
 	drawers["texture"] = new DrawTexture();
 
+	drawers["progressBar"] = new DrawProgressBar();
 	drawers["radar"] = new DrawRadar();
 	drawers["grayOut"] = new DrawGrayOut();
 
@@ -305,7 +306,7 @@ GameGraphics::~GameGraphics() {
 	delete((DrawField*) drawers["field"]);
 	delete((DrawButton*) drawers["button"]);
 	delete((DrawTexture*) drawers["texture"]);
-
+	delete((DrawProgressBar*) drawers["progressBar"]);
 	delete ((DrawRadar*) drawers["radar"]);
 
 	delete((TerrainRenderer*) drawers["terrainRenderer"]);

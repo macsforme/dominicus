@@ -322,6 +322,51 @@ GameLogic::GameLogic() {
 	playingKeys.push_back(SDLK_ESCAPE);
 	playingKeyListener = new KeyListener(playingKeys);
 
+	scoreLabel.first = "label";
+	scoreLabel.second["metrics"] = (void*) new UIMetrics;
+	scoreLabel.second["fontSize"] = (void*) new float;
+	scoreLabel.second["fontColor"] = (void*) new Vector4;
+	scoreLabel.second["text"] = (void*) new std::string;
+
+	healthGaugeImage.first = "texture";
+	healthGaugeImage.second["metrics"] = (void*) new UIMetrics;
+	healthGaugeImage.second["texture"] = (void*) new std::string;
+
+	healthGaugeBar.first = "progressBar";
+	healthGaugeBar.second["metrics"] = (void*) new UIMetrics;
+	healthGaugeBar.second["color1Top"] = (void*) new Vector4;
+	healthGaugeBar.second["color1Bottom"] = (void*) new Vector4;
+	healthGaugeBar.second["color2Top"] = (void*) new Vector4;
+	healthGaugeBar.second["color2Bottom"] = (void*) new Vector4;
+	healthGaugeBar.second["progression"] = (void*) new float;
+	healthGaugeBar.second["size"] = (void*) new Vector2;
+
+	ammoGaugeImage.first = "texture";
+	ammoGaugeImage.second["metrics"] = (void*) new UIMetrics;
+	ammoGaugeImage.second["texture"] = (void*) new std::string;
+
+	ammoGaugeBar.first = "progressBar";
+	ammoGaugeBar.second["metrics"] = (void*) new UIMetrics;
+	ammoGaugeBar.second["color1Top"] = (void*) new Vector4;
+	ammoGaugeBar.second["color1Bottom"] = (void*) new Vector4;
+	ammoGaugeBar.second["color2Top"] = (void*) new Vector4;
+	ammoGaugeBar.second["color2Bottom"] = (void*) new Vector4;
+	ammoGaugeBar.second["progression"] = (void*) new float;
+	ammoGaugeBar.second["size"] = (void*) new Vector2;
+
+	shockGaugeImage.first = "texture";
+	shockGaugeImage.second["metrics"] = (void*) new UIMetrics;
+	shockGaugeImage.second["texture"] = (void*) new std::string;
+
+	shockGaugeBar.first = "progressBar";
+	shockGaugeBar.second["metrics"] = (void*) new UIMetrics;
+	shockGaugeBar.second["color1Top"] = (void*) new Vector4;
+	shockGaugeBar.second["color1Bottom"] = (void*) new Vector4;
+	shockGaugeBar.second["color2Top"] = (void*) new Vector4;
+	shockGaugeBar.second["color2Bottom"] = (void*) new Vector4;
+	shockGaugeBar.second["progression"] = (void*) new float;
+	shockGaugeBar.second["size"] = (void*) new Vector2;
+
 	skyEntry.first = "skyRenderer";
 
 	waterEntry.first = "waterRenderer";

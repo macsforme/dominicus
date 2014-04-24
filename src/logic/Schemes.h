@@ -12,6 +12,7 @@
 // program headers
 #include "graphics/GameGraphics.h"
 #include "graphics/text/TextBlock.h"
+#include "graphics/2dgraphics/ui/DrawProgressBar.h"
 #include "graphics/2dgraphics/ui/components/DrawButton.h"
 #include "graphics/2dgraphics/ui/components/DrawContainer.h"
 #include "graphics/2dgraphics/ui/components/DrawLabel.h"

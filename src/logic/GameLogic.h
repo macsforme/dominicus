@@ -142,6 +142,13 @@ public:
 	DrawStackEntry loadingEntry;
 
 	KeyListener* playingKeyListener;
+	DrawStackEntry scoreLabel;
+	DrawStackEntry healthGaugeImage;
+	DrawStackEntry healthGaugeBar;
+	DrawStackEntry ammoGaugeImage;
+	DrawStackEntry ammoGaugeBar;
+	DrawStackEntry shockGaugeImage;
+	DrawStackEntry shockGaugeBar;
 	DrawStackEntry skyEntry;
 	DrawStackEntry waterEntry;
 	DrawStackEntry terrainEntry;
@@ -189,7 +196,6 @@ DrawStackEntry fpsEntry;
 
 	DrawStackEntry radarContainerEntry;
 	DrawStackEntry radarEntry;
-
 
 	// stack of stuff to render each frame
 	DrawStack drawStack;

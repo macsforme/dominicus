@@ -28,6 +28,7 @@ class TestCamera;
 #include "graphics/2dgraphics/controlbox/DrawControlBox.h"
 #include "graphics/2dgraphics/cursor/DrawCursor.h"
 #include "graphics/2dgraphics/ui/DrawGrayOut.h"
+#include "graphics/2dgraphics/ui/DrawProgressBar.h"
 #include "graphics/2dgraphics/ui/DrawRadar.h"
 #include "graphics/2dgraphics/ui/components/DrawButton.h"
 #include "graphics/2dgraphics/ui/components/DrawContainer.h"

@@ -28,6 +28,7 @@
 		03590F84131E446000EDF7A7 /* GameSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03590EED131E181C00EDF7A7 /* GameSystem.cpp */; };
 		036CFFE118EB5D4800C1B797 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 036CFFDF18EB5D4800C1B797 /* Camera.cpp */; };
 		037542F913B3260100AEE260 /* DrawGrayOut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 037542F013B3250B00AEE260 /* DrawGrayOut.cpp */; };
+		0380F2A1190748B500355FE2 /* DrawProgressBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0380F29F190748B500355FE2 /* DrawProgressBar.cpp */; };
 		0387C28D18F3E2A300565A43 /* GameAudio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0387C28B18F3E2A300565A43 /* GameAudio.cpp */; };
 		03ACFE4918FCD8C200A6B447 /* ShipRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03ACFE4118FCD8C200A6B447 /* ShipRenderer.cpp */; };
 		03ACFE4A18FCD8C200A6B447 /* SkyRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03ACFE4318FCD8C200A6B447 /* SkyRenderer.cpp */; };
@@ -130,6 +131,8 @@
 		036CFFE018EB5D4800C1B797 /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Camera.h; path = src/logic/Camera.h; sourceTree = SOURCE_ROOT; };
 		037542F013B3250B00AEE260 /* DrawGrayOut.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawGrayOut.cpp; sourceTree = "<group>"; };
 		037542F113B3250B00AEE260 /* DrawGrayOut.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawGrayOut.h; sourceTree = "<group>"; };
+		0380F29F190748B500355FE2 /* DrawProgressBar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawProgressBar.cpp; sourceTree = "<group>"; };
+		0380F2A0190748B500355FE2 /* DrawProgressBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawProgressBar.h; sourceTree = "<group>"; };
 		0387C28B18F3E2A300565A43 /* GameAudio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameAudio.cpp; path = src/audio/GameAudio.cpp; sourceTree = "<group>"; };
 		0387C28C18F3E2A300565A43 /* GameAudio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameAudio.h; path = src/audio/GameAudio.h; sourceTree = "<group>"; };
 		038FC1DE12A0EA3A00AE328B /* OpenGLHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLHeaders.h; sourceTree = "<group>"; };
@@ -425,10 +428,12 @@
 			children = (
 				03BC5ADC1339ECE600DD3F04 /* BaseUIElement.h */,
 				03BC5ADB1339ECE600DD3F04 /* BaseUIElement.cpp */,
-				031DB09413AB515A00FE0F76 /* DrawRadar.h */,
-				031DB09313AB515A00FE0F76 /* DrawRadar.cpp */,
 				037542F113B3250B00AEE260 /* DrawGrayOut.h */,
 				037542F013B3250B00AEE260 /* DrawGrayOut.cpp */,
+				0380F2A0190748B500355FE2 /* DrawProgressBar.h */,
+				0380F29F190748B500355FE2 /* DrawProgressBar.cpp */,
+				031DB09413AB515A00FE0F76 /* DrawRadar.h */,
+				031DB09313AB515A00FE0F76 /* DrawRadar.cpp */,
 				0315B61F134C2C4B002AD1CE /* components */,
 			);
 			path = ui;
@@ -551,6 +556,7 @@
 				0315B60B134C2AB8002AD1CE /* UILayoutAuthority.cpp in Sources */,
 				0315B626134C2C4B002AD1CE /* DrawContainer.cpp in Sources */,
 				0315B627134C2C4B002AD1CE /* DrawLabel.cpp in Sources */,
+				0380F2A1190748B500355FE2 /* DrawProgressBar.cpp in Sources */,
 				0315B628134C2C4B002AD1CE /* DrawTexture.cpp in Sources */,
 				0387C28D18F3E2A300565A43 /* GameAudio.cpp in Sources */,
 				0315B631134C2CF7002AD1CE /* Schemes.cpp in Sources */,

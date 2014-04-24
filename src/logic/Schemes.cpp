@@ -390,7 +390,7 @@ void Schemes::helpScheme() {
 	*((float*) gameLogic->instructionsEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
 	*((Vector4*) gameLogic->instructionsEntry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
 	*((float*) gameLogic->instructionsEntry.second["wrap"]) = 2.0f * (gameGraphics->resolutionX > 1024 ? 1024.0f / (float) gameGraphics->resolutionX : 1.0f) - (gameSystem->getFloat("hudElementMargin") * 2.0f / (float) gameGraphics->resolutionX);
-	*((std::string*) gameLogic->instructionsEntry.second["text"]) = "Welcome to Crucible Island. You occupy a tower atop an island mountain range. Enemy ships circle the island on a mission to destroy you. You must shoot down the missiles they fire at you using your cannon or by deploying shock fields. Firing cannon shells depletes your ammunition reservoir. Deploying shock fields requires a two-second charging period and depletes both your ammunition and health reservoirs by a quarter of their total capacities. A missile impact will deplete your health by half of its total capacity. Your ammunition and health reservoirs will recharge at a fixed rate. When your health level reaches zero, the game is over. The rate of enemy fire will increase as the game goes on.\n\nYour ammunition level, health level, and shock field charging indicators are at the top left corner of your screen. Your radar and heads-up display show enemy ship and incoming missile positions. You gain one point for every enemy missile you destroy. Good luck!";
+	*((std::string*) gameLogic->instructionsEntry.second["text"]) = "Welcome to Crucible Island. You occupy a tower atop an island mountain range. Enemy ships circle the island on a mission to destroy you. You must shoot down the missiles they fire at you using your cannon or by deploying shock fields. Firing cannon shells depletes your ammunition reservoir. Deploying shock fields requires a two-second charging period and depletes both your ammunition and health reservoirs by a quarter of their total capacities. A missile impact will deplete your health by half of its total capacity. Your ammunition and health reservoirs will recharge at a fixed rate. When your health level reaches zero, the game is over. The rate of enemy fire will increase as the game goes on.\n\nYour health level, ammunition level, and shock field charging indicators are at the top left corner of your screen. Your radar and heads-up display show enemy ship and incoming missile positions. You gain one point for every enemy missile you destroy. Good luck!";
 	((UIMetrics*) gameLogic->instructionsEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
 	((UIMetrics*) gameLogic->instructionsEntry.second["metrics"])->size = ((DrawLabel*) gameGraphics->drawers["label"])->getSize(gameLogic->instructionsEntry.second);
 	gameLogic->drawStack.push_back(gameLogic->instructionsEntry);
@@ -769,6 +769,140 @@ void Schemes::playingScheme() {
 
 	// tower
 	gameLogic->drawStack.push_back(gameLogic->towerEntry);
+
+	// score
+	*((float*) gameLogic->scoreLabel.second["fontSize"]) = gameSystem->getFloat("fontSizeLarge");
+	*((Vector4*) gameLogic->scoreLabel.second["fontColor"]) = gameSystem->getColor("fontColorLight");
+	*((std::string*) gameLogic->scoreLabel.second["text"]) = "364";
+	((UIMetrics*) gameLogic->scoreLabel.second["metrics"])->bearing1 = UIMetrics::BEARING_RIGHT;
+	((UIMetrics*) gameLogic->scoreLabel.second["metrics"])->bearing2 = UIMetrics::BEARING_TOP;
+	((UIMetrics*) gameLogic->scoreLabel.second["metrics"])->size = ((DrawLabel*) gameGraphics->drawers["label"])->getSize(gameLogic->scoreLabel.second);
+	gameLogic->drawStack.push_back(gameLogic->scoreLabel);
+	gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->scoreLabel.second["metrics"]);
+
+	// health gauge image
+	*((std::string*) gameLogic->healthGaugeImage.second["texture"]) = "gauge/heart";
+	((UIMetrics*) gameLogic->healthGaugeImage.second["metrics"])->bearing1 = UIMetrics::BEARING_LEFT;
+	((UIMetrics*) gameLogic->healthGaugeImage.second["metrics"])->bearing2 = UIMetrics::BEARING_TOP;
+	((UIMetrics*) gameLogic->healthGaugeImage.second["metrics"])->size = ((DrawTexture*) gameGraphics->drawers["texture"])->getSize(gameLogic->healthGaugeImage.second);
+	gameLogic->drawStack.push_back(gameLogic->healthGaugeImage);
+
+	// health gauge bar
+	*((Vector4*) gameLogic->healthGaugeBar.second["color1Top"]) = gameSystem->getColor("hudGaugeHealthBarColor");
+	*((Vector4*) gameLogic->healthGaugeBar.second["color1Bottom"]) = Vector4(
+			gameSystem->getColor("hudGaugeHealthBarColor").x * gameSystem->getColor("hudGaugeColorFalloff").x,
+			gameSystem->getColor("hudGaugeHealthBarColor").y * gameSystem->getColor("hudGaugeColorFalloff").y,
+			gameSystem->getColor("hudGaugeHealthBarColor").z * gameSystem->getColor("hudGaugeColorFalloff").z,
+			gameSystem->getColor("hudGaugeHealthBarColor").w * gameSystem->getColor("hudGaugeColorFalloff").w
+		);
+	*((Vector4*) gameLogic->healthGaugeBar.second["color2Top"]) = gameSystem->getColor("hudGaugeBackgroundColor");
+	*((Vector4*) gameLogic->healthGaugeBar.second["color2Bottom"]) = Vector4(
+			gameSystem->getColor("hudGaugeBackgroundColor").x * gameSystem->getColor("hudGaugeColorFalloff").x,
+			gameSystem->getColor("hudGaugeBackgroundColor").y * gameSystem->getColor("hudGaugeColorFalloff").y,
+			gameSystem->getColor("hudGaugeBackgroundColor").z * gameSystem->getColor("hudGaugeColorFalloff").z,
+			gameSystem->getColor("hudGaugeBackgroundColor").w * gameSystem->getColor("hudGaugeColorFalloff").w
+		);
+	*((float*) gameLogic->healthGaugeBar.second["progression"]) = 0.75f;
+	*((Vector2*) gameLogic->healthGaugeBar.second["size"]) = Vector2(
+			gameSystem->getFloat("hudGaugeWidth"),
+			gameSystem->getFloat("hudGaugeHeight")
+		);
+	((UIMetrics*) gameLogic->healthGaugeBar.second["metrics"])->size = ((DrawProgressBar*) gameGraphics->drawers["progressBar"])->getSize(gameLogic->healthGaugeBar.second);
+	gameLogic->drawStack.push_back(gameLogic->healthGaugeBar);
+
+	// ammo gauge image
+	*((std::string*) gameLogic->ammoGaugeImage.second["texture"]) = "gauge/shell";
+	((UIMetrics*) gameLogic->ammoGaugeImage.second["metrics"])->bearing1 = UIMetrics::BEARING_LEFT;
+	((UIMetrics*) gameLogic->ammoGaugeImage.second["metrics"])->bearing2 = UIMetrics::BEARING_TOP;
+	((UIMetrics*) gameLogic->ammoGaugeImage.second["metrics"])->size = ((DrawTexture*) gameGraphics->drawers["texture"])->getSize(gameLogic->ammoGaugeImage.second);
+	gameLogic->drawStack.push_back(gameLogic->ammoGaugeImage);
+
+	// ammo gauge bar
+	*((Vector4*) gameLogic->ammoGaugeBar.second["color1Top"]) = gameSystem->getColor("hudGaugeAmmoBarColor");
+	*((Vector4*) gameLogic->ammoGaugeBar.second["color1Bottom"]) = Vector4(
+			gameSystem->getColor("hudGaugeAmmoBarColor").x * gameSystem->getColor("hudGaugeColorFalloff").x,
+			gameSystem->getColor("hudGaugeAmmoBarColor").y * gameSystem->getColor("hudGaugeColorFalloff").y,
+			gameSystem->getColor("hudGaugeAmmoBarColor").z * gameSystem->getColor("hudGaugeColorFalloff").z,
+			gameSystem->getColor("hudGaugeAmmoBarColor").w * gameSystem->getColor("hudGaugeColorFalloff").w
+		);
+	*((Vector4*) gameLogic->ammoGaugeBar.second["color2Top"]) = gameSystem->getColor("hudGaugeBackgroundColor");
+	*((Vector4*) gameLogic->ammoGaugeBar.second["color2Bottom"]) = Vector4(
+			gameSystem->getColor("hudGaugeBackgroundColor").x * gameSystem->getColor("hudGaugeColorFalloff").x,
+			gameSystem->getColor("hudGaugeBackgroundColor").y * gameSystem->getColor("hudGaugeColorFalloff").y,
+			gameSystem->getColor("hudGaugeBackgroundColor").z * gameSystem->getColor("hudGaugeColorFalloff").z,
+			gameSystem->getColor("hudGaugeBackgroundColor").w * gameSystem->getColor("hudGaugeColorFalloff").w
+		);
+	*((float*) gameLogic->ammoGaugeBar.second["progression"]) = 0.25f;
+	*((Vector2*) gameLogic->ammoGaugeBar.second["size"]) = Vector2(
+			gameSystem->getFloat("hudGaugeWidth"),
+			gameSystem->getFloat("hudGaugeHeight")
+		);
+	((UIMetrics*) gameLogic->ammoGaugeBar.second["metrics"])->size = ((DrawProgressBar*) gameGraphics->drawers["progressBar"])->getSize(gameLogic->ammoGaugeBar.second);
+	gameLogic->drawStack.push_back(gameLogic->ammoGaugeBar);
+
+	// shock gauge image
+	*((std::string*) gameLogic->shockGaugeImage.second["texture"]) = "gauge/bolt";
+	((UIMetrics*) gameLogic->shockGaugeImage.second["metrics"])->bearing1 = UIMetrics::BEARING_LEFT;
+	((UIMetrics*) gameLogic->shockGaugeImage.second["metrics"])->bearing2 = UIMetrics::BEARING_TOP;
+	((UIMetrics*) gameLogic->shockGaugeImage.second["metrics"])->size = ((DrawTexture*) gameGraphics->drawers["texture"])->getSize(gameLogic->shockGaugeImage.second);
+	gameLogic->drawStack.push_back(gameLogic->shockGaugeImage);
+
+	// shock gauge bar
+	*((Vector4*) gameLogic->shockGaugeBar.second["color1Top"]) = gameSystem->getColor("hudGaugeShockChargingBarColor");
+	*((Vector4*) gameLogic->shockGaugeBar.second["color1Bottom"]) = Vector4(
+			gameSystem->getColor("hudGaugeShockChargingBarColor").x * gameSystem->getColor("hudGaugeColorFalloff").x,
+			gameSystem->getColor("hudGaugeShockChargingBarColor").y * gameSystem->getColor("hudGaugeColorFalloff").y,
+			gameSystem->getColor("hudGaugeShockChargingBarColor").z * gameSystem->getColor("hudGaugeColorFalloff").z,
+			gameSystem->getColor("hudGaugeShockChargingBarColor").w * gameSystem->getColor("hudGaugeColorFalloff").w
+		);
+	*((Vector4*) gameLogic->shockGaugeBar.second["color2Top"]) = gameSystem->getColor("hudGaugeBackgroundColor");
+	*((Vector4*) gameLogic->shockGaugeBar.second["color2Bottom"]) = Vector4(
+			gameSystem->getColor("hudGaugeBackgroundColor").x * gameSystem->getColor("hudGaugeColorFalloff").x,
+			gameSystem->getColor("hudGaugeBackgroundColor").y * gameSystem->getColor("hudGaugeColorFalloff").y,
+			gameSystem->getColor("hudGaugeBackgroundColor").z * gameSystem->getColor("hudGaugeColorFalloff").z,
+			gameSystem->getColor("hudGaugeBackgroundColor").w * gameSystem->getColor("hudGaugeColorFalloff").w
+		);
+	*((float*) gameLogic->shockGaugeBar.second["progression"]) = 0.5f;
+	*((Vector2*) gameLogic->shockGaugeBar.second["size"]) = Vector2(
+			gameSystem->getFloat("hudGaugeWidth"),
+			gameSystem->getFloat("hudGaugeHeight")
+		);
+	((UIMetrics*) gameLogic->shockGaugeBar.second["metrics"])->size = ((DrawProgressBar*) gameGraphics->drawers["progressBar"])->getSize(gameLogic->shockGaugeBar.second);
+	gameLogic->drawStack.push_back(gameLogic->shockGaugeBar);
+
+	// fix metrics for gauge images and bars and re-arrange the UI
+	Vector2 maxSize(0.0f, 0.0f);
+
+	if(((UIMetrics*) gameLogic->healthGaugeImage.second["metrics"])->size.x > maxSize.x) maxSize.x = ((UIMetrics*) gameLogic->healthGaugeImage.second["metrics"])->size.x;
+	if(((UIMetrics*) gameLogic->ammoGaugeImage.second["metrics"])->size.x > maxSize.x) maxSize.x = ((UIMetrics*) gameLogic->ammoGaugeImage.second["metrics"])->size.x;
+	if(((UIMetrics*) gameLogic->shockGaugeImage.second["metrics"])->size.x > maxSize.x) maxSize.x = ((UIMetrics*) gameLogic->shockGaugeImage.second["metrics"])->size.x;
+
+	if(((UIMetrics*) gameLogic->healthGaugeImage.second["metrics"])->size.y > maxSize.y) maxSize.y = ((UIMetrics*) gameLogic->healthGaugeImage.second["metrics"])->size.y;
+	if(((UIMetrics*) gameLogic->healthGaugeBar.second["metrics"])->size.y > maxSize.y) maxSize.y = ((UIMetrics*) gameLogic->healthGaugeBar.second["metrics"])->size.y;
+	if(((UIMetrics*) gameLogic->ammoGaugeImage.second["metrics"])->size.y > maxSize.y) maxSize.y = ((UIMetrics*) gameLogic->ammoGaugeImage.second["metrics"])->size.y;
+	if(((UIMetrics*) gameLogic->ammoGaugeBar.second["metrics"])->size.y > maxSize.y) maxSize.y = ((UIMetrics*) gameLogic->ammoGaugeBar.second["metrics"])->size.y;
+	if(((UIMetrics*) gameLogic->shockGaugeImage.second["metrics"])->size.y > maxSize.y) maxSize.y = ((UIMetrics*) gameLogic->shockGaugeImage.second["metrics"])->size.y;
+	if(((UIMetrics*) gameLogic->shockGaugeBar.second["metrics"])->size.y > maxSize.y) maxSize.y = ((UIMetrics*) gameLogic->shockGaugeBar.second["metrics"])->size.y;
+
+	((UIMetrics*) gameLogic->healthGaugeImage.second["metrics"])->size = maxSize;
+	((UIMetrics*) gameLogic->ammoGaugeImage.second["metrics"])->size = maxSize;
+	((UIMetrics*) gameLogic->shockGaugeImage.second["metrics"])->size = maxSize;
+
+	gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->healthGaugeImage.second["metrics"]);
+	gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->ammoGaugeImage.second["metrics"]);
+	gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->shockGaugeImage.second["metrics"]);
+
+	gameLogic->uiLayoutAuthority->rearrange();
+
+	float gaugeBarXCoordinate =
+			((UIMetrics*) gameLogic->healthGaugeImage.second["metrics"])->position.x +
+			((UIMetrics*) gameLogic->healthGaugeImage.second["metrics"])->size.x / 2.0f +
+			gameLogic->uiLayoutAuthority->elementMargin.x +
+			((UIMetrics*) gameLogic->healthGaugeBar.second["metrics"])->size.x / 2.0f;
+	((UIMetrics*) gameLogic->healthGaugeBar.second["metrics"])->position = Vector2(gaugeBarXCoordinate, ((UIMetrics*) gameLogic->healthGaugeImage.second["metrics"])->position.y);
+	((UIMetrics*) gameLogic->ammoGaugeBar.second["metrics"])->position = Vector2(gaugeBarXCoordinate, ((UIMetrics*) gameLogic->ammoGaugeImage.second["metrics"])->position.y);
+	((UIMetrics*) gameLogic->shockGaugeBar.second["metrics"])->position = Vector2(gaugeBarXCoordinate, ((UIMetrics*) gameLogic->shockGaugeImage.second["metrics"])->position.y);
+
 /*
 
 	// repeatedly used variables
@@ -934,8 +1068,6 @@ void Schemes::playingScheme() {
 	inputHandler->mouse->addListener(gameLogic->cursorMovementListener);
 */
 }
-
-
 
 void Schemes::welcomeScheme(
 			std::string callsignText

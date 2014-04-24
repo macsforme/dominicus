@@ -521,6 +521,46 @@ GameSystem::GameSystem() :
 			"Background color for active text fields."
 		);
 */
+	setStandard(
+			"hudGaugeWidth",
+			250.0f,
+			"Width of gauges in pixels."
+		);
+	setStandard(
+			"hudGaugeHeight",
+			30.0f,
+			"Height of gauges in pixels."
+		);
+	setStandard(
+			"hudGaugeBackgroundColor",
+			Vector4(0.3f, 0.3f, 0.3f, 1.0f),
+			"Background color of gauges."
+		);
+	setStandard(
+			"hudGaugeColorFalloff",
+			Vector4(0.3f, 0.3f, 0.3f, 0.75f),
+			"Factor to be multiplied into gauge color for falloff at bottom."
+		);
+	setStandard(
+			"hudGaugeHealthBarColor",
+			Vector4(0.0f, 1.0f, 0.0f, 1.0f),
+			"Color of health gauge."
+		);
+	setStandard(
+			"hudGaugeAmmoBarColor",
+			Vector4(0.0f, 1.0f, 1.0f, 1.0f),
+			"Color of ammunition gauge."
+		);
+	setStandard(
+			"hudGaugeShockChargingBarColor",
+			Vector4(1.0f, 1.0f, 0.0f, 1.0f),
+			"Color of shock gauge while charging."
+		);
+	setStandard(
+			"hudGaugeShockChargedBarColor",
+			Vector4(1.0f, 0.0f, 0.0f, 1.0f),
+			"Color of shock gauge when charged."
+		);
 
 	// font standards
 	setStandard(
