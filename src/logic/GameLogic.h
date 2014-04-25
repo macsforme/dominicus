@@ -142,6 +142,11 @@ public:
 	DrawStackEntry loadingEntry;
 
 	KeyListener* playingKeyListener;
+	KeyAbsoluteListener* cameraAheadKeyListener;
+	KeyAbsoluteListener* cameraUpKeyListener;
+	KeyAbsoluteListener* cameraDownKeyListener;
+	KeyAbsoluteListener* cameraLeftKeyListener;
+	KeyAbsoluteListener* cameraRightKeyListener;
 	DrawStackEntry scoreLabel;
 	DrawStackEntry healthGaugeImage;
 	DrawStackEntry healthGaugeBar;
@@ -199,6 +204,11 @@ DrawStackEntry fpsEntry;
 
 	// stack of stuff to render each frame
 	DrawStack drawStack;
+
+	// cameras
+	OrbitCamera orbitCamera;
+	PresentationCamera presentationCamera;
+	RoamingCamera roamingCamera;
 
 	// general logic info
 //	unsigned int lastClockUpdate;

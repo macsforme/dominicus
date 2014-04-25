@@ -10,6 +10,7 @@
 #include <iostream>
 GameState::GameState() {
 	// randomly generate the island
+//FIXME this stuff should go into game standards
 	size_t density = 256;
 	const float rough = 0.5f;
 	const float gradDist = 0.5f;
@@ -181,6 +182,10 @@ GameState::GameState() {
 	ship.originAngle = 0.0f;
 
 	ships.push_back(ship);
+
+	// set start time
+	isPaused = false;
+	gameTimeMargin = platform->getExecMills();
 }
 
 GameState::~GameState() {
@@ -190,7 +195,7 @@ unsigned int GameState::execute() {
 	// update/add ships as appropriate
 	float shipOrbitDistance = (gameSystem->getFloat("islandMaximumWidth") * 0.5f + gameSystem->getFloat("stateShipOrbitMargin"));
 
-	if(platform->getExecMills() / 1000 / gameSystem->getFloat("stateShipAddRate") + 1 > ships.size()) {
+	if(getGameMills() / 1000 / gameSystem->getFloat("stateShipAddRate") + 1 > ships.size()) {
 		Ship ship;
 static int originAngle = 0.0f; originAngle += 75.0f;
 		ship.originAngle = originAngle;
@@ -199,7 +204,7 @@ static int originAngle = 0.0f; originAngle += 75.0f;
 
 	for(size_t i = 0; i < ships.size(); ++i) {
 		// determine phase
-		float shipLifeTime = (float) (platform->getExecMills() - i * gameSystem->getFloat("stateShipAddRate") * 1000) / 1000.0f;
+		float shipLifeTime = (float) (getGameMills() - i * gameSystem->getFloat("stateShipAddRate") * 1000) / 1000.0f;
 
 		if(shipLifeTime > gameSystem->getFloat("stateShipEntryTime")) {
 			// orbit phase
@@ -244,4 +249,32 @@ static int originAngle = 0.0f; originAngle += 75.0f;
 			1000 / frequency : 0
 		);
 	return getSleepTime(idealSleepTime);
+}
+
+//bool isPaused;
+//unsigned int gameTimeMargin;
+
+unsigned int GameState::getGameMills() {
+	// execution time since game began (excluding pauses)
+	if(isPaused)
+		return(gameTimeMargin);
+	else
+		return platform->getExecMills() - gameTimeMargin;
+}
+
+void GameState::pause() {
+	// freeze the game time
+	if(isPaused)
+		return;
+
+	gameTimeMargin = getGameMills();
+	isPaused = true;
+}
+
+void GameState::resume() {
+	if(! isPaused)
+		return;
+
+	gameTimeMargin = platform->getExecMills() - gameTimeMargin;
+	isPaused = false;
 }

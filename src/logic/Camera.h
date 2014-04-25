@@ -12,7 +12,6 @@
 // program headers
 #include "core/GameSystem.h"
 #include "geometry/Mesh.h"
-#include "graphics/GameGraphics.h"
 #include "math/MatrixMath.h"
 #include "math/MiscMath.h"
 #include "math/VectorMath.h"
@@ -20,7 +19,6 @@
 #include "state/GameState.h"
 
 // global variables
-extern GameGraphics* gameGraphics;
 extern GameState* gameState;
 extern GameSystem* gameSystem;
 
@@ -28,44 +26,27 @@ extern GameSystem* gameSystem;
 class Camera {
 public:
 	Vector3 position;
-	Matrix4 shipMatrix, terrainMatrix, towerMatrix;
+	Matrix4 mvMatrix, lightMatrix;
 
 	virtual void execute() = 0;
 };
 
-class ShipRelativeCamera : public Camera {
-private:
-	Ship* ship;
-
+class OrbitCamera : public Camera {
 public:
-	ShipRelativeCamera(Ship* ship) : ship(ship) { }
-
 	void execute();
 };
 
-class TerrainRelativeCamera : public Camera {
-private:
-	Ship* ship;
-
+class PresentationCamera : public Camera {
 public:
-	TerrainRelativeCamera(Ship* ship) : ship(ship) { }
-
 	void execute();
 };
 
-class FollowCamera : public Camera {
-private:
-	Ship* ship;
-
+class RoamingCamera : public Camera {
 public:
-	FollowCamera(Ship* ship);
+	Vector3 position;
+	float rotationX, rotationY;
 
-	void execute();
-};
-
-class TestCamera : public Camera {
-public:
-	TestCamera() { };
+	RoamingCamera() : position(Vector3(0.0f, 5.0f, -2000.0f)), rotationX(0.0f), rotationY(0.0f) {};
 
 	void execute();
 };

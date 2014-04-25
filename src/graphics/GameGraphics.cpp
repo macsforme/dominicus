@@ -285,8 +285,8 @@ SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 0);
 	drawers["towerRenderer"] = new TowerRenderer();
 	drawers["waterRenderer"] = new WaterRenderer();
 
-	// instantiate camera
-	testCamera = new TestCamera();
+	// set camera
+	currentCamera = NULL;
 }
 
 GameGraphics::~GameGraphics() {
@@ -336,9 +336,6 @@ GameGraphics::~GameGraphics() {
 	for(textureIDItr = textureIDs.begin(); textureIDItr != textureIDs.end(); ++textureIDItr)
 		if(glIsTexture(textureIDItr->second))
 			glDeleteTextures(1, &(textureIDItr->second));
-
-	// destroy camera
-	delete(testCamera);
 }
 
 GLuint GameGraphics::getShaderID(GLenum shaderType, std::string shaderName) {
@@ -557,7 +554,8 @@ GLuint GameGraphics::getTextureID(std::string filename) {
 
 unsigned int GameGraphics::execute() {
 	// update camera
-	testCamera->execute();
+	if(currentCamera != NULL)
+		currentCamera->execute();
 
 	// track the frame time
 	unsigned int frameBeginTime = platform->getExecMills();

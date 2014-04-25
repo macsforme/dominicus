@@ -69,10 +69,17 @@ public:
 	std::vector<Ship> ships;
 	std::vector<Missile> missiles;
 
+	bool isPaused;
+	unsigned int gameTimeMargin;
+
+	unsigned int execute();
+
 	GameState();
 	~GameState();
 
-	unsigned int execute();
+	unsigned int getGameMills();
+	void pause();
+	void resume();
 };
 
 #endif // GAMESTATE_H

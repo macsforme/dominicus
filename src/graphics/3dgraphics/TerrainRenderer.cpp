@@ -124,7 +124,7 @@ void TerrainRenderer::reloadGraphics() {
 
 void TerrainRenderer::execute(std::map<std::string, void*> arguments) {
 	// prepare variables
-	Matrix4 mvpMatrix = gameGraphics->testCamera->terrainMatrix;
+	Matrix4 mvpMatrix = gameGraphics->currentCamera->mvMatrix;
 	mvpMatrix *= gameGraphics->ppMatrix;
 	float mvpMatrixArray[] = {
 			mvpMatrix.m11, mvpMatrix.m12, mvpMatrix.m13, mvpMatrix.m14,

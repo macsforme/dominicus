@@ -17,6 +17,7 @@
 #include "logic/Camera.h"
 #include "platform/OpenGLHeaders.h"
 #include "platform/Platform.h"
+#include "state/GameState.h"
 
 // library headers
 #include <map>
@@ -26,6 +27,7 @@
 
 // global variables
 extern GameGraphics* gameGraphics;
+extern GameState* gameState;
 extern GameSystem* gameSystem;
 extern Platform* platform;
 

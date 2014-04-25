@@ -319,8 +319,16 @@ GameLogic::GameLogic() {
 
 	std::vector<SDLKey> playingKeys;
 	playingKeys.push_back(SDLK_RETURN);
+	playingKeys.push_back(SDLK_TAB);
 	playingKeys.push_back(SDLK_ESCAPE);
+	playingKeys.push_back(SDLK_BACKQUOTE);
 	playingKeyListener = new KeyListener(playingKeys);
+
+	cameraAheadKeyListener = new KeyAbsoluteListener(SDLK_SPACE);
+	cameraUpKeyListener = new KeyAbsoluteListener(SDLK_UP);
+	cameraDownKeyListener = new KeyAbsoluteListener(SDLK_DOWN);
+	cameraLeftKeyListener = new KeyAbsoluteListener(SDLK_LEFT);
+	cameraRightKeyListener = new KeyAbsoluteListener(SDLK_RIGHT);
 
 	scoreLabel.first = "label";
 	scoreLabel.second["metrics"] = (void*) new UIMetrics;
@@ -413,6 +421,7 @@ reScheme();
 gameGraphics->execute();
 gameState = new GameState();
 mainLoopModules[gameState] = 0;
+gameGraphics->currentCamera = &orbitCamera;
 mainLoopModules[gameGraphics] = 0;
 ((TerrainRenderer*) gameGraphics->drawers["terrainRenderer"])->reloadGraphics();
 SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
@@ -497,8 +506,11 @@ unsigned int GameLogic::execute() {
 			mainLoopModules.erase(mainLoopModules.find(gameGraphics));
 
 		delete(gameGraphics);
+
+		Camera* currentCamera = gameGraphics->currentCamera;
 		gameGraphics = new GameGraphics(fullScreenGraphics);
-		
+		gameGraphics->currentCamera = currentCamera;
+
 		if(isInMainLoopModules)
 			mainLoopModules[gameGraphics] = 0;
 
@@ -570,6 +582,7 @@ unsigned int GameLogic::execute() {
 			mainLoopModules[gameGraphics] = 0;
 			((TerrainRenderer*) gameGraphics->drawers["terrainRenderer"])->reloadGraphics();
 //			((DrawRadar*) gameGraphics->drawers["radar"])->reloadGraphics();
+			gameGraphics->currentCamera = &orbitCamera;
 
 			SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
 
@@ -656,7 +669,7 @@ unsigned int GameLogic::execute() {
 					mainLoopModules[gameGraphics] = 0;
 					((TerrainRenderer*) gameGraphics->drawers["terrainRenderer"])->reloadGraphics();
 //					((DrawRadar*) gameGraphics->drawers["radar"])->reloadGraphics();
-
+					gameGraphics->currentCamera = &orbitCamera;
 					SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
 
 					currentScheme = SCHEME_PLAYING;
@@ -696,6 +709,13 @@ unsigned int GameLogic::execute() {
 				mainLoopModules[gameState] = 0;
 
 				((TerrainRenderer*) gameGraphics->drawers["terrainRenderer"])->reloadGraphics();
+			} else if(key == SDLK_TAB) {
+				if(gameGraphics->currentCamera == &orbitCamera)
+					gameGraphics->currentCamera = &presentationCamera;
+				else if(gameGraphics->currentCamera == &presentationCamera)
+					gameGraphics->currentCamera = &roamingCamera;
+				else if(gameGraphics->currentCamera == &roamingCamera)
+					gameGraphics->currentCamera = &orbitCamera;
 			} else if(key == SDLK_ESCAPE) {
 				mainLoopModules.erase(mainLoopModules.find(gameState));
 				mainLoopModules.erase(mainLoopModules.find(gameGraphics));
@@ -710,7 +730,30 @@ unsigned int GameLogic::execute() {
 				SDL_LockAudio();
 				gameAudio->setBackgroundMusic("menuSong");
 				SDL_UnlockAudio();
+			} else if(key == SDLK_BACKQUOTE) {
+				if(gameState->isPaused)
+					gameState->resume();
+				else
+					gameState->pause();
 			}
+		}
+
+		// keys down
+		if(cameraLeftKeyListener->isDown)
+			roamingCamera.rotationX += 0.5f;
+		if(cameraRightKeyListener->isDown)
+			roamingCamera.rotationX -= 0.5f;
+		if(cameraUpKeyListener->isDown)
+			roamingCamera.rotationY += 0.5f;
+		if(cameraDownKeyListener->isDown)
+			roamingCamera.rotationY -= 0.5f;
+		if(cameraAheadKeyListener->isDown) {
+			Matrix3 directionMatrix; directionMatrix.identity();
+			rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(roamingCamera.rotationX), directionMatrix);
+			rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(roamingCamera.rotationY), directionMatrix);
+			directionMatrix.transpose();
+			Vector3 movement(0.0f, 0.0f, 3.0f);
+			roamingCamera.position = roamingCamera.position + movement * directionMatrix;
 		}
 	} else if(currentScheme == SCHEME_SETTINGS) {
 		// button highlight

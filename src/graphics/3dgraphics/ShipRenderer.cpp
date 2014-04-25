@@ -146,7 +146,7 @@ void ShipRenderer::execute(std::map<std::string, void*> arguments) {
 		rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(gameState->ships[i].rotation), shipMatrix);
 		translateMatrix(gameState->ships[i].position.x, gameState->ships[i].position.y, gameState->ships[i].position.z, shipMatrix);
 
-		Matrix4 mvMatrix = shipMatrix * gameGraphics->testCamera->shipMatrix;
+		Matrix4 mvMatrix = shipMatrix * gameGraphics->currentCamera->mvMatrix;
 		float mvMatrixArray[] = {
 				mvMatrix.m11, mvMatrix.m12, mvMatrix.m13, mvMatrix.m14,
 				mvMatrix.m21, mvMatrix.m22, mvMatrix.m23, mvMatrix.m24,

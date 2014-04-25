@@ -409,7 +409,7 @@ void Schemes::helpScheme() {
 	*((float*) gameLogic->creditsEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
 	*((Vector4*) gameLogic->creditsEntry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
 	*((float*) gameLogic->creditsEntry.second["wrap"]) = 2.0f * (gameGraphics->resolutionX > 1024 ? 1024.0f / (float) gameGraphics->resolutionX : 1.0f) - (gameSystem->getFloat("hudElementMargin") * 2.0f / (float) gameGraphics->resolutionX);
-	*((std::string*) gameLogic->creditsEntry.second["text"]) = "Dedicated to Sergeant Sean Drenth #6894 of the Phoenix Police Department, EOW October 18, 2010.\nCreated by Joshua Bodine.\n\nThis software uses the Simple DirectMedia Layer library (http://www.libsdl.org/)\nPortions of this software are copyright (c) 2014 The FreeType Project (www.freetype.org).  All rights reserved.";
+	*((std::string*) gameLogic->creditsEntry.second["text"]) = "Dedicated to Sergeant Sean Drenth #6894 of the Phoenix Police Department, EOW October 18, 2010.\nCreated by Joshua Bodine.\nMusic and sound effects by Michael Birch.\n\nThis software uses the Simple DirectMedia Layer library (http://www.libsdl.org/)\nPortions of this software are copyright (c) 2014 The FreeType Project (www.freetype.org).  All rights reserved.";
 	((UIMetrics*) gameLogic->creditsEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
 	((UIMetrics*) gameLogic->creditsEntry.second["metrics"])->size = ((DrawLabel*) gameGraphics->drawers["label"])->getSize(gameLogic->creditsEntry.second);
 	gameLogic->drawStack.push_back(gameLogic->creditsEntry);
@@ -754,6 +754,11 @@ void Schemes::playingScheme() {
 	inputHandler->keyboard->addListener(gameLogic->quitKeyListener);
 	inputHandler->keyboard->addListener(gameLogic->fullScreenKeyListener);
 	inputHandler->keyboard->addListener(gameLogic->playingKeyListener);
+	inputHandler->keyboard->addListener(gameLogic->cameraAheadKeyListener);
+	inputHandler->keyboard->addListener(gameLogic->cameraUpKeyListener);
+	inputHandler->keyboard->addListener(gameLogic->cameraDownKeyListener);
+	inputHandler->keyboard->addListener(gameLogic->cameraLeftKeyListener);
+	inputHandler->keyboard->addListener(gameLogic->cameraRightKeyListener);
 
 	// sky
 	gameLogic->drawStack.push_back(gameLogic->skyEntry);

@@ -132,17 +132,19 @@ TowerRenderer::~TowerRenderer() {
 }
 
 void TowerRenderer::execute(std::map<std::string, void*> arguments) {
-	Matrix4* mvMatrix = &(gameGraphics->testCamera->towerMatrix);
+	Matrix4 mvMatrix; mvMatrix.identity();
+	translateMatrix(gameState->fortress.position.x, gameState->fortress.position.y, gameState->fortress.position.z, mvMatrix);
+	mvMatrix = mvMatrix * gameGraphics->currentCamera->mvMatrix;
 	float mvMatrixArray[] = {
-			mvMatrix->m11, mvMatrix->m12, mvMatrix->m13, mvMatrix->m14,
-			mvMatrix->m21, mvMatrix->m22, mvMatrix->m23, mvMatrix->m24,
-			mvMatrix->m31, mvMatrix->m32, mvMatrix->m33, mvMatrix->m34,
-			mvMatrix->m41, mvMatrix->m42, mvMatrix->m43, mvMatrix->m44
+			mvMatrix.m11, mvMatrix.m12, mvMatrix.m13, mvMatrix.m14,
+			mvMatrix.m21, mvMatrix.m22, mvMatrix.m23, mvMatrix.m24,
+			mvMatrix.m31, mvMatrix.m32, mvMatrix.m33, mvMatrix.m34,
+			mvMatrix.m41, mvMatrix.m42, mvMatrix.m43, mvMatrix.m44
 		};
 
 	Matrix4 spinnerMvMatrix; spinnerMvMatrix.identity();
-	rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians((float) (platform->getExecMills() % 8000) / 8000.0f * 360.0f), spinnerMvMatrix);
-	spinnerMvMatrix *= gameGraphics->testCamera->towerMatrix;
+	rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians((float) (gameState->getGameMills() % 8000) / 8000.0f * 360.0f), spinnerMvMatrix);
+	spinnerMvMatrix *= mvMatrix;
 	float spinnerMvMatrixArray[] = {
 			spinnerMvMatrix.m11, spinnerMvMatrix.m12, spinnerMvMatrix.m13, spinnerMvMatrix.m14,
 			spinnerMvMatrix.m21, spinnerMvMatrix.m22, spinnerMvMatrix.m23, spinnerMvMatrix.m24,
@@ -151,15 +153,19 @@ void TowerRenderer::execute(std::map<std::string, void*> arguments) {
 		};
 
 	Matrix4 turretMvMatrix; turretMvMatrix.identity();
-	rotateMatrix(Vector3(0.0f, 0.0f, 1.0f), radians((sin(-PI + (float) (platform->getExecMills() % 4000) / 4000.0f * 2.0f * PI) * 0.5f + 0.5f ) * 45.0f), turretMvMatrix);
+	rotateMatrix(Vector3(0.0f, 0.0f, 1.0f), radians((sin(-PI + (float) (gameState->getGameMills() % 4000) / 4000.0f * 2.0f * PI) * 0.5f + 0.5f ) * 45.0f), turretMvMatrix);
 	translateMatrix(turretOrigin.x, turretOrigin.y, turretOrigin.z, turretMvMatrix);
-	turretMvMatrix *= spinnerMvMatrix;
+	rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians((float) (gameState->getGameMills() % 8000) / 8000.0f * 360.0f), turretMvMatrix);
+	turretMvMatrix *= mvMatrix;
 	float turretMvMatrixArray[] = {
 			turretMvMatrix.m11, turretMvMatrix.m12, turretMvMatrix.m13, turretMvMatrix.m14,
 			turretMvMatrix.m21, turretMvMatrix.m22, turretMvMatrix.m23, turretMvMatrix.m24,
 			turretMvMatrix.m31, turretMvMatrix.m32, turretMvMatrix.m33, turretMvMatrix.m34,
 			turretMvMatrix.m41, turretMvMatrix.m42, turretMvMatrix.m43, turretMvMatrix.m44
 		};
+
+	Vector4 lightPosition(1.0f, 1.0f, -1.0f, 0.0f);
+	lightPosition = lightPosition * gameGraphics->currentCamera->lightMatrix;
 
 	// state
 	glEnable(GL_TEXTURE_2D);
@@ -176,7 +182,7 @@ void TowerRenderer::execute(std::map<std::string, void*> arguments) {
 	glUniform3f(uniforms["ambientColor"], 0.15f, 0.15f, 0.15f);
 	glUniform3f(uniforms["diffuseColor"], 0.5f, 0.5f, 0.5f);
 	glUniform3f(uniforms["specularColor"], 0.8f, 0.8f, 0.8f);
-	glUniform3f(uniforms["lightPosition"], 1.0f, 1.0f, -1.0f);
+	glUniform3f(uniforms["lightPosition"], lightPosition.x, lightPosition.y, lightPosition.z);
 	glUniform1f(uniforms["shininess"], 10.0f);
 
 	// set the overall drawing state

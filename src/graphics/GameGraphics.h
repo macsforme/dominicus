@@ -94,8 +94,8 @@ public:
 	float waveTimer;
 	float hardTimer;
 
-	// cameras
-	TestCamera* testCamera;
+	// camera tracking
+	Camera* currentCamera;
 
 private:
 	std::map<std::string, GLuint> vertexShaderIDs;

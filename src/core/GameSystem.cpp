@@ -213,13 +213,15 @@ GameSystem::GameSystem() :
 		);
 	setStandard(
 			"stateShipEntryTime",
-			20.0f,
+//			20.0f,
+			10.0f,
 			"Time it takes between ship introduction and beginning of orbit.",
 			true
 		);
 	setStandard(
 			"stateShipAddRate",
-			20.0f,
+//			20.0f,
+			3.0f,
 			"Time between ships being added to the world.",
 			true
 		);
