@@ -51,4 +51,9 @@ public:
 	void execute();
 };
 
+class TowerCamera: public Camera {
+public:
+	void execute();
+};
+
 #endif

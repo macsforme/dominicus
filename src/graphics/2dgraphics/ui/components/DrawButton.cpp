@@ -36,6 +36,6 @@ void DrawButton::execute(std::map<std::string, void*> arguments) {
 	// call children's functions to draw stuff
 	containerDrawer->execute(arguments);
 
-	// DrawLabel already does internal checks on the size of the area
+	// DrawLabel already does internal checks on the size of the area............?????
 	labelDrawer->execute(arguments);
 }

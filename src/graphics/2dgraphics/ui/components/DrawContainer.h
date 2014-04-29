@@ -48,6 +48,18 @@ protected:
 public:
 	DrawContainer();
 
+	/*
+		Arguments Layout
+		----------------
+		metrics			UI element metrics
+		padding			width/height of curved edges in pixels
+		border			thickness of border in pixels
+		softEdge		thickness of antialiasing of border in pixels
+		insideColor		color of inside of container
+		borderColor		color of border of container
+		outsideCOlor	color of outside of container
+	*/
+
 	void execute(std::map<std::string, void*> newDrawData);
 };
 

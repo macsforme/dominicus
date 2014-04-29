@@ -40,7 +40,6 @@ public:
 	/*
 		Arguments Layout
 		----------------
-		mvpMatrix		Orthogonal projection matrix for shader
 		metrics			UI element metrics
 		fontSize		Font point size for this label (not to be confused with metrics->size)
 		fontColor		Font color

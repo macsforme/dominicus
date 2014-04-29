@@ -64,14 +64,12 @@ GameLogic::GameLogic() {
 	playButtonEntry.second["fontSize"] = (void*) new float;
 	playButtonEntry.second["fontColor"] = (void*) new Vector4;
 	playButtonEntry.second["text"] = (void*) new std::string;
-	playButtonEntry.second["insideColor"] = (void*) new Vector4;
-	playButtonEntry.second["highlightColor"] = (void*) new Vector4;
-	playButtonEntry.second["borderColor"] = (void*) new Vector4;
-	playButtonEntry.second["outsideColor"] = (void*) new Vector4;
 	playButtonEntry.second["padding"] = (void*) new float;
 	playButtonEntry.second["border"] = (void*) new float;
-	playButtonEntry.second["containerTimer"] = NULL;
-	playButtonEntry.second["textTimer"] = NULL;
+	playButtonEntry.second["softEdge"] = (void*) new float;
+	playButtonEntry.second["insideColor"] = (void*) new Vector4;
+	playButtonEntry.second["borderColor"] = (void*) new Vector4;
+	playButtonEntry.second["outsideColor"] = (void*) new Vector4;
 	playButtonZoneListener = new MouseZoneListener();
 	playButtonClickListener = new MouseButtonListener();
 
@@ -80,14 +78,12 @@ GameLogic::GameLogic() {
 	settingsButtonEntry.second["fontSize"] = (void*) new float;
 	settingsButtonEntry.second["fontColor"] = (void*) new Vector4;
 	settingsButtonEntry.second["text"] = (void*) new std::string;
-	settingsButtonEntry.second["insideColor"] = (void*) new Vector4;
-	settingsButtonEntry.second["highlightColor"] = (void*) new Vector4;
-	settingsButtonEntry.second["borderColor"] = (void*) new Vector4;
-	settingsButtonEntry.second["outsideColor"] = (void*) new Vector4;
 	settingsButtonEntry.second["padding"] = (void*) new float;
 	settingsButtonEntry.second["border"] = (void*) new float;
-	settingsButtonEntry.second["containerTimer"] = NULL;
-	settingsButtonEntry.second["textTimer"] = NULL;
+	settingsButtonEntry.second["softEdge"] = (void*) new float;
+	settingsButtonEntry.second["insideColor"] = (void*) new Vector4;
+	settingsButtonEntry.second["borderColor"] = (void*) new Vector4;
+	settingsButtonEntry.second["outsideColor"] = (void*) new Vector4;
 	settingsButtonZoneListener = new MouseZoneListener();
 	settingsButtonClickListener = new MouseButtonListener();
 
@@ -96,14 +92,12 @@ GameLogic::GameLogic() {
 	helpButtonEntry.second["fontSize"] = (void*) new float;
 	helpButtonEntry.second["fontColor"] = (void*) new Vector4;
 	helpButtonEntry.second["text"] = (void*) new std::string;
-	helpButtonEntry.second["insideColor"] = (void*) new Vector4;
-	helpButtonEntry.second["highlightColor"] = (void*) new Vector4;
-	helpButtonEntry.second["borderColor"] = (void*) new Vector4;
-	helpButtonEntry.second["outsideColor"] = (void*) new Vector4;
 	helpButtonEntry.second["padding"] = (void*) new float;
 	helpButtonEntry.second["border"] = (void*) new float;
-	helpButtonEntry.second["containerTimer"] = NULL;
-	helpButtonEntry.second["textTimer"] = NULL;
+	helpButtonEntry.second["softEdge"] = (void*) new float;
+	helpButtonEntry.second["insideColor"] = (void*) new Vector4;
+	helpButtonEntry.second["borderColor"] = (void*) new Vector4;
+	helpButtonEntry.second["outsideColor"] = (void*) new Vector4;
 	helpButtonZoneListener = new MouseZoneListener();
 	helpButtonClickListener = new MouseButtonListener();
 
@@ -112,14 +106,12 @@ GameLogic::GameLogic() {
 	highScoresButtonEntry.second["fontSize"] = (void*) new float;
 	highScoresButtonEntry.second["fontColor"] = (void*) new Vector4;
 	highScoresButtonEntry.second["text"] = (void*) new std::string;
-	highScoresButtonEntry.second["insideColor"] = (void*) new Vector4;
-	highScoresButtonEntry.second["highlightColor"] = (void*) new Vector4;
-	highScoresButtonEntry.second["borderColor"] = (void*) new Vector4;
-	highScoresButtonEntry.second["outsideColor"] = (void*) new Vector4;
 	highScoresButtonEntry.second["padding"] = (void*) new float;
 	highScoresButtonEntry.second["border"] = (void*) new float;
-	highScoresButtonEntry.second["containerTimer"] = NULL;
-	highScoresButtonEntry.second["textTimer"] = NULL;
+	highScoresButtonEntry.second["softEdge"] = (void*) new float;
+	highScoresButtonEntry.second["insideColor"] = (void*) new Vector4;
+	highScoresButtonEntry.second["borderColor"] = (void*) new Vector4;
+	highScoresButtonEntry.second["outsideColor"] = (void*) new Vector4;
 	highScoresButtonZoneListener = new MouseZoneListener();
 	highScoresButtonClickListener = new MouseButtonListener();
 
@@ -128,14 +120,12 @@ GameLogic::GameLogic() {
 	quitButtonEntry.second["fontSize"] = (void*) new float;
 	quitButtonEntry.second["fontColor"] = (void*) new Vector4;
 	quitButtonEntry.second["text"] = (void*) new std::string;
-	quitButtonEntry.second["insideColor"] = (void*) new Vector4;
-	quitButtonEntry.second["highlightColor"] = (void*) new Vector4;
-	quitButtonEntry.second["borderColor"] = (void*) new Vector4;
-	quitButtonEntry.second["outsideColor"] = (void*) new Vector4;
 	quitButtonEntry.second["padding"] = (void*) new float;
 	quitButtonEntry.second["border"] = (void*) new float;
-	quitButtonEntry.second["containerTimer"] = NULL;
-	quitButtonEntry.second["textTimer"] = NULL;
+	quitButtonEntry.second["softEdge"] = (void*) new float;
+	quitButtonEntry.second["insideColor"] = (void*) new Vector4;
+	quitButtonEntry.second["borderColor"] = (void*) new Vector4;
+	quitButtonEntry.second["outsideColor"] = (void*) new Vector4;
 	quitButtonZoneListener = new MouseZoneListener();
 	quitButtonClickListener = new MouseButtonListener();
 
@@ -213,14 +203,12 @@ GameLogic::GameLogic() {
 	backButtonEntry.second["fontSize"] = (void*) new float;
 	backButtonEntry.second["fontColor"] = (void*) new Vector4;
 	backButtonEntry.second["text"] = (void*) new std::string;
-	backButtonEntry.second["insideColor"] = (void*) new Vector4;
-	backButtonEntry.second["highlightColor"] = (void*) new Vector4;
-	backButtonEntry.second["borderColor"] = (void*) new Vector4;
-	backButtonEntry.second["outsideColor"] = (void*) new Vector4;
 	backButtonEntry.second["padding"] = (void*) new float;
 	backButtonEntry.second["border"] = (void*) new float;
-	backButtonEntry.second["containerTimer"] = NULL;
-	backButtonEntry.second["textTimer"] = NULL;
+	backButtonEntry.second["softEdge"] = (void*) new float;
+	backButtonEntry.second["insideColor"] = (void*) new Vector4;
+	backButtonEntry.second["borderColor"] = (void*) new Vector4;
+	backButtonEntry.second["outsideColor"] = (void*) new Vector4;
 	backButtonZoneListener = new MouseZoneListener();
 	backButtonClickListener = new MouseButtonListener();
 
@@ -281,14 +269,12 @@ GameLogic::GameLogic() {
 	resetHighScoresEntry.second["fontSize"] = (void*) new float;
 	resetHighScoresEntry.second["fontColor"] = (void*) new Vector4;
 	resetHighScoresEntry.second["text"] = (void*) new std::string;
-	resetHighScoresEntry.second["insideColor"] = (void*) new Vector4;
-	resetHighScoresEntry.second["highlightColor"] = (void*) new Vector4;
-	resetHighScoresEntry.second["borderColor"] = (void*) new Vector4;
-	resetHighScoresEntry.second["outsideColor"] = (void*) new Vector4;
 	resetHighScoresEntry.second["padding"] = (void*) new float;
 	resetHighScoresEntry.second["border"] = (void*) new float;
-	resetHighScoresEntry.second["containerTimer"] = NULL;
-	resetHighScoresEntry.second["textTimer"] = NULL;
+	resetHighScoresEntry.second["softEdge"] = (void*) new float;
+	resetHighScoresEntry.second["insideColor"] = (void*) new Vector4;
+	resetHighScoresEntry.second["borderColor"] = (void*) new Vector4;
+	resetHighScoresEntry.second["outsideColor"] = (void*) new Vector4;
 	resetHighScoresButtonZoneListener = new MouseZoneListener();
 	resetHighScoresButtonClickListener = new MouseButtonListener();
 
@@ -421,7 +407,7 @@ reScheme();
 gameGraphics->execute();
 gameState = new GameState();
 mainLoopModules[gameState] = 0;
-gameGraphics->currentCamera = &orbitCamera;
+gameGraphics->currentCamera = &towerCamera;
 mainLoopModules[gameGraphics] = 0;
 ((TerrainRenderer*) gameGraphics->drawers["terrainRenderer"])->reloadGraphics();
 SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
@@ -710,12 +696,14 @@ unsigned int GameLogic::execute() {
 
 				((TerrainRenderer*) gameGraphics->drawers["terrainRenderer"])->reloadGraphics();
 			} else if(key == SDLK_TAB) {
-				if(gameGraphics->currentCamera == &orbitCamera)
+				if(gameGraphics->currentCamera == &towerCamera)
+					gameGraphics->currentCamera = &orbitCamera;
+				else if(gameGraphics->currentCamera == &orbitCamera)
 					gameGraphics->currentCamera = &presentationCamera;
 				else if(gameGraphics->currentCamera == &presentationCamera)
 					gameGraphics->currentCamera = &roamingCamera;
 				else if(gameGraphics->currentCamera == &roamingCamera)
-					gameGraphics->currentCamera = &orbitCamera;
+					gameGraphics->currentCamera = &towerCamera;
 			} else if(key == SDLK_ESCAPE) {
 				mainLoopModules.erase(mainLoopModules.find(gameState));
 				mainLoopModules.erase(mainLoopModules.find(gameGraphics));

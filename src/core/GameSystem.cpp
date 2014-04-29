@@ -328,7 +328,7 @@ GameSystem::GameSystem() :
 		);
 	setStandard(
 			"renderingPerspectiveNearClip",
-			1.0f,
+			0.1f,
 			"Near clip distance for perspective projection.",
 			true
 		);
@@ -372,7 +372,7 @@ GameSystem::GameSystem() :
 */
 	setStandard(
 			"terrainDepth",
-			5.0f,
+			10.0f,
 			"How far below the water the ground extends.",
 			true
 		);
@@ -458,7 +458,7 @@ GameSystem::GameSystem() :
 	setStandard(
 			"hudElementMargin",
 			36.0f,
-			"Space between HUD elements in pixels."
+			"Space between HUD elements in pixels (must be even number)."
 		);
 /*
 	setStandard(
@@ -469,7 +469,7 @@ GameSystem::GameSystem() :
 */
 	setStandard(
 			"hudButtonPadding",
-			8.0f,
+			12.0f,
 			"Space between HUD buttons' external border and content in pixels."
 		);
 	setStandard(
@@ -477,36 +477,37 @@ GameSystem::GameSystem() :
 			16.0f,
 			"Space between large HUD buttons' external border and content in pixels."
 		);
-/*
 	setStandard(
 			"hudContainerBorder",
-			6.0f,
+			2.0f,
 			"Thickness in pixels of HUD container element borders."
 		);
-*/
+	setStandard(
+			"hudContainerSoftEdge",
+			2.0f,
+			"Thickness in pixels of HUD container element border antialiased portion."
+		);
 	setStandard(
 			"hudContainerInsideColor",
-			Vector4(0.2f, 0.2f, 0.2f, 0.7f),
+			Vector4(0.15f, 0.15f, 0.15f, 0.75f),
 			"Background color of HUD container elements."
 		);
-/*
-	setStandard(
-			"hudContainerAltInsideColor",
-			Vector4(0.031f, 0.075f, 0.184f, 0.752f),
-			"Background color of HUD container elements."
-		);
-*/
 	setStandard(
 			"hudContainerHighlightColor",
 			Vector4(0.863f, 0.863f, 0.863f, 0.247f),
 			"Highlight background color of HUD container elements."
-		);
-/*
+	);
 	setStandard(
 			"hudContainerBorderColor",
-			Vector4(0.918f, 1.0f, 0.945f, 0.714),
+			Vector4(0.918f, 1.0f, 0.945f, 0.714f),
 			"Border color of HUD container elements."
 		);
+	setStandard(
+			"hudContainerOutsideColor",
+			Vector4(0.918f, 1.0f, 0.945f, 0.0f),
+			"Outside color of HUD container elements."
+		);
+/*
 	setStandard(
 			"hudFieldWidth",
 			20.0f,

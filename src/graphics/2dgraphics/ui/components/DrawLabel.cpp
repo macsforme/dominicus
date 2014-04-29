@@ -162,9 +162,9 @@ void DrawLabel::execute(std::map<std::string, void*> arguments) {
 	std::string* text = ((std::string*) arguments["text"]);
 
 	// color considers timer
-	float timeFactor = 1.0f;
-	if((float*) arguments["textTimer"] != NULL)
-		timeFactor = *((float*) arguments["textTimer"]);
+//	float timeFactor = 1.0f;
+//	if((float*) arguments["textTimer"] != NULL)
+//		timeFactor = *((float*) arguments["textTimer"]);
 
 	// create the text block
 	unsigned int widthWrap = gameGraphics->resolutionX;
@@ -371,12 +371,12 @@ void DrawLabel::execute(std::map<std::string, void*> arguments) {
 			vertexBufferArray[i * 9 + 5] = fontColor->x;
 			vertexBufferArray[i * 9 + 6] = fontColor->y;
 			vertexBufferArray[i * 9 + 7] = fontColor->z;
-			vertexBufferArray[i * 9 + 8] = fontColor->w * timeFactor;
+			vertexBufferArray[i * 9 + 8] = fontColor->w /* * timeFactor*/;
 		} else {
 			vertexBufferArray[i * 9 + 5] = quadVertices[i].color.x;
 			vertexBufferArray[i * 9 + 6] = quadVertices[i].color.y;
 			vertexBufferArray[i * 9 + 7] = quadVertices[i].color.z;
-			vertexBufferArray[i * 9 + 8] = quadVertices[i].color.w * timeFactor;
+			vertexBufferArray[i * 9 + 8] = quadVertices[i].color.w /* * timeFactor*/;
 		}
 	}
 

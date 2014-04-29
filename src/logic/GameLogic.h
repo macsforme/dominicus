@@ -10,14 +10,10 @@
 #define GAMELOGIC_H
 
 // forward declarations
-class FollowCamera;
 class GameLogic;
 class MouseButtonListener;
 class MouseMotionListener;
 class MouseZoneListener;
-class ShipRelativeCamera;
-class TerrainRelativeCamera;
-class FollowCamera;
 
 // program headers
 #include "audio/GameAudio.h"
@@ -206,6 +202,7 @@ DrawStackEntry fpsEntry;
 	DrawStack drawStack;
 
 	// cameras
+	TowerCamera towerCamera;
 	OrbitCamera orbitCamera;
 	PresentationCamera presentationCamera;
 	RoamingCamera roamingCamera;
