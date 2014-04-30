@@ -21,7 +21,7 @@ void main() {
 
 	// fade the underground portion
 	if(yCoordInterpol < 0.0)
-		calculatedColor.a *= (depth + yCoordInterpol) / depth;
+		calculatedColor.a *= 0.75 * (depth + yCoordInterpol) / depth;
 
 	// texture it
 	calculatedColor *= mix(

@@ -18,7 +18,7 @@ GameState::GameState() {
 	const float sink = 0.5f;
 	float height = gameSystem->getFloat("islandMaximumHeight");
 	float diameter = gameSystem->getFloat("islandMaximumWidth");
-	float textureStretch = 40.0f;
+	float textureStretch = 10.0f;
 
 	// generate the initial diamond-square heightmap (it repeats 2x over width/length)
 	DiamondSquare diamondSquare(density / 2, rough);

@@ -150,7 +150,7 @@ void TerrainRenderer::execute(std::map<std::string, void*> arguments) {
 
 	GLint textureUniforms[] = { 0, 1, 2, 3, 4 };
 	glUniform1iv(uniforms["textures"], 5, textureUniforms);
-	glUniform1f(uniforms["depth"], (GLfloat) 0.5f);
+	glUniform1f(uniforms["depth"], (GLfloat) gameSystem->getFloat("terrainDepth"));
 	glUniform1f(uniforms["height"], (GLfloat) gameSystem->getFloat("islandMaximumHeight"));
 
 	// activate the textures

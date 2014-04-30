@@ -11,6 +11,13 @@
 TowerRenderer::TowerRenderer() {
 	towerMesh = Mesh("tower");
 
+	// determine camera origin
+	cameraOrigin = (
+			towerMesh.vertices[towerMesh.faceGroups["cameraorigin"][0].vertices[0]] +
+			towerMesh.vertices[towerMesh.faceGroups["cameraorigin"][0].vertices[1]] +
+			towerMesh.vertices[towerMesh.faceGroups["cameraorigin"][0].vertices[2]]
+		) / 3.0f;
+
 	// center turret and determine origin
 	turretOrigin = (
 			towerMesh.vertices[towerMesh.faceGroups["turretorigin"][0].vertices[0]] +
@@ -208,17 +215,17 @@ void TowerRenderer::execute(std::map<std::string, void*> arguments) {
 			++itr
 		) {
 		// don't draw the missile origin
-		if(itr->first == "turretorigin")
+		if(itr->first == "turretorigin" || itr->first == "cameraorigin" || itr->first == "shellorigin")
 			continue;
 
 		// set the texture
 		glActiveTexture(GL_TEXTURE0);
-		if(itr->first == "base" || itr->first == "spinner")
+		if(itr->first == "spinner")
 			glBindTexture(GL_TEXTURE_2D, gameGraphics->getTextureID(std::string("structure/lightgrain")));
 		else if(itr->first == "turret")
 			glBindTexture(GL_TEXTURE_2D, gameGraphics->getTextureID(std::string("structure/mediumgrain")));
-		else if(itr->first == "inset")
-			glBindTexture(GL_TEXTURE_2D, gameGraphics->getTextureID(std::string("structure/darkgrain")));
+		else
+			glBindTexture(GL_TEXTURE_2D, gameGraphics->getTextureID(std::string("structure/" + itr->first).c_str()));
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);

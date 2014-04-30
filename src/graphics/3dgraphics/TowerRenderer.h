@@ -33,10 +33,13 @@ extern Platform* platform;
 
 // class definition
 class TowerRenderer : public BaseDrawNode {
-private:
 	// internal model data
-	Mesh towerMesh;
+public:
 	Vector3 turretOrigin;
+	Vector3 cameraOrigin;
+
+private:
+	Mesh towerMesh;
 
 public:
 	TowerRenderer();
