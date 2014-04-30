@@ -685,6 +685,9 @@ void Schemes::playingScheme() {
 	gameLogic->drawStack.push_back(gameLogic->scoreLabel);
 	gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->scoreLabel.second["metrics"]);
 
+	// control box
+	gameLogic->drawStack.push_back(gameLogic->controlBoxEntry);
+
 	// health gauge image
 	*((std::string*) gameLogic->healthGaugeImage.second["texture"]) = "gauge/heart";
 	((UIMetrics*) gameLogic->healthGaugeImage.second["metrics"])->bearing1 = UIMetrics::BEARING_LEFT;

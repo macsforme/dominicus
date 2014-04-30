@@ -9,34 +9,46 @@
 #ifndef DRAWCONTROLBOX_H
 #define DRAWCONTROLBOX_H
 
-// forward declarations
-class GameGraphics;
-class GameSystem;
-
 // program headers
-#include "core/GameSystem.h"
 #include "graphics/BaseDrawNode.h"
 #include "graphics/GameGraphics.h"
-#include "graphics/texture/Texture.h"
 #include "math/MatrixMath.h"
+#include "math/ScalarMath.h"
 #include "math/VectorMath.h"
 #include "platform/OpenGLHeaders.h"
+#include "platform/Platform.h"
 
 // library headers
 #include <map>
-#include <sstream>
-#include <string>
+#include <string.h>
+#include <vector>
 
 // global variables
 extern GameGraphics* gameGraphics;
-extern GameSystem* gameSystem;
+extern Platform* platform;
 
 class DrawControlBox : public BaseDrawNode {
+protected:
+	struct VertexEntry {
+		Vector2 position;
+		Vector2 primCoord;
+		Vector2 curveOriginCoord;
+		bool highlight;
+		bool concave;
+	};
+
+	// utility drawing functions
+	void drawCurve(std::vector<VertexEntry>* quadVertices, Vector2 position, Vector2 size, float rotation,
+			bool highlight = false, bool concave = false);
+	void drawBorder(std::vector<VertexEntry>* quadVertices, Vector2 position, Vector2 size, float rotation,
+			bool highlight = false);
+	void drawFiller(std::vector<VertexEntry>* quadVertices, Vector2 position, Vector2 size,
+			bool highlight = false);
+
 public:
 	DrawControlBox();
-	~DrawControlBox();
 
-	void execute(std::map<std::string, void*> arguments);
+	void execute(std::map<std::string, void*> newDrawData);
 };
 
 #endif // DRAWCONTROLBOX_H

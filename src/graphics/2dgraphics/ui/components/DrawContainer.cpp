@@ -43,7 +43,7 @@ void DrawContainer::execute(std::map<std::string, void*> arguments) {
 			*((float*) arguments["padding"]) * 2.0f / (float) gameGraphics->resolutionY
 		);
 	float border = *((float*) arguments["border"]) * 2.0f / *((float*) arguments["padding"]);
-	std::vector<DrawContainer::VertexEntry> quadVertices;
+	std::vector<VertexEntry> quadVertices;
 
 	drawCurve(
 			&quadVertices,

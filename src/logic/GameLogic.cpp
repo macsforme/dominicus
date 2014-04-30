@@ -322,6 +322,8 @@ GameLogic::GameLogic() {
 	scoreLabel.second["fontColor"] = (void*) new Vector4;
 	scoreLabel.second["text"] = (void*) new std::string;
 
+	controlBoxEntry.first = "controlBox";
+
 	healthGaugeImage.first = "texture";
 	healthGaugeImage.second["metrics"] = (void*) new UIMetrics;
 	healthGaugeImage.second["texture"] = (void*) new std::string;
@@ -1130,5 +1132,6 @@ unsigned int GameLogic::execute() {
 			frequency  != 0 ?
 			1000 / frequency : 0
 		);
+
 	return getSleepTime(idealSleepTime);
 }

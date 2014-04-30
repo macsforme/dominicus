@@ -20,6 +20,7 @@ class MouseZoneListener;
 #include "core/GameSystem.h"
 #include "core/MainLoopMember.h"
 #include "graphics/GameGraphics.h"
+#include "graphics/2dgraphics/controlbox/DrawControlBox.h"
 #include "graphics/2dgraphics/cursor/DrawCursor.h"
 #include "graphics/2dgraphics/ui/DrawGrayOut.h"
 #include "graphics/2dgraphics/ui/DrawRadar.h"
@@ -144,6 +145,7 @@ public:
 	KeyAbsoluteListener* cameraLeftKeyListener;
 	KeyAbsoluteListener* cameraRightKeyListener;
 	DrawStackEntry scoreLabel;
+	DrawStackEntry controlBoxEntry;
 	DrawStackEntry healthGaugeImage;
 	DrawStackEntry healthGaugeBar;
 	DrawStackEntry ammoGaugeImage;
@@ -190,7 +192,6 @@ DrawStackEntry fpsEntry;
 	DrawStackEntry controlsHelpEntry;
 	DrawStackEntry scoreboardEntry;
 
-	DrawStackEntry controlBoxEntry;
 	DrawStackEntry cursorEntry;
 
 	DrawStackEntry hintEntry;

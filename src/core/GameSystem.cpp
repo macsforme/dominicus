@@ -195,7 +195,7 @@ GameSystem::GameSystem() :
 		);
 	setStandard(
 			"stateShipOrbitMargin",
-			200.0f,
+			1000.0f,
 			"Radius of margin between maximum edge of island and first ship orbit.",
 			true
 		);
@@ -288,8 +288,7 @@ GameSystem::GameSystem() :
 		);
 	setStandard(
 			"displayFPS",
-//			60.0f,
-1000.0f,
+			60.0f,
 			"Number of frames per second to draw."
 		);
 	setStandard(
@@ -328,7 +327,7 @@ GameSystem::GameSystem() :
 		);
 	setStandard(
 			"renderingPerspectiveNearClip",
-			0.1f,
+			0.5f,
 			"Near clip distance for perspective projection.",
 			true
 		);
@@ -424,14 +423,20 @@ GameSystem::GameSystem() :
 			Vector4(1.0f, 1.0f, 1.0f, 1.0f),
 			"Thickness of cursor in pixels."
 		);
+*/
 	setStandard(
 			"hudControlBoxSize",
 			75.0f,
 			"Size of ship control box in percentage of screen height."
 		);
 	setStandard(
+			"hudControlBoxCornerSize",
+			50.0f,
+			"Percentage of control box quadrant which curved portion should take up."
+		);
+	setStandard(
 			"hudControlBoxSpotSize",
-			5.0f,
+			10.0f,
 			"Size of ship control box dead spot in percentage of screen height."
 		);
 	setStandard(
@@ -439,6 +444,7 @@ GameSystem::GameSystem() :
 			Vector4(0.3f, 0.3f, 0.3f, 0.6f),
 			"Thickness of cursor in pixels."
 		);
+/*
 	setStandard(
 			"hudConsoleMaxLines",
 			8.0f,
@@ -627,12 +633,12 @@ GameSystem::GameSystem() :
 		);
 	setStandard(
 			"islandMaximumWidth",
-			4000.0f,
+			1000.0f,
 			"Maximum island width"
 		);
 	setStandard(
 			"islandMaximumHeight",
-			400.0f,
+			100.0f,
 			"Maximum island height"
 		);
 
