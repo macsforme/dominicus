@@ -622,5 +622,6 @@ if(gameLogic != NULL) {
 			1000 / frequency : 0
 		);
 
-	return getSleepTime(idealSleepTime);
+//	return getSleepTime(idealSleepTime);
+return 0;
 }
