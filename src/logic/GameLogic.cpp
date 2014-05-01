@@ -419,7 +419,6 @@ reScheme();
 SDL_LockAudio();
 gameAudio->setBackgroundMusic("playingSong");
 SDL_UnlockAudio();
-
 }
 
 GameLogic::~GameLogic() {

@@ -150,7 +150,7 @@ void TowerRenderer::execute(std::map<std::string, void*> arguments) {
 		};
 
 	Matrix4 spinnerMvMatrix; spinnerMvMatrix.identity();
-	rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians((float) (gameState->getGameMills() % 8000) / 8000.0f * 360.0f), spinnerMvMatrix);
+	rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians((float) (gameState->lastUpdateGameTime % 8000) / 8000.0f * 360.0f), spinnerMvMatrix);
 	spinnerMvMatrix *= mvMatrix;
 	float spinnerMvMatrixArray[] = {
 			spinnerMvMatrix.m11, spinnerMvMatrix.m12, spinnerMvMatrix.m13, spinnerMvMatrix.m14,
@@ -160,9 +160,9 @@ void TowerRenderer::execute(std::map<std::string, void*> arguments) {
 		};
 
 	Matrix4 turretMvMatrix; turretMvMatrix.identity();
-	rotateMatrix(Vector3(0.0f, 0.0f, 1.0f), radians((sin(-PI + (float) (gameState->getGameMills() % 4000) / 4000.0f * 2.0f * PI) * 0.5f + 0.5f ) * 45.0f), turretMvMatrix);
+	rotateMatrix(Vector3(0.0f, 0.0f, 1.0f), radians((sin(-PI + (float) (gameState->lastUpdateGameTime % 4000) / 4000.0f * 2.0f * PI) * 0.5f + 0.5f ) * 45.0f), turretMvMatrix);
 	translateMatrix(turretOrigin.x, turretOrigin.y, turretOrigin.z, turretMvMatrix);
-	rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians((float) (gameState->getGameMills() % 8000) / 8000.0f * 360.0f), turretMvMatrix);
+	rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians((float) (gameState->lastUpdateGameTime % 8000) / 8000.0f * 360.0f), turretMvMatrix);
 	turretMvMatrix *= mvMatrix;
 	float turretMvMatrixArray[] = {
 			turretMvMatrix.m11, turretMvMatrix.m12, turretMvMatrix.m13, turretMvMatrix.m14,

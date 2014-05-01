@@ -75,6 +75,7 @@ public:
 	std::vector<Missile> missiles;
 
 	bool isPaused;
+	unsigned int lastUpdateGameTime;
 	unsigned int gameTimeMargin;
 
 	unsigned int execute();

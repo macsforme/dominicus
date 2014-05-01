@@ -185,6 +185,7 @@ GameState::GameState() {
 
 	// set start time
 	isPaused = false;
+	lastUpdateGameTime = 0;
 	gameTimeMargin = platform->getExecMills();
 }
 
@@ -192,10 +193,13 @@ GameState::~GameState() {
 }
 
 unsigned int GameState::execute() {
+	// mark current game time for this update for consistency
+	lastUpdateGameTime = getGameMills();
+
 	// update/add ships as appropriate
 	float shipOrbitDistance = (gameSystem->getFloat("islandMaximumWidth") * 0.5f + gameSystem->getFloat("stateShipOrbitMargin"));
 
-	if(getGameMills() / 1000 / gameSystem->getFloat("stateShipAddRate") + 1 > ships.size()) {
+	if(lastUpdateGameTime / 1000 / gameSystem->getFloat("stateShipAddRate") + 1 > ships.size()) {
 		Ship ship;
 static int originAngle = 0.0f; originAngle += 75.0f;
 		ship.originAngle = originAngle;
@@ -204,7 +208,7 @@ static int originAngle = 0.0f; originAngle += 75.0f;
 
 	for(size_t i = 0; i < ships.size(); ++i) {
 		// determine phase
-		float shipLifeTime = (float) (getGameMills() - i * gameSystem->getFloat("stateShipAddRate") * 1000) / 1000.0f;
+		float shipLifeTime = (float) (lastUpdateGameTime - i * gameSystem->getFloat("stateShipAddRate") * 1000) / 1000.0f;
 
 		if(shipLifeTime > gameSystem->getFloat("stateShipEntryTime")) {
 			// orbit phase

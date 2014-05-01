@@ -36,7 +36,7 @@ void PresentationCamera::execute() {
 	translateMatrix(-gameState->fortress.position.x, -gameState->fortress.position.y, -gameState->fortress.position.z, mvMatrix);
 	rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians((float) (platform->getExecMills() % 32000) / 32000.0f * 360.0f), mvMatrix);
 	rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(-30.0f * (sin(PI + (float) (platform->getExecMills() % 16000) / 16000.0f * 2.0f * PI) * 0.5f + 0.5f )), mvMatrix);
-	translateMatrix(0.0f, 0.0f, 25.0f + (sin(-PI + (float) (platform->getExecMills() % 32000) / 32000.0f * 2.0f * PI) * 0.5f + 0.5f ) * 100.0f, mvMatrix);
+	translateMatrix(0.0f, 0.0f, 25.0f + (sin(-PI + (float) (platform->getExecMills() % 32000) / 32000.0f * 2.0f * PI) * 0.5f + 0.5f ) * 50.0f, mvMatrix);
 
 	lightMatrix.identity();
 	rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians((float) (platform->getExecMills() % 32000) / 32000.0f * 360.0f), lightMatrix);
@@ -64,10 +64,10 @@ void TowerCamera::execute() {
 
 	mvMatrix.identity();
 	translateMatrix(-gameState->fortress.position.x, -gameState->fortress.position.y, -gameState->fortress.position.z, mvMatrix);
-rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), -radians((float) (gameState->getGameMills() % 8000) / 8000.0f * 360.0f), mvMatrix);
+rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), -radians((float) (gameState->lastUpdateGameTime % 8000) / 8000.0f * 360.0f), mvMatrix);
 	translateMatrix(-((TowerRenderer*) gameGraphics->drawers["towerRenderer"])->cameraOrigin.x, -((TowerRenderer*) gameGraphics->drawers["towerRenderer"])->cameraOrigin.y, -((TowerRenderer*) gameGraphics->drawers["towerRenderer"])->cameraOrigin.z, mvMatrix);
 	rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), -radians(90.0f), mvMatrix);
-rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians((sin(-PI + (float) (gameState->getGameMills() % 4000) / 4000.0f * 2.0f * PI) * 0.5f + 0.5f ) * 45.0f), mvMatrix);
+rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians((sin(-PI + (float) (gameState->lastUpdateGameTime % 4000) / 4000.0f * 2.0f * PI) * 0.5f + 0.5f ) * 45.0f), mvMatrix);
 
 	lightMatrix.identity();
 }
