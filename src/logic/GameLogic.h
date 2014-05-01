@@ -71,12 +71,12 @@ public:
 	typedef std::pair< std::string, DrawStackArgList > DrawStackEntry;
 	typedef std::vector<DrawStackEntry> DrawStack;
 
+	// main menu
 	KeyListener* quitKeyListener;
 	KeyListener* fullScreenKeyListener;
-
+	KeyListener* mainMenuKeyListener;
 	MouseMotionListener* mouseMotionListener;
 	DrawStackEntry* activeMenuSelection;
-	KeyListener* mainMenuKeyListener;
 	DrawStackEntry splashEntry;
 	DrawStackEntry brandEntry;
 	DrawStackEntry presentsEntry;
@@ -102,6 +102,7 @@ public:
 	DrawStackEntry menuTip2Entry;
 	DrawStackEntry menuTip3Entry;
 
+	// help menu
 	KeyListener* helpMenuKeyListener;
 	DrawStackEntry helpTitleEntry;
 	DrawStackEntry controlsTitleEntry;
@@ -114,6 +115,7 @@ public:
 	MouseZoneListener* backButtonZoneListener;
 	MouseButtonListener* backButtonClickListener;
 	
+	// settings menu
 	KeyListener* settingsMenuKeyListener;
 	DrawStackEntry settingsMenuTitleEntry;
 	DrawStackEntry levelSettingEntry;
@@ -132,12 +134,15 @@ public:
 	MouseZoneListener* resetHighScoresButtonZoneListener;
 	MouseButtonListener* resetHighScoresButtonClickListener;
 
+	// high scores menu
 	KeyListener* highScoresMenuKeyListener;
 	DrawStackEntry highScoresTitleEntry;
 	DrawStackEntry highScoresLabelEntry;
 
+	// loading
 	DrawStackEntry loadingEntry;
 
+	// playing
 	KeyListener* playingKeyListener;
 	KeyAbsoluteListener* cameraAheadKeyListener;
 	KeyAbsoluteListener* cameraUpKeyListener;
@@ -145,6 +150,7 @@ public:
 	KeyAbsoluteListener* cameraLeftKeyListener;
 	KeyAbsoluteListener* cameraRightKeyListener;
 	DrawStackEntry scoreLabel;
+	DrawStackEntry playingTipEntry;
 	DrawStackEntry controlBoxEntry;
 	DrawStackEntry healthGaugeImage;
 	DrawStackEntry healthGaugeBar;

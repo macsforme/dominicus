@@ -661,7 +661,7 @@ void Schemes::playingScheme() {
 	inputHandler->keyboard->addListener(gameLogic->cameraRightKeyListener);
 
 	// sky
-	gameLogic->drawStack.push_back(gameLogic->skyEntry);
+//	gameLogic->drawStack.push_back(gameLogic->skyEntry);
 
 	// water
 	gameLogic->drawStack.push_back(gameLogic->waterEntry);
@@ -684,6 +684,15 @@ void Schemes::playingScheme() {
 	((UIMetrics*) gameLogic->scoreLabel.second["metrics"])->size = ((DrawLabel*) gameGraphics->drawers["label"])->getSize(gameLogic->scoreLabel.second);
 	gameLogic->drawStack.push_back(gameLogic->scoreLabel);
 	gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->scoreLabel.second["metrics"]);
+
+	// tip
+	*((float*) gameLogic->playingTipEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+	*((Vector4*) gameLogic->playingTipEntry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
+	*((std::string*) gameLogic->playingTipEntry.second["text"]) = "Press esc to pause and show options";
+	((UIMetrics*) gameLogic->playingTipEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_BOTTOM;
+	((UIMetrics*) gameLogic->playingTipEntry.second["metrics"])->size = ((DrawLabel*) gameGraphics->drawers["label"])->getSize(gameLogic->playingTipEntry.second);
+	gameLogic->drawStack.push_back(gameLogic->playingTipEntry);
+	gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->playingTipEntry.second["metrics"]);
 
 	// control box
 	gameLogic->drawStack.push_back(gameLogic->controlBoxEntry);

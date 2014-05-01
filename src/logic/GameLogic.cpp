@@ -322,6 +322,12 @@ GameLogic::GameLogic() {
 	scoreLabel.second["fontColor"] = (void*) new Vector4;
 	scoreLabel.second["text"] = (void*) new std::string;
 
+	playingTipEntry.first = "label";
+	playingTipEntry.second["metrics"] = (void*) new UIMetrics;
+	playingTipEntry.second["fontSize"] = (void*) new float;
+	playingTipEntry.second["fontColor"] = (void*) new Vector4;
+	playingTipEntry.second["text"] = (void*) new std::string;
+
 	controlBoxEntry.first = "controlBox";
 
 	healthGaugeImage.first = "texture";
