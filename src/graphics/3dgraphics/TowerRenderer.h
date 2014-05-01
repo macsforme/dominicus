@@ -12,7 +12,6 @@
 // program headers
 #include "core/GameSystem.h"
 #include "geometry/Mesh.h"
-#include "graphics/BaseDrawNode.h"
 #include "graphics/GameGraphics.h"
 #include "logic/Camera.h"
 #include "platform/OpenGLHeaders.h"

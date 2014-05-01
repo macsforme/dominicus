@@ -10,7 +10,6 @@
 #define SKYRENDERER_H
 
 // program headers
-#include "graphics/BaseDrawNode.h"
 #include "graphics/GameGraphics.h"
 #include "platform/OpenGLHeaders.h"
 #include "platform/Platform.h"

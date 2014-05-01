@@ -6,7 +6,7 @@
 // Released under the terms of the "Simplified BSD License." See the file
 // licenses/DOMINICUS.txt for the license text.
 
-#include "graphics/2dgraphics/controlbox/DrawControlBox.h"
+#include "graphics/2dgraphics/DrawControlBox.h"
 
 DrawControlBox::DrawControlBox() {
 	// set up shader

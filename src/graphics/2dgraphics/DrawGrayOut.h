@@ -1,4 +1,4 @@
-// DrawSplash.h
+// DrawGrayOut.h
 //
 // Dominicus
 // Copyright 2010-2011, Joshua Bodine
@@ -6,33 +6,31 @@
 // Released under the terms of the "Simplified BSD License." See the file
 // licenses/DOMINICUS.txt for the license text.
 
-#ifndef DRAWSPLASH_H
-#define DRAWSPLASH_H
-
-// forward declarations
-class GameGraphics;
+#ifndef DRAWGRAYOUT_H
+#define DRAWGRAYOUT_H
 
 // program headers
-#include "graphics/BaseDrawNode.h"
+#include "core/GameSystem.h"
 #include "graphics/GameGraphics.h"
-#include "graphics/texture/Texture.h"
-#include "math/MatrixMath.h"
+#include "math/VectorMath.h"
+#include "logic/UILayoutAuthority.h"
 #include "platform/OpenGLHeaders.h"
 
 // library headers
 #include <map>
-#include <sstream>
 #include <string>
 
 // global variables
 extern GameGraphics* gameGraphics;
+extern GameSystem* gameSystem;
 
-class DrawSplash : public BaseDrawNode {
+class DrawGrayOut : public BaseUIElement {
 public:
-	DrawSplash();
-	~DrawSplash();
+	DrawGrayOut();
+	~DrawGrayOut();
 
+	Vector2 getSize(std::map<std::string, void*> arguments);
 	void execute(std::map<std::string, void*> arguments);
 };
 
-#endif // DRAWSPLASH_H
+#endif // DRAWGRAYOUT_H

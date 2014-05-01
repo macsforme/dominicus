@@ -1,4 +1,4 @@
-// DrawRadar.h
+// DrawSplash.h
 //
 // Dominicus
 // Copyright 2010-2011, Joshua Bodine
@@ -6,40 +6,32 @@
 // Released under the terms of the "Simplified BSD License." See the file
 // licenses/DOMINICUS.txt for the license text.
 
-#ifndef DRAWRADAR_H
-#define DRAWRADAR_H
+#ifndef DRAWSPLASH_H
+#define DRAWSPLASH_H
+
+// forward declarations
+class GameGraphics;
 
 // program headers
 #include "graphics/GameGraphics.h"
 #include "graphics/texture/Texture.h"
-#include "graphics/2dgraphics/ui/BaseUIElement.h"
-#include "logic/UILayoutAuthority.h"
 #include "math/MatrixMath.h"
-#include "math/MiscMath.h"
-#include "math/VectorMath.h"
 #include "platform/OpenGLHeaders.h"
-#include "state/GameState.h"
 
 // library headers
 #include <map>
+#include <sstream>
 #include <string>
 
 // global variables
 extern GameGraphics* gameGraphics;
-extern GameState* gameState;
 
-class DrawRadar : public BaseUIElement {
-private:
-	GLuint radarTextureID;
-
+class DrawSplash : public BaseDrawNode {
 public:
-	DrawRadar();
-	~DrawRadar();
+	DrawSplash();
+	~DrawSplash();
 
-	void reloadGraphics();
-
-	Vector2 getSize(std::map<std::string, void*> arguments);
 	void execute(std::map<std::string, void*> arguments);
 };
 
-#endif // DRAWRADAR_H
+#endif // DRAWSPLASH_H

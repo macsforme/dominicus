@@ -6,7 +6,7 @@
 // Released under the terms of the "Simplified BSD License." See the file
 // licenses/DOMINICUS.txt for the license text.
 
-#include "graphics/2dgraphics/ui/components/DrawContainer.h"
+#include "graphics/2dgraphics/DrawContainer.h"
 
 DrawContainer::DrawContainer() {
 	// set up shader

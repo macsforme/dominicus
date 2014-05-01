@@ -10,7 +10,6 @@
 #define DRAWCONTROLBOX_H
 
 // program headers
-#include "graphics/BaseDrawNode.h"
 #include "graphics/GameGraphics.h"
 #include "math/MatrixMath.h"
 #include "math/ScalarMath.h"

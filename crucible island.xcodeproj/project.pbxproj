@@ -7,16 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0303151A131F99D6009B9AFD /* DrawControlBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03BB9B55131F3F50009DFC8B /* DrawControlBox.cpp */; };
 		0303173213204F1F009B9AFD /* GameLogic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0303173013204F1F009B9AFD /* GameLogic.cpp */; };
 		0315B60B134C2AB8002AD1CE /* UILayoutAuthority.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0315B609134C2AB8002AD1CE /* UILayoutAuthority.cpp */; };
-		0315B626134C2C4B002AD1CE /* DrawContainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0315B620134C2C4B002AD1CE /* DrawContainer.cpp */; };
-		0315B627134C2C4B002AD1CE /* DrawLabel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0315B622134C2C4B002AD1CE /* DrawLabel.cpp */; };
-		0315B628134C2C4B002AD1CE /* DrawTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0315B624134C2C4B002AD1CE /* DrawTexture.cpp */; };
 		0315B631134C2CF7002AD1CE /* Schemes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0315B630134C2CF7002AD1CE /* Schemes.cpp */; };
-		0315B84E134C773D002AD1CE /* DrawButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0315B84C134C773D002AD1CE /* DrawButton.cpp */; };
-		0315BA2D134D27B1002AD1CE /* DrawField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0315BA2B134D27B1002AD1CE /* DrawField.cpp */; };
-		031DB09513AB515A00FE0F76 /* DrawRadar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 031DB09313AB515A00FE0F76 /* DrawRadar.cpp */; };
 		0330C498133A2AB6006199BE /* TextBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03BB9B83131F3F50009DFC8B /* TextBlock.cpp */; };
 		0353219118C931EF002FC13A /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0353219018C931EF002FC13A /* Cocoa.framework */; };
 		0353219318C93204002FC13A /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0353219218C93204002FC13A /* OpenGL.framework */; };
@@ -25,20 +18,25 @@
 		0353219918C934A7002FC13A /* libbz2.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0353219818C934A7002FC13A /* libbz2.1.0.dylib */; };
 		0353219B18C93516002FC13A /* libpng16.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0353219A18C93516002FC13A /* libpng16.a */; };
 		0353219C18C936C9002FC13A /* SDL.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0353219418C93216002FC13A /* SDL.framework */; };
+		035466601912C17200F4953E /* DrawButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0354664B1912C17200F4953E /* DrawButton.cpp */; };
+		035466611912C17200F4953E /* DrawContainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0354664D1912C17200F4953E /* DrawContainer.cpp */; };
+		035466621912C17200F4953E /* DrawControlBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0354664F1912C17200F4953E /* DrawControlBox.cpp */; };
+		035466631912C17200F4953E /* DrawField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 035466511912C17200F4953E /* DrawField.cpp */; };
+		035466641912C17200F4953E /* DrawGrayOut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 035466531912C17200F4953E /* DrawGrayOut.cpp */; };
+		035466651912C17200F4953E /* DrawLabel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 035466551912C17200F4953E /* DrawLabel.cpp */; };
+		035466661912C17200F4953E /* DrawProgressBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 035466571912C17200F4953E /* DrawProgressBar.cpp */; };
+		035466671912C17200F4953E /* DrawRadar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 035466591912C17200F4953E /* DrawRadar.cpp */; };
+		035466681912C17200F4953E /* DrawSplash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0354665B1912C17200F4953E /* DrawSplash.cpp */; };
+		035466691912C17200F4953E /* DrawTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0354665D1912C17200F4953E /* DrawTexture.cpp */; };
 		03590F84131E446000EDF7A7 /* GameSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03590EED131E181C00EDF7A7 /* GameSystem.cpp */; };
 		036CFFE118EB5D4800C1B797 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 036CFFDF18EB5D4800C1B797 /* Camera.cpp */; };
-		037542F913B3260100AEE260 /* DrawGrayOut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 037542F013B3250B00AEE260 /* DrawGrayOut.cpp */; };
-		0380F2A1190748B500355FE2 /* DrawProgressBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0380F29F190748B500355FE2 /* DrawProgressBar.cpp */; };
 		0387C28D18F3E2A300565A43 /* GameAudio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0387C28B18F3E2A300565A43 /* GameAudio.cpp */; };
 		03ACFE4918FCD8C200A6B447 /* ShipRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03ACFE4118FCD8C200A6B447 /* ShipRenderer.cpp */; };
 		03ACFE4A18FCD8C200A6B447 /* SkyRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03ACFE4318FCD8C200A6B447 /* SkyRenderer.cpp */; };
 		03ACFE4B18FCD8C200A6B447 /* TerrainRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03ACFE4518FCD8C200A6B447 /* TerrainRenderer.cpp */; };
 		03ACFE4C18FCD8C200A6B447 /* WaterRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03ACFE4718FCD8C200A6B447 /* WaterRenderer.cpp */; };
 		03BB9B9B131F3F50009DFC8B /* GameGraphics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03BB9B7E131F3F50009DFC8B /* GameGraphics.cpp */; };
-		03BB9C37131F49CC009DFC8B /* DrawSplash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03BB9C36131F49CB009DFC8B /* DrawSplash.cpp */; };
-		03BB9C66131F4E11009DFC8B /* BaseDrawNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03BB9C65131F4E11009DFC8B /* BaseDrawNode.cpp */; };
 		03BB9D26131F5D39009DFC8B /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03BB9B88131F3F50009DFC8B /* Texture.cpp */; };
-		03BC5AE81339ECE600DD3F04 /* BaseUIElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03BC5ADB1339ECE600DD3F04 /* BaseUIElement.cpp */; };
 		03BC5B001339F19900DD3F04 /* FontManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03BB9B81131F3F50009DFC8B /* FontManager.cpp */; };
 		03C806CC130E500D0037D309 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		03C806CD130E50140037D309 /* crucible island.icns in Resources */ = {isa = PBXBuildFile; fileRef = 03D47B7D1263E27F001755A6 /* crucible island.icns */; };
@@ -55,7 +53,6 @@
 		03C80756130E51C20037D309 /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 030F8F001264DBF300190225 /* libfreetype.a */; };
 		03C8075E130E52030037D309 /* SDLMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 030F8E151264C0FF00190225 /* SDLMain.m */; };
 		03C9206C13693A51000C4373 /* GameState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03C9206B13693A51000C4373 /* GameState.cpp */; };
-		03D0B3C4131F769900100010 /* DrawCursor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03BB9B58131F3F50009DFC8B /* DrawCursor.cpp */; };
 		03E508FA18FE1B340056ECE6 /* TowerRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03E508F818FE1B340056ECE6 /* TowerRenderer.cpp */; };
 		03EA006313839E1F00791980 /* Collisions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03EA006213839E1F00791980 /* Collisions.cpp */; };
 /* End PBXBuildFile section */
@@ -99,20 +96,8 @@
 		030F8F3D1264DD1300190225 /* Keyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Keyboard.h; sourceTree = "<group>"; };
 		0315B609134C2AB8002AD1CE /* UILayoutAuthority.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UILayoutAuthority.cpp; path = src/logic/UILayoutAuthority.cpp; sourceTree = "<group>"; };
 		0315B60A134C2AB8002AD1CE /* UILayoutAuthority.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UILayoutAuthority.h; path = src/logic/UILayoutAuthority.h; sourceTree = "<group>"; };
-		0315B620134C2C4B002AD1CE /* DrawContainer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawContainer.cpp; sourceTree = "<group>"; };
-		0315B621134C2C4B002AD1CE /* DrawContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawContainer.h; sourceTree = "<group>"; };
-		0315B622134C2C4B002AD1CE /* DrawLabel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawLabel.cpp; sourceTree = "<group>"; };
-		0315B623134C2C4B002AD1CE /* DrawLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawLabel.h; sourceTree = "<group>"; };
-		0315B624134C2C4B002AD1CE /* DrawTexture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawTexture.cpp; sourceTree = "<group>"; };
-		0315B625134C2C4B002AD1CE /* DrawTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawTexture.h; sourceTree = "<group>"; };
 		0315B62F134C2CF7002AD1CE /* Schemes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Schemes.h; path = src/logic/Schemes.h; sourceTree = "<group>"; };
 		0315B630134C2CF7002AD1CE /* Schemes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Schemes.cpp; path = src/logic/Schemes.cpp; sourceTree = "<group>"; };
-		0315B84C134C773D002AD1CE /* DrawButton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawButton.cpp; sourceTree = "<group>"; };
-		0315B84D134C773D002AD1CE /* DrawButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawButton.h; sourceTree = "<group>"; };
-		0315BA2B134D27B1002AD1CE /* DrawField.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawField.cpp; sourceTree = "<group>"; };
-		0315BA2C134D27B1002AD1CE /* DrawField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawField.h; sourceTree = "<group>"; };
-		031DB09313AB515A00FE0F76 /* DrawRadar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawRadar.cpp; sourceTree = "<group>"; };
-		031DB09413AB515A00FE0F76 /* DrawRadar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawRadar.h; sourceTree = "<group>"; };
 		032B8B351263DF5900DDE564 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 		0353219018C931EF002FC13A /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = ../../../../../../System/Library/Frameworks/Cocoa.framework; sourceTree = "<group>"; };
 		0353219218C93204002FC13A /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = ../../../../../../System/Library/Frameworks/OpenGL.framework; sourceTree = "<group>"; };
@@ -120,6 +105,26 @@
 		0353219618C93238002FC13A /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = ../../../../../../usr/lib/libz.1.2.5.dylib; sourceTree = "<group>"; };
 		0353219818C934A7002FC13A /* libbz2.1.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libbz2.1.0.dylib; path = ../../../../../../usr/lib/libbz2.1.0.dylib; sourceTree = "<group>"; };
 		0353219A18C93516002FC13A /* libpng16.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpng16.a; path = ../../../../../../usr/local/lib/libpng16.a; sourceTree = "<group>"; };
+		0354664B1912C17200F4953E /* DrawButton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawButton.cpp; sourceTree = "<group>"; };
+		0354664C1912C17200F4953E /* DrawButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawButton.h; sourceTree = "<group>"; };
+		0354664D1912C17200F4953E /* DrawContainer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawContainer.cpp; sourceTree = "<group>"; };
+		0354664E1912C17200F4953E /* DrawContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawContainer.h; sourceTree = "<group>"; };
+		0354664F1912C17200F4953E /* DrawControlBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawControlBox.cpp; sourceTree = "<group>"; };
+		035466501912C17200F4953E /* DrawControlBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawControlBox.h; sourceTree = "<group>"; };
+		035466511912C17200F4953E /* DrawField.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawField.cpp; sourceTree = "<group>"; };
+		035466521912C17200F4953E /* DrawField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawField.h; sourceTree = "<group>"; };
+		035466531912C17200F4953E /* DrawGrayOut.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawGrayOut.cpp; sourceTree = "<group>"; };
+		035466541912C17200F4953E /* DrawGrayOut.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawGrayOut.h; sourceTree = "<group>"; };
+		035466551912C17200F4953E /* DrawLabel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawLabel.cpp; sourceTree = "<group>"; };
+		035466561912C17200F4953E /* DrawLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawLabel.h; sourceTree = "<group>"; };
+		035466571912C17200F4953E /* DrawProgressBar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawProgressBar.cpp; sourceTree = "<group>"; };
+		035466581912C17200F4953E /* DrawProgressBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawProgressBar.h; sourceTree = "<group>"; };
+		035466591912C17200F4953E /* DrawRadar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawRadar.cpp; sourceTree = "<group>"; };
+		0354665A1912C17200F4953E /* DrawRadar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawRadar.h; sourceTree = "<group>"; };
+		0354665B1912C17200F4953E /* DrawSplash.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawSplash.cpp; sourceTree = "<group>"; };
+		0354665C1912C17200F4953E /* DrawSplash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawSplash.h; sourceTree = "<group>"; };
+		0354665D1912C17200F4953E /* DrawTexture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawTexture.cpp; sourceTree = "<group>"; };
+		0354665E1912C17200F4953E /* DrawTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawTexture.h; sourceTree = "<group>"; };
 		0358003012E2DC8E00CB625F /* MiscMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiscMath.h; sourceTree = "<group>"; };
 		03590EEC131E181C00EDF7A7 /* GameSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameSystem.h; sourceTree = "<group>"; };
 		03590EED131E181C00EDF7A7 /* GameSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameSystem.cpp; sourceTree = "<group>"; };
@@ -129,10 +134,6 @@
 		035E0E7612DCE54D00F84121 /* MainLoopMember.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MainLoopMember.cpp; sourceTree = "<group>"; };
 		036CFFDF18EB5D4800C1B797 /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Camera.cpp; path = src/logic/Camera.cpp; sourceTree = SOURCE_ROOT; };
 		036CFFE018EB5D4800C1B797 /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Camera.h; path = src/logic/Camera.h; sourceTree = SOURCE_ROOT; };
-		037542F013B3250B00AEE260 /* DrawGrayOut.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawGrayOut.cpp; sourceTree = "<group>"; };
-		037542F113B3250B00AEE260 /* DrawGrayOut.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawGrayOut.h; sourceTree = "<group>"; };
-		0380F29F190748B500355FE2 /* DrawProgressBar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawProgressBar.cpp; sourceTree = "<group>"; };
-		0380F2A0190748B500355FE2 /* DrawProgressBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawProgressBar.h; sourceTree = "<group>"; };
 		0387C28B18F3E2A300565A43 /* GameAudio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameAudio.cpp; path = src/audio/GameAudio.cpp; sourceTree = "<group>"; };
 		0387C28C18F3E2A300565A43 /* GameAudio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameAudio.h; path = src/audio/GameAudio.h; sourceTree = "<group>"; };
 		038FC1DE12A0EA3A00AE328B /* OpenGLHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLHeaders.h; sourceTree = "<group>"; };
@@ -144,10 +145,6 @@
 		03ACFE4618FCD8C200A6B447 /* TerrainRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TerrainRenderer.h; sourceTree = "<group>"; };
 		03ACFE4718FCD8C200A6B447 /* WaterRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WaterRenderer.cpp; sourceTree = "<group>"; };
 		03ACFE4818FCD8C200A6B447 /* WaterRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaterRenderer.h; sourceTree = "<group>"; };
-		03BB9B55131F3F50009DFC8B /* DrawControlBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawControlBox.cpp; sourceTree = "<group>"; };
-		03BB9B56131F3F50009DFC8B /* DrawControlBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawControlBox.h; sourceTree = "<group>"; };
-		03BB9B58131F3F50009DFC8B /* DrawCursor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawCursor.cpp; sourceTree = "<group>"; };
-		03BB9B59131F3F50009DFC8B /* DrawCursor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawCursor.h; sourceTree = "<group>"; };
 		03BB9B7E131F3F50009DFC8B /* GameGraphics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameGraphics.cpp; sourceTree = "<group>"; };
 		03BB9B7F131F3F50009DFC8B /* GameGraphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameGraphics.h; sourceTree = "<group>"; };
 		03BB9B81131F3F50009DFC8B /* FontManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FontManager.cpp; sourceTree = "<group>"; };
@@ -156,12 +153,6 @@
 		03BB9B84131F3F50009DFC8B /* TextBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextBlock.h; sourceTree = "<group>"; };
 		03BB9B88131F3F50009DFC8B /* Texture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Texture.cpp; sourceTree = "<group>"; };
 		03BB9B89131F3F50009DFC8B /* Texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Texture.h; sourceTree = "<group>"; };
-		03BB9C35131F49CB009DFC8B /* DrawSplash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawSplash.h; sourceTree = "<group>"; };
-		03BB9C36131F49CB009DFC8B /* DrawSplash.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawSplash.cpp; sourceTree = "<group>"; };
-		03BB9C64131F4E11009DFC8B /* BaseDrawNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseDrawNode.h; sourceTree = "<group>"; };
-		03BB9C65131F4E11009DFC8B /* BaseDrawNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BaseDrawNode.cpp; sourceTree = "<group>"; };
-		03BC5ADB1339ECE600DD3F04 /* BaseUIElement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BaseUIElement.cpp; sourceTree = "<group>"; };
-		03BC5ADC1339ECE600DD3F04 /* BaseUIElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseUIElement.h; sourceTree = "<group>"; };
 		03C806C7130E4FED0037D309 /* crucible island.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "crucible island.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		03C9206A13693A51000C4373 /* GameState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameState.h; path = src/state/GameState.h; sourceTree = "<group>"; };
 		03C9206B13693A51000C4373 /* GameState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameState.cpp; path = src/state/GameState.cpp; sourceTree = "<group>"; };
@@ -281,23 +272,6 @@
 			path = src/input;
 			sourceTree = "<group>";
 		};
-		0315B61F134C2C4B002AD1CE /* components */ = {
-			isa = PBXGroup;
-			children = (
-				0315B621134C2C4B002AD1CE /* DrawContainer.h */,
-				0315B620134C2C4B002AD1CE /* DrawContainer.cpp */,
-				0315B623134C2C4B002AD1CE /* DrawLabel.h */,
-				0315B622134C2C4B002AD1CE /* DrawLabel.cpp */,
-				0315B84D134C773D002AD1CE /* DrawButton.h */,
-				0315B84C134C773D002AD1CE /* DrawButton.cpp */,
-				0315BA2C134D27B1002AD1CE /* DrawField.h */,
-				0315BA2B134D27B1002AD1CE /* DrawField.cpp */,
-				0315B625134C2C4B002AD1CE /* DrawTexture.h */,
-				0315B624134C2C4B002AD1CE /* DrawTexture.cpp */,
-			);
-			path = components;
-			sourceTree = "<group>";
-		};
 		032B8AE812639AC900DDE564 /* frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -337,8 +311,6 @@
 			children = (
 				03BB9B7F131F3F50009DFC8B /* GameGraphics.h */,
 				03BB9B7E131F3F50009DFC8B /* GameGraphics.cpp */,
-				03BB9C64131F4E11009DFC8B /* BaseDrawNode.h */,
-				03BB9C65131F4E11009DFC8B /* BaseDrawNode.cpp */,
 				03BB9B53131F3F50009DFC8B /* 2dgraphics */,
 				03BB9B6A131F3F50009DFC8B /* 3dgraphics */,
 				03BB9B85131F3F50009DFC8B /* texture */,
@@ -351,39 +323,28 @@
 		03BB9B53131F3F50009DFC8B /* 2dgraphics */ = {
 			isa = PBXGroup;
 			children = (
-				03BB9B69131F3F50009DFC8B /* splash */,
-				03BB9B54131F3F50009DFC8B /* controlbox */,
-				03BB9B57131F3F50009DFC8B /* cursor */,
-				03BC5ADA1339ECE600DD3F04 /* ui */,
+				0354664C1912C17200F4953E /* DrawButton.h */,
+				0354664B1912C17200F4953E /* DrawButton.cpp */,
+				0354664E1912C17200F4953E /* DrawContainer.h */,
+				0354664D1912C17200F4953E /* DrawContainer.cpp */,
+				035466501912C17200F4953E /* DrawControlBox.h */,
+				0354664F1912C17200F4953E /* DrawControlBox.cpp */,
+				035466521912C17200F4953E /* DrawField.h */,
+				035466511912C17200F4953E /* DrawField.cpp */,
+				035466541912C17200F4953E /* DrawGrayOut.h */,
+				035466531912C17200F4953E /* DrawGrayOut.cpp */,
+				035466561912C17200F4953E /* DrawLabel.h */,
+				035466551912C17200F4953E /* DrawLabel.cpp */,
+				035466581912C17200F4953E /* DrawProgressBar.h */,
+				035466571912C17200F4953E /* DrawProgressBar.cpp */,
+				0354665A1912C17200F4953E /* DrawRadar.h */,
+				035466591912C17200F4953E /* DrawRadar.cpp */,
+				0354665C1912C17200F4953E /* DrawSplash.h */,
+				0354665B1912C17200F4953E /* DrawSplash.cpp */,
+				0354665E1912C17200F4953E /* DrawTexture.h */,
+				0354665D1912C17200F4953E /* DrawTexture.cpp */,
 			);
 			path = 2dgraphics;
-			sourceTree = "<group>";
-		};
-		03BB9B54131F3F50009DFC8B /* controlbox */ = {
-			isa = PBXGroup;
-			children = (
-				03BB9B56131F3F50009DFC8B /* DrawControlBox.h */,
-				03BB9B55131F3F50009DFC8B /* DrawControlBox.cpp */,
-			);
-			path = controlbox;
-			sourceTree = "<group>";
-		};
-		03BB9B57131F3F50009DFC8B /* cursor */ = {
-			isa = PBXGroup;
-			children = (
-				03BB9B59131F3F50009DFC8B /* DrawCursor.h */,
-				03BB9B58131F3F50009DFC8B /* DrawCursor.cpp */,
-			);
-			path = cursor;
-			sourceTree = "<group>";
-		};
-		03BB9B69131F3F50009DFC8B /* splash */ = {
-			isa = PBXGroup;
-			children = (
-				03BB9C35131F49CB009DFC8B /* DrawSplash.h */,
-				03BB9C36131F49CB009DFC8B /* DrawSplash.cpp */,
-			);
-			path = splash;
 			sourceTree = "<group>";
 		};
 		03BB9B6A131F3F50009DFC8B /* 3dgraphics */ = {
@@ -421,22 +382,6 @@
 				03BB9B88131F3F50009DFC8B /* Texture.cpp */,
 			);
 			path = texture;
-			sourceTree = "<group>";
-		};
-		03BC5ADA1339ECE600DD3F04 /* ui */ = {
-			isa = PBXGroup;
-			children = (
-				03BC5ADC1339ECE600DD3F04 /* BaseUIElement.h */,
-				03BC5ADB1339ECE600DD3F04 /* BaseUIElement.cpp */,
-				037542F113B3250B00AEE260 /* DrawGrayOut.h */,
-				037542F013B3250B00AEE260 /* DrawGrayOut.cpp */,
-				0380F2A0190748B500355FE2 /* DrawProgressBar.h */,
-				0380F29F190748B500355FE2 /* DrawProgressBar.cpp */,
-				031DB09413AB515A00FE0F76 /* DrawRadar.h */,
-				031DB09313AB515A00FE0F76 /* DrawRadar.cpp */,
-				0315B61F134C2C4B002AD1CE /* components */,
-			);
-			path = ui;
 			sourceTree = "<group>";
 		};
 		29B97314FDCFA39411CA2CEA /* dominicus */ = {
@@ -536,40 +481,37 @@
 				03C806DC130E50A60037D309 /* Keyboard.cpp in Sources */,
 				03C806DF130E50A90037D309 /* dominicusMain.cpp in Sources */,
 				03ACFE4B18FCD8C200A6B447 /* TerrainRenderer.cpp in Sources */,
+				035466691912C17200F4953E /* DrawTexture.cpp in Sources */,
+				035466611912C17200F4953E /* DrawContainer.cpp in Sources */,
 				03C806E3130E50AD0037D309 /* MainLoopMember.cpp in Sources */,
 				03C806E9130E50B30037D309 /* DiamondSquare.cpp in Sources */,
+				035466601912C17200F4953E /* DrawButton.cpp in Sources */,
 				03C806F7130E50D00037D309 /* Mouse.cpp in Sources */,
 				03C80701130E50D90037D309 /* main.cpp in Sources */,
 				03C8075E130E52030037D309 /* SDLMain.m in Sources */,
+				035466651912C17200F4953E /* DrawLabel.cpp in Sources */,
 				03590F84131E446000EDF7A7 /* GameSystem.cpp in Sources */,
+				035466681912C17200F4953E /* DrawSplash.cpp in Sources */,
 				03BB9B9B131F3F50009DFC8B /* GameGraphics.cpp in Sources */,
-				03BB9C37131F49CC009DFC8B /* DrawSplash.cpp in Sources */,
-				03BB9C66131F4E11009DFC8B /* BaseDrawNode.cpp in Sources */,
 				036CFFE118EB5D4800C1B797 /* Camera.cpp in Sources */,
+				035466631912C17200F4953E /* DrawField.cpp in Sources */,
 				03BB9D26131F5D39009DFC8B /* Texture.cpp in Sources */,
-				03D0B3C4131F769900100010 /* DrawCursor.cpp in Sources */,
-				0303151A131F99D6009B9AFD /* DrawControlBox.cpp in Sources */,
 				0303173213204F1F009B9AFD /* GameLogic.cpp in Sources */,
-				03BC5AE81339ECE600DD3F04 /* BaseUIElement.cpp in Sources */,
 				03BC5B001339F19900DD3F04 /* FontManager.cpp in Sources */,
 				0330C498133A2AB6006199BE /* TextBlock.cpp in Sources */,
 				0315B60B134C2AB8002AD1CE /* UILayoutAuthority.cpp in Sources */,
-				0315B626134C2C4B002AD1CE /* DrawContainer.cpp in Sources */,
-				0315B627134C2C4B002AD1CE /* DrawLabel.cpp in Sources */,
-				0380F2A1190748B500355FE2 /* DrawProgressBar.cpp in Sources */,
-				0315B628134C2C4B002AD1CE /* DrawTexture.cpp in Sources */,
 				0387C28D18F3E2A300565A43 /* GameAudio.cpp in Sources */,
+				035466661912C17200F4953E /* DrawProgressBar.cpp in Sources */,
+				035466621912C17200F4953E /* DrawControlBox.cpp in Sources */,
+				035466671912C17200F4953E /* DrawRadar.cpp in Sources */,
 				0315B631134C2CF7002AD1CE /* Schemes.cpp in Sources */,
-				0315B84E134C773D002AD1CE /* DrawButton.cpp in Sources */,
-				0315BA2D134D27B1002AD1CE /* DrawField.cpp in Sources */,
 				03E508FA18FE1B340056ECE6 /* TowerRenderer.cpp in Sources */,
 				03C9206C13693A51000C4373 /* GameState.cpp in Sources */,
 				03ACFE4918FCD8C200A6B447 /* ShipRenderer.cpp in Sources */,
 				03ACFE4A18FCD8C200A6B447 /* SkyRenderer.cpp in Sources */,
 				03ACFE4C18FCD8C200A6B447 /* WaterRenderer.cpp in Sources */,
+				035466641912C17200F4953E /* DrawGrayOut.cpp in Sources */,
 				03EA006313839E1F00791980 /* Collisions.cpp in Sources */,
-				031DB09513AB515A00FE0F76 /* DrawRadar.cpp in Sources */,
-				037542F913B3260100AEE260 /* DrawGrayOut.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

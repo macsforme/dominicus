@@ -20,7 +20,6 @@
 
 // program headers
 #include "geometry/Mesh.h"
-#include "graphics/BaseDrawNode.h"
 #include "graphics/GameGraphics.h"
 #include "logic/Camera.h"
 #include "math/MatrixMath.h"

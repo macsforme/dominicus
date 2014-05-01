@@ -1,4 +1,4 @@
-// DrawCursor.h
+// DrawTexture.h
 //
 // Dominicus
 // Copyright 2010-2011, Joshua Bodine
@@ -6,34 +6,37 @@
 // Released under the terms of the "Simplified BSD License." See the file
 // licenses/DOMINICUS.txt for the license text.
 
-#ifndef DRAWCURSOR_H
-#define DRAWCURSOR_H
-
-// forward declarations
-class GameGraphics;
+#ifndef DRAWTEXTURE_H
+#define DRAWTEXTURE_H
 
 // program headers
-#include "graphics/BaseDrawNode.h"
 #include "graphics/GameGraphics.h"
 #include "graphics/texture/Texture.h"
-#include "math/MatrixMath.h"
+#include "logic/UILayoutAuthority.h"
 #include "math/VectorMath.h"
 #include "platform/OpenGLHeaders.h"
 
 // library headers
 #include <map>
-#include <sstream>
 #include <string>
 
 // global variables
 extern GameGraphics* gameGraphics;
 
-class DrawCursor : public BaseDrawNode {
+class DrawTexture : public BaseUIElement {
 public:
-	DrawCursor();
-	~DrawCursor();
+	DrawTexture();
+	~DrawTexture();
 
+	/*
+		Arguments Layout
+		----------------
+		metrics			UI element metrics
+		texture			texture filename
+	*/
+
+	Vector2 getSize(std::map<std::string, void*> arguments);
 	void execute(std::map<std::string, void*> arguments);
 };
 
-#endif // DRAWCURSOR_H
+#endif // DRAWTEXTURE_H

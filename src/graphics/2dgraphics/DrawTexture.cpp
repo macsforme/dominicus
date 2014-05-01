@@ -1,4 +1,4 @@
-// DrawSplash.cpp
+// DrawTexture.cpp
 //
 // Dominicus
 // Copyright 2010-2011, Joshua Bodine
@@ -6,9 +6,9 @@
 // Released under the terms of the "Simplified BSD License." See the file
 // licenses/DOMINICUS.txt for the license text.
 
-#include "graphics/2dgraphics/splash/DrawSplash.h"
+#include "graphics/2dgraphics/DrawTexture.h"
 
-DrawSplash::DrawSplash() {
+DrawTexture::DrawTexture() {
 	// set up shader
 	GLuint shaderID = 0;
 	std::vector<GLuint> shaderIDs;
@@ -29,29 +29,15 @@ DrawSplash::DrawSplash() {
 	glGenBuffers(1, &(vertexBuffers["vertices"]));
 	glGenBuffers(1, &(vertexBuffers["elements"]));
 
-	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexBuffers["elements"]);
-
-	Texture* texture = gameGraphics->getTexture("branding/splash");
-	float yBump = (
-			((float) gameGraphics->resolutionX / (float) gameGraphics->resolutionY) -
-			((float) texture->width / (float) texture->height)
-		) * 0.5f;	// preserve aspect ratio of image
-	GLfloat vertexBufferArray[] = {
-			-1.0f, -1.0f, 0.0f, 0.0f, 0.0f + yBump, 1.0f, 1.0f, 1.0f, 1.0f,
-			-1.0f, 1.0f, 0.0f, 0.0f, 1.0f - yBump, 1.0f, 1.0f, 1.0f, 1.0f,
-			1.0f, 1.0f, 0.0f, 1.0f, 1.0f - yBump, 1.0f, 1.0f, 1.0f, 1.0f,
-			1.0f, -1.0f, 0.0f, 1.0f, 0.0f + yBump, 1.0f, 1.0f, 1.0f, 1.0f
-		};
 
 	GLushort elementBufferArray[] = { 0, 1, 2, 3 };
 
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexBufferArray), vertexBufferArray, GL_STATIC_DRAW);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elementBufferArray), elementBufferArray,
 			GL_STATIC_DRAW);
 }
 
-DrawSplash::~DrawSplash() {
+DrawTexture::~DrawTexture() {
 	// delete buffers
 	if(glIsBuffer(vertexBuffers["vertices"]))
 		glDeleteBuffers(1, &(vertexBuffers["vertices"]));
@@ -63,9 +49,75 @@ DrawSplash::~DrawSplash() {
 		glDeleteProgram(shaderProgram);
 }
 
-void DrawSplash::execute(std::map<std::string, void*> arguments) {
+Vector2 DrawTexture::getSize(std::map<std::string, void*> arguments) {
+	// collect arguments
+	std::string texture = *((std::string*) arguments["texture"]);
+
+	return Vector2(
+			(float) gameGraphics->getTexture(texture)->width / (float) gameGraphics->resolutionX * 2.0f,
+			(float) gameGraphics->getTexture(texture)->height / (float) gameGraphics->resolutionY * 2.0f
+		);
+}
+
+void DrawTexture::execute(std::map<std::string, void*> arguments) {
+	// collect arguments
+	UIMetrics metrics = *((UIMetrics*) arguments["metrics"]);
+	metrics.size = getSize(arguments);
+	std::string texture = *((std::string*) arguments["texture"]);
+	GLuint textureID = gameGraphics->getTextureID(texture);
+
+	// update vertex buffers
+	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexBuffers["elements"]);
+
+	GLfloat vertexBufferArray[] = {
+			metrics.position.x - metrics.size.x / 2.0f,
+			metrics.position.y - metrics.size.y / 2.0f,
+			0.0f,
+			0.0f,
+			0.0f,
+			1.0f,
+			1.0f,
+			1.0f,
+			1.0f,
+
+			metrics.position.x - metrics.size.x / 2.0f,
+			metrics.position.y + metrics.size.y / 2.0f,
+			0.0f,
+			0.0f,
+			1.0f,
+			1.0f,
+			1.0f,
+			1.0f,
+			1.0f,
+
+			metrics.position.x + metrics.size.x / 2.0f,
+			metrics.position.y + metrics.size.y / 2.0f,
+			0.0f,
+			1.0f,
+			1.0f,
+			1.0f,
+			1.0f,
+			1.0f,
+			1.0f,
+
+			metrics.position.x + metrics.size.x / 2.0f,
+			metrics.position.y - metrics.size.y / 2.0f,
+			0.0f,
+			1.0f,
+			0.0f,
+			1.0f,
+			1.0f,
+			1.0f,
+			1.0f
+		};
+
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexBufferArray), vertexBufferArray, GL_STREAM_DRAW);
+
 	// state
 	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// enable shader
 	glUseProgram(shaderProgram);
@@ -76,20 +128,20 @@ void DrawSplash::execute(std::map<std::string, void*> arguments) {
 
 	// activate the texture
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, gameGraphics->getTextureID("branding/splash"));
+	glBindTexture(GL_TEXTURE_2D, textureID);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 	// draw the data stored in GPU memory
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexBuffers["elements"]);
 
-	glVertexAttribPointer(attributes["position"], 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GL_FLOAT), NULL);
+	glVertexAttribPointer(attributes["position"], 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GL_FLOAT), (void*) 0);
 	glVertexAttribPointer(attributes["texCoord"], 2, GL_FLOAT, GL_FALSE, 9 * sizeof(GL_FLOAT),
-			(void*) (3 * sizeof(GLfloat)));
+			(GLvoid*) (3 * sizeof(GLfloat)));
 	glVertexAttribPointer(attributes["color"], 4, GL_FLOAT, GL_FALSE, 9 * sizeof(GL_FLOAT),
-			(void*) (5 * sizeof(GLfloat)));
+			(GLvoid*) (5 * sizeof(GLfloat)));
 
 	glEnableVertexAttribArray(attributes["position"]);
 	glEnableVertexAttribArray(attributes["texCoord"]);
@@ -103,4 +155,5 @@ void DrawSplash::execute(std::map<std::string, void*> arguments) {
 
 	// undo state
 	glDisable(GL_TEXTURE_2D);
+	glDisable(GL_BLEND);
 }

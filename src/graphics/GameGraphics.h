@@ -9,33 +9,46 @@
 #ifndef GAMEGRAPHICS_H
 #define GAMEGRAPHICS_H
 
+// initial declarations (needs to be prior to most program headers)
+#include "platform/OpenGLHeaders.h"
+
+class BaseDrawNode {
+protected:
+	GLuint shaderProgram;
+	std::map<std::string, GLint> uniforms;
+	std::map<std::string, GLint> attributes;
+	std::map<std::string, GLuint> vertexBuffers;
+
+public:
+	virtual void execute(std::map<std::string, void*> arguments) = 0;
+};
+
+class BaseUIElement : public BaseDrawNode {
+public:
+	virtual Vector2 getSize(std::map<std::string, void*> arguments) = 0;
+};
+
 // forward declarations
-class DrawControlBox;
-class DrawCursor;
-class DrawSplash;
 class GameGraphics;
 class GameLogic;
 class InputHandler;
 class Camera;
-class TestCamera;
 
 // program headers
 #include "core/GameSystem.h"
 #include "core/MainLoopMember.h"
-#include "graphics/BaseDrawNode.h"
 #include "graphics/text/FontManager.h"
 #include "graphics/texture/Texture.h"
-#include "graphics/2dgraphics/controlbox/DrawControlBox.h"
-#include "graphics/2dgraphics/cursor/DrawCursor.h"
-#include "graphics/2dgraphics/ui/DrawGrayOut.h"
-#include "graphics/2dgraphics/ui/DrawProgressBar.h"
-#include "graphics/2dgraphics/ui/DrawRadar.h"
-#include "graphics/2dgraphics/ui/components/DrawButton.h"
-#include "graphics/2dgraphics/ui/components/DrawContainer.h"
-#include "graphics/2dgraphics/ui/components/DrawLabel.h"
-#include "graphics/2dgraphics/ui/components/DrawField.h"
-#include "graphics/2dgraphics/ui/components/DrawTexture.h"
-#include "graphics/2dgraphics/splash/DrawSplash.h"
+#include "graphics/2dgraphics/DrawControlBox.h"
+#include "graphics/2dgraphics/DrawGrayOut.h"
+#include "graphics/2dgraphics/DrawProgressBar.h"
+#include "graphics/2dgraphics/DrawRadar.h"
+#include "graphics/2dgraphics/DrawButton.h"
+#include "graphics/2dgraphics/DrawContainer.h"
+#include "graphics/2dgraphics/DrawLabel.h"
+#include "graphics/2dgraphics/DrawField.h"
+#include "graphics/2dgraphics/DrawTexture.h"
+#include "graphics/2dgraphics/DrawSplash.h"
 #include "graphics/3dgraphics/ShipRenderer.h"
 #include "graphics/3dgraphics/SkyRenderer.h"
 #include "graphics/3dgraphics/WaterRenderer.h"
@@ -46,7 +59,6 @@ class TestCamera;
 #include "logic/GameLogic.h"
 #include "math/MatrixMath.h"
 #include "math/VectorMath.h"
-#include "platform/OpenGLHeaders.h"
 #include "platform/Platform.h"
 
 // library headers
