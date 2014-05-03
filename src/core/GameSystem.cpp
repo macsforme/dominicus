@@ -152,16 +152,15 @@ void GameSystem::log(LogDetail detail, std::string report) {
 	}
 }
 
-GameSystem::GameSystem() :
-		identifier(PROGRAM_IDENTIFIER),
-		classification(PROGRAM_CLASSIFICATION),
-		architecture(PROGRAM_ARCH_STR) {
+GameSystem::GameSystem() {
 	// set the build version string
 	std::stringstream versionStream;
-	versionStream << PROGRAM_VERSION << "." << PROGRAM_REVISION;
-	version = versionStream.str();
+	versionStream <<
+			PROGRAM_IDENTIFIER << " " <<
+			PROGRAM_VERSION << " " <<
+			"(" << PROGRAM_BUILDSTRING << ") " <<
+			PROGRAM_ARCH_STR << " ";
 
-	// set the build date string
 	const char* dateString = __DATE__;
 
 	std::string monthString = std::string(dateString).substr(0, 3);
@@ -184,7 +183,8 @@ GameSystem::GameSystem() :
 
 	char fullDateString[11];
 	sprintf(fullDateString, "%04i-%02i-%02i", year, month, day);
-	buildDate = fullDateString;
+	versionStream << fullDateString;
+	versionString = versionStream.str();
 
 	// state standards
 	setStandard(
@@ -708,12 +708,6 @@ highScoresPair = std::make_pair(1, "Josh"); highScores.push_back(highScoresPair)
 
 	// log the build version
 	std::stringstream buildInfo;
-	buildInfo <<
-			"Game Version: " <<
-			identifier << " " <<
-			version << " " <<
-			classification << " " <<
-			architecture << " " <<
-			buildDate;
+	buildInfo << "Game Version: " << versionString;
 	log(LOG_INFO, buildInfo.str().c_str());
 }

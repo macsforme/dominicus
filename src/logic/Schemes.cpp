@@ -384,6 +384,25 @@ void Schemes::aboutScheme() {
 	gameLogic->drawStack.push_back(gameLogic->aboutTitleEntry);
 	gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->aboutTitleEntry.second["metrics"]);
 
+	// version title label
+	*((float*) gameLogic->versionTitleEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
+	*((Vector4*) gameLogic->versionTitleEntry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
+	*((std::string*) gameLogic->versionTitleEntry.second["text"]) = "Version Information";
+	((UIMetrics*) gameLogic->versionTitleEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
+	((UIMetrics*) gameLogic->versionTitleEntry.second["metrics"])->size = ((DrawLabel*) gameGraphics->drawers["label"])->getSize(gameLogic->versionTitleEntry.second);
+	gameLogic->drawStack.push_back(gameLogic->versionTitleEntry);
+	gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->versionTitleEntry.second["metrics"]);
+
+	// version label
+	*((float*) gameLogic->versionEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+	*((Vector4*) gameLogic->versionEntry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
+	*((float*) gameLogic->versionEntry.second["wrap"]) = 2.0f * (gameGraphics->resolutionX > 1024 ? 1024.0f / (float) gameGraphics->resolutionX : 1.0f) - (gameSystem->getFloat("hudElementMargin") * 2.0f / (float) gameGraphics->resolutionX);
+	*((std::string*) gameLogic->versionEntry.second["text"]) = gameSystem->versionString;
+	((UIMetrics*) gameLogic->versionEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
+	((UIMetrics*) gameLogic->versionEntry.second["metrics"])->size = ((DrawLabel*) gameGraphics->drawers["label"])->getSize(gameLogic->versionEntry.second);
+	gameLogic->drawStack.push_back(gameLogic->versionEntry);
+	gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->versionEntry.second["metrics"]);
+
 	// credits title label
 	*((float*) gameLogic->creditsTitleEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
 	*((Vector4*) gameLogic->creditsTitleEntry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
@@ -397,30 +416,11 @@ void Schemes::aboutScheme() {
 	*((float*) gameLogic->creditsEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
 	*((Vector4*) gameLogic->creditsEntry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
 	*((float*) gameLogic->creditsEntry.second["wrap"]) = 2.0f * (gameGraphics->resolutionX > 1024 ? 1024.0f / (float) gameGraphics->resolutionX : 1.0f) - (gameSystem->getFloat("hudElementMargin") * 2.0f / (float) gameGraphics->resolutionX);
-	*((std::string*) gameLogic->creditsEntry.second["text"]) = "Dedicated to Sergeant Sean Drenth #6894 of the Phoenix Police Department, EOW October 18, 2010.\n\nCreated by Joshua Bodine.\n\nMusic and sound effects by Michael Birch.";
+	*((std::string*) gameLogic->creditsEntry.second["text"]) = "Dedicated to Sergeant Sean Drenth #6894 of the Phoenix Police Department, EOW October 18, 2010.\n\nCreated by Joshua Bodine.\n\nMusic and sound effects by Michael Birch.\n\nThis software uses the Simple DirectMedia Layer library (http://www.libsdl.org/).\n\nPortions of this software are copyright (c) 2010 The FreeType Project (www.freetype.org).  All rights reserved.";
 	((UIMetrics*) gameLogic->creditsEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
 	((UIMetrics*) gameLogic->creditsEntry.second["metrics"])->size = ((DrawLabel*) gameGraphics->drawers["label"])->getSize(gameLogic->creditsEntry.second);
 	gameLogic->drawStack.push_back(gameLogic->creditsEntry);
 	gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->creditsEntry.second["metrics"]);
-
-	// license title label
-	*((float*) gameLogic->licenseTitleEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
-	*((Vector4*) gameLogic->licenseTitleEntry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
-	*((std::string*) gameLogic->licenseTitleEntry.second["text"]) = "License";
-	((UIMetrics*) gameLogic->licenseTitleEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
-	((UIMetrics*) gameLogic->licenseTitleEntry.second["metrics"])->size = ((DrawLabel*) gameGraphics->drawers["label"])->getSize(gameLogic->licenseTitleEntry.second);
-	gameLogic->drawStack.push_back(gameLogic->licenseTitleEntry);
-	gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->licenseTitleEntry.second["metrics"]);
-
-	// license label
-	*((float*) gameLogic->licenseEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-	*((Vector4*) gameLogic->licenseEntry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
-	*((float*) gameLogic->licenseEntry.second["wrap"]) = 2.0f * (gameGraphics->resolutionX > 1024 ? 1024.0f / (float) gameGraphics->resolutionX : 1.0f) - (gameSystem->getFloat("hudElementMargin") * 2.0f / (float) gameGraphics->resolutionX);
-	*((std::string*) gameLogic->licenseEntry.second["text"]) = "Copyright (c) 2010-2014, Joshua Bodine\nAll rights reserved.\n\nThis program's source code, binary file distributions, and release packages are provided and may be redistributed under the terms of the Simplified BSD License (also known as the BSD 2-Clause License).\n\nProgram assets, including image files, model files, and audio files, are also licensed under the Creative Commons Attribution-ShareAlike 3.0 United States License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/us/ or send a letter to Creative Commons, 444 Castro Street, Suite 900, Mountain View, California, 94041, USA.\n\nThis software uses the Simple DirectMedia Layer library (http://www.libsdl.org/).\n\nPortions of this software are copyright (c) 2010 The FreeType Project (www.freetype.org).  All rights reserved.";
-	((UIMetrics*) gameLogic->licenseEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
-	((UIMetrics*) gameLogic->licenseEntry.second["metrics"])->size = ((DrawLabel*) gameGraphics->drawers["label"])->getSize(gameLogic->licenseEntry.second);
-	gameLogic->drawStack.push_back(gameLogic->licenseEntry);
-	gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->licenseEntry.second["metrics"]);
 
 	// back button
 	((UIMetrics*) gameLogic->backButtonEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;

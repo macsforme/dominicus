@@ -226,6 +226,19 @@ GameLogic::GameLogic() {
 	aboutTitleEntry.second["fontColor"] = (void*) new Vector4;
 	aboutTitleEntry.second["text"] = (void*) new std::string;
 
+	versionTitleEntry.first = "label";
+	versionTitleEntry.second["metrics"] = (void*) new UIMetrics;
+	versionTitleEntry.second["fontSize"] = (void*) new float;
+	versionTitleEntry.second["fontColor"] = (void*) new Vector4;
+	versionTitleEntry.second["text"] = (void*) new std::string;
+
+	versionEntry.first = "label";
+	versionEntry.second["metrics"] = (void*) new UIMetrics;
+	versionEntry.second["fontSize"] = (void*) new float;
+	versionEntry.second["fontColor"] = (void*) new Vector4;
+	versionEntry.second["wrap"] = (void*) new float;
+	versionEntry.second["text"] = (void*) new std::string;
+
 	creditsTitleEntry.first = "label";
 	creditsTitleEntry.second["metrics"] = (void*) new UIMetrics;
 	creditsTitleEntry.second["fontSize"] = (void*) new float;
@@ -239,19 +252,6 @@ GameLogic::GameLogic() {
 	creditsEntry.second["wrap"] = (void*) new float;
 	creditsEntry.second["text"] = (void*) new std::string;
 	
-	licenseTitleEntry.first = "label";
-	licenseTitleEntry.second["metrics"] = (void*) new UIMetrics;
-	licenseTitleEntry.second["fontSize"] = (void*) new float;
-	licenseTitleEntry.second["fontColor"] = (void*) new Vector4;
-	licenseTitleEntry.second["text"] = (void*) new std::string;
-
-	licenseEntry.first = "label";
-	licenseEntry.second["metrics"] = (void*) new UIMetrics;
-	licenseEntry.second["fontSize"] = (void*) new float;
-	licenseEntry.second["fontColor"] = (void*) new Vector4;
-	licenseEntry.second["wrap"] = (void*) new float;
-	licenseEntry.second["text"] = (void*) new std::string;
-
 	std::vector<SDLKey> settingsMenuKeys;
 	settingsMenuKeys.push_back(SDLK_UP);
 	settingsMenuKeys.push_back(SDLK_DOWN);

@@ -118,10 +118,10 @@ public:
 	// about menu
 	KeyListener* aboutMenuKeyListener;
 	DrawStackEntry aboutTitleEntry;
+	DrawStackEntry versionTitleEntry;
+	DrawStackEntry versionEntry;
 	DrawStackEntry creditsTitleEntry;
 	DrawStackEntry creditsEntry;
-	DrawStackEntry licenseTitleEntry;
-	DrawStackEntry licenseEntry;
 
 	// settings menu
 	KeyListener* settingsMenuKeyListener;

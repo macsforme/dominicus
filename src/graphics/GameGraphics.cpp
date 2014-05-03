@@ -46,7 +46,7 @@ SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 0);
 				"SDL could not initialize an OpenGL-ready window.");
 
 	if(! fullScreen)
-		SDL_WM_SetCaption(gameSystem->identifier.c_str(), NULL);
+		SDL_WM_SetCaption(PROGRAM_IDENTIFIER, NULL);
 
 	// if specified, do system test
 	if(testSystem) {

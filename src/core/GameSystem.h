@@ -12,14 +12,11 @@
 // Game identifier string
 #define PROGRAM_IDENTIFIER "Crucible Island"
 
-// Major version (non-negative integer)
-#define PROGRAM_VERSION 0
+// Version number (positive integer increased by 1 at each release)
+#define PROGRAM_VERSION "1"
 
-// Minor revision (non-negative integer)
-#define PROGRAM_REVISION 1
-
-// Build classification (char array, DEVEL | ALPHA# | BETA# | RC# | STABLE)
-#define PROGRAM_CLASSIFICATION "DEVEL"
+// Build identifier string (DEVEL# | ALPHA# | BETA# | STABLE)
+#define PROGRAM_BUILDSTRING "DEVEL1"
 
 // forward declarations
 class Platform;
@@ -44,11 +41,7 @@ extern Platform* platform;
 class GameSystem {
 public:
 	// versioning
-	std::string identifier;
-	std::string version;
-	std::string classification;
-	std::string architecture;
-	std::string buildDate;
+	std::string versionString;
 
 	// hardware specifications
 	unsigned int displayResolutionX, displayResolutionY;

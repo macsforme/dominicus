@@ -132,6 +132,8 @@
 		035A3C4512841B390001E186 /* Mouse.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Mouse.cpp; sourceTree = "<group>"; };
 		035E0E7512DCE54D00F84121 /* MainLoopMember.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainLoopMember.h; sourceTree = "<group>"; };
 		035E0E7612DCE54D00F84121 /* MainLoopMember.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MainLoopMember.cpp; sourceTree = "<group>"; };
+		036C99641915AD1A00776051 /* DrawGaugePanel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawGaugePanel.cpp; sourceTree = "<group>"; };
+		036C99651915AD1A00776051 /* DrawGaugePanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawGaugePanel.h; sourceTree = "<group>"; };
 		036CFFDF18EB5D4800C1B797 /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Camera.cpp; path = src/logic/Camera.cpp; sourceTree = SOURCE_ROOT; };
 		036CFFE018EB5D4800C1B797 /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Camera.h; path = src/logic/Camera.h; sourceTree = SOURCE_ROOT; };
 		0387C28B18F3E2A300565A43 /* GameAudio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameAudio.cpp; path = src/audio/GameAudio.cpp; sourceTree = "<group>"; };
@@ -331,6 +333,8 @@
 				0354664F1912C17200F4953E /* DrawControlBox.cpp */,
 				035466521912C17200F4953E /* DrawField.h */,
 				035466511912C17200F4953E /* DrawField.cpp */,
+				036C99651915AD1A00776051 /* DrawGaugePanel.h */,
+				036C99641915AD1A00776051 /* DrawGaugePanel.cpp */,
 				035466541912C17200F4953E /* DrawGrayOut.h */,
 				035466531912C17200F4953E /* DrawGrayOut.cpp */,
 				035466561912C17200F4953E /* DrawLabel.h */,
