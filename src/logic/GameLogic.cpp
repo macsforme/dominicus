@@ -185,19 +185,20 @@ GameLogic::GameLogic() {
 	instructionsEntry.second["wrap"] = (void*) new float;
 	instructionsEntry.second["text"] = (void*) new std::string;
 
-	creditsTitleEntry.first = "label";
-	creditsTitleEntry.second["metrics"] = (void*) new UIMetrics;
-	creditsTitleEntry.second["fontSize"] = (void*) new float;
-	creditsTitleEntry.second["fontColor"] = (void*) new Vector4;
-	creditsTitleEntry.second["text"] = (void*) new std::string;
+	aboutButtonEntry.first = "button";
+	aboutButtonEntry.second["metrics"] = (void*) new UIMetrics;
+	aboutButtonEntry.second["fontSize"] = (void*) new float;
+	aboutButtonEntry.second["fontColor"] = (void*) new Vector4;
+	aboutButtonEntry.second["text"] = (void*) new std::string;
+	aboutButtonEntry.second["padding"] = (void*) new float;
+	aboutButtonEntry.second["border"] = (void*) new float;
+	aboutButtonEntry.second["softEdge"] = (void*) new float;
+	aboutButtonEntry.second["insideColor"] = (void*) new Vector4;
+	aboutButtonEntry.second["borderColor"] = (void*) new Vector4;
+	aboutButtonEntry.second["outsideColor"] = (void*) new Vector4;
+	aboutButtonZoneListener = new MouseZoneListener();
+	aboutButtonClickListener = new MouseButtonListener();
 
-	creditsEntry.first = "label";
-	creditsEntry.second["metrics"] = (void*) new UIMetrics;
-	creditsEntry.second["fontSize"] = (void*) new float;
-	creditsEntry.second["fontColor"] = (void*) new Vector4;
-	creditsEntry.second["wrap"] = (void*) new float;
-	creditsEntry.second["text"] = (void*) new std::string;
-	
 	backButtonEntry.first = "button";
 	backButtonEntry.second["metrics"] = (void*) new UIMetrics;
 	backButtonEntry.second["fontSize"] = (void*) new float;
@@ -211,6 +212,45 @@ GameLogic::GameLogic() {
 	backButtonEntry.second["outsideColor"] = (void*) new Vector4;
 	backButtonZoneListener = new MouseZoneListener();
 	backButtonClickListener = new MouseButtonListener();
+
+	std::vector<SDLKey> aboutMenuKeys;
+	aboutMenuKeys.push_back(SDLK_UP);
+	aboutMenuKeys.push_back(SDLK_DOWN);
+	aboutMenuKeys.push_back(SDLK_ESCAPE);
+	aboutMenuKeys.push_back(SDLK_RETURN);
+	aboutMenuKeyListener = new KeyListener(aboutMenuKeys);
+
+	aboutTitleEntry.first = "label";
+	aboutTitleEntry.second["metrics"] = (void*) new UIMetrics;
+	aboutTitleEntry.second["fontSize"] = (void*) new float;
+	aboutTitleEntry.second["fontColor"] = (void*) new Vector4;
+	aboutTitleEntry.second["text"] = (void*) new std::string;
+
+	creditsTitleEntry.first = "label";
+	creditsTitleEntry.second["metrics"] = (void*) new UIMetrics;
+	creditsTitleEntry.second["fontSize"] = (void*) new float;
+	creditsTitleEntry.second["fontColor"] = (void*) new Vector4;
+	creditsTitleEntry.second["text"] = (void*) new std::string;
+
+	creditsEntry.first = "label";
+	creditsEntry.second["metrics"] = (void*) new UIMetrics;
+	creditsEntry.second["fontSize"] = (void*) new float;
+	creditsEntry.second["fontColor"] = (void*) new Vector4;
+	creditsEntry.second["wrap"] = (void*) new float;
+	creditsEntry.second["text"] = (void*) new std::string;
+	
+	licenseTitleEntry.first = "label";
+	licenseTitleEntry.second["metrics"] = (void*) new UIMetrics;
+	licenseTitleEntry.second["fontSize"] = (void*) new float;
+	licenseTitleEntry.second["fontColor"] = (void*) new Vector4;
+	licenseTitleEntry.second["text"] = (void*) new std::string;
+
+	licenseEntry.first = "label";
+	licenseEntry.second["metrics"] = (void*) new UIMetrics;
+	licenseEntry.second["fontSize"] = (void*) new float;
+	licenseEntry.second["fontColor"] = (void*) new Vector4;
+	licenseEntry.second["wrap"] = (void*) new float;
+	licenseEntry.second["text"] = (void*) new std::string;
 
 	std::vector<SDLKey> settingsMenuKeys;
 	settingsMenuKeys.push_back(SDLK_UP);
@@ -450,6 +490,10 @@ void GameLogic::reScheme() {
 		
 	case SCHEME_HELP:
 		Schemes::helpScheme();
+		break;
+
+	case SCHEME_ABOUT:
+		Schemes::aboutScheme();
 		break;
 
 	case SCHEME_HIGHSCORES:
@@ -961,6 +1005,82 @@ unsigned int GameLogic::execute() {
 	} else if(currentScheme == SCHEME_HELP) {
 		// button highlight
 		if(mouseMotionListener->wasMoved()) {
+			if(aboutButtonZoneListener->isEntered) {
+				if(activeMenuSelection != &aboutButtonEntry) {
+					activeMenuSelection = &aboutButtonEntry;
+					reScheme();
+					needRedraw = true;
+				}
+			} else if(backButtonZoneListener->isEntered) {
+				if(activeMenuSelection != &backButtonEntry) {
+					activeMenuSelection = &backButtonEntry;
+					reScheme();
+					needRedraw = true;
+				}
+			} else if(activeMenuSelection != NULL) {
+				activeMenuSelection = NULL;
+				reScheme();
+				needRedraw = true;
+			}
+		}
+
+		// button clicks
+		if(aboutButtonClickListener->wasClicked()) {
+			currentScheme = SCHEME_ABOUT;
+			activeMenuSelection = &backButtonEntry;
+			reScheme();
+			needRedraw = true;
+		} else if(backButtonClickListener->wasClicked()) {
+			currentScheme = SCHEME_MAINMENU;
+			activeMenuSelection = &playButtonEntry;
+			reScheme();
+			needRedraw = true;
+		}
+
+		// key hits
+		for(SDLKey key = helpMenuKeyListener->popKey(); key != SDLK_UNKNOWN; key = helpMenuKeyListener->popKey()) {
+			if(key == SDLK_UP) {
+				if(activeMenuSelection == NULL || activeMenuSelection == &aboutButtonEntry) {
+					activeMenuSelection = &backButtonEntry;
+					reScheme();
+					needRedraw = true;
+				} else if(activeMenuSelection == &backButtonEntry) {
+					activeMenuSelection = &aboutButtonEntry;
+					reScheme();
+					needRedraw = true;
+				}
+			} else if(key == SDLK_DOWN) {
+				if(activeMenuSelection == NULL || activeMenuSelection == &backButtonEntry) {
+					activeMenuSelection = &aboutButtonEntry;
+					reScheme();
+					needRedraw = true;
+				} else if(activeMenuSelection == &aboutButtonEntry) {
+					activeMenuSelection = &backButtonEntry;
+					reScheme();
+					needRedraw = true;
+				}
+			} else if(key == SDLK_RETURN) {
+				if(activeMenuSelection == &aboutButtonEntry) {
+					currentScheme = SCHEME_ABOUT;
+					activeMenuSelection = &backButtonEntry;
+					reScheme();
+					needRedraw = true;
+				} else if(activeMenuSelection == &backButtonEntry) {
+					currentScheme = SCHEME_MAINMENU;
+					activeMenuSelection = &playButtonEntry;
+					reScheme();
+					needRedraw = true;
+				}
+			} else if (key == SDLK_ESCAPE) {
+				currentScheme = SCHEME_MAINMENU;
+				activeMenuSelection = &playButtonEntry;
+				reScheme();
+				needRedraw = true;
+			}
+		}
+	} else if(currentScheme == SCHEME_ABOUT) {
+		// button highlight
+		if(mouseMotionListener->wasMoved()) {
 			if(backButtonZoneListener->isEntered) {
 				if(activeMenuSelection != &backButtonEntry) {
 					activeMenuSelection = &backButtonEntry;
@@ -976,8 +1096,8 @@ unsigned int GameLogic::execute() {
 
 		// button clicks
 		if(backButtonClickListener->wasClicked()) {
-			currentScheme = SCHEME_MAINMENU;
-			activeMenuSelection = &playButtonEntry;
+			currentScheme = SCHEME_HELP;
+			activeMenuSelection = &backButtonEntry;
 			reScheme();
 			needRedraw = true;
 		}
@@ -989,8 +1109,8 @@ unsigned int GameLogic::execute() {
 				reScheme();
 				needRedraw = true;
 			} else if((key == SDLK_RETURN && activeMenuSelection == &backButtonEntry) || key == SDLK_ESCAPE) {
-				currentScheme = SCHEME_MAINMENU;
-				activeMenuSelection = &playButtonEntry;
+				currentScheme = SCHEME_HELP;
+				activeMenuSelection = &backButtonEntry;
 				reScheme();
 				needRedraw = true;
 			}

@@ -579,7 +579,7 @@ GameSystem::GameSystem() :
 		);
 	setStandard(
 			"fontSizeSmall",
-			14.0f,
+			16.0f,
 			"Font size for small display in points (1/72 inch)."
 		);
 	setStandard(

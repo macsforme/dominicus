@@ -49,6 +49,7 @@ public:
 	static void mainMenuScheme();
 	static void settingsScheme();
 	static void helpScheme();
+	static void aboutScheme();
 	static void highScoresScheme();
 	static void loadingScheme();
 	static void playingScheme();

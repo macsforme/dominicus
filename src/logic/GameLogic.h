@@ -108,12 +108,21 @@ public:
 	DrawStackEntry controlsEntry;
 	DrawStackEntry instructionsTitleEntry;
 	DrawStackEntry instructionsEntry;
-	DrawStackEntry creditsTitleEntry;
-	DrawStackEntry creditsEntry;
+	DrawStackEntry aboutButtonEntry;
 	DrawStackEntry backButtonEntry;
+	MouseZoneListener* aboutButtonZoneListener;
+	MouseButtonListener* aboutButtonClickListener;
 	MouseZoneListener* backButtonZoneListener;
 	MouseButtonListener* backButtonClickListener;
-	
+
+	// about menu
+	KeyListener* aboutMenuKeyListener;
+	DrawStackEntry aboutTitleEntry;
+	DrawStackEntry creditsTitleEntry;
+	DrawStackEntry creditsEntry;
+	DrawStackEntry licenseTitleEntry;
+	DrawStackEntry licenseEntry;
+
 	// settings menu
 	KeyListener* settingsMenuKeyListener;
 	DrawStackEntry settingsMenuTitleEntry;
@@ -228,6 +237,7 @@ private:
 			SCHEME_MAINMENU,
 			SCHEME_SETTINGS,
 			SCHEME_HELP,
+			SCHEME_ABOUT,
 			SCHEME_HIGHSCORES,
 			SCHEME_PLAYING,
 			SCHEME_LOADING,
