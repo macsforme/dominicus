@@ -370,44 +370,43 @@ GameLogic::GameLogic() {
 
 	controlBoxEntry.first = "controlBox";
 
-	healthGaugeImage.first = "texture";
-	healthGaugeImage.second["metrics"] = (void*) new UIMetrics;
-	healthGaugeImage.second["texture"] = (void*) new std::string;
+	gaugePanelEntry.first = "gaugePanel";
+	gaugePanelEntry.second["metrics"] = (void*) new UIMetrics;
+	gaugePanelEntry.second["padding"] = (void*) new Vector2;
+	gaugePanelEntry.second["border"] = (void*) new float;
+	gaugePanelEntry.second["softEdge"] = (void*) new float;
+	gaugePanelEntry.second["insideColor"] = (void*) new Vector4;
+	gaugePanelEntry.second["borderColor"] = (void*) new Vector4;
+	gaugePanelEntry.second["outsideColor"] = (void*) new Vector4;
+	gaugePanelEntry.second["elements"] = (void*) new size_t;
+	gaugePanelEntry.second["textureNames"] = (void*) new std::vector<std::string>;
+	((std::vector<std::string>*) gaugePanelEntry.second["textureNames"])->push_back("");
+	((std::vector<std::string>*) gaugePanelEntry.second["textureNames"])->push_back("");
+	((std::vector<std::string>*) gaugePanelEntry.second["textureNames"])->push_back("");
+	gaugePanelEntry.second["progressBarSize"] = (void*) new Vector2;
+	gaugePanelEntry.second["progressions"] = (void*) new std::vector<float>;
+	((std::vector<float>*) gaugePanelEntry.second["progressions"])->push_back(0.0f);
+	((std::vector<float>*) gaugePanelEntry.second["progressions"])->push_back(0.0f);
+	((std::vector<float>*) gaugePanelEntry.second["progressions"])->push_back(0.0f);
+	gaugePanelEntry.second["backgroundColorTop"] = (void*) new Vector4;
+	gaugePanelEntry.second["backgroundColorBottom"] = (void*) new Vector4;
+	gaugePanelEntry.second["progressBarColorsTop"] = (void*) new std::vector<Vector4>;
+	((std::vector<Vector4>*) gaugePanelEntry.second["progressBarColorsTop"])->push_back(Vector4());
+	((std::vector<Vector4>*) gaugePanelEntry.second["progressBarColorsTop"])->push_back(Vector4());
+	((std::vector<Vector4>*) gaugePanelEntry.second["progressBarColorsTop"])->push_back(Vector4());
+	gaugePanelEntry.second["progressBarColorsBottom"] = (void*) new std::vector<Vector4>;
+	((std::vector<Vector4>*) gaugePanelEntry.second["progressBarColorsBottom"])->push_back(Vector4());
+	((std::vector<Vector4>*) gaugePanelEntry.second["progressBarColorsBottom"])->push_back(Vector4());
+	((std::vector<Vector4>*) gaugePanelEntry.second["progressBarColorsBottom"])->push_back(Vector4());
 
-	healthGaugeBar.first = "progressBar";
-	healthGaugeBar.second["metrics"] = (void*) new UIMetrics;
-	healthGaugeBar.second["color1Top"] = (void*) new Vector4;
-	healthGaugeBar.second["color1Bottom"] = (void*) new Vector4;
-	healthGaugeBar.second["color2Top"] = (void*) new Vector4;
-	healthGaugeBar.second["color2Bottom"] = (void*) new Vector4;
-	healthGaugeBar.second["progression"] = (void*) new float;
-	healthGaugeBar.second["size"] = (void*) new Vector2;
-
-	ammoGaugeImage.first = "texture";
-	ammoGaugeImage.second["metrics"] = (void*) new UIMetrics;
-	ammoGaugeImage.second["texture"] = (void*) new std::string;
-
-	ammoGaugeBar.first = "progressBar";
-	ammoGaugeBar.second["metrics"] = (void*) new UIMetrics;
-	ammoGaugeBar.second["color1Top"] = (void*) new Vector4;
-	ammoGaugeBar.second["color1Bottom"] = (void*) new Vector4;
-	ammoGaugeBar.second["color2Top"] = (void*) new Vector4;
-	ammoGaugeBar.second["color2Bottom"] = (void*) new Vector4;
-	ammoGaugeBar.second["progression"] = (void*) new float;
-	ammoGaugeBar.second["size"] = (void*) new Vector2;
-
-	shockGaugeImage.first = "texture";
-	shockGaugeImage.second["metrics"] = (void*) new UIMetrics;
-	shockGaugeImage.second["texture"] = (void*) new std::string;
-
-	shockGaugeBar.first = "progressBar";
-	shockGaugeBar.second["metrics"] = (void*) new UIMetrics;
-	shockGaugeBar.second["color1Top"] = (void*) new Vector4;
-	shockGaugeBar.second["color1Bottom"] = (void*) new Vector4;
-	shockGaugeBar.second["color2Top"] = (void*) new Vector4;
-	shockGaugeBar.second["color2Bottom"] = (void*) new Vector4;
-	shockGaugeBar.second["progression"] = (void*) new float;
-	shockGaugeBar.second["size"] = (void*) new Vector2;
+	radarEntry.first = "radar";
+	radarEntry.second["metrics"] = (void*) new UIMetrics;
+	radarEntry.second["padding"] = (void*) new Vector2;
+	radarEntry.second["border"] = (void*) new float;
+	radarEntry.second["softEdge"] = (void*) new float;
+	radarEntry.second["insideColor"] = (void*) new Vector4;
+	radarEntry.second["borderColor"] = (void*) new Vector4;
+	radarEntry.second["outsideColor"] = (void*) new Vector4;
 
 	skyEntry.first = "skyRenderer";
 
@@ -458,6 +457,7 @@ mainLoopModules[gameState] = 0;
 gameGraphics->currentCamera = &towerCamera;
 mainLoopModules[gameGraphics] = 0;
 ((TerrainRenderer*) gameGraphics->drawers["terrainRenderer"])->reloadGraphics();
+((DrawRadar*) gameGraphics->drawers["radar"])->reloadGraphics();
 SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
 currentScheme = SCHEME_PLAYING;
 activeMenuSelection = NULL;
@@ -553,7 +553,7 @@ unsigned int GameLogic::execute() {
 
 		if(currentScheme == SCHEME_PLAYING) {
 			((TerrainRenderer*) gameGraphics->drawers["terrainRenderer"])->reloadGraphics();
-//			((DrawRadar*) gameGraphics->drawers["radar"])->reloadGraphics();
+			((DrawRadar*) gameGraphics->drawers["radar"])->reloadGraphics();
 		}
 
 		delete(uiLayoutAuthority);
@@ -618,7 +618,7 @@ unsigned int GameLogic::execute() {
 
 			mainLoopModules[gameGraphics] = 0;
 			((TerrainRenderer*) gameGraphics->drawers["terrainRenderer"])->reloadGraphics();
-//			((DrawRadar*) gameGraphics->drawers["radar"])->reloadGraphics();
+			((DrawRadar*) gameGraphics->drawers["radar"])->reloadGraphics();
 			gameGraphics->currentCamera = &orbitCamera;
 
 			SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
@@ -705,7 +705,7 @@ unsigned int GameLogic::execute() {
 
 					mainLoopModules[gameGraphics] = 0;
 					((TerrainRenderer*) gameGraphics->drawers["terrainRenderer"])->reloadGraphics();
-//					((DrawRadar*) gameGraphics->drawers["radar"])->reloadGraphics();
+					((DrawRadar*) gameGraphics->drawers["radar"])->reloadGraphics();
 					gameGraphics->currentCamera = &orbitCamera;
 					SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
 
@@ -746,6 +746,7 @@ unsigned int GameLogic::execute() {
 				mainLoopModules[gameState] = 0;
 
 				((TerrainRenderer*) gameGraphics->drawers["terrainRenderer"])->reloadGraphics();
+				((DrawRadar*) gameGraphics->drawers["radar"])->reloadGraphics();
 			} else if(key == SDLK_TAB) {
 				if(gameGraphics->currentCamera == &towerCamera)
 					gameGraphics->currentCamera = &orbitCamera;

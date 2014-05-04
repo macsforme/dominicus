@@ -455,12 +455,12 @@ GameSystem::GameSystem() {
 			5.0f,
 			"Number of seconds to display a given line on the console."
 		);
+*/
 	setStandard(
 			"radarSize",
 			35.0f,
-			"Size of radar in percentage of screen height."
+			"Size of radar panel in percentage of screen height."
 		);
-*/
 	setStandard(
 			"hudElementMargin",
 			36.0f,
@@ -531,8 +531,13 @@ GameSystem::GameSystem() {
 		);
 */
 	setStandard(
+			"hudGaugePadding",
+			20.0f,
+			"Gauge panel padding in pixels."
+		);
+	setStandard(
 			"hudGaugeWidth",
-			250.0f,
+			200.0f,
 			"Width of gauges in pixels."
 		);
 	setStandard(
@@ -629,17 +634,45 @@ GameSystem::GameSystem() {
 	setStandard(
 			"gameStartingLevel",
 			"Easy",
-			"Starting difficulty level"
+			"Starting difficulty level."
 		);
 	setStandard(
 			"islandMaximumWidth",
 			1000.0f,
-			"Maximum island width"
+			"Maximum island width."
 		);
 	setStandard(
 			"islandMaximumHeight",
 			100.0f,
-			"Maximum island height"
+			"Maximum island height."
+		);
+	setStandard(
+			"islandTerrainDensity",
+			256.0f,
+			"Density of island terrain tessellation."
+		);
+	setStandard(
+			"islandTerrainRoughness",
+			0.5f,
+			"Roughness of island terrain randomization."
+		);
+
+
+
+	setStandard(
+			"islandTerrainGradDist",
+			0.5f,
+			"Island terrain generation gradual distance factor."
+		);
+	setStandard(
+			"islandTerrainBlends",
+			4.0f,
+			"Island terrain generation blending factor."
+		);
+	setStandard(
+			"islandTerrainSink",
+			0.5f,
+			"Island terrain generation sink to sea level factor."
 		);
 
 	// key bindings

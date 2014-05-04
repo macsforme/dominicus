@@ -8,7 +8,7 @@
 
 #include "graphics/2dgraphics/DrawRadar.h"
 
-DrawRadar::DrawRadar() {
+DrawRadar::DrawRadar() : containerDrawer(new DrawContainer()) {
 	// set up shader
 	GLuint shaderID = 0;
 	std::vector<GLuint> shaderIDs;
@@ -57,60 +57,14 @@ DrawRadar::~DrawRadar() {
 	// delete shader program
 	if(glIsProgram(shaderProgram))
 		glDeleteProgram(shaderProgram);
+
+	// delete variables
+	delete(containerDrawer);
 }
 
 void DrawRadar::reloadGraphics() {
-/*
-	// move to radar drawer or logic (from gamestate)
-	// create persistent noise textures
-	Texture* noiseTexture;
-	Texture* fourDepthNoiseTexture;
-
-	unsigned int noiseDensity = (unsigned int) gameSystem->getFloat("terrainNoiseTextureDensity");
-	DiamondSquare noise1(
-			noiseDensity,
-			gameSystem->getFloat("terrainNoiseTextureRoughness")
-		);
-	noiseTexture = new Texture(
-			noiseDensity,
-			noiseDensity,
-			Texture::FORMAT_RGB
-		);
-	for(size_t i = 0; i < (size_t) noiseDensity; ++i)
-		for(size_t p = 0; p < (size_t) noiseDensity; ++p)
-			noiseTexture->setColorAt(
-					i,
-					p,
-					(uint8_t) (noise1.data[i][p] * 128.0f + 127.0f),
-					(uint8_t) (noise1.data[i][p] * 128.0f + 127.0f),
-					(uint8_t) (noise1.data[i][p] * 128.0f + 127.0f),
-					0xFF
-				);
-
-	DiamondSquare noise2(
-			noiseDensity,
-			gameSystem->getFloat("terrainNoiseTextureRoughness")
-		);
-	fourDepthNoiseTexture = new Texture(
-			noiseDensity,
-			noiseDensity,
-			Texture::FORMAT_RGB
-		);
-	for(size_t i = 0; i < (size_t) noiseDensity; ++i)
-		for(size_t p = 0; p < (size_t) noiseDensity; ++p)
-			fourDepthNoiseTexture->setColorAt(
-					i,
-					p,
-					(uint8_t) (noise2.data[i][p] * 128.0f + 127.0f),
-					(uint8_t) (noise2.data[i][p] * 128.0f + 127.0f),
-					(uint8_t) (noise2.data[i][p] * 128.0f + 127.0f),
-					0xFF
-				);
-	fourDepthNoiseTexture->setDepth(16);
-*/
-/*
 	// create a texture with the terrain heightmap for radar
-	size_t resolution = gameState->world->density; //gameSystem->getFloat("radarSize") / 100.0f * (float) gameGraphics->resolutionY;
+	size_t resolution = (size_t) gameSystem->getFloat("islandTerrainDensity");
 	Texture* radarTexture = new Texture(
 			resolution,
 			resolution,
@@ -118,25 +72,28 @@ void DrawRadar::reloadGraphics() {
 		);
 
 	for(
-			std::vector<Mesh::Face>::iterator itr = gameState->world->mesh.faceGroups.begin()->second.begin();
-			itr != gameState->world->mesh.faceGroups.begin()->second.end();
+			std::vector<Mesh::Face>::iterator itr = gameState->island.faceGroups.begin()->second.begin();
+			itr != gameState->island.faceGroups.begin()->second.end();
 			++itr
 		) {
 		uint8_t colorValue, alphaValue;
 
-		if(gameState->world->mesh.vertices[itr->vertices[0]].y >= 0.0f) {
+		if(gameState->island.vertices[itr->vertices[0]].y >= 0.0f) {
 			colorValue = (uint8_t) (
-					(gameState->world->mesh.vertices[itr->vertices[0]].y + gameSystem->getFloat("terrainDepth")) /
-					gameState->world->height * 255.0f);
+					(gameState->island.vertices[itr->vertices[0]].y + gameSystem->getFloat("terrainDepth")) /
+					gameSystem->getFloat("islandMaximumHeight") * 255.0f);
 			alphaValue = 0xFF;
+//		} else if(gameState->island.vertices[itr->vertices[0]].y > -gameSystem->getFloat("terrainDepth")) {
+//			colorValue = 0;
+//			alphaValue = (gameState->island.vertices[itr->vertices[0]].y + gameSystem->getFloat("terrainDepth")) / gameSystem->getFloat("terrainDepth") * 0.5f * 0xFF;
 		} else {
 			colorValue = 0;
-			alphaValue = 255 - (uint8_t) (gameState->world->mesh.vertices[itr->vertices[0]].y / gameState->world->lowestY * 255.0f);
+			alphaValue = 0;
 		}
 
 		radarTexture->setColorAt(
-				(uint8_t) ((gameState->world->mesh.vertices[itr->vertices[0]].x / (gameState->world->diameter / 2.0f) / 2.0f + 0.5f) * (float) resolution),
-				(uint8_t) ((gameState->world->mesh.vertices[itr->vertices[0]].z / (gameState->world->diameter / 2.0f) / 2.0f + 0.5f) * (float) resolution),
+				(uint8_t) ((gameState->island.vertices[itr->vertices[0]].x / (gameSystem->getFloat("islandMaximumWidth") / 2.0f) / 2.0f + 0.5f) * (float) resolution),
+				(uint8_t) ((gameState->island.vertices[itr->vertices[0]].z / (gameSystem->getFloat("islandMaximumWidth") / 2.0f) / 2.0f + 0.5f) * (float) resolution),
 				colorValue,
 				colorValue,
 				colorValue,
@@ -165,7 +122,6 @@ void DrawRadar::reloadGraphics() {
 	glDisable(GL_TEXTURE_2D);
 
 	delete(radarTexture);
-*/
 }
 
 Vector2 DrawRadar::getSize(std::map<std::string, void*> arguments) {
@@ -176,11 +132,18 @@ Vector2 DrawRadar::getSize(std::map<std::string, void*> arguments) {
 }
 
 void DrawRadar::execute(std::map<std::string, void*> arguments) {
+	// draw container
+	containerDrawer->execute(arguments);
+
 	// collect arguments
 	UIMetrics* metrics = ((UIMetrics*) arguments["metrics"]);
 
 	// get the actual size so possibly incorrect metrics don't skew the aspect ratio
 	Vector2 actualSize = getSize(arguments);
+	Vector2 padding = Vector2(
+			*((float*) arguments["padding"]) / (float) gameGraphics->resolutionX * 2.0f,
+			*((float*) arguments["padding"]) / (float) gameGraphics->resolutionY * 2.0f
+		);
 
 	// update vertex buffers
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);
@@ -189,19 +152,16 @@ void DrawRadar::execute(std::map<std::string, void*> arguments) {
 	// compute projection matrix
 	Matrix4 projectionMatrix;
 	projectionMatrix.identity();
-/*
+
 	translateMatrix(
-			-gameState->ships[0]->position.x / gameState->world->diameter * 2.0f,
-			-gameState->ships[0]->position.z / gameState->world->diameter * 2.0f,
+			-gameState->fortress.position.x / gameSystem->getFloat("islandMaximumWidth") * 2.0f,
+			-gameState->fortress.position.z / gameSystem->getFloat("islandMaximumWidth") * 2.0f,
 			0.0f,
 			projectionMatrix
 		);
-	rotateMatrix(
-			Vector3(0.0f, 0.0f, -1.0f),
-			radians(getAngle(Vector2(gameState->ships[0]->direction.x, gameState->ships[0]->direction.z)) - 90.0f),
-			projectionMatrix
-		);
-*/
+	rotateMatrix(Vector3(0.0f, 0.0f, -1.0f), -radians(90.0f), projectionMatrix);
+	rotateMatrix(Vector3(0.0f, 0.0f, -1.0f),-radians((float) (gameState->lastUpdateGameTime % 8000) / 8000.0f * 360.0f), projectionMatrix);
+
 	scaleMatrix(actualSize.x / 2.0f, actualSize.y / 2.0f, 1.0f, projectionMatrix);
 	translateMatrix(metrics->position.x, metrics->position.y, 0.0f, projectionMatrix);
 
@@ -217,14 +177,13 @@ void DrawRadar::execute(std::map<std::string, void*> arguments) {
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	glEnable(GL_SCISSOR_TEST);
 	glScissor(
-			(GLint) ((metrics->position.x / 2.0f + 0.5f) * (float) gameGraphics->resolutionX -
-					(actualSize.x / 2.0f * (float) gameGraphics->resolutionX) / 2.0f),
-			(GLint) ((metrics->position.y / 2.0f + 0.5f) * (float) gameGraphics->resolutionY -
-					(actualSize.y / 2.0f * (float) gameGraphics->resolutionY) / 2.0f),
-			(GLsizei) (actualSize.x / 2.0f * (float) gameGraphics->resolutionX),
-			(GLsizei) (actualSize.y / 2.0f * (float) gameGraphics->resolutionY)
+			(GLint) (((metrics->position.x - actualSize.x / 2.0f + padding.x) + 1.0f) / 2.0f * (float) gameGraphics->resolutionX),
+			(GLint) (((metrics->position.y - actualSize.y / 2.0f + padding.y) + 1.0f) / 2.0f * (float) gameGraphics->resolutionY),
+			(GLsizei) ((actualSize.x - padding.x * 2.0f) / 2.0f * (float) gameGraphics->resolutionX),
+			(GLsizei) ((actualSize.y - padding.y * 2.0f) / 2.0f * (float) gameGraphics->resolutionY)
 		);
 
 	// enable shader
@@ -266,6 +225,7 @@ void DrawRadar::execute(std::map<std::string, void*> arguments) {
 	glDisable(GL_BLEND);
 	glDisable(GL_SCISSOR_TEST);
 
+/*
 	// pathetically hackish code that needs to go
 	glUseProgram(0);
 
@@ -277,4 +237,5 @@ void DrawRadar::execute(std::map<std::string, void*> arguments) {
 	glVertex3f(metrics->position.x, metrics->position.y, -0.9f);
 	glEnd();
 	glDisable(GL_COLOR_MATERIAL);
+*/
 }

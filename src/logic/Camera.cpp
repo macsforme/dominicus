@@ -70,4 +70,8 @@ rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), -radians((float) (gameState->lastUpdateG
 rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians((sin(-PI + (float) (gameState->lastUpdateGameTime % 4000) / 4000.0f * 2.0f * PI) * 0.5f + 0.5f ) * 45.0f), mvMatrix);
 
 	lightMatrix.identity();
+rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), -radians((float) (gameState->lastUpdateGameTime % 8000) / 8000.0f * 360.0f), lightMatrix);
+	rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), -radians(90.0f), lightMatrix);
+rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians((sin(-PI + (float) (gameState->lastUpdateGameTime % 4000) / 4000.0f * 2.0f * PI) * 0.5f + 0.5f ) * 45.0f), lightMatrix);
+
 }

@@ -7,15 +7,14 @@
 // licenses/DOMINICUS.txt for the license text.
 
 #include "state/GameState.h"
-#include <iostream>
+
 GameState::GameState() {
 	// randomly generate the island
-//FIXME this stuff should go into game standards
-	size_t density = 256;
-	const float rough = 0.5f;
-	const float gradDist = 0.5f;
-	const int blends = 4;
-	const float sink = 0.5f;
+	size_t density = (size_t) gameSystem->getFloat("islandTerrainDensity");
+	const float rough = gameSystem->getFloat("islandTerrainRoughness");
+	const float gradDist = gameSystem->getFloat("islandTerrainGradDist");
+	const int blends = (int) gameSystem->getFloat("islandTerrainBlends");
+	const float sink = gameSystem->getFloat("islandTerrainSink");
 	float height = gameSystem->getFloat("islandMaximumHeight");
 	float diameter = gameSystem->getFloat("islandMaximumWidth");
 	float textureStretch = 10.0f;

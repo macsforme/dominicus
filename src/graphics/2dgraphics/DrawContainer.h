@@ -56,7 +56,7 @@ public:
 		softEdge		thickness of antialiasing of border in pixels
 		insideColor		color of inside of container
 		borderColor		color of border of container
-		outsideCOlor	color of outside of container
+		outsideColor	color of outside of container
 	*/
 
 	void execute(std::map<std::string, void*> newDrawData);

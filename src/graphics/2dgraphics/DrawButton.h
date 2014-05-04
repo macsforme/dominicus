@@ -38,6 +38,12 @@ public:
 		----------------
 		mvpMatrix		Orthogonal projection matrix for shader
 		metrics			UI element metrics
+		padding			width/height of curved edges in pixels
+		border			thickness of border in pixels
+		softEdge		thickness of antialiasing of border in pixels
+		insideColor		color of inside of container
+		borderColor		color of border of container
+		outsideCOlor	color of outside of container
 		fontSize		Font point size for this label (not to be confused with metrics->size)
 		fontColor		Font color
 		text			std::string of text

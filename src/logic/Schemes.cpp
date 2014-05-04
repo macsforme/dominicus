@@ -816,128 +816,105 @@ void Schemes::playingScheme() {
 	// control box
 	gameLogic->drawStack.push_back(gameLogic->controlBoxEntry);
 
-	// health gauge image
-	*((std::string*) gameLogic->healthGaugeImage.second["texture"]) = "gauge/heart";
-	((UIMetrics*) gameLogic->healthGaugeImage.second["metrics"])->bearing1 = UIMetrics::BEARING_LEFT;
-	((UIMetrics*) gameLogic->healthGaugeImage.second["metrics"])->bearing2 = UIMetrics::BEARING_TOP;
-	((UIMetrics*) gameLogic->healthGaugeImage.second["metrics"])->size = ((DrawTexture*) gameGraphics->drawers["texture"])->getSize(gameLogic->healthGaugeImage.second);
-	gameLogic->drawStack.push_back(gameLogic->healthGaugeImage);
-
-	// health gauge bar
-	*((Vector4*) gameLogic->healthGaugeBar.second["color1Top"]) = gameSystem->getColor("hudGaugeHealthBarColor");
-	*((Vector4*) gameLogic->healthGaugeBar.second["color1Bottom"]) = Vector4(
+	// gauge panel
+	*((float*) gameLogic->gaugePanelEntry.second["padding"]) = gameSystem->getFloat("hudGaugePadding");
+	*((float*) gameLogic->gaugePanelEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
+	*((float*) gameLogic->gaugePanelEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
+	*((Vector4*) gameLogic->gaugePanelEntry.second["insideColor"]) = gameSystem->getColor("hudControlBoxColor");
+	*((Vector4*) gameLogic->gaugePanelEntry.second["borderColor"]) = gameSystem->getColor("hudControlBoxColor");
+	*((Vector4*) gameLogic->gaugePanelEntry.second["outsideColor"]) = Vector4(
+			gameSystem->getColor("hudControlBoxColor").x,
+			gameSystem->getColor("hudControlBoxColor").y,
+			gameSystem->getColor("hudControlBoxColor").z,
+			0.0f
+		);
+	*((size_t*) gameLogic->gaugePanelEntry.second["elements"]) = 3;
+	(*((std::vector<std::string>*) gameLogic->gaugePanelEntry.second["textureNames"]))[0] = "gauge/heart";
+	(*((std::vector<std::string>*) gameLogic->gaugePanelEntry.second["textureNames"]))[1] = "gauge/shell";
+	(*((std::vector<std::string>*) gameLogic->gaugePanelEntry.second["textureNames"]))[2] = "gauge/bolt";
+	*((Vector2*) gameLogic->gaugePanelEntry.second["progressBarSize"]) = Vector2(gameSystem->getFloat("hudGaugeWidth"), gameSystem->getFloat("hudGaugeHeight"));
+	(*((std::vector<float>*) gameLogic->gaugePanelEntry.second["progressions"]))[0] = 0.75f;
+	(*((std::vector<float>*) gameLogic->gaugePanelEntry.second["progressions"]))[1] = 0.25f;
+	(*((std::vector<float>*) gameLogic->gaugePanelEntry.second["progressions"]))[2] = 0.5f;
+	*((Vector4*) gameLogic->gaugePanelEntry.second["backgroundColorTop"]) = gameSystem->getColor("hudGaugeBackgroundColor");
+	*((Vector4*) gameLogic->gaugePanelEntry.second["backgroundColorBottom"]) = Vector4(
+			gameSystem->getColor("hudGaugeBackgroundColor").x * gameSystem->getColor("hudGaugeColorFalloff").x,
+			gameSystem->getColor("hudGaugeBackgroundColor").y * gameSystem->getColor("hudGaugeColorFalloff").y,
+			gameSystem->getColor("hudGaugeBackgroundColor").z * gameSystem->getColor("hudGaugeColorFalloff").z,
+			gameSystem->getColor("hudGaugeBackgroundColor").w * gameSystem->getColor("hudGaugeColorFalloff").w
+		);
+	(*((std::vector<Vector4>*) gameLogic->gaugePanelEntry.second["progressBarColorsTop"]))[0] = gameSystem->getColor("hudGaugeHealthBarColor");
+	(*((std::vector<Vector4>*) gameLogic->gaugePanelEntry.second["progressBarColorsTop"]))[1] = gameSystem->getColor("hudGaugeAmmoBarColor");
+	(*((std::vector<Vector4>*) gameLogic->gaugePanelEntry.second["progressBarColorsTop"]))[2] = gameSystem->getColor("hudGaugeShockChargingBarColor");
+	(*((std::vector<Vector4>*) gameLogic->gaugePanelEntry.second["progressBarColorsBottom"]))[0] = Vector4(
 			gameSystem->getColor("hudGaugeHealthBarColor").x * gameSystem->getColor("hudGaugeColorFalloff").x,
 			gameSystem->getColor("hudGaugeHealthBarColor").y * gameSystem->getColor("hudGaugeColorFalloff").y,
 			gameSystem->getColor("hudGaugeHealthBarColor").z * gameSystem->getColor("hudGaugeColorFalloff").z,
 			gameSystem->getColor("hudGaugeHealthBarColor").w * gameSystem->getColor("hudGaugeColorFalloff").w
 		);
-	*((Vector4*) gameLogic->healthGaugeBar.second["color2Top"]) = gameSystem->getColor("hudGaugeBackgroundColor");
-	*((Vector4*) gameLogic->healthGaugeBar.second["color2Bottom"]) = Vector4(
-			gameSystem->getColor("hudGaugeBackgroundColor").x * gameSystem->getColor("hudGaugeColorFalloff").x,
-			gameSystem->getColor("hudGaugeBackgroundColor").y * gameSystem->getColor("hudGaugeColorFalloff").y,
-			gameSystem->getColor("hudGaugeBackgroundColor").z * gameSystem->getColor("hudGaugeColorFalloff").z,
-			gameSystem->getColor("hudGaugeBackgroundColor").w * gameSystem->getColor("hudGaugeColorFalloff").w
-		);
-	*((float*) gameLogic->healthGaugeBar.second["progression"]) = 0.75f;
-	*((Vector2*) gameLogic->healthGaugeBar.second["size"]) = Vector2(
-			gameSystem->getFloat("hudGaugeWidth"),
-			gameSystem->getFloat("hudGaugeHeight")
-		);
-	((UIMetrics*) gameLogic->healthGaugeBar.second["metrics"])->size = ((DrawProgressBar*) gameGraphics->drawers["progressBar"])->getSize(gameLogic->healthGaugeBar.second);
-	gameLogic->drawStack.push_back(gameLogic->healthGaugeBar);
-
-	// ammo gauge image
-	*((std::string*) gameLogic->ammoGaugeImage.second["texture"]) = "gauge/shell";
-	((UIMetrics*) gameLogic->ammoGaugeImage.second["metrics"])->bearing1 = UIMetrics::BEARING_LEFT;
-	((UIMetrics*) gameLogic->ammoGaugeImage.second["metrics"])->bearing2 = UIMetrics::BEARING_TOP;
-	((UIMetrics*) gameLogic->ammoGaugeImage.second["metrics"])->size = ((DrawTexture*) gameGraphics->drawers["texture"])->getSize(gameLogic->ammoGaugeImage.second);
-	gameLogic->drawStack.push_back(gameLogic->ammoGaugeImage);
-
-	// ammo gauge bar
-	*((Vector4*) gameLogic->ammoGaugeBar.second["color1Top"]) = gameSystem->getColor("hudGaugeAmmoBarColor");
-	*((Vector4*) gameLogic->ammoGaugeBar.second["color1Bottom"]) = Vector4(
+	(*((std::vector<Vector4>*) gameLogic->gaugePanelEntry.second["progressBarColorsBottom"]))[1] = Vector4(
 			gameSystem->getColor("hudGaugeAmmoBarColor").x * gameSystem->getColor("hudGaugeColorFalloff").x,
 			gameSystem->getColor("hudGaugeAmmoBarColor").y * gameSystem->getColor("hudGaugeColorFalloff").y,
 			gameSystem->getColor("hudGaugeAmmoBarColor").z * gameSystem->getColor("hudGaugeColorFalloff").z,
 			gameSystem->getColor("hudGaugeAmmoBarColor").w * gameSystem->getColor("hudGaugeColorFalloff").w
 		);
-	*((Vector4*) gameLogic->ammoGaugeBar.second["color2Top"]) = gameSystem->getColor("hudGaugeBackgroundColor");
-	*((Vector4*) gameLogic->ammoGaugeBar.second["color2Bottom"]) = Vector4(
-			gameSystem->getColor("hudGaugeBackgroundColor").x * gameSystem->getColor("hudGaugeColorFalloff").x,
-			gameSystem->getColor("hudGaugeBackgroundColor").y * gameSystem->getColor("hudGaugeColorFalloff").y,
-			gameSystem->getColor("hudGaugeBackgroundColor").z * gameSystem->getColor("hudGaugeColorFalloff").z,
-			gameSystem->getColor("hudGaugeBackgroundColor").w * gameSystem->getColor("hudGaugeColorFalloff").w
-		);
-	*((float*) gameLogic->ammoGaugeBar.second["progression"]) = 0.25f;
-	*((Vector2*) gameLogic->ammoGaugeBar.second["size"]) = Vector2(
-			gameSystem->getFloat("hudGaugeWidth"),
-			gameSystem->getFloat("hudGaugeHeight")
-		);
-	((UIMetrics*) gameLogic->ammoGaugeBar.second["metrics"])->size = ((DrawProgressBar*) gameGraphics->drawers["progressBar"])->getSize(gameLogic->ammoGaugeBar.second);
-	gameLogic->drawStack.push_back(gameLogic->ammoGaugeBar);
-
-	// shock gauge image
-	*((std::string*) gameLogic->shockGaugeImage.second["texture"]) = "gauge/bolt";
-	((UIMetrics*) gameLogic->shockGaugeImage.second["metrics"])->bearing1 = UIMetrics::BEARING_LEFT;
-	((UIMetrics*) gameLogic->shockGaugeImage.second["metrics"])->bearing2 = UIMetrics::BEARING_TOP;
-	((UIMetrics*) gameLogic->shockGaugeImage.second["metrics"])->size = ((DrawTexture*) gameGraphics->drawers["texture"])->getSize(gameLogic->shockGaugeImage.second);
-	gameLogic->drawStack.push_back(gameLogic->shockGaugeImage);
-
-	// shock gauge bar
-	*((Vector4*) gameLogic->shockGaugeBar.second["color1Top"]) = gameSystem->getColor("hudGaugeShockChargingBarColor");
-	*((Vector4*) gameLogic->shockGaugeBar.second["color1Bottom"]) = Vector4(
+	(*((std::vector<Vector4>*) gameLogic->gaugePanelEntry.second["progressBarColorsBottom"]))[2] = Vector4(
 			gameSystem->getColor("hudGaugeShockChargingBarColor").x * gameSystem->getColor("hudGaugeColorFalloff").x,
 			gameSystem->getColor("hudGaugeShockChargingBarColor").y * gameSystem->getColor("hudGaugeColorFalloff").y,
 			gameSystem->getColor("hudGaugeShockChargingBarColor").z * gameSystem->getColor("hudGaugeColorFalloff").z,
 			gameSystem->getColor("hudGaugeShockChargingBarColor").w * gameSystem->getColor("hudGaugeColorFalloff").w
 		);
-	*((Vector4*) gameLogic->shockGaugeBar.second["color2Top"]) = gameSystem->getColor("hudGaugeBackgroundColor");
-	*((Vector4*) gameLogic->shockGaugeBar.second["color2Bottom"]) = Vector4(
-			gameSystem->getColor("hudGaugeBackgroundColor").x * gameSystem->getColor("hudGaugeColorFalloff").x,
-			gameSystem->getColor("hudGaugeBackgroundColor").y * gameSystem->getColor("hudGaugeColorFalloff").y,
-			gameSystem->getColor("hudGaugeBackgroundColor").z * gameSystem->getColor("hudGaugeColorFalloff").z,
-			gameSystem->getColor("hudGaugeBackgroundColor").w * gameSystem->getColor("hudGaugeColorFalloff").w
+	((UIMetrics*) gameLogic->gaugePanelEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_LEFT;
+	((UIMetrics*) gameLogic->gaugePanelEntry.second["metrics"])->size = ((DrawGaugePanel*) gameGraphics->drawers["gaugePanel"])->getSize(gameLogic->gaugePanelEntry.second);
+	gameLogic->drawStack.push_back(gameLogic->gaugePanelEntry);
+	gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->gaugePanelEntry.second["metrics"]);
+
+	// radar
+	*((float*) gameLogic->radarEntry.second["padding"]) = gameSystem->getFloat("hudGaugePadding");
+	*((float*) gameLogic->radarEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
+	*((float*) gameLogic->radarEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
+	*((Vector4*) gameLogic->radarEntry.second["insideColor"]) = gameSystem->getColor("hudControlBoxColor");
+	*((Vector4*) gameLogic->radarEntry.second["borderColor"]) = gameSystem->getColor("hudControlBoxColor");
+	*((Vector4*) gameLogic->radarEntry.second["outsideColor"]) = Vector4(
+			gameSystem->getColor("hudControlBoxColor").x,
+			gameSystem->getColor("hudControlBoxColor").y,
+			gameSystem->getColor("hudControlBoxColor").z,
+			0.0f
 		);
-	*((float*) gameLogic->shockGaugeBar.second["progression"]) = 0.5f;
-	*((Vector2*) gameLogic->shockGaugeBar.second["size"]) = Vector2(
-			gameSystem->getFloat("hudGaugeWidth"),
-			gameSystem->getFloat("hudGaugeHeight")
-		);
-	((UIMetrics*) gameLogic->shockGaugeBar.second["metrics"])->size = ((DrawProgressBar*) gameGraphics->drawers["progressBar"])->getSize(gameLogic->shockGaugeBar.second);
-	gameLogic->drawStack.push_back(gameLogic->shockGaugeBar);
+	((UIMetrics*) gameLogic->radarEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_RIGHT;
+	((UIMetrics*) gameLogic->radarEntry.second["metrics"])->size =
+			((DrawRadar*) gameGraphics->drawers["radar"])->getSize(gameLogic->radarEntry.second);
+	gameLogic->drawStack.push_back(gameLogic->radarEntry);
+	gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->radarEntry.second["metrics"]);
 
-	// fix metrics for gauge images and bars and re-arrange the UI
-	Vector2 maxSize(0.0f, 0.0f);
-
-	if(((UIMetrics*) gameLogic->healthGaugeImage.second["metrics"])->size.x > maxSize.x) maxSize.x = ((UIMetrics*) gameLogic->healthGaugeImage.second["metrics"])->size.x;
-	if(((UIMetrics*) gameLogic->ammoGaugeImage.second["metrics"])->size.x > maxSize.x) maxSize.x = ((UIMetrics*) gameLogic->ammoGaugeImage.second["metrics"])->size.x;
-	if(((UIMetrics*) gameLogic->shockGaugeImage.second["metrics"])->size.x > maxSize.x) maxSize.x = ((UIMetrics*) gameLogic->shockGaugeImage.second["metrics"])->size.x;
-
-	if(((UIMetrics*) gameLogic->healthGaugeImage.second["metrics"])->size.y > maxSize.y) maxSize.y = ((UIMetrics*) gameLogic->healthGaugeImage.second["metrics"])->size.y;
-	if(((UIMetrics*) gameLogic->healthGaugeBar.second["metrics"])->size.y > maxSize.y) maxSize.y = ((UIMetrics*) gameLogic->healthGaugeBar.second["metrics"])->size.y;
-	if(((UIMetrics*) gameLogic->ammoGaugeImage.second["metrics"])->size.y > maxSize.y) maxSize.y = ((UIMetrics*) gameLogic->ammoGaugeImage.second["metrics"])->size.y;
-	if(((UIMetrics*) gameLogic->ammoGaugeBar.second["metrics"])->size.y > maxSize.y) maxSize.y = ((UIMetrics*) gameLogic->ammoGaugeBar.second["metrics"])->size.y;
-	if(((UIMetrics*) gameLogic->shockGaugeImage.second["metrics"])->size.y > maxSize.y) maxSize.y = ((UIMetrics*) gameLogic->shockGaugeImage.second["metrics"])->size.y;
-	if(((UIMetrics*) gameLogic->shockGaugeBar.second["metrics"])->size.y > maxSize.y) maxSize.y = ((UIMetrics*) gameLogic->shockGaugeBar.second["metrics"])->size.y;
-
-	((UIMetrics*) gameLogic->healthGaugeImage.second["metrics"])->size = maxSize;
-	((UIMetrics*) gameLogic->ammoGaugeImage.second["metrics"])->size = maxSize;
-	((UIMetrics*) gameLogic->shockGaugeImage.second["metrics"])->size = maxSize;
-
-	gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->healthGaugeImage.second["metrics"]);
-	gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->ammoGaugeImage.second["metrics"]);
-	gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->shockGaugeImage.second["metrics"]);
-
+	// re-arrange the UI
 	gameLogic->uiLayoutAuthority->rearrange();
 
-	float gaugeBarXCoordinate =
-			((UIMetrics*) gameLogic->healthGaugeImage.second["metrics"])->position.x +
-			((UIMetrics*) gameLogic->healthGaugeImage.second["metrics"])->size.x / 2.0f +
-			gameLogic->uiLayoutAuthority->elementMargin.x +
-			((UIMetrics*) gameLogic->healthGaugeBar.second["metrics"])->size.x / 2.0f;
-	((UIMetrics*) gameLogic->healthGaugeBar.second["metrics"])->position = Vector2(gaugeBarXCoordinate, ((UIMetrics*) gameLogic->healthGaugeImage.second["metrics"])->position.y);
-	((UIMetrics*) gameLogic->ammoGaugeBar.second["metrics"])->position = Vector2(gaugeBarXCoordinate, ((UIMetrics*) gameLogic->ammoGaugeImage.second["metrics"])->position.y);
-	((UIMetrics*) gameLogic->shockGaugeBar.second["metrics"])->position = Vector2(gaugeBarXCoordinate, ((UIMetrics*) gameLogic->shockGaugeImage.second["metrics"])->position.y);
+/*
+	((UIMetrics*) gameLogic->radarContainerEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_BOTTOM;
+	((UIMetrics*) gameLogic->radarContainerEntry.second["metrics"])->bearing2 = UIMetrics::BEARING_RIGHT;
+	((UIMetrics*) gameLogic->radarContainerEntry.second["metrics"])->size =
+			((DrawRadar*) gameGraphics->drawers["radar"])->getSize(gameLogic->radarEntry.second) +
+			Vector2(
+					(gameSystem->getFloat("hudContainerPadding") / (float) gameGraphics->resolutionX * 2.0f) * 2.0f,
+					(gameSystem->getFloat("hudContainerPadding") / (float) gameGraphics->resolutionY * 2.0f) * 2.0f
+				);
+	*((Vector4*) gameLogic->radarContainerEntry.second["insideColor"]) =
+			gameSystem->getColor("hudContainerInsideColor");
+	*((Vector4*) gameLogic->radarContainerEntry.second["highlightColor"]) =
+			gameSystem->getColor("hudContainerHighlightColor");
+	*((Vector4*) gameLogic->radarContainerEntry.second["borderColor"]) =
+			gameSystem->getColor("hudContainerBorderColor");
+	*((Vector4*) gameLogic->radarContainerEntry.second["outsideColor"]) =
+			Vector4(0.0f, 0.0f, 0.0f, 0.0f);
+	*((float*) gameLogic->radarContainerEntry.second["padding"]) =
+			gameSystem->getFloat("hudContainerPadding");
+	*((float*) gameLogic->radarContainerEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
+*/
+
+//	gameLogic->drawStack.push_back(gameLogic->radarContainerEntry);
+
+//	gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->radarContainerEntry.second["metrics"]);
 
 /*
 
@@ -1635,35 +1612,5 @@ void Schemes::addConsole() {
 
 	gameLogic->drawStack.push_back(gameLogic->consoleEntry);
 	gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->consoleEntry.second["metrics"]);
-}
-
-void Schemes::addRadar() {
-	((UIMetrics*) gameLogic->radarContainerEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_BOTTOM;
-	((UIMetrics*) gameLogic->radarContainerEntry.second["metrics"])->bearing2 = UIMetrics::BEARING_RIGHT;
-	((UIMetrics*) gameLogic->radarContainerEntry.second["metrics"])->size =
-			((DrawRadar*) gameGraphics->drawers["radar"])->getSize(gameLogic->radarEntry.second) +
-			Vector2(
-					(gameSystem->getFloat("hudContainerPadding") / (float) gameGraphics->resolutionX * 2.0f) * 2.0f,
-					(gameSystem->getFloat("hudContainerPadding") / (float) gameGraphics->resolutionY * 2.0f) * 2.0f
-				);
-	*((Vector4*) gameLogic->radarContainerEntry.second["insideColor"]) =
-			gameSystem->getColor("hudContainerInsideColor");
-	*((Vector4*) gameLogic->radarContainerEntry.second["highlightColor"]) =
-			gameSystem->getColor("hudContainerHighlightColor");
-	*((Vector4*) gameLogic->radarContainerEntry.second["borderColor"]) =
-			gameSystem->getColor("hudContainerBorderColor");
-	*((Vector4*) gameLogic->radarContainerEntry.second["outsideColor"]) =
-			Vector4(0.0f, 0.0f, 0.0f, 0.0f);
-	*((float*) gameLogic->radarContainerEntry.second["padding"]) =
-			gameSystem->getFloat("hudContainerPadding");
-	*((float*) gameLogic->radarContainerEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
-
-	((UIMetrics*) gameLogic->radarEntry.second["metrics"])->size =
-			((DrawRadar*) gameGraphics->drawers["radar"])->getSize(gameLogic->radarEntry.second);
-
-	gameLogic->drawStack.push_back(gameLogic->radarContainerEntry);
-	gameLogic->drawStack.push_back(gameLogic->radarEntry);
-
-	gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->radarContainerEntry.second["metrics"]);
 }
 */

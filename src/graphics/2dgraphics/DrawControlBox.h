@@ -47,6 +47,8 @@ protected:
 public:
 	DrawControlBox();
 
+//FIXME take arguments here rather than pulling from gameLogic
+
 	void execute(std::map<std::string, void*> newDrawData);
 };
 

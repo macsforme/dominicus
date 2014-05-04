@@ -29,6 +29,7 @@
 		035466681912C17200F4953E /* DrawSplash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0354665B1912C17200F4953E /* DrawSplash.cpp */; };
 		035466691912C17200F4953E /* DrawTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0354665D1912C17200F4953E /* DrawTexture.cpp */; };
 		03590F84131E446000EDF7A7 /* GameSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03590EED131E181C00EDF7A7 /* GameSystem.cpp */; };
+		036C99671915C49B00776051 /* DrawGaugePanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 036C99641915AD1A00776051 /* DrawGaugePanel.cpp */; };
 		036CFFE118EB5D4800C1B797 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 036CFFDF18EB5D4800C1B797 /* Camera.cpp */; };
 		0387C28D18F3E2A300565A43 /* GameAudio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0387C28B18F3E2A300565A43 /* GameAudio.cpp */; };
 		03ACFE4918FCD8C200A6B447 /* ShipRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03ACFE4118FCD8C200A6B447 /* ShipRenderer.cpp */; };
@@ -497,6 +498,7 @@
 				03590F84131E446000EDF7A7 /* GameSystem.cpp in Sources */,
 				035466681912C17200F4953E /* DrawSplash.cpp in Sources */,
 				03BB9B9B131F3F50009DFC8B /* GameGraphics.cpp in Sources */,
+				036C99671915C49B00776051 /* DrawGaugePanel.cpp in Sources */,
 				036CFFE118EB5D4800C1B797 /* Camera.cpp in Sources */,
 				035466631912C17200F4953E /* DrawField.cpp in Sources */,
 				03BB9D26131F5D39009DFC8B /* Texture.cpp in Sources */,

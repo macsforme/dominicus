@@ -11,6 +11,7 @@
 
 // program headers
 #include "graphics/GameGraphics.h"
+#include "graphics/2dgraphics/DrawContainer.h"
 #include "graphics/texture/Texture.h"
 #include "logic/UILayoutAuthority.h"
 #include "math/MatrixMath.h"
@@ -30,6 +31,8 @@ extern GameState* gameState;
 class DrawRadar : public BaseUIElement {
 private:
 	GLuint radarTextureID;
+
+	DrawContainer* containerDrawer;
 
 public:
 	DrawRadar();

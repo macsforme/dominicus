@@ -160,12 +160,8 @@ public:
 	DrawStackEntry scoreLabel;
 	DrawStackEntry playingTipEntry;
 	DrawStackEntry controlBoxEntry;
-	DrawStackEntry healthGaugeImage;
-	DrawStackEntry healthGaugeBar;
-	DrawStackEntry ammoGaugeImage;
-	DrawStackEntry ammoGaugeBar;
-	DrawStackEntry shockGaugeImage;
-	DrawStackEntry shockGaugeBar;
+	DrawStackEntry gaugePanelEntry;
+	DrawStackEntry radarEntry;
 	DrawStackEntry skyEntry;
 	DrawStackEntry waterEntry;
 	DrawStackEntry terrainEntry;
@@ -209,9 +205,6 @@ DrawStackEntry fpsEntry;
 	DrawStackEntry cursorEntry;
 
 	DrawStackEntry hintEntry;
-
-	DrawStackEntry radarContainerEntry;
-	DrawStackEntry radarEntry;
 
 	// stack of stuff to render each frame
 	DrawStack drawStack;
