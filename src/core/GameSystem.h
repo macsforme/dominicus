@@ -87,10 +87,10 @@ public:
 	bool getBool(const char* key);
 
 	// standards manipulation
-	void setStandard(const char* key, const char* value, const char* description, bool locked = false);
-	void setStandard(const char* key, Vector4 value, const char* description, bool locked = false);
-	void setStandard(const char* key, float value, const char* description, bool locked = false);
-	void setStandard(const char* key, bool value, const char* description, bool locked = false);
+	void setStandard(const char* key, const char* value, const char* description = "", bool locked = false);
+	void setStandard(const char* key, Vector4 value, const char* description = "", bool locked = false);
+	void setStandard(const char* key, float value, const char* description = "", bool locked = false);
+	void setStandard(const char* key, bool value, const char* description = "", bool locked = false);
 
 	// standards/preferences integration
 	void flushPreferences();

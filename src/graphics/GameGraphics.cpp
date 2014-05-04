@@ -614,13 +614,15 @@ if(gameLogic != NULL) {
 	// track the frame time
 	frameTime = platform->getExecMills() - frameBeginTime;
 
-	// calculate and return sleep time from superclass
+	// calculate and return sleep time from superclass unless we aren't capping it
+	if(! gameSystem->getBool("displayFPSCap"))
+		return 0;
+
 	unsigned int frequency = (unsigned int) gameSystem->getFloat("displayFPS");
 	unsigned int idealSleepTime = (
 			frequency != 0 ?
 			1000 / frequency : 0
 		);
 
-//	return getSleepTime(idealSleepTime);
-return 0;
+	return getSleepTime(idealSleepTime);
 }

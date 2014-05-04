@@ -48,7 +48,7 @@ void GameSystem::setStandard(const char* key, const char* value,
 	StandardEntry entry;
 
 	entry.value = value;
-	entry.description = description;
+	if(strcmp(description, "") != 0) entry.description = description;
 	entry.locked = locked;
 
 	standards[key] = entry;
@@ -187,493 +187,110 @@ GameSystem::GameSystem() {
 	versionString = versionStream.str();
 
 	// state standards
-	setStandard(
-			"stateUpdateFrequency",
-			120.0f,
-			"Number of times per second the core state updates.",
-			true
-		);
-	setStandard(
-			"stateShipOrbitMargin",
-			1000.0f,
-			"Radius of margin between maximum edge of island and first ship orbit.",
-			true
-		);
-	setStandard(
-			"stateShipMargin",
-			150.0f,
-			"Lateral distance between ships orbiting island.",
-			true
-		);
-	setStandard(
-			"stateShipSpeed",
-			200.0f,
-			"Ship speed.",
-			true
-		);
-	setStandard(
-			"stateShipEntryTime",
-//			20.0f,
-			10.0f,
-			"Time it takes between ship introduction and beginning of orbit.",
-			true
-		);
-	setStandard(
-			"stateShipAddRate",
-//			20.0f,
-			3.0f,
-			"Time between ships being added to the world.",
-			true
-		);
+	setStandard("stateUpdateFrequency", 120.0f, "Number of times per second the core state updates.");
+	setStandard("stateShipOrbitMargin", 1000.0f, "Radius of margin between maximum edge of island and first ship orbit.");
+	setStandard("stateShipMargin", 150.0f, "Lateral distance between ships orbiting island.");
+	setStandard("stateShipSpeed", 200.0f, "Ship speed.");
+	setStandard("stateShipEntryTime", 10.0f /* 20.0f */, "Time it takes between ship introduction and beginning of orbit.");
+	setStandard("stateShipAddRate", 3.0f /* 20.0f */, "Time between ships being added to the world.");
 
 	// input standards
-	setStandard(
-			"inputPollingFrequency",
-			120.0f,
-			"Number of times per second to poll the input devices.",
-			true
-		);
-/*
-	setStandard(
-			"inputAllowedCallsignChars",
-			"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-_ ",
-			"Characters allowed to be used in callsigns.",
-			true
-		);
-	setStandard(
-			"inputAllowedPasswordChars",
-			"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",
-			"Characters allowed to be used in passwords.",
-			true
-		);
-*/
+	setStandard("inputPollingFrequency", 120.0f, "Number of times per second to poll the input devices.");
+//	setStandard("inputAllowedCallsignChars", "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-_ ", "Characters allowed to be used in callsigns.");
+//	setStandard("inputAllowedPasswordChars", "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890", "Characters allowed to be used in passwords.");
+
 	// ship state and control standards
-/*
-	setStandard(
-			"shipUpdateFrequency",
-			60.0f,
-			"Frequency per second of ship position updates by internal state.",
-			true
-		);
-	setStandard(
-			"shipAccelRate",
-			15.0f,
-			"Maximum ship acceleration rate in meters per second.",
-			true
-		);
-	setStandard(
-			"shipMaxSpeed",
-			15.0f,
-			"Maximum ship speed in meters per second.",
-			true
-		);
-	setStandard(
-			"shipTurnRate",
-			60.0f,
-			"Maximum angle a ship can turn in degrees per second.",
-			true
-		);
-	setStandard(
-			"shipMaxTilt",
-			60.0f,
-			"Maximum pitch or roll a ship can tilt in degrees.",
-			true
-		);
-*/
+//	setStandard("shipUpdateFrequency", 60.0f, "Frequency per second of ship position updates by internal state.");
+//	setStandard("shipAccelRate", 15.0f, "Maximum ship acceleration rate in meters per second.");
+//	setStandard("shipMaxSpeed", 15.0f, "Maximum ship speed in meters per second.");
+//	setStandard("shipTurnRate", 60.0f, "Maximum angle a ship can turn in degrees per second.");
+//	setStandard("shipMaxTilt", 60.0f, "Maximum pitch or roll a ship can tilt in degrees.");
+
 	// display and drawing standards
-	setStandard(
-			"displayFPSCap",
-			true,
-			"Whether or not to cap the frames per second to a certain number."
-		);
-	setStandard(
-			"displayFPS",
-			60.0f,
-			"Number of frames per second to draw."
-		);
-	setStandard(
-			"displayStartFullscreen",
-			false,
-			"Whether or not to start the program in full screen mode."
-		);
-	setStandard(
-			"displayWindowedResolutionX",
-			1024.0f,
-			"Windowed horizontal display resolution."
-		);
-	setStandard(
-			"displayWindowedResolutionY",
-			768.0f,
-			"Windowed vertical display resolution."
-		);
-	setStandard(
-			"displayColorDepth",
-			24.0f,
-			"Color depth of display (may only affect full screen mode)."
-		);
-	setStandard(
-			"colorClear",
-			Vector4(174.0f / 255.0f, 187.0f / 255.0f, 224.0f / 255.0f, 1.0f),
-			"Color of empty space."
-		);
+	setStandard("displayFPSCap", false /* true */, "Whether or not to cap the frames per second to a certain number.");
+	setStandard("displayFPS", 30.0f, "Number of frames per second to draw.");
+	setStandard("displayStartFullscreen", false, "Whether or not to start the program in full screen mode.");
+	setStandard("displayWindowedResolutionX", 1024.0f, "Windowed horizontal display resolution.");
+	setStandard("displayWindowedResolutionY", 768.0f, "Windowed vertical display resolution.");
+	setStandard("displayColorDepth", 24.0f, "Color depth of display (may only affect full screen mode).");
+	setStandard("colorClear", Vector4(174.0f / 255.0f, 187.0f / 255.0f, 224.0f / 255.0f, 1.0f), "Color of empty space.");
 
 	// scene rendering standards
-
-	setStandard(
-			"renderingPerspectiveFOV",
-			30.0f,
-			"Field-of-view angle for perspective projection.",
-			true
-		);
-	setStandard(
-			"renderingPerspectiveNearClip",
-			0.5f,
-			"Near clip distance for perspective projection.",
-			true
-		);
-	setStandard(
-			"renderingPerspectiveFarClip",
-			20000.0f,
-//			6000.0f,
-			"Far clip distance for perspective projection.",
-			true
-		);
+	setStandard("renderingPerspectiveFOV", 30.0f, "Field-of-view angle for perspective projection.");
+	setStandard("renderingPerspectiveNearClip", 0.5f, "Near clip distance for perspective projection.");
+	setStandard("renderingPerspectiveFarClip", 20000.0f /* 6000.0f */, "Far clip distance for perspective projection.");
 
 	// scene rendering camera standards
-/*
-	setStandard(
-			"renderingCameraFollowDistance",
-			5.0f,
-			"Following distance of ship camera.",
-			true
-		);
-	setStandard(
-			"renderingCameraAngle",
-			10.0f,
-			"Following angle from horizon of ship camera.",
-			true
-		);
-	setStandard(
-			"renderingCameraLag",
-			1.0f,
-			"How many seconds worth of turning the camera should lag behind the ship.",
-			true
-		);
-*/
-	// scene rendering effect standards
-/*
-	setStandard(
-			"shipPropellerRPM",
-			1.0f,
-			"Ship propeller spin rate in revolutions per minute.",
-			true
-		);
-*/
-	setStandard(
-			"terrainDepth",
-			10.0f,
-			"How far below the water the ground extends.",
-			true
-		);
-	setStandard(
-			"terrainTextureRepeat",
-			50.0f,
-			"Number of times to repeat the ground texture over the maximum surface area.",
-			true
-		);
-	setStandard(
-			"terrainNoiseTextureDensity",
-			512.0f,
-			"Terrain mixing noise texture resolution.",
-			true
-		);
+//	setStandard("renderingCameraFollowDistance", 5.0f, "Following distance of ship camera.");
+//	setStandard("renderingCameraAngle", 10.0f, "Following angle from horizon of ship camera.");
+//	setStandard("renderingCameraLag", 1.0f, "How many seconds worth of turning the camera should lag behind the ship.");
 
-	setStandard(
-			"terrainNoiseTextureRoughness",
-			0.6f,
-			"Terrain mixing noise texture roughness factor.",
-			true
-		);
-	setStandard(
-			"terrainNoiseTextureDepth",
-			4.0f,
-			"Terrain mixing noise texture color depth.",
-			true
-		);
+	// scene rendering effect standards
+//	setStandard("shipPropellerRPM", 1.0f, "Ship propeller spin rate in revolutions per minute.");
+	setStandard("terrainDepth", 10.0f, "How far below the water the ground extends.");
+	setStandard("terrainTextureRepeat", 50.0f, "Number of times to repeat the ground texture over the maximum surface area.");
+	setStandard("terrainNoiseTextureDensity", 512.0f, "Terrain mixing noise texture resolution.");
+	setStandard("terrainNoiseTextureRoughness", 0.6f, "Terrain mixing noise texture roughness factor.");
+	setStandard("terrainNoiseTextureDepth", 4.0f, "Terrain mixing noise texture color depth.");
 
 	// HUD standards
-	setStandard(
-			"hudFPSTestFrequency",
-			1.0f,
-			"Frequency per second of the FPS test."
-		);
-/*
-	setStandard(
-			"hudCursorSize",
-			100.0f,
-			"Height of cursor in pixels."
-		);
-	setStandard(
-			"hudCursorThickness",
-			2.0f,
-			"Thickness of cursor in pixels."
-		);
-	setStandard(
-			"hudCursorColor",
-			Vector4(1.0f, 1.0f, 1.0f, 1.0f),
-			"Thickness of cursor in pixels."
-		);
-*/
-	setStandard(
-			"hudControlBoxSize",
-			75.0f,
-			"Size of ship control box in percentage of screen height."
-		);
-	setStandard(
-			"hudControlBoxCornerSize",
-			50.0f,
-			"Percentage of control box quadrant which curved portion should take up."
-		);
-	setStandard(
-			"hudControlBoxSpotSize",
-			10.0f,
-			"Size of ship control box dead spot in percentage of screen height."
-		);
-	setStandard(
-			"hudControlBoxColor",
-			Vector4(0.3f, 0.3f, 0.3f, 0.6f),
-			"Thickness of cursor in pixels."
-		);
-/*
-	setStandard(
-			"hudConsoleMaxLines",
-			8.0f,
-			"Maximum number of lines of text the console will display."
-		);
-	setStandard(
-			"hudConsoleLineExpiration",
-			5.0f,
-			"Number of seconds to display a given line on the console."
-		);
-*/
-	setStandard(
-			"radarSize",
-			35.0f,
-			"Size of radar panel in percentage of screen height."
-		);
-	setStandard(
-			"hudElementMargin",
-			36.0f,
-			"Space between HUD elements in pixels (must be even number)."
-		);
-/*
-	setStandard(
-			"hudContainerPadding",
-			12.0f,
-			"Space between HUD elements' external border and content in pixels."
-		);
-*/
-	setStandard(
-			"hudButtonPadding",
-			12.0f,
-			"Space between HUD buttons' external border and content in pixels."
-		);
-	setStandard(
-			"hudBigButtonPadding",
-			16.0f,
-			"Space between large HUD buttons' external border and content in pixels."
-		);
-	setStandard(
-			"hudContainerBorder",
-			2.0f,
-			"Thickness in pixels of HUD container element borders."
-		);
-	setStandard(
-			"hudContainerSoftEdge",
-			2.0f,
-			"Thickness in pixels of HUD container element border antialiased portion."
-		);
-	setStandard(
-			"hudContainerInsideColor",
-			Vector4(0.15f, 0.15f, 0.15f, 0.75f),
-			"Background color of HUD container elements."
-		);
-	setStandard(
-			"hudContainerHighlightColor",
-			Vector4(0.863f, 0.863f, 0.863f, 0.247f),
-			"Highlight background color of HUD container elements."
-	);
-	setStandard(
-			"hudContainerBorderColor",
-			Vector4(0.918f, 1.0f, 0.945f, 0.714f),
-			"Border color of HUD container elements."
-		);
-	setStandard(
-			"hudContainerOutsideColor",
-			Vector4(0.918f, 1.0f, 0.945f, 0.0f),
-			"Outside color of HUD container elements."
-		);
-/*
-	setStandard(
-			"hudFieldWidth",
-			20.0f,
-			"Standard field width (in number of '#' characters)."
-		);
-	setStandard(
-			"hudFieldInactiveColor",
-			Vector4(0.031f, 0.075f, 0.184f, 0.752f),
-			"Background color for inactive text fields."
-		);
-	setStandard(
-			"hudFieldActiveColor",
-			Vector4(0.0f, 0.0f, 1.0f, 1.0f),
-			"Background color for active text fields."
-		);
-*/
-	setStandard(
-			"hudGaugePadding",
-			20.0f,
-			"Gauge panel padding in pixels."
-		);
-	setStandard(
-			"hudGaugeWidth",
-			200.0f,
-			"Width of gauges in pixels."
-		);
-	setStandard(
-			"hudGaugeHeight",
-			30.0f,
-			"Height of gauges in pixels."
-		);
-	setStandard(
-			"hudGaugeBackgroundColor",
-			Vector4(0.3f, 0.3f, 0.3f, 1.0f),
-			"Background color of gauges."
-		);
-	setStandard(
-			"hudGaugeColorFalloff",
-			Vector4(0.3f, 0.3f, 0.3f, 0.75f),
-			"Factor to be multiplied into gauge color for falloff at bottom."
-		);
-	setStandard(
-			"hudGaugeHealthBarColor",
-			Vector4(0.0f, 1.0f, 0.0f, 1.0f),
-			"Color of health gauge."
-		);
-	setStandard(
-			"hudGaugeAmmoBarColor",
-			Vector4(0.0f, 1.0f, 1.0f, 1.0f),
-			"Color of ammunition gauge."
-		);
-	setStandard(
-			"hudGaugeShockChargingBarColor",
-			Vector4(1.0f, 1.0f, 0.0f, 1.0f),
-			"Color of shock gauge while charging."
-		);
-	setStandard(
-			"hudGaugeShockChargedBarColor",
-			Vector4(1.0f, 0.0f, 0.0f, 1.0f),
-			"Color of shock gauge when charged."
-		);
+	setStandard("hudFPSTestFrequency", 1.0f, "Frequency per second of the FPS test.");
+//	setStandard("hudCursorSize", 100.0f, "Height of cursor in pixels.");
+//	setStandard("hudCursorThickness", 2.0f, "Thickness of cursor in pixels.");
+//	setStandard("hudCursorColor", Vector4(1.0f, 1.0f, 1.0f, 1.0f), "Thickness of cursor in pixels.");
+	setStandard("hudControlBoxSize", 75.0f, "Size of ship control box in percentage of screen height.");
+	setStandard("hudControlBoxCornerSize", 50.0f, "Percentage of control box quadrant which curved portion should take up.");
+	setStandard("hudControlBoxSpotSize", 10.0f, "Size of ship control box dead spot in percentage of screen height.");
+	setStandard("hudControlBoxColor", Vector4(0.3f, 0.3f, 0.3f, 0.6f), "Thickness of cursor in pixels.");
+//	setStandard("hudConsoleMaxLines", 8.0f, "Maximum number of lines of text the console will display.");
+//	setStandard("hudConsoleLineExpiration", 5.0f, "Number of seconds to display a given line on the console.");
+	setStandard("radarSize", 35.0f, "Size of radar panel in percentage of screen height.");
+	setStandard("hudElementMargin", 36.0f, "Space between HUD elements in pixels (must be even number).");
+//	setStandard("hudContainerPadding", 12.0f, "Space between HUD elements' external border and content in pixels.");
+	setStandard("hudButtonPadding", 12.0f, "Space between HUD buttons' external border and content in pixels.");
+	setStandard("hudBigButtonPadding", 16.0f, "Space between large HUD buttons' external border and content in pixels.");
+	setStandard("hudContainerBorder", 2.0f, "Thickness in pixels of HUD container element borders.");
+	setStandard("hudContainerSoftEdge", 2.0f, "Thickness in pixels of HUD container element border antialiased portion.");
+	setStandard("hudContainerInsideColor", Vector4(0.15f, 0.15f, 0.15f, 0.75f), "Background color of HUD container elements.");
+	setStandard("hudContainerHighlightColor", Vector4(0.863f, 0.863f, 0.863f, 0.247f), "Highlight background color of HUD container elements.");
+	setStandard("hudContainerBorderColor", Vector4(0.918f, 1.0f, 0.945f, 0.714f), "Border color of HUD container elements.");
+	setStandard("hudContainerOutsideColor", Vector4(0.918f, 1.0f, 0.945f, 0.0f), "Outside color of HUD container elements.");
+//	setStandard("hudFieldWidth", 20.0f, "Standard field width (in number of '#' characters).");
+//	setStandard("hudFieldInactiveColor", Vector4(0.031f, 0.075f, 0.184f, 0.752f), "Background color for inactive text fields.");
+//	setStandard("hudFieldActiveColor", Vector4(0.0f, 0.0f, 1.0f, 1.0f), "Background color for active text fields.");
+	setStandard("hudGaugePadding", 20.0f, "Gauge panel padding in pixels.");
+	setStandard("hudGaugeWidth", 200.0f, "Width of gauges in pixels.");
+	setStandard("hudGaugeHeight", 30.0f, "Height of gauges in pixels.");
+	setStandard("hudGaugeBackgroundColor", Vector4(0.3f, 0.3f, 0.3f, 1.0f), "Background color of gauges.");
+	setStandard("hudGaugeColorFalloff", Vector4(0.3f, 0.3f, 0.3f, 0.75f), "Factor to be multiplied into gauge color for falloff at bottom.");
+	setStandard("hudGaugeHealthBarColor", Vector4(0.0f, 1.0f, 0.0f, 1.0f), "Color of health gauge.");
+	setStandard("hudGaugeAmmoBarColor", Vector4(0.0f, 1.0f, 1.0f, 1.0f), "Color of ammunition gauge.");
+	setStandard("hudGaugeShockChargingBarColor", Vector4(1.0f, 1.0f, 0.0f, 1.0f), "Color of shock gauge while charging.");
+	setStandard("hudGaugeShockChargedBarColor", Vector4(1.0f, 0.0f, 0.0f, 1.0f), "Color of shock gauge when charged.");
 
 	// font standards
-	setStandard(
-			"fontFile",
-			"FreeSansBold.ttf",
-			"Font file to load for use by HUD and menus."
-		);
-	setStandard(
-			"fontSizeSmall",
-			16.0f,
-			"Font size for small display in points (1/72 inch)."
-		);
-	setStandard(
-			"fontSizeMedium",
-			24.0f,
-			"Font size for standard display in points (1/72 inch)."
-		);
-	setStandard(
-			"fontSizeLarge",
-			34.0f,
-			"Font size for enlarged display in points (1/72 inch)."
-		);
-	setStandard(
-			"fontSizeSuper",
-			46.0f,
-			"Font size for title display in points (1/72 inch)."
-		);
-	setStandard(
-			"fontColorLight",
-			Vector4(1.0f, 1.0f, 1.0f, 1.0f),
-			"Light font color."
-		);
-	setStandard(
-			"fontColorDark",
-			Vector4(0.5f, 0.5f, 0.5f, 1.0f),
-			"Medium font color."
-		);
+	setStandard("fontFile", "FreeSansBold.ttf", "Font file to load for use by HUD and menus.");
+	setStandard("fontSizeSmall", 16.0f, "Font size for small display in points (1/72 inch).");
+	setStandard("fontSizeMedium", 24.0f, "Font size for standard display in points (1/72 inch).");
+	setStandard("fontSizeLarge", 34.0f, "Font size for enlarged display in points (1/72 inch).");
+	setStandard("fontSizeSuper", 46.0f, "Font size for title display in points (1/72 inch).");
+	setStandard("fontColorLight", Vector4(1.0f, 1.0f, 1.0f, 1.0f), "Light font color.");
+	setStandard("fontColorDark", Vector4(0.5f, 0.5f, 0.5f, 1.0f), "Medium font color.");
 
 	// audio standards
-	setStandard(
-			"audioTickRate",
-			50.0f,
-			"Audio manager tick rate."
-		);
-	setStandard(
-			"audioMusicVolume",
-			0.5f,
-			"Music volume."
-		);
-	setStandard(
-			"audioEffectsVolume",
-			0.5f,
-			"Audio effects volume."
-		);
+	setStandard("audioTickRate", 50.0f, "Audio manager tick rate.");
+	setStandard("audioMusicVolume", 0.5f, "Music volume.");
+	setStandard("audioEffectsVolume", 0.5f, "Audio effects volume.");
 
 	// general game standards
-	setStandard(
-			"gameStartingLevel",
-			"Easy",
-			"Starting difficulty level."
-		);
-	setStandard(
-			"islandMaximumWidth",
-			1000.0f,
-			"Maximum island width."
-		);
-	setStandard(
-			"islandMaximumHeight",
-			100.0f,
-			"Maximum island height."
-		);
-	setStandard(
-			"islandTerrainDensity",
-			256.0f,
-			"Density of island terrain tessellation."
-		);
-	setStandard(
-			"islandTerrainRoughness",
-			0.5f,
-			"Roughness of island terrain randomization."
-		);
-
-
-
-	setStandard(
-			"islandTerrainGradDist",
-			0.5f,
-			"Island terrain generation gradual distance factor."
-		);
-	setStandard(
-			"islandTerrainBlends",
-			4.0f,
-			"Island terrain generation blending factor."
-		);
-	setStandard(
-			"islandTerrainSink",
-			0.5f,
-			"Island terrain generation sink to sea level factor."
-		);
+	setStandard("gameStartingLevel", "Easy", "Starting difficulty level.");
+	setStandard("islandMaximumWidth", 1000.0f, "Maximum island width.");
+	setStandard("islandMaximumHeight", 100.0f, "Maximum island height.");
+	setStandard("islandTerrainDensity", 256.0f, "Density of island terrain tessellation.");
+	setStandard("islandTerrainRoughness", 0.5f, "Roughness of island terrain randomization.");
+	setStandard("islandTerrainGradDist", 0.5f, "Island terrain generation gradual distance factor.");
+	setStandard("islandTerrainBlends", 4.0f, "Island terrain generation blending factor.");
+	setStandard("islandTerrainSink", 0.5f, "Island terrain generation sink to sea level factor.");
 
 	// key bindings
 //	keyBindings.push_back(std::make_pair("quit", SDLK_F12));
@@ -712,10 +329,10 @@ highScoresPair = std::make_pair(1, "Josh"); highScores.push_back(highScoresPair)
 
 	// load standards from preferences (or save standard preferences if no file)
 	if(platform->getPreferenceFloat("preferencesVersion") == 1.0f) {
-		setStandard("displayStartFullscreen", (platform->getPreferenceFloat("displayStartFullscreen")  == 1.0f ? true : false), "");
-		setStandard("audioMusicVolume", platform->getPreferenceFloat("audioMusicVolume"), "");
-		setStandard("audioEffectsVolume", platform->getPreferenceFloat("audioEffectsVolume"), "");
-		setStandard("gameStartingLevel", platform->getPreferenceString("gameStartingLevel").c_str(), "");
+		setStandard("displayStartFullscreen", (platform->getPreferenceFloat("displayStartFullscreen")  == 1.0f ? true : false));
+		setStandard("audioMusicVolume", platform->getPreferenceFloat("audioMusicVolume"));
+		setStandard("audioEffectsVolume", platform->getPreferenceFloat("audioEffectsVolume"));
+		setStandard("gameStartingLevel", platform->getPreferenceString("gameStartingLevel").c_str());
 		std::string highScoresString = platform->getPreferenceString("highScores");
 		size_t i = highScoresString.find('\t');
 		while(i != std::string::npos) {
