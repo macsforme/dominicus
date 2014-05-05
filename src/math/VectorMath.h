@@ -28,7 +28,7 @@ public:
 	// assignment and comparison operators
 	Vector2& operator = (const Vector2& vec) { x = vec.x; y = vec.y; return *this; }
 	bool operator == (const Vector2& vec) const { return x == vec.x && y == vec.y; }
-	bool operator != (const Vector2& vec) const { return x != vec.x && y != vec.y; }
+	bool operator != (const Vector2& vec) const { return x != vec.x || y != vec.y; }
 
 	// arithmetic operators
 	Vector2 operator - () const { return Vector2(-x, -y); }
