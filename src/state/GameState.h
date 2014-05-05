@@ -44,6 +44,19 @@ public:
 			rotation(0.0f),
 			tilt(0.0f),
 			turretRecoil(0.0f) { };
+
+	void addRotation(float value) {
+		rotation += value;
+		while(rotation > 360.0f) rotation -= 360.0f;
+		while(rotation < 0.0f) rotation += 360.0f;
+	}
+	void addTilt(float value) {
+		tilt += value;
+		if(tilt > gameSystem->getFloat("stateFortressMaximumTilt"))
+			tilt = gameSystem->getFloat("stateFortressMaximumTilt");
+		else if(tilt < gameSystem->getFloat("stateFortressMinimumTilt"))
+			tilt = gameSystem->getFloat("stateFortressMinimumTilt");
+	}
 };
 
 class Shell {

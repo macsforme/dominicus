@@ -8,7 +8,7 @@
 
 #include "logic/GameLogic.h"
 
-GameLogic::GameLogic() {
+GameLogic::GameLogic() : mouseActive(false), keyboardCursorPosition(Vector2(0.0f, 0.0f)) {
 	// instantiate HUD layout authority
 	uiLayoutAuthority = new UILayoutAuthority(
 			Vector2(gameSystem->getFloat("hudElementMargin") / gameGraphics->resolutionX,
@@ -350,11 +350,26 @@ GameLogic::GameLogic() {
 	playingKeys.push_back(SDLK_BACKQUOTE);
 	playingKeyListener = new KeyListener(playingKeys);
 
+	turretUpKeyListener = new KeyAbsoluteListener(SDLK_UP);
+	turretDownKeyListener = new KeyAbsoluteListener(SDLK_DOWN);
+	turretLeftKeyListener = new KeyAbsoluteListener(SDLK_LEFT);
+	turretRightKeyListener = new KeyAbsoluteListener(SDLK_RIGHT);
 	cameraAheadKeyListener = new KeyAbsoluteListener(SDLK_SPACE);
-	cameraUpKeyListener = new KeyAbsoluteListener(SDLK_UP);
-	cameraDownKeyListener = new KeyAbsoluteListener(SDLK_DOWN);
-	cameraLeftKeyListener = new KeyAbsoluteListener(SDLK_LEFT);
-	cameraRightKeyListener = new KeyAbsoluteListener(SDLK_RIGHT);
+
+	cursorEntry.first = "cursor";
+	cursorEntry.second["size"] = (void*) new float;
+	cursorEntry.second["position"] = NULL;
+	cursorEntry.second["border"] = (void*) new float;
+	cursorEntry.second["softEdge"] = (void*) new float;
+	cursorEntry.second["insideColor"] = (void*) new Vector4;
+	cursorEntry.second["borderColor"] = (void*) new Vector4;
+	cursorEntry.second["outsideColor"] = (void*) new Vector4;
+
+	clockLabel.first = "label";
+	clockLabel.second["metrics"] = (void*) new UIMetrics;
+	clockLabel.second["fontSize"] = (void*) new float;
+	clockLabel.second["fontColor"] = (void*) new Vector4;
+	clockLabel.second["text"] = (void*) new std::string;
 
 	scoreLabel.first = "label";
 	scoreLabel.second["metrics"] = (void*) new UIMetrics;
@@ -449,6 +464,9 @@ fpsEntry.second["text"] = (void*) new std::string;
 	inputHandler->execute();
 	mouseMotionListener->wasMoved();
 
+	// zero the lastUpdate time
+	lastUpdate = 0;
+
 currentScheme = SCHEME_LOADING;
 reScheme();
 gameGraphics->execute();
@@ -460,6 +478,7 @@ mainLoopModules[gameGraphics] = 0;
 ((DrawRadar*) gameGraphics->drawers["radar"])->reloadGraphics();
 SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
 currentScheme = SCHEME_PLAYING;
+SDL_ShowCursor(0);
 activeMenuSelection = NULL;
 reScheme();
 SDL_LockAudio();
@@ -532,7 +551,15 @@ uiLayoutAuthority->rearrange();
 unsigned int GameLogic::execute() {
 	bool needRedraw = false;
 
-	// independent logic
+	// get a delta time for schemes that need it
+	float deltaTime = 0.0f;
+	if(gameState != NULL && ! gameState->isPaused && currentScheme == SCHEME_PLAYING) {
+		unsigned int currentGameTime = gameState->getGameMills();
+		deltaTime = (float) (currentGameTime - lastUpdate) / 1000.0f;
+		lastUpdate = currentGameTime;
+	}
+
+	// universal logic
 	if(quitKeyListener->popKey() != SDLK_UNKNOWN )
 		keepDominicusAlive = false;
 	if(fullScreenKeyListener->popKey() != SDLK_UNKNOWN) {
@@ -619,11 +646,12 @@ unsigned int GameLogic::execute() {
 			mainLoopModules[gameGraphics] = 0;
 			((TerrainRenderer*) gameGraphics->drawers["terrainRenderer"])->reloadGraphics();
 			((DrawRadar*) gameGraphics->drawers["radar"])->reloadGraphics();
-			gameGraphics->currentCamera = &orbitCamera;
+			gameGraphics->currentCamera = &towerCamera;
 
 			SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
 
 			currentScheme = SCHEME_PLAYING;
+			SDL_ShowCursor(0);
 			activeMenuSelection = NULL;
 			reScheme();
 			SDL_LockAudio();
@@ -706,10 +734,11 @@ unsigned int GameLogic::execute() {
 					mainLoopModules[gameGraphics] = 0;
 					((TerrainRenderer*) gameGraphics->drawers["terrainRenderer"])->reloadGraphics();
 					((DrawRadar*) gameGraphics->drawers["radar"])->reloadGraphics();
-					gameGraphics->currentCamera = &orbitCamera;
+					gameGraphics->currentCamera = &towerCamera;
 					SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
 
 					currentScheme = SCHEME_PLAYING;
+					SDL_ShowCursor(0);
 					activeMenuSelection = NULL;
 					reScheme();
 
@@ -737,6 +766,67 @@ unsigned int GameLogic::execute() {
 			}
 		}
 	} else if(currentScheme == SCHEME_PLAYING) {
+		// mouse motion
+		if(mouseMotionListener->wasMoved()) {
+			if(! mouseActive) {
+				SDL_WarpMouse(
+						gameGraphics->resolutionX / 2,
+						gameGraphics->resolutionY / 2
+					);
+
+				inputHandler->execute();
+
+				mouseActive = true;
+				reScheme();
+			}
+
+			// constrain to control box
+			if(inputHandler->mouse->position.x > gameSystem->getFloat("hudControlBoxSize") / 100.0f / gameGraphics->aspectRatio) {
+				SDL_WarpMouse(
+						(gameSystem->getFloat("hudControlBoxSize") / 100.0f / gameGraphics->aspectRatio + 1.0f) / 2.0f * gameGraphics->resolutionX,
+						(-inputHandler->mouse->position.y + 1.0f) / 2.0f * gameGraphics->resolutionY
+					);
+				inputHandler->execute();
+			}
+			if(inputHandler->mouse->position.x < -gameSystem->getFloat("hudControlBoxSize") / 100.0f / gameGraphics->aspectRatio) {
+				SDL_WarpMouse(
+						(-gameSystem->getFloat("hudControlBoxSize") / 100.0f / gameGraphics->aspectRatio + 1.0f) / 2.0f * gameGraphics->resolutionX,
+						(-inputHandler->mouse->position.y + 1.0f) / 2.0f * gameGraphics->resolutionY
+					);
+				inputHandler->execute();
+			}
+			if(inputHandler->mouse->position.y > gameSystem->getFloat("hudControlBoxSize") / 100.0f) {
+				SDL_WarpMouse(
+						(inputHandler->mouse->position.x + 1.0f) / 2.0f * gameGraphics->resolutionX,
+						(-gameSystem->getFloat("hudControlBoxSize") / 100.0f + 1.0f) / 2.0f * gameGraphics->resolutionY
+					);
+				inputHandler->execute();
+			}
+			if(inputHandler->mouse->position.y < -gameSystem->getFloat("hudControlBoxSize") / 100.0f) {
+				SDL_WarpMouse(
+						(inputHandler->mouse->position.x + 1.0f) / 2.0f * gameGraphics->resolutionX,
+						(gameSystem->getFloat("hudControlBoxSize") / 100.0f + 1.0f) / 2.0f * gameGraphics->resolutionY
+					);
+				inputHandler->execute();
+			}
+
+			mouseMotionListener->wasMoved();
+		}
+
+		// do movement
+		if(mouseActive) {
+			Vector2 effectiveMousePosition = Vector2(
+				inputHandler->mouse->position.x * gameGraphics->aspectRatio * 100.0f / gameSystem->getFloat("hudControlBoxSize"),
+				inputHandler->mouse->position.y * 100.0f / gameSystem->getFloat("hudControlBoxSize")
+				);
+			float effectiveDeadAreaRadius = gameSystem->getFloat("hudControlBoxSpotSize") / gameSystem->getFloat("hudControlBoxSize");
+
+			if(distance(Vector2(0.0f, 0.0f), effectiveMousePosition) > effectiveDeadAreaRadius) {
+				gameState->fortress.addRotation(gameSystem->getFloat("stateTurretTurnSpeed") * deltaTime * effectiveMousePosition.x);
+				gameState->fortress.addTilt(gameSystem->getFloat("stateTurretTurnSpeed") * deltaTime * effectiveMousePosition.y);
+			}
+		}
+
 		// key hits
 		for(SDLKey key = playingKeyListener->popKey(); key != SDLK_UNKNOWN; key = playingKeyListener->popKey()) {
 			if(key == SDLK_RETURN) {
@@ -767,6 +857,8 @@ unsigned int GameLogic::execute() {
 				reScheme();
 				needRedraw = true;
 
+				SDL_ShowCursor(1);
+
 				SDL_LockAudio();
 				gameAudio->setBackgroundMusic("menuSong");
 				SDL_UnlockAudio();
@@ -779,21 +871,73 @@ unsigned int GameLogic::execute() {
 		}
 
 		// keys down
-		if(cameraLeftKeyListener->isDown)
-			roamingCamera.rotationX += 0.5f;
-		if(cameraRightKeyListener->isDown)
-			roamingCamera.rotationX -= 0.5f;
-		if(cameraUpKeyListener->isDown)
-			roamingCamera.rotationY += 0.5f;
-		if(cameraDownKeyListener->isDown)
-			roamingCamera.rotationY -= 0.5f;
-		if(cameraAheadKeyListener->isDown) {
-			Matrix3 directionMatrix; directionMatrix.identity();
-			rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(roamingCamera.rotationX), directionMatrix);
-			rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(roamingCamera.rotationY), directionMatrix);
-			directionMatrix.transpose();
-			Vector3 movement(0.0f, 0.0f, 3.0f);
-			roamingCamera.position = roamingCamera.position + movement * directionMatrix;
+		if(gameGraphics->currentCamera == &roamingCamera) {
+			if(turretLeftKeyListener->isDown)
+				roamingCamera.rotationX += gameSystem->getFloat("stateTurretTurnSpeed") * deltaTime;
+			if(turretRightKeyListener->isDown)
+				roamingCamera.rotationX -= gameSystem->getFloat("stateTurretTurnSpeed") * deltaTime;
+			if(turretUpKeyListener->isDown)
+				roamingCamera.rotationY += gameSystem->getFloat("stateTurretTurnSpeed") * deltaTime;
+			if(turretDownKeyListener->isDown)
+				roamingCamera.rotationY -= gameSystem->getFloat("stateTurretTurnSpeed") * deltaTime;
+			if(cameraAheadKeyListener->isDown) {
+				Matrix3 directionMatrix; directionMatrix.identity();
+				rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(roamingCamera.rotationX), directionMatrix);
+				rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(roamingCamera.rotationY), directionMatrix);
+				directionMatrix.transpose();
+				Vector3 movement(0.0f, 0.0f, 200.0f * deltaTime);
+				roamingCamera.position = roamingCamera.position + movement * directionMatrix;
+			}
+		} else {
+			if(turretLeftKeyListener->isDown) {
+				gameState->fortress.addRotation(-gameSystem->getFloat("stateTurretTurnSpeed") * deltaTime);
+				mouseActive = false;
+			}
+			if(turretRightKeyListener->isDown) {
+				gameState->fortress.addRotation(gameSystem->getFloat("stateTurretTurnSpeed") * deltaTime);
+				mouseActive = false;
+			}
+			if(turretUpKeyListener->isDown) {
+				gameState->fortress.addTilt(gameSystem->getFloat("stateTurretTurnSpeed") * deltaTime);
+				mouseActive = false;
+			}
+			if(turretDownKeyListener->isDown) {
+				gameState->fortress.addTilt(-gameSystem->getFloat("stateTurretTurnSpeed") * deltaTime);
+				mouseActive = false;
+			}
+		}
+
+		if(! mouseActive) {
+			Vector2 newKeyboardCursorPosition(0.0f, 0.0f);
+			if(turretLeftKeyListener->isDown)
+				newKeyboardCursorPosition.x -= 1.0f;
+			if(turretRightKeyListener->isDown)
+				newKeyboardCursorPosition.x += 1.0f;
+			if(turretUpKeyListener->isDown)
+				newKeyboardCursorPosition.y += 1.0f;
+			if(turretDownKeyListener->isDown)
+				newKeyboardCursorPosition.y -= 1.0f;
+
+			newKeyboardCursorPosition.x *= gameSystem->getFloat("hudControlBoxSize") / 100.0f / gameGraphics->aspectRatio;
+			newKeyboardCursorPosition.y *= gameSystem->getFloat("hudControlBoxSize") / 100.0f;
+
+			if(! mouseActive && newKeyboardCursorPosition != keyboardCursorPosition) {
+				keyboardCursorPosition = newKeyboardCursorPosition;
+				reScheme();
+			}
+		}
+
+		// check clock
+		time_t rawTime;
+		struct tm* timeInfo;
+		time(&rawTime);
+		timeInfo = localtime(&rawTime);
+		char timeString[6];
+		strftime(timeString, 6, "%H:%M", timeInfo);
+
+		if(*((std::string*) clockLabel.second["text"]) != timeString) {
+			reScheme();
+			needRedraw = true;
 		}
 	} else if(currentScheme == SCHEME_SETTINGS) {
 		// button highlight
@@ -1253,7 +1397,7 @@ unsigned int GameLogic::execute() {
 		gameGraphics->execute();
 
 	// calculate and return sleep time from superclass
-	unsigned int frequency = (unsigned int) gameSystem->getFloat("inputPollingFrequency");
+	unsigned int frequency = (unsigned int) gameSystem->getFloat("logicUpdateFrequency");
 	static const unsigned int idealSleepTime = (
 			frequency  != 0 ?
 			1000 / frequency : 0

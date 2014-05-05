@@ -152,11 +152,13 @@ public:
 
 	// playing
 	KeyListener* playingKeyListener;
-	KeyAbsoluteListener* cameraAheadKeyListener;
-	KeyAbsoluteListener* cameraUpKeyListener;
-	KeyAbsoluteListener* cameraDownKeyListener;
-	KeyAbsoluteListener* cameraLeftKeyListener;
-	KeyAbsoluteListener* cameraRightKeyListener;
+	KeyAbsoluteListener* turretUpKeyListener;
+	KeyAbsoluteListener* turretDownKeyListener;
+	KeyAbsoluteListener* turretLeftKeyListener;
+	KeyAbsoluteListener* turretRightKeyListener;
+KeyAbsoluteListener* cameraAheadKeyListener;
+	DrawStackEntry cursorEntry;
+	DrawStackEntry clockLabel;
 	DrawStackEntry scoreLabel;
 	DrawStackEntry playingTipEntry;
 	DrawStackEntry controlBoxEntry;
@@ -202,8 +204,6 @@ DrawStackEntry fpsEntry;
 	DrawStackEntry controlsHelpEntry;
 	DrawStackEntry scoreboardEntry;
 
-	DrawStackEntry cursorEntry;
-
 	DrawStackEntry hintEntry;
 
 	// stack of stuff to render each frame
@@ -216,10 +216,15 @@ DrawStackEntry fpsEntry;
 	RoamingCamera roamingCamera;
 
 	// general logic info
+	bool mouseActive;
+	Vector2 keyboardCursorPosition;
 //	unsigned int lastClockUpdate;
-	std::string myCallsign;
+//	std::string myCallsign;
 //	unsigned int lastFrameTime;
 //	unsigned int hintExpiration;
+
+	// time management
+	unsigned int lastUpdate;
 
 	// object management
 	GameLogic();

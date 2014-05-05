@@ -40,6 +40,7 @@ class Camera;
 #include "graphics/text/FontManager.h"
 #include "graphics/texture/Texture.h"
 #include "graphics/2dgraphics/DrawControlBox.h"
+#include "graphics/2dgraphics/DrawCursor.h"
 #include "graphics/2dgraphics/DrawGaugePanel.h"
 #include "graphics/2dgraphics/DrawGrayOut.h"
 #include "graphics/2dgraphics/DrawProgressBar.h"

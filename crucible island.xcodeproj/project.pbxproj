@@ -31,6 +31,7 @@
 		03590F84131E446000EDF7A7 /* GameSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03590EED131E181C00EDF7A7 /* GameSystem.cpp */; };
 		036C99671915C49B00776051 /* DrawGaugePanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 036C99641915AD1A00776051 /* DrawGaugePanel.cpp */; };
 		036CFFE118EB5D4800C1B797 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 036CFFDF18EB5D4800C1B797 /* Camera.cpp */; };
+		0371D1781917174600A356D5 /* DrawCursor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0371D1761917174600A356D5 /* DrawCursor.cpp */; };
 		0387C28D18F3E2A300565A43 /* GameAudio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0387C28B18F3E2A300565A43 /* GameAudio.cpp */; };
 		03ACFE4918FCD8C200A6B447 /* ShipRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03ACFE4118FCD8C200A6B447 /* ShipRenderer.cpp */; };
 		03ACFE4A18FCD8C200A6B447 /* SkyRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03ACFE4318FCD8C200A6B447 /* SkyRenderer.cpp */; };
@@ -137,6 +138,8 @@
 		036C99651915AD1A00776051 /* DrawGaugePanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawGaugePanel.h; sourceTree = "<group>"; };
 		036CFFDF18EB5D4800C1B797 /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Camera.cpp; path = src/logic/Camera.cpp; sourceTree = SOURCE_ROOT; };
 		036CFFE018EB5D4800C1B797 /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Camera.h; path = src/logic/Camera.h; sourceTree = SOURCE_ROOT; };
+		0371D1761917174600A356D5 /* DrawCursor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawCursor.cpp; sourceTree = "<group>"; };
+		0371D1771917174600A356D5 /* DrawCursor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawCursor.h; sourceTree = "<group>"; };
 		0387C28B18F3E2A300565A43 /* GameAudio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameAudio.cpp; path = src/audio/GameAudio.cpp; sourceTree = "<group>"; };
 		0387C28C18F3E2A300565A43 /* GameAudio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameAudio.h; path = src/audio/GameAudio.h; sourceTree = "<group>"; };
 		038FC1DE12A0EA3A00AE328B /* OpenGLHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLHeaders.h; sourceTree = "<group>"; };
@@ -332,6 +335,8 @@
 				0354664D1912C17200F4953E /* DrawContainer.cpp */,
 				035466501912C17200F4953E /* DrawControlBox.h */,
 				0354664F1912C17200F4953E /* DrawControlBox.cpp */,
+				0371D1771917174600A356D5 /* DrawCursor.h */,
+				0371D1761917174600A356D5 /* DrawCursor.cpp */,
 				035466521912C17200F4953E /* DrawField.h */,
 				035466511912C17200F4953E /* DrawField.cpp */,
 				036C99651915AD1A00776051 /* DrawGaugePanel.h */,
@@ -490,6 +495,7 @@
 				035466611912C17200F4953E /* DrawContainer.cpp in Sources */,
 				03C806E3130E50AD0037D309 /* MainLoopMember.cpp in Sources */,
 				03C806E9130E50B30037D309 /* DiamondSquare.cpp in Sources */,
+				0371D1781917174600A356D5 /* DrawCursor.cpp in Sources */,
 				035466601912C17200F4953E /* DrawButton.cpp in Sources */,
 				03C806F7130E50D00037D309 /* Mouse.cpp in Sources */,
 				03C80701130E50D90037D309 /* main.cpp in Sources */,

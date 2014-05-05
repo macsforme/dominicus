@@ -193,13 +193,19 @@ GameSystem::GameSystem() {
 	setStandard("stateShipSpeed", 200.0f, "Ship speed.");
 	setStandard("stateShipEntryTime", 10.0f /* 20.0f */, "Time it takes between ship introduction and beginning of orbit.");
 	setStandard("stateShipAddRate", 3.0f /* 20.0f */, "Time between ships being added to the world.");
+	setStandard("stateFortressMinimumTilt", -10.0f, "Minimum tilt angle of fortress turret.");
+	setStandard("stateFortressMaximumTilt", 45.0f, "Maximum tilt angle of fortress turret.");
+	setStandard("stateTurretTurnSpeed", 45.0f, "Turning speed of turret in degrees per second.");
 
 	// input standards
 	setStandard("inputPollingFrequency", 120.0f, "Number of times per second to poll the input devices.");
 //	setStandard("inputAllowedCallsignChars", "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-_ ", "Characters allowed to be used in callsigns.");
 //	setStandard("inputAllowedPasswordChars", "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890", "Characters allowed to be used in passwords.");
 
+	// logic standards
 	// ship state and control standards
+	setStandard("logicUpdateFrequency", 120.0f, "Number of times per second to update game logic.");
+
 //	setStandard("shipUpdateFrequency", 60.0f, "Frequency per second of ship position updates by internal state.");
 //	setStandard("shipAccelRate", 15.0f, "Maximum ship acceleration rate in meters per second.");
 //	setStandard("shipMaxSpeed", 15.0f, "Maximum ship speed in meters per second.");
@@ -235,9 +241,9 @@ GameSystem::GameSystem() {
 
 	// HUD standards
 	setStandard("hudFPSTestFrequency", 1.0f, "Frequency per second of the FPS test.");
-//	setStandard("hudCursorSize", 100.0f, "Height of cursor in pixels.");
-//	setStandard("hudCursorThickness", 2.0f, "Thickness of cursor in pixels.");
-//	setStandard("hudCursorColor", Vector4(1.0f, 1.0f, 1.0f, 1.0f), "Thickness of cursor in pixels.");
+	setStandard("hudCursorSize", 50.0f, "Height of cursor in pixels.");
+	setStandard("hudCursorInsideColor", Vector4(0.0f, 0.0f, 0.0f, 0.5f), "Thickness of cursor in pixels.");
+	setStandard("hudCursorBorderColor", Vector4(0.0f, 0.0f, 0.0f, 1.0f), "Thickness of cursor in pixels.");
 	setStandard("hudControlBoxSize", 75.0f, "Size of ship control box in percentage of screen height.");
 	setStandard("hudControlBoxCornerSize", 50.0f, "Percentage of control box quadrant which curved portion should take up.");
 	setStandard("hudControlBoxSpotSize", 10.0f, "Size of ship control box dead spot in percentage of screen height.");

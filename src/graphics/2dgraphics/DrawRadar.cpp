@@ -160,7 +160,7 @@ void DrawRadar::execute(std::map<std::string, void*> arguments) {
 			projectionMatrix
 		);
 	rotateMatrix(Vector3(0.0f, 0.0f, -1.0f), -radians(90.0f), projectionMatrix);
-	rotateMatrix(Vector3(0.0f, 0.0f, -1.0f),-radians((float) (gameState->lastUpdateGameTime % 8000) / 8000.0f * 360.0f), projectionMatrix);
+	rotateMatrix(Vector3(0.0f, 0.0f, -1.0f), -radians(gameState->fortress.rotation), projectionMatrix);
 
 	scaleMatrix(actualSize.x / 2.0f, actualSize.y / 2.0f, 1.0f, projectionMatrix);
 	translateMatrix(metrics->position.x, metrics->position.y, 0.0f, projectionMatrix);
