@@ -830,9 +830,6 @@ void Schemes::playingScheme() {
 	gameLogic->drawStack.push_back(gameLogic->playingTipEntry);
 	gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->playingTipEntry.second["metrics"]);
 
-	// control box
-	gameLogic->drawStack.push_back(gameLogic->controlBoxEntry);
-
 	// gauge panel
 	*((float*) gameLogic->gaugePanelEntry.second["padding"]) = gameSystem->getFloat("hudGaugePadding");
 	*((float*) gameLogic->gaugePanelEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
@@ -904,20 +901,25 @@ void Schemes::playingScheme() {
 	gameLogic->drawStack.push_back(gameLogic->radarEntry);
 	gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->radarEntry.second["metrics"]);
 
-	// cursor
-	*((float*) gameLogic->cursorEntry.second["size"]) = gameSystem->getFloat("hudCursorSize");
-	gameLogic->cursorEntry.second["position"] = (gameLogic->mouseActive ? (void*) &inputHandler->mouse->position : &gameLogic->keyboardCursorPosition);
-	*((float*) gameLogic->cursorEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
-	*((float*) gameLogic->cursorEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
-	*((Vector4*) gameLogic->cursorEntry.second["insideColor"]) = gameSystem->getColor("hudCursorInsideColor");
-	*((Vector4*) gameLogic->cursorEntry.second["borderColor"]) = gameSystem->getColor("hudCursorBorderColor");
-	*((Vector4*) gameLogic->cursorEntry.second["outsideColor"]) = Vector4(
-			gameSystem->getColor("hudCursorBorderColor").x,
-			gameSystem->getColor("hudCursorBorderColor").y,
-			gameSystem->getColor("hudCursorBorderColor").z,
-			0.0f
-		);
-	gameLogic->drawStack.push_back(gameLogic->cursorEntry);
+	if(gameLogic->mouseActive) {
+		// control box
+		gameLogic->drawStack.push_back(gameLogic->controlBoxEntry);
+
+		// cursor
+		*((float*) gameLogic->cursorEntry.second["size"]) = gameSystem->getFloat("hudCursorSize");
+		gameLogic->cursorEntry.second["position"] = (gameLogic->mouseActive ? (void*) &inputHandler->mouse->position : &gameLogic->keyboardCursorPosition);
+		*((float*) gameLogic->cursorEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
+		*((float*) gameLogic->cursorEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
+		*((Vector4*) gameLogic->cursorEntry.second["insideColor"]) = gameSystem->getColor("hudCursorInsideColor");
+		*((Vector4*) gameLogic->cursorEntry.second["borderColor"]) = gameSystem->getColor("hudCursorBorderColor");
+		*((Vector4*) gameLogic->cursorEntry.second["outsideColor"]) = Vector4(
+				gameSystem->getColor("hudCursorBorderColor").x,
+				gameSystem->getColor("hudCursorBorderColor").y,
+				gameSystem->getColor("hudCursorBorderColor").z,
+				0.0f
+			);
+		gameLogic->drawStack.push_back(gameLogic->cursorEntry);
+	}
 
 	// re-arrange the UI
 	gameLogic->uiLayoutAuthority->rearrange();

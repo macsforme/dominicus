@@ -477,6 +477,8 @@ mainLoopModules[gameGraphics] = 0;
 ((TerrainRenderer*) gameGraphics->drawers["terrainRenderer"])->reloadGraphics();
 ((DrawRadar*) gameGraphics->drawers["radar"])->reloadGraphics();
 SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
+inputHandler->execute();
+mouseMotionListener->wasMoved();
 currentScheme = SCHEME_PLAYING;
 SDL_ShowCursor(0);
 activeMenuSelection = NULL;
@@ -575,6 +577,9 @@ unsigned int GameLogic::execute() {
 		gameGraphics = new GameGraphics(fullScreenGraphics);
 		gameGraphics->currentCamera = currentCamera;
 
+		inputHandler->execute();
+		mouseMotionListener->wasMoved();
+
 		if(isInMainLoopModules)
 			mainLoopModules[gameGraphics] = 0;
 
@@ -649,6 +654,8 @@ unsigned int GameLogic::execute() {
 			gameGraphics->currentCamera = &towerCamera;
 
 			SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
+			inputHandler->execute();
+			mouseMotionListener->wasMoved();
 
 			currentScheme = SCHEME_PLAYING;
 			SDL_ShowCursor(0);
@@ -735,7 +742,10 @@ unsigned int GameLogic::execute() {
 					((TerrainRenderer*) gameGraphics->drawers["terrainRenderer"])->reloadGraphics();
 					((DrawRadar*) gameGraphics->drawers["radar"])->reloadGraphics();
 					gameGraphics->currentCamera = &towerCamera;
+
 					SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
+					inputHandler->execute();
+					mouseMotionListener->wasMoved();
 
 					currentScheme = SCHEME_PLAYING;
 					SDL_ShowCursor(0);
