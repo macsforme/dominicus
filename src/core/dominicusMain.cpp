@@ -52,6 +52,9 @@ int dominicusMain(int argc, char* argv[]) {
 	keepDominicusAlive = true;
 
 	while(keepDominicusAlive) {
+//FIXME
+		// wasn't this all good and well? except it doesn't really work well
+/*
 		// if the next execution time for any module is less than now, run it,
 		// and calculate the maximum possible sleep time
 		unsigned int nextPlannedLoop = -1;
@@ -71,6 +74,18 @@ int dominicusMain(int argc, char* argv[]) {
 		// sleep the loop if we're not already overdue for something
 		if(nextPlannedLoop > platform->getExecMills())
 			platform->sleepMills(nextPlannedLoop - platform->getExecMills());
+*/
+		// instead, just check for everything and run it in order
+		if(mainLoopModules.find(inputHandler) != mainLoopModules.end())
+			inputHandler->execute();
+		if(mainLoopModules.find(gameAudio) != mainLoopModules.end())
+			gameAudio->execute();
+		if(mainLoopModules.find(gameState) != mainLoopModules.end())
+			gameState->execute();
+		if(mainLoopModules.find(gameLogic) != mainLoopModules.end())
+			gameLogic->execute();
+		if(mainLoopModules.find(gameGraphics) != mainLoopModules.end())
+			gameGraphics->execute();
 	}
 
 	// clean up objects in reverse order
