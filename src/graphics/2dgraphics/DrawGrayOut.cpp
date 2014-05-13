@@ -55,9 +55,6 @@ void DrawGrayOut::execute(std::map<std::string, void*> arguments) {
 	// collect arguments
 	Vector4 color = *((Vector4*) arguments["color"]);
 
-	// get the actual size so possibly incorrect metrics don't skew the aspect ratio
-	Vector2 actualSize = getSize(arguments);
-
 	// update vertex buffers
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexBuffers["elements"]);
