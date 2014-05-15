@@ -190,9 +190,11 @@ GameSystem::GameSystem() {
 	setStandard("stateUpdateFrequency", 120.0f, "Number of times per second the core state updates.");
 	setStandard("stateShipOrbitMargin", 1000.0f, "Radius of margin between maximum edge of island and first ship orbit.");
 	setStandard("stateShipMargin", 150.0f, "Lateral distance between ships orbiting island.");
-	setStandard("stateShipSpeed", 200.0f, "Ship speed.");
-	setStandard("stateShipEntryTime", 10.0f /* 20.0f */, "Time it takes between ship introduction and beginning of orbit.");
-	setStandard("stateShipAddRate", 3.0f /* 20.0f */, "Time between ships being added to the world.");
+	setStandard("stateShipSpeed", 5.0f, "Ship speed in world units per second.");
+	setStandard("stateShipEntryTime", 1.0f /* 20.0f */, "Time it takes between ship introduction and beginning of orbit.");
+	setStandard("stateShipAddRate", 3.1f /* 20.0f */, "Time between ships being added to the world.");
+	setStandard("stateMissileSpeed", 150.0f, "Missile speed in world units per second.");
+	setStandard("stateMissileFiringRate", 2.0f, "Wait time in between missile firings for each ship.");
 	setStandard("stateFortressMinimumTilt", -10.0f, "Minimum tilt angle of fortress turret.");
 	setStandard("stateFortressMaximumTilt", 45.0f, "Maximum tilt angle of fortress turret.");
 	setStandard("stateTurretTurnSpeed", 45.0f, "Turning speed of turret in degrees per second.");

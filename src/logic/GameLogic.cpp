@@ -433,6 +433,8 @@ GameLogic::GameLogic() : mouseActive(false), keyboardCursorPosition(Vector2(0.0f
 
 	towerEntry.first = "towerRenderer";
 
+	missileEntry.first = "missileRenderer";
+
 fpsEntry.first = "label";
 fpsEntry.second["metrics"] = (void*) new UIMetrics;
 ((UIMetrics*) fpsEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_BOTTOM;

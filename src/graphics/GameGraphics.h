@@ -51,6 +51,7 @@ class Camera;
 #include "graphics/2dgraphics/DrawField.h"
 #include "graphics/2dgraphics/DrawTexture.h"
 #include "graphics/2dgraphics/DrawSplash.h"
+#include "graphics/3dgraphics/MissileRenderer.h"
 #include "graphics/3dgraphics/ShipRenderer.h"
 #include "graphics/3dgraphics/SkyRenderer.h"
 #include "graphics/3dgraphics/WaterRenderer.h"

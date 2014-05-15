@@ -176,11 +176,13 @@ GameState::GameState() {
 		if(itr->y > fortress.position.y)
 			fortress.position = *itr;
 
-	// make ships
-	Ship ship;
-	ship.originAngle = 0.0f;
-
-	ships.push_back(ship);
+	// determine missile origin
+	Mesh shipMesh("ship");
+	shipMissileOrigin = (
+			shipMesh.vertices[shipMesh.faceGroups["missileorigin"][0].vertices[0]] +
+			shipMesh.vertices[shipMesh.faceGroups["missileorigin"][0].vertices[1]] +
+			shipMesh.vertices[shipMesh.faceGroups["missileorigin"][0].vertices[2]]
+		) / 3.0f;
 
 	// set start time
 	isPaused = false;
@@ -198,7 +200,7 @@ unsigned int GameState::execute() {
 	// update/add ships as appropriate
 	float shipOrbitDistance = (gameSystem->getFloat("islandMaximumWidth") * 0.5f + gameSystem->getFloat("stateShipOrbitMargin"));
 
-	if(lastUpdateGameTime / 1000 / gameSystem->getFloat("stateShipAddRate") + 1 > ships.size()) {
+	while(lastUpdateGameTime / 1000 / gameSystem->getFloat("stateShipAddRate") + 1 > ships.size()) {
 		Ship ship;
 static int originAngle = 0.0f; originAngle += 75.0f;
 		ship.originAngle = originAngle;
@@ -245,6 +247,112 @@ static int originAngle = 0.0f; originAngle += 75.0f;
 		}
 	}
 
+	// update/add missiles as appropriate
+	unsigned int* shipMissiles = new unsigned int [ships.size()];
+	for(size_t i = 0; i < ships.size(); ++i)
+		shipMissiles[i] = 0;
+
+	for(size_t i = 0; i < missiles.size(); ++i) {
+		for(size_t p = 0; p < ships.size(); ++p) {
+			if(missiles[i].originShip == p) {
+				++shipMissiles[p];
+
+				break;
+			}
+		}
+	}
+
+	for(size_t i = 0; i < ships.size(); ++i) {
+		float shipLifeTime = (float) (lastUpdateGameTime - i * gameSystem->getFloat("stateShipAddRate") * 1000) / 1000.0f;
+
+		if(
+				shipLifeTime > gameSystem->getFloat("stateShipEntryTime") &&
+				(shipLifeTime - gameSystem->getFloat("stateShipEntryTime")) / gameSystem->getFloat("stateMissileFiringRate") > (float) shipMissiles[i]
+			) {
+			// this ship is due to fire a missile
+			Missile missile;
+			missile.originShip = i;
+			missile.launchTime = lastUpdateGameTime;
+			missile.originPosition = Vector3(0.0f, 0.0f, 0.0f);
+			missile.alive = true;
+			missile.position = Vector3(0.0f, 0.0f, 0.0f);
+			missile.rotation = 0.0f;
+			missile.tilt = 90.0f;
+
+			missiles.push_back(missile);
+		}
+	}
+
+	delete[] shipMissiles;
+
+	for(size_t i = 0; i < missiles.size(); ++i) {
+		if(! missiles[i].alive)
+			continue;
+
+		Matrix3 missileOriginMatrix; missileOriginMatrix.identity();
+		rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(ships[missiles[i].originShip].rotation), missileOriginMatrix);
+		Vector3 thisShipMissileOrigin(
+				shipMissileOrigin.x,
+				shipMissileOrigin.y,
+				shipMissileOrigin.z
+			);
+		thisShipMissileOrigin = thisShipMissileOrigin * missileOriginMatrix;
+
+		float distanceTraveled = (float) (lastUpdateGameTime - missiles[i].launchTime) / 1000.0f * gameSystem->getFloat("stateMissileSpeed");
+		if(distanceTraveled <= shipMissileOrigin.y) {
+			// still launching from ship
+			missiles[i].position = Vector3(
+					ships[missiles[i].originShip].position.x + thisShipMissileOrigin.x,
+					distanceTraveled,
+					ships[missiles[i].originShip].position.z + thisShipMissileOrigin.z
+				);
+
+			missiles[i].originPosition = missiles[i].position;
+			missiles[i].originPosition.y = 0.0f;
+			missiles[i].rotation = getAngle(Vector2(
+					missiles[i].originPosition.x - fortress.position.x,
+					missiles[i].originPosition.z - fortress.position.z
+				)) + 180.0f;
+		} else if(distanceTraveled <= fortress.position.y) {
+			// below fortress altitude
+			missiles[i].position.y = distanceTraveled;
+		} else {
+			// initial turn phase or final turn phase
+			float lateralDistanceToTower = distance(missiles[i].originPosition, Vector3(fortress.position.x, 0.0f, fortress.position.y));
+			static float phaseSplitFactor = 1.0f + cos(radians(45.0f)) * 1.0f / (1.0f - sin(radians(45.0f)));
+			float initialTurnPhaseLatDist = 1.0f / phaseSplitFactor * lateralDistanceToTower;
+			float finalTurnPhaseRadius = 1.0f / (1.0f - (sin(radians(45.0f)))) * initialTurnPhaseLatDist;
+			float distanceTraveledIntoTurnPhases = distanceTraveled - fortress.position.y;
+
+			if(distanceTraveledIntoTurnPhases < 0.5f * initialTurnPhaseLatDist * PI) {
+				// initial turn phase
+				float completionFactor = (distanceTraveledIntoTurnPhases / (0.5f * initialTurnPhaseLatDist * PI));
+
+				missiles[i].position = Vector3(
+						missiles[i].originPosition.x + (1.0f / (phaseSplitFactor)) * (fortress.position.x - missiles[i].originPosition.x) * (1.0f - cos(radians(completionFactor * 90.0f))),
+						fortress.position.y + sin(radians(completionFactor * 90.0f)) * initialTurnPhaseLatDist,
+						missiles[i].originPosition.z + (1.0f / (phaseSplitFactor)) * (fortress.position.z - missiles[i].originPosition.z) * (1.0f - cos(radians(completionFactor * 90.0f)))
+					);
+				missiles[i].tilt = (1.0f - completionFactor) * 90.0f;
+			} else if(distanceTraveledIntoTurnPhases < 0.5f * initialTurnPhaseLatDist * PI + 0.25f * finalTurnPhaseRadius * PI) {
+				// final turn phase
+				float completionFactor = (distanceTraveledIntoTurnPhases - 0.5f * initialTurnPhaseLatDist * PI) / (0.25f * finalTurnPhaseRadius * PI);
+
+				missiles[i].position = Vector3(
+						missiles[i].originPosition.x + (1.0f / (phaseSplitFactor)) * (fortress.position.x - missiles[i].originPosition.x) +
+								((phaseSplitFactor - 1.0f) / phaseSplitFactor) * (fortress.position.x - missiles[i].originPosition.x) * sin(radians(completionFactor * 45.0f)) / sin(radians(45.0f)),
+						fortress.position.y + initialTurnPhaseLatDist * (cos(radians(completionFactor * 45.0f)) - cos(radians(45.0f))) / (cos(radians(0.0f)) - cos(radians(45.0f))),
+						missiles[i].originPosition.z + (1.0f / (phaseSplitFactor)) * (fortress.position.z - missiles[i].originPosition.z) +
+								((phaseSplitFactor - 1.0f) / phaseSplitFactor) * (fortress.position.z - missiles[i].originPosition.z) * sin(radians(completionFactor * 45.0f)) / sin(radians(45.0f))
+					);
+				missiles[i].tilt = 0.0f - completionFactor * 45.0f;
+			} else {
+				// end of path... boom
+				missiles[i].alive = false;
+			}
+		}
+	}
+
 	// calculate and return sleep time from superclass
 	unsigned int frequency = (unsigned int) gameSystem->getFloat("stateUpdateFrequency");
 	static const unsigned int idealSleepTime = (
@@ -253,9 +361,6 @@ static int originAngle = 0.0f; originAngle += 75.0f;
 		);
 	return getSleepTime(idealSleepTime);
 }
-
-//bool isPaused;
-//unsigned int gameTimeMargin;
 
 unsigned int GameState::getGameMills() {
 	// execution time since game began (excluding pauses)

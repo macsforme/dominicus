@@ -57,6 +57,7 @@
 		03C9206C13693A51000C4373 /* GameState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03C9206B13693A51000C4373 /* GameState.cpp */; };
 		03E508FA18FE1B340056ECE6 /* TowerRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03E508F818FE1B340056ECE6 /* TowerRenderer.cpp */; };
 		03EA006313839E1F00791980 /* Collisions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03EA006213839E1F00791980 /* Collisions.cpp */; };
+		03F4FD681921DC2F00B5A322 /* MissileRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03F4FD661921DC2F00B5A322 /* MissileRenderer.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -168,6 +169,8 @@
 		03E508F918FE1B340056ECE6 /* TowerRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TowerRenderer.h; sourceTree = "<group>"; };
 		03EA006113839E1F00791980 /* Collisions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Collisions.h; path = src/state/Collisions.h; sourceTree = "<group>"; };
 		03EA006213839E1F00791980 /* Collisions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Collisions.cpp; path = src/state/Collisions.cpp; sourceTree = "<group>"; };
+		03F4FD661921DC2F00B5A322 /* MissileRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MissileRenderer.cpp; sourceTree = "<group>"; };
+		03F4FD671921DC2F00B5A322 /* MissileRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MissileRenderer.h; sourceTree = "<group>"; };
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* crucible island.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "crucible island.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -360,6 +363,8 @@
 		03BB9B6A131F3F50009DFC8B /* 3dgraphics */ = {
 			isa = PBXGroup;
 			children = (
+				03F4FD671921DC2F00B5A322 /* MissileRenderer.h */,
+				03F4FD661921DC2F00B5A322 /* MissileRenderer.cpp */,
 				03ACFE4218FCD8C200A6B447 /* ShipRenderer.h */,
 				03ACFE4118FCD8C200A6B447 /* ShipRenderer.cpp */,
 				03ACFE4418FCD8C200A6B447 /* SkyRenderer.h */,
@@ -498,6 +503,7 @@
 				0371D1781917174600A356D5 /* DrawCursor.cpp in Sources */,
 				035466601912C17200F4953E /* DrawButton.cpp in Sources */,
 				03C806F7130E50D00037D309 /* Mouse.cpp in Sources */,
+				03F4FD681921DC2F00B5A322 /* MissileRenderer.cpp in Sources */,
 				03C80701130E50D90037D309 /* main.cpp in Sources */,
 				03C8075E130E52030037D309 /* SDLMain.m in Sources */,
 				035466651912C17200F4953E /* DrawLabel.cpp in Sources */,

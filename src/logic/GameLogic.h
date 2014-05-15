@@ -169,6 +169,7 @@ KeyAbsoluteListener* cameraAheadKeyListener;
 	DrawStackEntry terrainEntry;
 	DrawStackEntry shipEntry;
 	DrawStackEntry towerEntry;
+	DrawStackEntry missileEntry;
 
 DrawStackEntry fpsEntry;
 	// YUCK

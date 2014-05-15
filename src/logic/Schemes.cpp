@@ -795,6 +795,9 @@ void Schemes::playingScheme() {
 	// tower
 	gameLogic->drawStack.push_back(gameLogic->towerEntry);
 
+	// missiles
+	gameLogic->drawStack.push_back(gameLogic->missileEntry);
+
 	// clock
 	*((float*) gameLogic->clockLabel.second["fontSize"]) = gameSystem->getFloat("fontSizeLarge");
 	*((Vector4*) gameLogic->clockLabel.second["fontColor"]) = gameSystem->getColor("fontColorLight");

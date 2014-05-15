@@ -279,6 +279,7 @@ SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 0);
 	drawers["radar"] = new DrawRadar();
 	drawers["grayOut"] = new DrawGrayOut();
 
+	drawers["missileRenderer"] = new MissileRenderer();
 	drawers["skyRenderer"] = new SkyRenderer();
 	drawers["shipRenderer"] = new ShipRenderer();
 	drawers["terrainRenderer"] = new TerrainRenderer();
@@ -310,6 +311,7 @@ GameGraphics::~GameGraphics() {
 	delete((DrawProgressBar*) drawers["progressBar"]);
 	delete ((DrawRadar*) drawers["radar"]);
 
+	delete((MissileRenderer*) drawers["missileRenderer"]);
 	delete((TerrainRenderer*) drawers["terrainRenderer"]);
 	delete((WaterRenderer*) drawers["waterRenderer"]);
 	delete((ShipRenderer*) drawers["shipRenderer"]);

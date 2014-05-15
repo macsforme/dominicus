@@ -14,6 +14,7 @@
 #include "core/MainLoopMember.h"
 #include "math/VectorMath.h"
 #include "math/MatrixMath.h"
+#include "math/MiscMath.h"
 #include "geometry/DiamondSquare.h"
 #include "geometry/Mesh.h"
 
@@ -74,12 +75,20 @@ public:
 
 class Missile {
 public:
+	size_t originShip;
+	unsigned int launchTime;
+	Vector3 originPosition;
+	bool alive;
+
 	Vector3 position;
-	Vector3 direction;
-	float speed;
+	float rotation;
+	float tilt;
 };
 
 class GameState : public MainLoopMember {
+private:
+	Vector3 shipMissileOrigin;
+
 public:
 	Mesh island;
 	Fortress fortress;
