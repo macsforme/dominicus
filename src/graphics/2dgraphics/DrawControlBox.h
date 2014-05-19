@@ -47,6 +47,12 @@ protected:
 public:
 	DrawControlBox();
 
+	/*
+		Arguments Layout
+		----------------
+		drawCorners		bool indicating whether to draw box or just center dot
+	*/
+
 //FIXME take arguments here rather than pulling from gameLogic
 
 	void execute(std::map<std::string, void*> newDrawData);

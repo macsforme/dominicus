@@ -384,6 +384,7 @@ GameLogic::GameLogic() : mouseActive(false), keyboardCursorPosition(Vector2(0.0f
 	playingTipEntry.second["text"] = (void*) new std::string;
 
 	controlBoxEntry.first = "controlBox";
+	controlBoxEntry.second["drawCorners"] = (void*) new bool;
 
 	gaugePanelEntry.first = "gaugePanel";
 	gaugePanelEntry.second["metrics"] = (void*) new UIMetrics;
