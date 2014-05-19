@@ -137,7 +137,6 @@ void DrawProgressBar::execute(std::map<std::string, void*> arguments) {
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexBufferArray), vertexBufferArray, GL_STREAM_DRAW);
 
 	// state
-	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -167,6 +166,5 @@ void DrawProgressBar::execute(std::map<std::string, void*> arguments) {
 	glDisableVertexAttribArray(attributes["color"]);
 
 	// undo state
-	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_BLEND);
 }
