@@ -8,7 +8,7 @@
 
 #include "graphics/2dgraphics/DrawRadar.h"
 
-DrawRadar::DrawRadar() : containerDrawer(new DrawContainer()) {
+DrawRadar::DrawRadar() : containerDrawer(new DrawContainer()), spotDrawer(new DrawSpot()) {
 	// set up shader
 	GLuint shaderID = 0;
 	std::vector<GLuint> shaderIDs;
@@ -45,6 +45,49 @@ DrawRadar::DrawRadar() : containerDrawer(new DrawContainer()) {
 
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elementBufferArray), elementBufferArray,
 			GL_STATIC_DRAW);
+
+	// create the progression texture
+	size_t textureDimension = gameSystem->getFloat("radarSize") / 100.0f * (float) gameGraphics->resolutionY - gameSystem->getFloat("hudGaugePadding") * 2.0f;
+	Texture progressionTexture(textureDimension, textureDimension, Texture::FORMAT_RGBA);
+	for(size_t i = 0; i < textureDimension; ++i) {
+		for(size_t p = 0; p < textureDimension; ++p) {
+			float pixelDistance = distance(
+					Vector2(textureDimension / 2, textureDimension / 2),
+					Vector2((float) i, (float) p)
+				);
+			float alphaValue = 127.0f;
+
+			if(pixelDistance > textureDimension / 2)
+				alphaValue *= 0.0f;
+
+			else if(textureDimension / 2 - pixelDistance <= gameSystem->getFloat("hudContainerSoftEdge"))
+				alphaValue *= (textureDimension / 2 - pixelDistance) / gameSystem->getFloat("hudContainerSoftEdge");
+
+			alphaValue *= getAngle(Vector2((float) i, (float) p) - Vector2((float) textureDimension / 2.0f, (float) textureDimension / 2.0f)) / 360.0f;
+			progressionTexture.setColorAt(i, p, 0, 0, 0, (uint8_t) alphaValue);
+		}
+	}
+
+	glEnable(GL_TEXTURE_2D);
+
+	glGenTextures(1, &progressionTextureID);
+	glBindTexture(GL_TEXTURE_2D, progressionTextureID);
+
+	glTexImage2D(
+			GL_TEXTURE_2D,
+			0,
+			(progressionTexture.format == Texture::FORMAT_RGBA ? GL_RGBA : GL_RGB),
+			progressionTexture.width,
+			progressionTexture.height,
+			0,
+			(progressionTexture.format == Texture::FORMAT_RGBA ? GL_RGBA : GL_RGB),
+			GL_UNSIGNED_BYTE,
+			progressionTexture.getDataPointer()
+	);
+
+	glGenerateMipmap(GL_TEXTURE_2D);
+
+	glDisable(GL_TEXTURE_2D);
 }
 
 DrawRadar::~DrawRadar() {
@@ -60,6 +103,8 @@ DrawRadar::~DrawRadar() {
 
 	// delete variables
 	delete(containerDrawer);
+
+//FIXME destroy textures in GL
 }
 
 void DrawRadar::reloadGraphics() {
@@ -122,6 +167,9 @@ void DrawRadar::reloadGraphics() {
 	glDisable(GL_TEXTURE_2D);
 
 	delete(radarTexture);
+
+	// clear the missile cache
+	missileCache.clear();
 }
 
 Vector2 DrawRadar::getSize(std::map<std::string, void*> arguments) {
@@ -149,28 +197,50 @@ void DrawRadar::execute(std::map<std::string, void*> arguments) {
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexBuffers["elements"]);
 
-	// compute projection matrix
-	Matrix4 projectionMatrix;
-	projectionMatrix.identity();
+	// compute projection matrix for terrain height map
+	Matrix4 heightMapMatrix;
+	heightMapMatrix.identity();
 
 	translateMatrix(
 			-gameState->fortress.position.x / gameSystem->getFloat("islandMaximumWidth") * 2.0f,
 			-gameState->fortress.position.z / gameSystem->getFloat("islandMaximumWidth") * 2.0f,
 			0.0f,
-			projectionMatrix
+			heightMapMatrix
 		);
-	rotateMatrix(Vector3(0.0f, 0.0f, -1.0f), -radians(90.0f), projectionMatrix);
-	rotateMatrix(Vector3(0.0f, 0.0f, -1.0f), -radians(gameState->fortress.rotation), projectionMatrix);
+	rotateMatrix(Vector3(0.0f, 0.0f, -1.0f), -radians(90.0f), heightMapMatrix);
+	rotateMatrix(Vector3(0.0f, 0.0f, -1.0f), -radians(gameState->fortress.rotation), heightMapMatrix);
 
-	scaleMatrix(actualSize.x / 2.0f, actualSize.y / 2.0f, 1.0f, projectionMatrix);
-	translateMatrix(metrics->position.x, metrics->position.y, 0.0f, projectionMatrix);
+	scaleMatrix(
+			gameSystem->getFloat("islandMaximumWidth") * 0.5f / gameSystem->getFloat("radarRadius"),
+			gameSystem->getFloat("islandMaximumWidth") * 0.5f / gameSystem->getFloat("radarRadius"),
+			1.0f,
+			heightMapMatrix
+		);
+	scaleMatrix(actualSize.x / 2.0f, actualSize.y / 2.0f, 1.0f, heightMapMatrix);
+	translateMatrix(metrics->position.x, metrics->position.y, 0.0f, heightMapMatrix);
 
+	float heightMapMatrixArray[] = {
+			heightMapMatrix.m11, heightMapMatrix.m12, heightMapMatrix.m13, heightMapMatrix.m14,
+			heightMapMatrix.m21, heightMapMatrix.m22, heightMapMatrix.m23, heightMapMatrix.m24,
+			heightMapMatrix.m31, heightMapMatrix.m32, heightMapMatrix.m33, heightMapMatrix.m34,
+			heightMapMatrix.m41, heightMapMatrix.m42, heightMapMatrix.m43, heightMapMatrix.m44
+		};
 
-	float projectionMatrixArray[] = {
-			projectionMatrix.m11, projectionMatrix.m12, projectionMatrix.m13, projectionMatrix.m14,
-			projectionMatrix.m21, projectionMatrix.m22, projectionMatrix.m23, projectionMatrix.m24,
-			projectionMatrix.m31, projectionMatrix.m32, projectionMatrix.m33, projectionMatrix.m34,
-			projectionMatrix.m41, projectionMatrix.m42, projectionMatrix.m43, projectionMatrix.m44
+	// compute projection matrix for progression indicator
+	Matrix4 progressionMatrix;
+	progressionMatrix.identity();
+
+	rotateMatrix(Vector3(0.0f, 0.0f, -1.0f), -radians(90.0f), progressionMatrix);
+	rotateMatrix(Vector3(0.0f, 0.0f, -1.0f), -radians(gameState->fortress.rotation - gameState->lastUpdateGameTime / (gameSystem->getFloat("radarRefreshSpeed") * 1000.0f) * 360.0f), progressionMatrix);
+
+	scaleMatrix(actualSize.x / 2.0f - padding.x, actualSize.y / 2.0f - padding.y, 1.0f, progressionMatrix);
+	translateMatrix(metrics->position.x, metrics->position.y, 0.0f, progressionMatrix);
+
+	float progressionMatrixArray[] = {
+			progressionMatrix.m11, progressionMatrix.m12, progressionMatrix.m13, progressionMatrix.m14,
+			progressionMatrix.m21, progressionMatrix.m22, progressionMatrix.m23, progressionMatrix.m24,
+			progressionMatrix.m31, progressionMatrix.m32, progressionMatrix.m33, progressionMatrix.m34,
+			progressionMatrix.m41, progressionMatrix.m42, progressionMatrix.m43, progressionMatrix.m44
 		};
 
 	// state
@@ -190,15 +260,15 @@ void DrawRadar::execute(std::map<std::string, void*> arguments) {
 	glUseProgram(shaderProgram);
 
 	// set uniforms
-	glUniformMatrix4fv(uniforms["mvpMatrix"], 1, GL_FALSE, projectionMatrixArray);
+	glUniformMatrix4fv(uniforms["mvpMatrix"], 1, GL_FALSE, heightMapMatrixArray);
 	glUniform1i(uniforms["texture"], 0);
 
 	// activate the texture
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, radarTextureID);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	// draw the data stored in GPU memory
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);
@@ -216,6 +286,16 @@ void DrawRadar::execute(std::map<std::string, void*> arguments) {
 
 	glDrawElements(GL_QUADS, 4, GL_UNSIGNED_SHORT, NULL);
 
+	// also draw the progression texture
+	glBindTexture(GL_TEXTURE_2D, progressionTextureID);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	glUniformMatrix4fv(uniforms["mvpMatrix"], 1, GL_FALSE, progressionMatrixArray);
+
+	glDrawElements(GL_QUADS, 4, GL_UNSIGNED_SHORT, NULL);
+
 	glDisableVertexAttribArray(attributes["position"]);
 	glDisableVertexAttribArray(attributes["texCoord"]);
 	glDisableVertexAttribArray(attributes["color"]);
@@ -225,17 +305,84 @@ void DrawRadar::execute(std::map<std::string, void*> arguments) {
 	glDisable(GL_BLEND);
 	glDisable(GL_SCISSOR_TEST);
 
-/*
-	// pathetically hackish code that needs to go
-	glUseProgram(0);
+	// draw missile locations
+	static float lastRotation = gameState->lastUpdateGameTime % (unsigned int) (gameSystem->getFloat("radarRefreshSpeed") * 1000.0f) / (gameSystem->getFloat("radarRefreshSpeed") * 1000.0f) * 360.0f;
+	float currentRotation = gameState->lastUpdateGameTime % (unsigned int) (gameSystem->getFloat("radarRefreshSpeed") * 1000.0f) / (gameSystem->getFloat("radarRefreshSpeed") * 1000.0f) * 360.0f;
 
-	glPointSize(5.0f);
+	for(size_t i = 0; i < missileCache.size(); ++i) {
+		float missileAngle = getAngle(
+				Vector2(missileCache[i].position.x, missileCache[i].position.z) -
+				Vector2(gameState->fortress.position.x, gameState->fortress.position.z)
+			);
+		if(missileAngle > lastRotation && missileAngle < currentRotation) {
+			missileCache.erase(missileCache.begin() + i);
+			i = 0;
+		}
+	}
 
-	glEnable(GL_COLOR_MATERIAL);
-	glBegin(GL_POINTS);
-	glColor4f(0.0f, 1.0f, 1.0f, 1.0f);
-	glVertex3f(metrics->position.x, metrics->position.y, -0.9f);
-	glEnd();
-	glDisable(GL_COLOR_MATERIAL);
-*/
+	for(size_t i = 0; i < gameState->missiles.size(); ++i) {
+		if(! gameState->missiles[i].alive)
+			continue;
+
+		if(distance(
+				Vector2(gameState->missiles[i].position.x, gameState->missiles[i].position.z),
+				Vector2(gameState->fortress.position.x, gameState->fortress.position.z)
+			) >= gameSystem->getFloat("radarRadius"))
+				continue;
+
+		float missileAngle = getAngle(Vector2(gameState->missiles[i].position.x, gameState->missiles[i].position.z) - Vector2(gameState->fortress.position.x, gameState->fortress.position.z));
+		if(missileAngle > lastRotation && missileAngle < currentRotation)
+			missileCache.push_back(gameState->missiles[i]);
+	}
+
+	lastRotation = currentRotation;
+
+	Vector2 spotSize(
+			gameSystem->getFloat("radarSpotSize") / gameGraphics->resolutionY / gameGraphics->aspectRatio,
+			gameSystem->getFloat("radarSpotSize") / gameGraphics->resolutionY
+		);
+	Vector2 spotPosition(0.0f, 0.0f);
+	float spotEdge = gameSystem->getFloat("hudContainerSoftEdge");
+	Vector4 insideColor = gameSystem->getColor("radarSpotColor");
+	Vector4 outsideColor(
+			gameSystem->getColor("radarSpotColor").x,
+			gameSystem->getColor("radarSpotColor").y,
+			gameSystem->getColor("radarSpotColor").z,
+			0.0f
+		);
+
+	std::map<std::string,void*> drawerArguments;
+	drawerArguments["size"] = (void*) &spotSize;
+	drawerArguments["position"] = (void*) &spotPosition;
+	drawerArguments["softEdge"] = (void*) &spotEdge;
+	drawerArguments["insideColor"] = (void*) &insideColor;
+	drawerArguments["outsideColor"] = (void*) &outsideColor;
+
+	for(size_t i = 0; i < missileCache.size(); ++i) {
+		Vector4 missilePosition(
+				missileCache[i].position.x - gameState->fortress.position.x,
+				missileCache[i].position.z - gameState->fortress.position.z,
+				0.0f,
+				1.0f
+			);
+		Matrix4 missileMatrix;
+		missileMatrix.identity();
+
+		rotateMatrix(Vector3(0.0f, 0.0f, -1.0f), -radians(90.0f), missileMatrix);
+		rotateMatrix(Vector3(0.0f, 0.0f, -1.0f), -radians(gameState->fortress.rotation), missileMatrix);
+
+		scaleMatrix(
+				(actualSize.x / 2.0f - padding.x) / gameSystem->getFloat("radarRadius"),
+				(actualSize.y / 2.0f - padding.y) / gameSystem->getFloat("radarRadius"),
+				1.0f,
+				missileMatrix
+			);
+
+		translateMatrix(metrics->position.x, metrics->position.y, 0.0f, missileMatrix);
+
+		missilePosition = missilePosition * missileMatrix;
+
+		spotPosition = Vector2(missilePosition.x / missilePosition.w, missilePosition.y / missilePosition.w);
+		spotDrawer->execute(drawerArguments);
+	}
 }

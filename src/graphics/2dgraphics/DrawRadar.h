@@ -9,9 +9,13 @@
 #ifndef DRAWRADAR_H
 #define DRAWRADAR_H
 
+// forward declarations
+class DrawSpot;
+
 // program headers
 #include "graphics/GameGraphics.h"
 #include "graphics/2dgraphics/DrawContainer.h"
+#include "graphics/2dgraphics/DrawSpot.h"
 #include "graphics/texture/Texture.h"
 #include "logic/UILayoutAuthority.h"
 #include "math/MatrixMath.h"
@@ -23,6 +27,7 @@
 // library headers
 #include <map>
 #include <string>
+#include <vector>
 
 // global variables
 extern GameGraphics* gameGraphics;
@@ -30,9 +35,13 @@ extern GameState* gameState;
 
 class DrawRadar : public BaseUIElement {
 private:
+	std::vector<Missile> missileCache;
+
 	GLuint radarTextureID;
+	GLuint progressionTextureID;
 
 	DrawContainer* containerDrawer;
+	DrawSpot* spotDrawer;
 
 public:
 	DrawRadar();

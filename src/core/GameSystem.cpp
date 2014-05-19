@@ -190,11 +190,11 @@ GameSystem::GameSystem() {
 	setStandard("stateUpdateFrequency", 120.0f, "Number of times per second the core state updates.");
 	setStandard("stateShipOrbitMargin", 1000.0f, "Radius of margin between maximum edge of island and first ship orbit.");
 	setStandard("stateShipMargin", 150.0f, "Lateral distance between ships orbiting island.");
-	setStandard("stateShipSpeed", 5.0f, "Ship speed in world units per second.");
+	setStandard("stateShipSpeed", 25.0f, "Ship speed in world units per second.");
 	setStandard("stateShipEntryTime", 1.0f /* 20.0f */, "Time it takes between ship introduction and beginning of orbit.");
 	setStandard("stateShipAddRate", 3.1f /* 20.0f */, "Time between ships being added to the world.");
-	setStandard("stateMissileSpeed", 150.0f, "Missile speed in world units per second.");
-	setStandard("stateMissileFiringRate", 2.0f, "Wait time in between missile firings for each ship.");
+	setStandard("stateMissileSpeed", 100.0f, "Missile speed in world units per second.");
+	setStandard("stateMissileFiringRate", 3.0f, "Wait time in between missile firings for each ship.");
 	setStandard("stateFortressMinimumTilt", -10.0f, "Minimum tilt angle of fortress turret.");
 	setStandard("stateFortressMaximumTilt", 45.0f, "Maximum tilt angle of fortress turret.");
 	setStandard("stateTurretTurnSpeed", 45.0f, "Turning speed of turret in degrees per second.");
@@ -253,6 +253,11 @@ GameSystem::GameSystem() {
 //	setStandard("hudConsoleMaxLines", 8.0f, "Maximum number of lines of text the console will display.");
 //	setStandard("hudConsoleLineExpiration", 5.0f, "Number of seconds to display a given line on the console.");
 	setStandard("radarSize", 35.0f, "Size of radar panel in percentage of screen height.");
+	setStandard("radarRefreshSpeed", 1.0f, "Time in seconds for a full radar turn.");
+	setStandard("radarSpotSize", 6.0f, "Size in pixels of radar missile spots.");
+	setStandard("radarSpotColor", Vector4(1.0f, 0.0f, 0.0f, 1.0f), "Color of radar missile spots.");
+	setStandard("radarRadius", 1500.0f, "Radius of radar coverage.");
+
 	setStandard("hudElementMargin", 36.0f, "Space between HUD elements in pixels (must be even number).");
 //	setStandard("hudContainerPadding", 12.0f, "Space between HUD elements' external border and content in pixels.");
 	setStandard("hudButtonPadding", 12.0f, "Space between HUD buttons' external border and content in pixels.");

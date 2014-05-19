@@ -11,6 +11,7 @@
 		0315B60B134C2AB8002AD1CE /* UILayoutAuthority.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0315B609134C2AB8002AD1CE /* UILayoutAuthority.cpp */; };
 		0315B631134C2CF7002AD1CE /* Schemes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0315B630134C2CF7002AD1CE /* Schemes.cpp */; };
 		0330C498133A2AB6006199BE /* TextBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03BB9B83131F3F50009DFC8B /* TextBlock.cpp */; };
+		033A25851929C4FB00A4BB35 /* DrawSpot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 033A25831929C4FB00A4BB35 /* DrawSpot.cpp */; };
 		0353219118C931EF002FC13A /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0353219018C931EF002FC13A /* Cocoa.framework */; };
 		0353219318C93204002FC13A /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0353219218C93204002FC13A /* OpenGL.framework */; };
 		0353219518C93216002FC13A /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0353219418C93216002FC13A /* SDL.framework */; };
@@ -102,6 +103,8 @@
 		0315B62F134C2CF7002AD1CE /* Schemes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Schemes.h; path = src/logic/Schemes.h; sourceTree = "<group>"; };
 		0315B630134C2CF7002AD1CE /* Schemes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Schemes.cpp; path = src/logic/Schemes.cpp; sourceTree = "<group>"; };
 		032B8B351263DF5900DDE564 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
+		033A25831929C4FB00A4BB35 /* DrawSpot.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawSpot.cpp; sourceTree = "<group>"; };
+		033A25841929C4FB00A4BB35 /* DrawSpot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawSpot.h; sourceTree = "<group>"; };
 		0353219018C931EF002FC13A /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = ../../../../../../System/Library/Frameworks/Cocoa.framework; sourceTree = "<group>"; };
 		0353219218C93204002FC13A /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = ../../../../../../System/Library/Frameworks/OpenGL.framework; sourceTree = "<group>"; };
 		0353219418C93216002FC13A /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = ../../../../../../Library/Frameworks/SDL.framework; sourceTree = "<group>"; };
@@ -354,6 +357,8 @@
 				035466591912C17200F4953E /* DrawRadar.cpp */,
 				0354665C1912C17200F4953E /* DrawSplash.h */,
 				0354665B1912C17200F4953E /* DrawSplash.cpp */,
+				033A25841929C4FB00A4BB35 /* DrawSpot.h */,
+				033A25831929C4FB00A4BB35 /* DrawSpot.cpp */,
 				0354665E1912C17200F4953E /* DrawTexture.h */,
 				0354665D1912C17200F4953E /* DrawTexture.cpp */,
 			);
@@ -516,6 +521,7 @@
 				03BB9D26131F5D39009DFC8B /* Texture.cpp in Sources */,
 				0303173213204F1F009B9AFD /* GameLogic.cpp in Sources */,
 				03BC5B001339F19900DD3F04 /* FontManager.cpp in Sources */,
+				033A25851929C4FB00A4BB35 /* DrawSpot.cpp in Sources */,
 				0330C498133A2AB6006199BE /* TextBlock.cpp in Sources */,
 				0315B60B134C2AB8002AD1CE /* UILayoutAuthority.cpp in Sources */,
 				0387C28D18F3E2A300565A43 /* GameAudio.cpp in Sources */,
