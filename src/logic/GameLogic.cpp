@@ -1007,10 +1007,10 @@ unsigned int GameLogic::execute() {
 		if((float) gameState->lastUpdateGameTime / 1000.0f > gameSystem->getFloat("stateShipEntryTime")) {
 			currentScheme = SCHEME_PLAYING;
 			reScheme();
-			SDL_ShowCursor(0);
 			SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
 			inputHandler->execute();
 			mouseMotionListener->wasMoved();
+			SDL_ShowCursor(0);
 			gameGraphics->currentCamera = &towerCamera;
 		}
 	} else if(currentScheme == SCHEME_SETTINGS) {
