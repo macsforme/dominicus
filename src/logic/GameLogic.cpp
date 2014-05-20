@@ -961,6 +961,15 @@ unsigned int GameLogic::execute() {
 			reScheme();
 			needRedraw = true;
 		}
+
+		// check gauges
+		if(
+				(*((std::vector<float>*) gaugePanelEntry.second["progressions"]))[0] != gameState->fortress.health ||
+				(*((std::vector<float>*) gaugePanelEntry.second["progressions"]))[1] != gameState->fortress.ammunition ||
+				(*((std::vector<float>*) gaugePanelEntry.second["progressions"]))[2] != gameState->fortress.shock
+			) {
+			reScheme();
+		}
 	} else if(currentScheme == SCHEME_INTRO) {
 		// button clicks
 		if(introMouseButtonListener->wasClicked()) {

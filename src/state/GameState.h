@@ -58,6 +58,13 @@ public:
 		else if(tilt < gameSystem->getFloat("stateFortressMinimumTilt"))
 			tilt = gameSystem->getFloat("stateFortressMinimumTilt");
 	}
+
+	void missileStrike() {
+		health -= gameSystem->getFloat("stateMissileStrikeDepletion");
+
+		if(health < 0.0f)
+			health = 0.0f;
+	}
 };
 
 class Shell {
@@ -100,6 +107,7 @@ public:
 	unsigned int lastUpdateGameTime;
 	int gameTimeMargin;
 
+	int lastSimulationUpdate;
 	unsigned int execute();
 
 	GameState();

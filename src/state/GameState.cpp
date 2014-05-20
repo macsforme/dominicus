@@ -188,6 +188,7 @@ GameState::GameState() {
 	isPaused = false;
 	lastUpdateGameTime = 0;
 	gameTimeMargin = platform->getExecMills();
+	lastSimulationUpdate = 0;
 }
 
 GameState::~GameState() {
@@ -197,13 +198,19 @@ unsigned int GameState::execute() {
 	// mark current game time for this update for consistency
 	lastUpdateGameTime = getGameMills();
 
+	// get a delta time for stuff that doesn't use precomputed state
+	float deltaTime = 0.0f;
+	if(! isPaused) {
+		unsigned int currentGameTime = getGameMills();
+		deltaTime = (float) (currentGameTime - lastSimulationUpdate) / 1000.0f;
+		lastSimulationUpdate = currentGameTime;
+	}
+
 	// update/add ships as appropriate
 	float shipOrbitDistance = (gameSystem->getFloat("islandMaximumWidth") * 0.5f + gameSystem->getFloat("stateShipOrbitMargin"));
 
 	while(lastUpdateGameTime / 1000 / gameSystem->getFloat("stateShipAddRate") + 1 > ships.size()) {
 		Ship ship;
-//static int originAngle = 0.0f; originAngle += 75.0f;
-//		ship.originAngle = originAngle;
 		ship.originAngle = fortress.rotation;
 		ships.push_back(ship);
 	}
@@ -350,9 +357,21 @@ unsigned int GameState::execute() {
 			} else {
 				// end of path... boom
 				missiles[i].alive = false;
+
+				fortress.missileStrike();
 			}
 		}
 	}
+
+	// update fortress stocks
+	fortress.health += deltaTime * gameSystem->getFloat("stateHealthRegenerationRate");
+	if(fortress.health > 1.0f) fortress.health = 1.0f;
+
+	fortress.ammunition += deltaTime * gameSystem->getFloat("stateAmmoFiringCost") * ships.size() / (int) gameSystem->getFloat("stateMissileFiringRate") * 2.0f;
+	if(fortress.ammunition > 1.0f) fortress.ammunition = 1.0f;
+
+//	fortress.shock += deltaTime * ;
+	if(fortress.shock > 1.0f) fortress.shock = 1.0f;
 
 	// calculate and return sleep time from superclass
 	unsigned int frequency = (unsigned int) gameSystem->getFloat("stateUpdateFrequency");

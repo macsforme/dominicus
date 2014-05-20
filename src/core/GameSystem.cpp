@@ -198,6 +198,9 @@ GameSystem::GameSystem() {
 	setStandard("stateFortressMinimumTilt", -10.0f, "Minimum tilt angle of fortress turret.");
 	setStandard("stateFortressMaximumTilt", 45.0f, "Maximum tilt angle of fortress turret.");
 	setStandard("stateTurretTurnSpeed", 45.0f, "Turning speed of turret in degrees per second.");
+	setStandard("stateHealthRegenerationRate", 0.125f, "Portion of fortress health capacity regenerated each second.");
+	setStandard("stateMissileStrikeDepletion", 0.25f, "Portion of fortress health depleted by one missile strike.");
+	setStandard("stateAmmoFiringCost", 0.05f, "Portion of total ammunition capacity depleted by firing one shell.");
 
 	// input standards
 	setStandard("inputPollingFrequency", 120.0f, "Number of times per second to poll the input devices.");
