@@ -950,6 +950,7 @@ unsigned int GameLogic::execute() {
 		}
 
 		// check clock
+/*
 		time_t rawTime;
 		struct tm* timeInfo;
 		time(&rawTime);
@@ -961,6 +962,11 @@ unsigned int GameLogic::execute() {
 			reScheme();
 			needRedraw = true;
 		}
+*/
+
+		// check score
+		if(atoi(((std::string*) scoreLabel.second["text"])->c_str()) != gameState->score)
+			reScheme();
 
 		// check gauges
 		if(

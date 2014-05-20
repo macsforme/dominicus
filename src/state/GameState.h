@@ -102,6 +102,7 @@ public:
 	std::vector<Shell> shells;
 	std::vector<Ship> ships;
 	std::vector<Missile> missiles;
+	unsigned int score;
 
 	bool isPaused;
 	unsigned int lastUpdateGameTime;

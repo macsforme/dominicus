@@ -189,6 +189,9 @@ GameState::GameState() {
 	lastUpdateGameTime = 0;
 	gameTimeMargin = platform->getExecMills();
 	lastSimulationUpdate = 0;
+
+	// set starting score
+	score = 0;
 }
 
 GameState::~GameState() {

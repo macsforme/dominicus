@@ -249,9 +249,9 @@ GameSystem::GameSystem() {
 	setStandard("hudCursorSize", 50.0f, "Height of cursor in pixels.");
 	setStandard("hudCursorInsideColor", Vector4(0.0f, 0.0f, 0.0f, 0.5f), "Thickness of cursor in pixels.");
 	setStandard("hudCursorBorderColor", Vector4(0.0f, 0.0f, 0.0f, 1.0f), "Thickness of cursor in pixels.");
-	setStandard("hudControlBoxSize", 75.0f, "Size of ship control box in percentage of screen height.");
+	setStandard("hudControlBoxSize", 40.0f, "Size of ship control box in percentage of screen height.");
 	setStandard("hudControlBoxCornerSize", 50.0f, "Percentage of control box quadrant which curved portion should take up.");
-	setStandard("hudControlBoxSpotSize", 10.0f, "Size of ship control box dead spot in percentage of screen height.");
+	setStandard("hudControlBoxSpotSize", 8.0f, "Size of ship control box dead spot in percentage of screen height.");
 	setStandard("hudControlBoxColor", Vector4(0.3f, 0.3f, 0.3f, 0.6f), "Thickness of cursor in pixels.");
 //	setStandard("hudConsoleMaxLines", 8.0f, "Maximum number of lines of text the console will display.");
 //	setStandard("hudConsoleLineExpiration", 5.0f, "Number of seconds to display a given line on the console.");

@@ -799,6 +799,7 @@ void Schemes::playingScheme() {
 	gameLogic->drawStack.push_back(gameLogic->missileEntry);
 
 	// clock
+/*
 	*((float*) gameLogic->clockLabel.second["fontSize"]) = gameSystem->getFloat("fontSizeLarge");
 	*((Vector4*) gameLogic->clockLabel.second["fontColor"]) = gameSystem->getColor("fontColorLight");
 	time_t rawTime;
@@ -813,13 +814,14 @@ void Schemes::playingScheme() {
 	((UIMetrics*) gameLogic->clockLabel.second["metrics"])->size = ((DrawLabel*) gameGraphics->drawers["label"])->getSize(gameLogic->clockLabel.second);
 	gameLogic->drawStack.push_back(gameLogic->clockLabel);
 	gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->clockLabel.second["metrics"]);
+*/
 
 	// score
 	*((float*) gameLogic->scoreLabel.second["fontSize"]) = gameSystem->getFloat("fontSizeLarge");
 	*((Vector4*) gameLogic->scoreLabel.second["fontColor"]) = gameSystem->getColor("fontColorLight");
-	*((std::string*) gameLogic->scoreLabel.second["text"]) = "364";
-	((UIMetrics*) gameLogic->scoreLabel.second["metrics"])->bearing1 = UIMetrics::BEARING_RIGHT;
-	((UIMetrics*) gameLogic->scoreLabel.second["metrics"])->bearing2 = UIMetrics::BEARING_TOP;
+	char scoreString[8];  scoreString[0] = '\0'; if(gameState->score <= 9999999) sprintf(scoreString, "%u", gameState->score);
+	*((std::string*) gameLogic->scoreLabel.second["text"]) = scoreString;
+	((UIMetrics*) gameLogic->scoreLabel.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
 	((UIMetrics*) gameLogic->scoreLabel.second["metrics"])->size = ((DrawLabel*) gameGraphics->drawers["label"])->getSize(gameLogic->scoreLabel.second);
 	gameLogic->drawStack.push_back(gameLogic->scoreLabel);
 	gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->scoreLabel.second["metrics"]);
@@ -886,6 +888,7 @@ void Schemes::playingScheme() {
 			gameSystem->getColor(gameState->fortress.shock < 1.0f ? "hudGaugeShockChargingBarColor" : "hudGaugeShockChargedBarColor").w * gameSystem->getColor("hudGaugeColorFalloff").w
 		);
 	((UIMetrics*) gameLogic->gaugePanelEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_LEFT;
+	((UIMetrics*) gameLogic->gaugePanelEntry.second["metrics"])->bearing2 = UIMetrics::BEARING_TOP;
 	((UIMetrics*) gameLogic->gaugePanelEntry.second["metrics"])->size = ((DrawGaugePanel*) gameGraphics->drawers["gaugePanel"])->getSize(gameLogic->gaugePanelEntry.second);
 	gameLogic->drawStack.push_back(gameLogic->gaugePanelEntry);
 	gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->gaugePanelEntry.second["metrics"]);
@@ -903,6 +906,7 @@ void Schemes::playingScheme() {
 			0.0f
 		);
 	((UIMetrics*) gameLogic->radarEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_RIGHT;
+	((UIMetrics*) gameLogic->radarEntry.second["metrics"])->bearing2 = UIMetrics::BEARING_TOP;
 	((UIMetrics*) gameLogic->radarEntry.second["metrics"])->size =
 			((DrawRadar*) gameGraphics->drawers["radar"])->getSize(gameLogic->radarEntry.second);
 	gameLogic->drawStack.push_back(gameLogic->radarEntry);
