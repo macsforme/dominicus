@@ -305,7 +305,7 @@ void DrawRadar::execute(std::map<std::string, void*> arguments) {
 	glDisable(GL_BLEND);
 	glDisable(GL_SCISSOR_TEST);
 
-	// draw missile locations
+	// draw tower position and missile locations
 	static float lastRotation = gameState->lastUpdateGameTime % (unsigned int) (gameSystem->getFloat("radarRefreshSpeed") * 1000.0f) / (gameSystem->getFloat("radarRefreshSpeed") * 1000.0f) * 360.0f;
 	float currentRotation = gameState->lastUpdateGameTime % (unsigned int) (gameSystem->getFloat("radarRefreshSpeed") * 1000.0f) / (gameSystem->getFloat("radarRefreshSpeed") * 1000.0f) * 360.0f;
 
@@ -383,6 +383,22 @@ void DrawRadar::execute(std::map<std::string, void*> arguments) {
 		missilePosition = missilePosition * missileMatrix;
 
 		spotPosition = Vector2(missilePosition.x / missilePosition.w, missilePosition.y / missilePosition.w);
+
 		spotDrawer->execute(drawerArguments);
 	}
+
+	insideColor = gameSystem->getColor("hudGaugeHealthBarColor");
+	outsideColor = Vector4(
+			gameSystem->getColor("hudGaugeHealthBarColor").x,
+			gameSystem->getColor("hudGaugeHealthBarColor").y,
+			gameSystem->getColor("hudGaugeHealthBarColor").z,
+			0.0f
+		);
+	spotPosition = metrics->position;
+	spotSize = Vector2(
+			gameSystem->getFloat("radarCenterSpotSize") / gameGraphics->resolutionY / gameGraphics->aspectRatio,
+			gameSystem->getFloat("radarCenterSpotSize") / gameGraphics->resolutionY
+		);
+
+	spotDrawer->execute(drawerArguments);
 }
