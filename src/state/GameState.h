@@ -98,7 +98,7 @@ public:
 
 	bool isPaused;
 	unsigned int lastUpdateGameTime;
-	unsigned int gameTimeMargin;
+	int gameTimeMargin;
 
 	unsigned int execute();
 
@@ -108,6 +108,7 @@ public:
 	unsigned int getGameMills();
 	void pause();
 	void resume();
+	void bumpStart();
 };
 
 #endif // GAMESTATE_H

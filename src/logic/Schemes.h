@@ -53,7 +53,8 @@ public:
 	static void highScoresScheme();
 	static void loadingScheme();
 	static void playingScheme();
-	
+	static void introScheme();
+
 	static void welcomeScheme(
 			std::string callsignText
 		);

@@ -202,8 +202,9 @@ unsigned int GameState::execute() {
 
 	while(lastUpdateGameTime / 1000 / gameSystem->getFloat("stateShipAddRate") + 1 > ships.size()) {
 		Ship ship;
-static int originAngle = 0.0f; originAngle += 75.0f;
-		ship.originAngle = originAngle;
+//static int originAngle = 0.0f; originAngle += 75.0f;
+//		ship.originAngle = originAngle;
+		ship.originAngle = fortress.rotation;
 		ships.push_back(ship);
 	}
 
@@ -365,9 +366,9 @@ static int originAngle = 0.0f; originAngle += 75.0f;
 unsigned int GameState::getGameMills() {
 	// execution time since game began (excluding pauses)
 	if(isPaused)
-		return(gameTimeMargin);
+		return((unsigned int) gameTimeMargin);
 	else
-		return platform->getExecMills() - gameTimeMargin;
+		return (unsigned int) (platform->getExecMills() - gameTimeMargin);
 }
 
 void GameState::pause() {
@@ -383,6 +384,11 @@ void GameState::resume() {
 	if(! isPaused)
 		return;
 
-	gameTimeMargin = platform->getExecMills() - gameTimeMargin;
+	gameTimeMargin = (int) platform->getExecMills() - gameTimeMargin;
 	isPaused = false;
+}
+
+void GameState::bumpStart() {
+	int fullEntryTime = (int) (gameSystem->getFloat("stateShipEntryTime") * 1000.0f);
+	gameTimeMargin -= fullEntryTime - (int) getGameMills();
 }

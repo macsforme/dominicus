@@ -827,7 +827,7 @@ void Schemes::playingScheme() {
 	// tip
 	*((float*) gameLogic->playingTipEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
 	*((Vector4*) gameLogic->playingTipEntry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
-	*((std::string*) gameLogic->playingTipEntry.second["text"]) = "Press esc to pause and show options";
+	*((std::string*) gameLogic->playingTipEntry.second["text"]) = "Press ESC to pause and show options";
 	((UIMetrics*) gameLogic->playingTipEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_BOTTOM;
 	((UIMetrics*) gameLogic->playingTipEntry.second["metrics"])->size = ((DrawLabel*) gameGraphics->drawers["label"])->getSize(gameLogic->playingTipEntry.second);
 	gameLogic->drawStack.push_back(gameLogic->playingTipEntry);
@@ -924,6 +924,47 @@ void Schemes::playingScheme() {
 			);
 		gameLogic->drawStack.push_back(gameLogic->cursorEntry);
 	}
+
+	// re-arrange the UI
+	gameLogic->uiLayoutAuthority->rearrange();
+}
+
+void Schemes::introScheme() {
+	// input
+	inputHandler->keyboard->addListener(gameLogic->quitKeyListener);
+	inputHandler->keyboard->addListener(gameLogic->fullScreenKeyListener);
+	inputHandler->keyboard->addListener(gameLogic->introKeyListener);
+
+	gameLogic->introMouseButtonListener->ll = Vector2(-1.0f, -1.0f);
+	gameLogic->introMouseButtonListener->ur = Vector2(1.0f, 1.0f);
+	inputHandler->mouse->addListener(gameLogic->introMouseButtonListener);
+
+	// sky
+	gameLogic->drawStack.push_back(gameLogic->skyEntry);
+
+	// water
+	gameLogic->drawStack.push_back(gameLogic->waterEntry);
+
+	// terrain
+	gameLogic->drawStack.push_back(gameLogic->terrainEntry);
+
+	// ships
+	gameLogic->drawStack.push_back(gameLogic->shipEntry);
+
+	// tower
+	gameLogic->drawStack.push_back(gameLogic->towerEntry);
+
+	// missiles
+	gameLogic->drawStack.push_back(gameLogic->missileEntry);
+
+	// tip
+	*((float*) gameLogic->introHintEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+	*((Vector4*) gameLogic->introHintEntry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
+	*((std::string*) gameLogic->introHintEntry.second["text"]) = "LEFT CLICK or press SPACE to skip introduction";
+	((UIMetrics*) gameLogic->introHintEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_BOTTOM;
+	((UIMetrics*) gameLogic->introHintEntry.second["metrics"])->size = ((DrawLabel*) gameGraphics->drawers["label"])->getSize(gameLogic->introHintEntry.second);
+	gameLogic->drawStack.push_back(gameLogic->introHintEntry);
+	gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->introHintEntry.second["metrics"]);
 
 	// re-arrange the UI
 	gameLogic->uiLayoutAuthority->rearrange();

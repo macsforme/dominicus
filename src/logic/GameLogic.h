@@ -171,6 +171,11 @@ KeyAbsoluteListener* cameraAheadKeyListener;
 	DrawStackEntry towerEntry;
 	DrawStackEntry missileEntry;
 
+	// intro
+	KeyListener* introKeyListener;
+	MouseButtonListener* introMouseButtonListener;
+	DrawStackEntry introHintEntry;
+
 DrawStackEntry fpsEntry;
 	// YUCK
 	
@@ -211,6 +216,7 @@ DrawStackEntry fpsEntry;
 	DrawStack drawStack;
 
 	// cameras
+	IntroCamera introCamera;
 	TowerCamera towerCamera;
 	OrbitCamera orbitCamera;
 	PresentationCamera presentationCamera;
@@ -240,6 +246,7 @@ private:
 			SCHEME_HIGHSCORES,
 			SCHEME_PLAYING,
 			SCHEME_LOADING,
+			SCHEME_INTRO,
 			SCHEME_WELCOME,
 			SCHEME_DASHBOARD
 		} currentScheme;

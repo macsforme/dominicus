@@ -436,6 +436,19 @@ GameLogic::GameLogic() : mouseActive(false), keyboardCursorPosition(Vector2(0.0f
 
 	missileEntry.first = "missileRenderer";
 
+	std::vector<SDLKey> introKeys;
+	introKeys.push_back(SDLK_SPACE);
+	introKeys.push_back(SDLK_ESCAPE);
+	introKeyListener = new KeyListener(introKeys);
+
+	introMouseButtonListener = new MouseButtonListener();
+
+	introHintEntry.first = "label";
+	introHintEntry.second["metrics"] = (void*) new UIMetrics;
+	introHintEntry.second["fontSize"] = (void*) new float;
+	introHintEntry.second["fontColor"] = (void*) new Vector4;
+	introHintEntry.second["text"] = (void*) new std::string;
+
 fpsEntry.first = "label";
 fpsEntry.second["metrics"] = (void*) new UIMetrics;
 ((UIMetrics*) fpsEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_BOTTOM;
@@ -475,15 +488,15 @@ reScheme();
 gameGraphics->execute();
 gameState = new GameState();
 mainLoopModules[gameState] = 0;
-gameGraphics->currentCamera = &towerCamera;
+gameGraphics->currentCamera = &introCamera;
 mainLoopModules[gameGraphics] = 0;
 ((TerrainRenderer*) gameGraphics->drawers["terrainRenderer"])->reloadGraphics();
 ((DrawRadar*) gameGraphics->drawers["radar"])->reloadGraphics();
-SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
-inputHandler->execute();
-mouseMotionListener->wasMoved();
-currentScheme = SCHEME_PLAYING;
-SDL_ShowCursor(0);
+//SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
+//inputHandler->execute();
+//mouseMotionListener->wasMoved();
+currentScheme = SCHEME_INTRO;
+//SDL_ShowCursor(0);
 activeMenuSelection = NULL;
 reScheme();
 SDL_LockAudio();
@@ -532,6 +545,10 @@ void GameLogic::reScheme() {
 		Schemes::playingScheme();
 		break;
 
+	case SCHEME_INTRO:
+		Schemes::introScheme();
+		break;
+
 	case SCHEME_WELCOME:
 		SDL_ShowCursor(1);
 
@@ -574,10 +591,12 @@ unsigned int GameLogic::execute() {
 		if(isInMainLoopModules)
 			mainLoopModules.erase(mainLoopModules.find(gameGraphics));
 
+		Camera* currentCamera = gameGraphics->currentCamera;
+
 		delete(gameGraphics);
 
-		Camera* currentCamera = gameGraphics->currentCamera;
 		gameGraphics = new GameGraphics(fullScreenGraphics);
+
 		gameGraphics->currentCamera = currentCamera;
 
 		inputHandler->execute();
@@ -586,7 +605,7 @@ unsigned int GameLogic::execute() {
 		if(isInMainLoopModules)
 			mainLoopModules[gameGraphics] = 0;
 
-		if(currentScheme == SCHEME_PLAYING) {
+		if(currentScheme == SCHEME_PLAYING || currentScheme == SCHEME_INTRO) {
 			((TerrainRenderer*) gameGraphics->drawers["terrainRenderer"])->reloadGraphics();
 			((DrawRadar*) gameGraphics->drawers["radar"])->reloadGraphics();
 		}
@@ -654,14 +673,9 @@ unsigned int GameLogic::execute() {
 			mainLoopModules[gameGraphics] = 0;
 			((TerrainRenderer*) gameGraphics->drawers["terrainRenderer"])->reloadGraphics();
 			((DrawRadar*) gameGraphics->drawers["radar"])->reloadGraphics();
-			gameGraphics->currentCamera = &towerCamera;
+			gameGraphics->currentCamera = &introCamera;
 
-			SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
-			inputHandler->execute();
-			mouseMotionListener->wasMoved();
-
-			currentScheme = SCHEME_PLAYING;
-			SDL_ShowCursor(0);
+			currentScheme = SCHEME_INTRO;
 			activeMenuSelection = NULL;
 			reScheme();
 			SDL_LockAudio();
@@ -744,14 +758,9 @@ unsigned int GameLogic::execute() {
 					mainLoopModules[gameGraphics] = 0;
 					((TerrainRenderer*) gameGraphics->drawers["terrainRenderer"])->reloadGraphics();
 					((DrawRadar*) gameGraphics->drawers["radar"])->reloadGraphics();
-					gameGraphics->currentCamera = &towerCamera;
+					gameGraphics->currentCamera = &introCamera;
 
-					SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
-					inputHandler->execute();
-					mouseMotionListener->wasMoved();
-
-					currentScheme = SCHEME_PLAYING;
-					SDL_ShowCursor(0);
+					currentScheme = SCHEME_INTRO;
 					activeMenuSelection = NULL;
 					reScheme();
 
@@ -951,6 +960,43 @@ unsigned int GameLogic::execute() {
 		if(*((std::string*) clockLabel.second["text"]) != timeString) {
 			reScheme();
 			needRedraw = true;
+		}
+	} else if(currentScheme == SCHEME_INTRO) {
+		// button clicks
+		if(introMouseButtonListener->wasClicked()) {
+			gameState->bumpStart();
+			currentScheme = SCHEME_PLAYING;
+			reScheme();
+			SDL_ShowCursor(0);
+			SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
+			inputHandler->execute();
+			mouseMotionListener->wasMoved();
+			gameGraphics->currentCamera = &towerCamera;
+		}
+
+		// key hits
+		for(SDLKey key = introKeyListener->popKey(); key != SDLK_UNKNOWN; key = introKeyListener->popKey()) {
+			if(key == SDLK_SPACE || key == SDLK_ESCAPE) {
+				gameState->bumpStart();
+				currentScheme = SCHEME_PLAYING;
+				reScheme();
+				SDL_ShowCursor(0);
+				SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
+				inputHandler->execute();
+				mouseMotionListener->wasMoved();
+				gameGraphics->currentCamera = &towerCamera;
+			}
+		}
+
+		// expiration of intro time
+		if((float) gameState->lastUpdateGameTime / 1000.0f > gameSystem->getFloat("stateShipEntryTime")) {
+			currentScheme = SCHEME_PLAYING;
+			reScheme();
+			SDL_ShowCursor(0);
+			SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
+			inputHandler->execute();
+			mouseMotionListener->wasMoved();
+			gameGraphics->currentCamera = &towerCamera;
 		}
 	} else if(currentScheme == SCHEME_SETTINGS) {
 		// button highlight
