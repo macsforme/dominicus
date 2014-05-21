@@ -40,25 +40,17 @@ extern GameState* gameState;
 
 // class definition
 class Schemes {
-private:
-	static void addQuitButton();
-	static void addConsole();
-	static void addRadar();
-
 public:
 	static void mainMenuScheme();
+	static void loadingScheme();
+	static void introScheme();
+	static void playingScheme();
+	static void pausedScheme();
+	static void gameOverScheme();
 	static void settingsScheme();
+	static void highScoresScheme();
 	static void helpScheme();
 	static void aboutScheme();
-	static void highScoresScheme();
-	static void loadingScheme();
-	static void playingScheme();
-	static void introScheme();
-
-	static void welcomeScheme(
-			std::string callsignText
-		);
-	static void dashboardScheme();
 };
 
 #endif // SCHEMES_H

@@ -101,27 +101,51 @@ public:
 	DrawStackEntry menuTip2Entry;
 	DrawStackEntry menuTip3Entry;
 
-	// help menu
-	KeyListener* helpMenuKeyListener;
-	DrawStackEntry helpTitleEntry;
+	// loading
+	DrawStackEntry loadingEntry;
+
+	// intro
+	KeyListener* introKeyListener;
+	MouseButtonListener* introMouseButtonListener;
+	DrawStackEntry introHintEntry;
+
+	// playing
+	KeyListener* playingKeyListener;
+	KeyAbsoluteListener* turretUpKeyListener;
+	KeyAbsoluteListener* turretDownKeyListener;
+	KeyAbsoluteListener* turretLeftKeyListener;
+	KeyAbsoluteListener* turretRightKeyListener;
+KeyAbsoluteListener* cameraAheadKeyListener;
+	DrawStackEntry cursorEntry;
+	DrawStackEntry clockLabel;
+	DrawStackEntry scoreLabel;
+	DrawStackEntry playingTipEntry;
+	DrawStackEntry controlBoxEntry;
+	DrawStackEntry gaugePanelEntry;
+	DrawStackEntry radarEntry;
+	DrawStackEntry skyEntry;
+	DrawStackEntry waterEntry;
+	DrawStackEntry terrainEntry;
+	DrawStackEntry shipEntry;
+	DrawStackEntry towerEntry;
+	DrawStackEntry missileEntry;
+
+	// paused
+	KeyListener* pausedMenuKeyListener;
+	DrawStackEntry grayOutEntry;
+	DrawStackEntry pausedEntry;
 	DrawStackEntry controlsTitleEntry;
 	DrawStackEntry controlsEntry;
-	DrawStackEntry instructionsTitleEntry;
-	DrawStackEntry instructionsEntry;
-	DrawStackEntry aboutButtonEntry;
-	DrawStackEntry backButtonEntry;
-	MouseZoneListener* aboutButtonZoneListener;
-	MouseButtonListener* aboutButtonClickListener;
-	MouseZoneListener* backButtonZoneListener;
-	MouseButtonListener* backButtonClickListener;
+	UIMetrics* pausedMenuSpacerMetrics;
+	DrawStackEntry resumeButtonEntry;
+	MouseZoneListener* resumeButtonZoneListener;
+	MouseButtonListener* resumeButtonClickListener;
+	DrawStackEntry endGameButtonEntry;
+	MouseZoneListener* endGameButtonZoneListener;
+	MouseButtonListener* endGameButtonClickListener;
+	DrawStackEntry pausedMenuTipEntry;
 
-	// about menu
-	KeyListener* aboutMenuKeyListener;
-	DrawStackEntry aboutTitleEntry;
-	DrawStackEntry versionTitleEntry;
-	DrawStackEntry versionEntry;
-	DrawStackEntry creditsTitleEntry;
-	DrawStackEntry creditsEntry;
+	// gameover
 
 	// settings menu
 	KeyListener* settingsMenuKeyListener;
@@ -147,70 +171,27 @@ public:
 	DrawStackEntry highScoresTitleEntry;
 	DrawStackEntry highScoresLabelEntry;
 
-	// loading
-	DrawStackEntry loadingEntry;
+	// help menu
+	KeyListener* helpMenuKeyListener;
+	DrawStackEntry helpTitleEntry;
+	DrawStackEntry instructionsTitleEntry;
+	DrawStackEntry instructionsEntry;
+	DrawStackEntry aboutButtonEntry;
+	DrawStackEntry backButtonEntry;
+	MouseZoneListener* aboutButtonZoneListener;
+	MouseButtonListener* aboutButtonClickListener;
+	MouseZoneListener* backButtonZoneListener;
+	MouseButtonListener* backButtonClickListener;
 
-	// playing
-	KeyListener* playingKeyListener;
-	KeyAbsoluteListener* turretUpKeyListener;
-	KeyAbsoluteListener* turretDownKeyListener;
-	KeyAbsoluteListener* turretLeftKeyListener;
-	KeyAbsoluteListener* turretRightKeyListener;
-KeyAbsoluteListener* cameraAheadKeyListener;
-	DrawStackEntry cursorEntry;
-	DrawStackEntry clockLabel;
-	DrawStackEntry scoreLabel;
-	DrawStackEntry playingTipEntry;
-	DrawStackEntry controlBoxEntry;
-	DrawStackEntry gaugePanelEntry;
-	DrawStackEntry radarEntry;
-	DrawStackEntry skyEntry;
-	DrawStackEntry waterEntry;
-	DrawStackEntry terrainEntry;
-	DrawStackEntry shipEntry;
-	DrawStackEntry towerEntry;
-	DrawStackEntry missileEntry;
-
-	// intro
-	KeyListener* introKeyListener;
-	MouseButtonListener* introMouseButtonListener;
-	DrawStackEntry introHintEntry;
+	// about menu
+	KeyListener* aboutMenuKeyListener;
+	DrawStackEntry aboutTitleEntry;
+	DrawStackEntry versionTitleEntry;
+	DrawStackEntry versionEntry;
+	DrawStackEntry creditsTitleEntry;
+	DrawStackEntry creditsEntry;
 
 DrawStackEntry fpsEntry;
-	// YUCK
-	
-	MouseMotionListener* cursorMovementListener;
-
-	KeyListener* deleteKeyListener;
-	KeyListener* dashboardKeyListener;
-
-	KeyListener* testKeyListener;
-	KeyAbsoluteListener* testKeyAbsoluteListener;
-
-	MouseZoneListener* startButtonZoneListener;
-	MouseButtonListener* startButtonClickListener;
-
-	DrawStackEntry joinContainerEntry;
-	DrawStackEntry joinHeaderLabelEntry;
-	DrawStackEntry joinCallsignLabelEntry;
-	DrawStackEntry joinCallsignFieldEntry;
-	DrawStackEntry joinTeamLabelEntry;
-	DrawStackEntry joinTeamMenuEntry;
-	DrawStackEntry joinButtonEntry;
-	DrawStackEntry joinStatusLabelEntry;
-
-	DrawStackEntry welcomeHelpEntry;
-
-	DrawStackEntry consoleEntry;
-
-	DrawStackEntry playerInfoEntry;
-	DrawStackEntry debugInfoEntry;
-
-	DrawStackEntry grayOutEntry;
-	DrawStackEntry controlsHelpEntry;
-	DrawStackEntry scoreboardEntry;
-
-	DrawStackEntry hintEntry;
 
 	// stack of stuff to render each frame
 	DrawStack drawStack;
@@ -224,6 +205,7 @@ DrawStackEntry fpsEntry;
 
 	// general logic info
 	bool mouseActive;
+//FIXME probably delete this fugly functionality
 	Vector2 keyboardCursorPosition;
 //	unsigned int lastClockUpdate;
 //	std::string myCallsign;
@@ -240,15 +222,15 @@ DrawStackEntry fpsEntry;
 private:
 	enum {
 			SCHEME_MAINMENU,
-			SCHEME_SETTINGS,
-			SCHEME_HELP,
-			SCHEME_ABOUT,
-			SCHEME_HIGHSCORES,
-			SCHEME_PLAYING,
 			SCHEME_LOADING,
 			SCHEME_INTRO,
-			SCHEME_WELCOME,
-			SCHEME_DASHBOARD
+			SCHEME_PLAYING,
+			SCHEME_PAUSED,
+			SCHEME_GAMEOVER,
+			SCHEME_SETTINGS,
+			SCHEME_HIGHSCORES,
+			SCHEME_HELP,
+			SCHEME_ABOUT
 		} currentScheme;
 
 	void reScheme();

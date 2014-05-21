@@ -449,6 +449,60 @@ GameLogic::GameLogic() : mouseActive(false), keyboardCursorPosition(Vector2(0.0f
 	introHintEntry.second["fontColor"] = (void*) new Vector4;
 	introHintEntry.second["text"] = (void*) new std::string;
 
+	std::vector<SDLKey> pausedKeys;
+	pausedKeys.push_back(SDLK_UP);
+	pausedKeys.push_back(SDLK_DOWN);
+	pausedKeys.push_back(SDLK_RETURN);
+	pausedKeys.push_back(SDLK_ESCAPE);
+	pausedMenuKeyListener = new KeyListener(pausedKeys);
+
+	grayOutEntry.first = "grayOut";
+	grayOutEntry.second["color"] = (void*) new Vector4;
+
+	pausedEntry.first = "label";
+	pausedEntry.second["metrics"] = (void*) new UIMetrics;
+	pausedEntry.second["fontSize"] = (void*) new float;
+	pausedEntry.second["fontColor"] = (void*) new Vector4;
+	pausedEntry.second["text"] = (void*) new std::string;
+
+	pausedMenuSpacerMetrics = new UIMetrics;
+
+	resumeButtonEntry.first = "button";
+	resumeButtonEntry.second["metrics"] = (void*) new UIMetrics;
+	resumeButtonEntry.second["fontSize"] = (void*) new float;
+	resumeButtonEntry.second["fontColor"] = (void*) new Vector4;
+	resumeButtonEntry.second["text"] = (void*) new std::string;
+	resumeButtonEntry.second["padding"] = (void*) new float;
+	resumeButtonEntry.second["border"] = (void*) new float;
+	resumeButtonEntry.second["softEdge"] = (void*) new float;
+	resumeButtonEntry.second["insideColor"] = (void*) new Vector4;
+	resumeButtonEntry.second["borderColor"] = (void*) new Vector4;
+	resumeButtonEntry.second["outsideColor"] = (void*) new Vector4;
+	resumeButtonZoneListener = new MouseZoneListener();
+	resumeButtonClickListener = new MouseButtonListener();
+
+	endGameButtonEntry.first = "button";
+	endGameButtonEntry.second["metrics"] = (void*) new UIMetrics;
+	endGameButtonEntry.second["fontSize"] = (void*) new float;
+	endGameButtonEntry.second["fontColor"] = (void*) new Vector4;
+	endGameButtonEntry.second["text"] = (void*) new std::string;
+	endGameButtonEntry.second["padding"] = (void*) new float;
+	endGameButtonEntry.second["border"] = (void*) new float;
+	endGameButtonEntry.second["softEdge"] = (void*) new float;
+	endGameButtonEntry.second["insideColor"] = (void*) new Vector4;
+	endGameButtonEntry.second["borderColor"] = (void*) new Vector4;
+	endGameButtonEntry.second["outsideColor"] = (void*) new Vector4;
+	endGameButtonZoneListener = new MouseZoneListener();
+	endGameButtonClickListener = new MouseButtonListener();
+
+	pausedMenuTipEntry.first = "label";
+	pausedMenuTipEntry.second["metrics"] = (void*) new UIMetrics;
+	pausedMenuTipEntry.second["fontSize"] = (void*) new float;
+	pausedMenuTipEntry.second["fontColor"] = (void*) new Vector4;
+	pausedMenuTipEntry.second["text"] = (void*) new std::string;
+
+//FIXME reorder all those according to header (well, reorder header too if necessary)
+
 fpsEntry.first = "label";
 fpsEntry.second["metrics"] = (void*) new UIMetrics;
 ((UIMetrics*) fpsEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_BOTTOM;
@@ -521,10 +575,34 @@ void GameLogic::reScheme() {
 		Schemes::mainMenuScheme();
 		break;
 
+	case SCHEME_LOADING:
+		Schemes::loadingScheme();
+		break;
+
+	case SCHEME_INTRO:
+		Schemes::introScheme();
+		break;
+
+	case SCHEME_PLAYING:
+		Schemes::playingScheme();
+		break;
+
+	case SCHEME_PAUSED:
+		Schemes::pausedScheme();
+		break;
+
+	case SCHEME_GAMEOVER:
+		Schemes::gameOverScheme();
+		break;
+
 	case SCHEME_SETTINGS:
 		Schemes::settingsScheme();
 		break;
 		
+	case SCHEME_HIGHSCORES:
+		Schemes::highScoresScheme();
+		break;
+
 	case SCHEME_HELP:
 		Schemes::helpScheme();
 		break;
@@ -532,38 +610,8 @@ void GameLogic::reScheme() {
 	case SCHEME_ABOUT:
 		Schemes::aboutScheme();
 		break;
-
-	case SCHEME_HIGHSCORES:
-		Schemes::highScoresScheme();
-		break;
-
-	case SCHEME_LOADING:
-		Schemes::loadingScheme();
-		break;
-
-	case SCHEME_PLAYING:
-		Schemes::playingScheme();
-		break;
-
-	case SCHEME_INTRO:
-		Schemes::introScheme();
-		break;
-
-	case SCHEME_WELCOME:
-		SDL_ShowCursor(1);
-
-		Schemes::welcomeScheme(
-				*((std::string*) joinCallsignFieldEntry.second["text"])
-			);
-
-		break;
-	case SCHEME_DASHBOARD:
-		SDL_ShowCursor(1);
-
-		Schemes::dashboardScheme();
-
-		break;
 	}
+
 ((UIMetrics*) fpsEntry.second["metrics"])->size = ((DrawLabel*) gameGraphics->drawers["label"])->getSize(fpsEntry.second);
 uiLayoutAuthority->metrics.push_back((UIMetrics*) fpsEntry.second["metrics"]);
 drawStack.push_back(fpsEntry);
@@ -605,7 +653,7 @@ unsigned int GameLogic::execute() {
 		if(isInMainLoopModules)
 			mainLoopModules[gameGraphics] = 0;
 
-		if(currentScheme == SCHEME_PLAYING || currentScheme == SCHEME_INTRO) {
+		if(currentScheme == SCHEME_PLAYING || currentScheme == SCHEME_INTRO || currentScheme == SCHEME_PAUSED) {
 			((TerrainRenderer*) gameGraphics->drawers["terrainRenderer"])->reloadGraphics();
 			((DrawRadar*) gameGraphics->drawers["radar"])->reloadGraphics();
 		}
@@ -787,7 +835,83 @@ unsigned int GameLogic::execute() {
 				}
 			}
 		}
+	} else if(currentScheme == SCHEME_INTRO) {
+		// button clicks
+		if(introMouseButtonListener->wasClicked()) {
+			gameState->bumpStart();
+			currentScheme = SCHEME_PLAYING;
+			reScheme();
+			SDL_ShowCursor(0);
+			SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
+			inputHandler->execute();
+			mouseMotionListener->wasMoved();
+			gameGraphics->currentCamera = &towerCamera;
+		}
+
+		// key hits
+		for(SDLKey key = introKeyListener->popKey(); key != SDLK_UNKNOWN; key = introKeyListener->popKey()) {
+			if(key == SDLK_SPACE) {
+				gameState->bumpStart();
+				currentScheme = SCHEME_PLAYING;
+				reScheme();
+				SDL_ShowCursor(0);
+				SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
+				inputHandler->execute();
+				mouseMotionListener->wasMoved();
+				gameGraphics->currentCamera = &towerCamera;
+			} else if(key == SDLK_ESCAPE) {
+				gameState->pause();
+
+				mainLoopModules.erase(mainLoopModules.find(gameGraphics));
+
+				currentScheme = SCHEME_PAUSED;
+				activeMenuSelection = &resumeButtonEntry;
+				reScheme();
+				SDL_ShowCursor(1);
+
+				needRedraw = true;
+			}
+		}
+
+		// expiration of intro time
+		if((float) gameState->lastUpdateGameTime / 1000.0f > gameSystem->getFloat("stateShipEntryTime")) {
+			currentScheme = SCHEME_PLAYING;
+			reScheme();
+			SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
+			inputHandler->execute();
+			mouseMotionListener->wasMoved();
+			SDL_ShowCursor(0);
+			gameGraphics->currentCamera = &towerCamera;
+		}
 	} else if(currentScheme == SCHEME_PLAYING) {
+		// check clock
+/*
+		time_t rawTime;
+		struct tm* timeInfo;
+		time(&rawTime);
+		timeInfo = localtime(&rawTime);
+		char timeString[6];
+		strftime(timeString, 6, "%H:%M", timeInfo);
+
+		if(*((std::string*) clockLabel.second["text"]) != timeString) {
+			reScheme();
+			needRedraw = true;
+		}
+*/
+
+		// check score
+		if(atoi(((std::string*) scoreLabel.second["text"])->c_str()) != gameState->score)
+			reScheme();
+
+		// check gauges
+		if(
+				(*((std::vector<float>*) gaugePanelEntry.second["progressions"]))[0] != gameState->fortress.health ||
+				(*((std::vector<float>*) gaugePanelEntry.second["progressions"]))[1] != gameState->fortress.ammunition ||
+				(*((std::vector<float>*) gaugePanelEntry.second["progressions"]))[2] != gameState->fortress.shock
+			) {
+			reScheme();
+		}
+
 		// mouse motion
 		if(mouseMotionListener->wasMoved()) {
 			if(! mouseActive) {
@@ -869,21 +993,16 @@ unsigned int GameLogic::execute() {
 				else if(gameGraphics->currentCamera == &roamingCamera)
 					gameGraphics->currentCamera = &towerCamera;
 			} else if(key == SDLK_ESCAPE) {
-				mainLoopModules.erase(mainLoopModules.find(gameState));
+				gameState->pause();
+
 				mainLoopModules.erase(mainLoopModules.find(gameGraphics));
 
-				delete(gameState);
-
-				currentScheme = SCHEME_MAINMENU;
-				activeMenuSelection = &playButtonEntry;
+				currentScheme = SCHEME_PAUSED;
+				activeMenuSelection = &resumeButtonEntry;
 				reScheme();
-				needRedraw = true;
-
 				SDL_ShowCursor(1);
 
-				SDL_LockAudio();
-				gameAudio->setBackgroundMusic("menuSong");
-				SDL_UnlockAudio();
+				needRedraw = true;
 			} else if(key == SDLK_BACKQUOTE) {
 				if(gameState->isPaused)
 					gameState->resume();
@@ -948,71 +1067,125 @@ unsigned int GameLogic::execute() {
 				reScheme();
 			}
 		}
-
-		// check clock
-/*
-		time_t rawTime;
-		struct tm* timeInfo;
-		time(&rawTime);
-		timeInfo = localtime(&rawTime);
-		char timeString[6];
-		strftime(timeString, 6, "%H:%M", timeInfo);
-
-		if(*((std::string*) clockLabel.second["text"]) != timeString) {
-			reScheme();
-			needRedraw = true;
-		}
-*/
-
-		// check score
-		if(atoi(((std::string*) scoreLabel.second["text"])->c_str()) != gameState->score)
-			reScheme();
-
-		// check gauges
-		if(
-				(*((std::vector<float>*) gaugePanelEntry.second["progressions"]))[0] != gameState->fortress.health ||
-				(*((std::vector<float>*) gaugePanelEntry.second["progressions"]))[1] != gameState->fortress.ammunition ||
-				(*((std::vector<float>*) gaugePanelEntry.second["progressions"]))[2] != gameState->fortress.shock
-			) {
-			reScheme();
-		}
-	} else if(currentScheme == SCHEME_INTRO) {
-		// button clicks
-		if(introMouseButtonListener->wasClicked()) {
-			gameState->bumpStart();
-			currentScheme = SCHEME_PLAYING;
-			reScheme();
-			SDL_ShowCursor(0);
-			SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
-			inputHandler->execute();
-			mouseMotionListener->wasMoved();
-			gameGraphics->currentCamera = &towerCamera;
-		}
-
-		// key hits
-		for(SDLKey key = introKeyListener->popKey(); key != SDLK_UNKNOWN; key = introKeyListener->popKey()) {
-			if(key == SDLK_SPACE || key == SDLK_ESCAPE) {
-				gameState->bumpStart();
-				currentScheme = SCHEME_PLAYING;
+	} else if(currentScheme == SCHEME_PAUSED) {
+		// button highlight
+		if(mouseMotionListener->wasMoved()) {
+			if(resumeButtonZoneListener->isEntered) {
+				if(activeMenuSelection != &resumeButtonEntry) {
+					activeMenuSelection = &resumeButtonEntry;
+					reScheme();
+					needRedraw = true;
+				}
+			} else if(endGameButtonZoneListener->isEntered) {
+				if(activeMenuSelection != &endGameButtonEntry) {
+					activeMenuSelection = &endGameButtonEntry;
+					reScheme();
+					needRedraw = true;
+				}
+			} else if(activeMenuSelection != NULL) {
+				activeMenuSelection = NULL;
 				reScheme();
-				SDL_ShowCursor(0);
-				SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
-				inputHandler->execute();
-				mouseMotionListener->wasMoved();
-				gameGraphics->currentCamera = &towerCamera;
+				needRedraw = true;
 			}
 		}
 
-		// expiration of intro time
-		if((float) gameState->lastUpdateGameTime / 1000.0f > gameSystem->getFloat("stateShipEntryTime")) {
-			currentScheme = SCHEME_PLAYING;
+		// button clicks
+		if(resumeButtonClickListener->wasClicked()) {
+			if(gameGraphics->currentCamera == &introCamera) {
+				currentScheme = SCHEME_INTRO;
+			} else {
+				currentScheme = SCHEME_PLAYING;
+				SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
+				SDL_ShowCursor(0);
+
+				inputHandler->execute();
+				mouseMotionListener->wasMoved();
+			}
+
+			activeMenuSelection = NULL;
 			reScheme();
-			SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
-			inputHandler->execute();
-			mouseMotionListener->wasMoved();
-			SDL_ShowCursor(0);
-			gameGraphics->currentCamera = &towerCamera;
+
+			mainLoopModules[gameGraphics] = 0;
+
+			gameState->resume();
+		} else if(endGameButtonClickListener->wasClicked()) {
+			mainLoopModules.erase(mainLoopModules.find(gameState));
+			delete(gameState);
+			gameState = NULL;
+
+			currentScheme = SCHEME_MAINMENU;
+			activeMenuSelection = &playButtonEntry;
+			reScheme();
+			needRedraw = true;
+
+			SDL_LockAudio();
+			gameAudio->setBackgroundMusic("menuSong");
+			SDL_UnlockAudio();
 		}
+
+		// key hits
+		for(SDLKey key = pausedMenuKeyListener->popKey(); key != SDLK_UNKNOWN; key = pausedMenuKeyListener->popKey()) {
+			if(key == SDLK_UP) {
+				if(activeMenuSelection == NULL || activeMenuSelection == &resumeButtonEntry) {
+					activeMenuSelection = &endGameButtonEntry;
+					reScheme();
+					needRedraw = true;
+				} else if(activeMenuSelection == &endGameButtonEntry) {
+					activeMenuSelection = &resumeButtonEntry;
+					reScheme();
+					needRedraw = true;
+				}
+			} else if(key == SDLK_DOWN) {
+				if(activeMenuSelection == NULL || activeMenuSelection == &endGameButtonEntry) {
+					activeMenuSelection = &resumeButtonEntry;
+					reScheme();
+					needRedraw = true;
+				} else if(activeMenuSelection == &resumeButtonEntry) {
+					activeMenuSelection = &endGameButtonEntry;
+					reScheme();
+					needRedraw = true;
+				}
+			} else if(key == SDLK_RETURN || key == SDLK_ESCAPE) {
+				if(activeMenuSelection == &resumeButtonEntry || key == SDLK_ESCAPE) {
+					if(gameGraphics->currentCamera == &introCamera) {
+						currentScheme = SCHEME_INTRO;
+					} else {
+						currentScheme = SCHEME_PLAYING;
+						SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
+						SDL_ShowCursor(0);
+
+						inputHandler->execute();
+						mouseMotionListener->wasMoved();
+					}
+
+					activeMenuSelection = NULL;
+					reScheme();
+
+					mainLoopModules[gameGraphics] = 0;
+
+					gameState->resume();
+				} else if(activeMenuSelection == &endGameButtonEntry) {
+					mainLoopModules.erase(mainLoopModules.find(gameState));
+					delete(gameState);
+					gameState = NULL;
+
+					currentScheme = SCHEME_MAINMENU;
+					activeMenuSelection = &playButtonEntry;
+					reScheme();
+					needRedraw = true;
+
+					SDL_LockAudio();
+					gameAudio->setBackgroundMusic("menuSong");
+					SDL_UnlockAudio();
+				}
+			} else if (key == SDLK_ESCAPE) {
+				currentScheme = SCHEME_MAINMENU;
+				activeMenuSelection = &playButtonEntry;
+				reScheme();
+				needRedraw = true;
+			}
+		}
+	} else if(currentScheme == SCHEME_GAMEOVER) {
 	} else if(currentScheme == SCHEME_SETTINGS) {
 		// button highlight
 		if(mouseMotionListener->wasMoved()) {
@@ -1221,6 +1394,43 @@ unsigned int GameLogic::execute() {
 				needRedraw = true;
 			}
 		}
+	} else if(currentScheme == SCHEME_HIGHSCORES) {
+		// button highlight
+		if(mouseMotionListener->wasMoved()) {
+			if(backButtonZoneListener->isEntered) {
+				if(activeMenuSelection != &backButtonEntry) {
+					activeMenuSelection = &backButtonEntry;
+					reScheme();
+					needRedraw = true;
+				}
+			} else if(activeMenuSelection != NULL) {
+				activeMenuSelection = NULL;
+				reScheme();
+				needRedraw = true;
+			}
+		}
+
+		// button clicks
+		if(backButtonClickListener->wasClicked()) {
+			currentScheme = SCHEME_MAINMENU;
+			activeMenuSelection = &playButtonEntry;
+			reScheme();
+			needRedraw = true;
+		}
+
+		// key hits
+		for(SDLKey key = highScoresMenuKeyListener->popKey(); key != SDLK_UNKNOWN; key = highScoresMenuKeyListener->popKey()) {
+			if((key == SDLK_UP || key == SDLK_DOWN) && activeMenuSelection != &backButtonEntry) {
+				activeMenuSelection = &backButtonEntry;
+				reScheme();
+				needRedraw = true;
+			} else if((key == SDLK_RETURN && activeMenuSelection == &backButtonEntry) || key == SDLK_ESCAPE) {
+				currentScheme = SCHEME_MAINMENU;
+				activeMenuSelection = &playButtonEntry;
+				reScheme();
+				needRedraw = true;
+			}
+		}
 	} else if(currentScheme == SCHEME_HELP) {
 		// button highlight
 		if(mouseMotionListener->wasMoved()) {
@@ -1330,43 +1540,6 @@ unsigned int GameLogic::execute() {
 			} else if((key == SDLK_RETURN && activeMenuSelection == &backButtonEntry) || key == SDLK_ESCAPE) {
 				currentScheme = SCHEME_HELP;
 				activeMenuSelection = &backButtonEntry;
-				reScheme();
-				needRedraw = true;
-			}
-		}
-	} else if(currentScheme == SCHEME_HIGHSCORES) {
-		// button highlight
-		if(mouseMotionListener->wasMoved()) {
-			if(backButtonZoneListener->isEntered) {
-				if(activeMenuSelection != &backButtonEntry) {
-					activeMenuSelection = &backButtonEntry;
-					reScheme();
-					needRedraw = true;
-				}
-			} else if(activeMenuSelection != NULL) {
-				activeMenuSelection = NULL;
-				reScheme();
-				needRedraw = true;
-			}
-		}
-
-		// button clicks
-		if(backButtonClickListener->wasClicked()) {
-			currentScheme = SCHEME_MAINMENU;
-			activeMenuSelection = &playButtonEntry;
-			reScheme();
-			needRedraw = true;
-		}
-
-		// key hits
-		for(SDLKey key = highScoresMenuKeyListener->popKey(); key != SDLK_UNKNOWN; key = highScoresMenuKeyListener->popKey()) {
-			if((key == SDLK_UP || key == SDLK_DOWN) && activeMenuSelection != &backButtonEntry) {
-				activeMenuSelection = &backButtonEntry;
-				reScheme();
-				needRedraw = true;
-			} else if((key == SDLK_RETURN && activeMenuSelection == &backButtonEntry) || key == SDLK_ESCAPE) {
-				currentScheme = SCHEME_MAINMENU;
-				activeMenuSelection = &playButtonEntry;
 				reScheme();
 				needRedraw = true;
 			}

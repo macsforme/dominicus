@@ -192,9 +192,9 @@ GameSystem::GameSystem() {
 	setStandard("stateShipMargin", 150.0f, "Lateral distance between ships orbiting island.");
 	setStandard("stateShipSpeed", 100.0f, "Ship speed in world units per second.");
 	setStandard("stateShipEntryTime", 20.0f, "Time it takes between ship introduction and beginning of orbit.");
-	setStandard("stateShipAddRate", 20.0f, "Time between ships being added to the world.");
+	setStandard("stateShipAddRate", 17.0f, "Time between ships being added to the world.");
 	setStandard("stateMissileSpeed", 100.0f, "Missile speed in world units per second.");
-	setStandard("stateMissileFiringRate", 3.0f, "Wait time in between missile firings for each ship.");
+	setStandard("stateMissileFiringRate", 8.0f, "Wait time in between missile firings for each ship.");
 	setStandard("stateFortressMinimumTilt", -10.0f, "Minimum tilt angle of fortress turret.");
 	setStandard("stateFortressMaximumTilt", 45.0f, "Maximum tilt angle of fortress turret.");
 	setStandard("stateTurretTurnSpeed", 45.0f, "Turning speed of turret in degrees per second.");
@@ -272,6 +272,7 @@ GameSystem::GameSystem() {
 	setStandard("hudGaugeAmmoBarColor", Vector4(0.0f, 1.0f, 1.0f, 1.0f), "Color of ammunition gauge.");
 	setStandard("hudGaugeShockChargingBarColor", Vector4(1.0f, 1.0f, 0.0f, 1.0f), "Color of shock gauge while charging.");
 	setStandard("hudGaugeShockChargedBarColor", Vector4(1.0f, 0.0f, 0.0f, 1.0f), "Color of shock gauge when charged.");
+	setStandard("hudGrayOutColor", Vector4(0.0f, 0.0f, 0.05f, 0.75f), "Color of gray screen during pause.");
 
 	// font standards
 	setStandard("fontFile", "FreeSansBold.ttf", "Font file to load for use by HUD and menus.");

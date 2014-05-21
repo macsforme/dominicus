@@ -974,6 +974,162 @@ void Schemes::introScheme() {
 	gameLogic->uiLayoutAuthority->rearrange();
 }
 
+void Schemes::pausedScheme() {
+	// input
+	inputHandler->mouse->addListener(gameLogic->mouseMotionListener);
+	inputHandler->keyboard->addListener(gameLogic->quitKeyListener);
+	inputHandler->keyboard->addListener(gameLogic->fullScreenKeyListener);
+	inputHandler->keyboard->addListener(gameLogic->pausedMenuKeyListener);
+
+	// sky
+	gameLogic->drawStack.push_back(gameLogic->skyEntry);
+
+	// water
+	gameLogic->drawStack.push_back(gameLogic->waterEntry);
+
+	// terrain
+	gameLogic->drawStack.push_back(gameLogic->terrainEntry);
+
+	// ships
+	gameLogic->drawStack.push_back(gameLogic->shipEntry);
+
+	// tower
+	gameLogic->drawStack.push_back(gameLogic->towerEntry);
+
+	// missiles
+	gameLogic->drawStack.push_back(gameLogic->missileEntry);
+
+	// gray out
+	*((Vector4*) gameLogic->grayOutEntry.second["color"]) = gameSystem->getColor("hudGrayOutColor");
+	gameLogic->drawStack.push_back(gameLogic->grayOutEntry);
+
+	// paused title label
+	*((float*) gameLogic->pausedEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeLarge");
+	*((Vector4*) gameLogic->pausedEntry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
+	*((std::string*) gameLogic->pausedEntry.second["text"]) = "PAUSED";
+	((UIMetrics*) gameLogic->pausedEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
+	((UIMetrics*) gameLogic->pausedEntry.second["metrics"])->size = ((DrawLabel*) gameGraphics->drawers["label"])->getSize(gameLogic->pausedEntry.second);
+	gameLogic->drawStack.push_back(gameLogic->pausedEntry);
+	gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->pausedEntry.second["metrics"]);
+
+	// controls title label
+	*((float*) gameLogic->controlsTitleEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
+	*((Vector4*) gameLogic->controlsTitleEntry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
+	*((std::string*) gameLogic->controlsTitleEntry.second["text"]) = "Controls";
+	((UIMetrics*) gameLogic->controlsTitleEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
+	((UIMetrics*) gameLogic->controlsTitleEntry.second["metrics"])->size = ((DrawLabel*) gameGraphics->drawers["label"])->getSize(gameLogic->controlsTitleEntry.second);
+	gameLogic->drawStack.push_back(gameLogic->controlsTitleEntry);
+	gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->controlsTitleEntry.second["metrics"]);
+
+	// controls label
+	*((float*) gameLogic->controlsEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+	*((Vector4*) gameLogic->controlsEntry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
+	*((std::string*) gameLogic->controlsEntry.second["text"]) = "Move Turret:\tArrow Keys / Mouse Movement\nFire Cannon:\tSpace / Left Mouse Button\nCharge / Fire Shock Field:\tTab / Right Mouse Button\nPause / Resume:\tesc\nToggle Fullscreen:\tF1\nFast Quit:\tF12";
+	((UIMetrics*) gameLogic->controlsEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
+	((UIMetrics*) gameLogic->controlsEntry.second["metrics"])->size = ((DrawLabel*) gameGraphics->drawers["label"])->getSize(gameLogic->controlsEntry.second);
+	gameLogic->drawStack.push_back(gameLogic->controlsEntry);
+	gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->controlsEntry.second["metrics"]);
+
+	// spacer
+	gameLogic->pausedMenuSpacerMetrics->bearing1 = UIMetrics::BEARING_TOP;
+	gameLogic->uiLayoutAuthority->metrics.push_back(gameLogic->pausedMenuSpacerMetrics);
+
+	// resume button
+	*((float*) gameLogic->resumeButtonEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeLarge");
+	*((Vector4*) gameLogic->resumeButtonEntry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
+	*((std::string*) gameLogic->resumeButtonEntry.second["text"]) = "Resume";
+	*((float*) gameLogic->resumeButtonEntry.second["padding"]) = gameSystem->getFloat("hudBigButtonPadding");
+	*((float*) gameLogic->resumeButtonEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
+	*((float*) gameLogic->resumeButtonEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
+	*((Vector4*) gameLogic->resumeButtonEntry.second["insideColor"]) = (
+			gameLogic->activeMenuSelection == &gameLogic->resumeButtonEntry ?
+			gameSystem->getColor("hudContainerHighlightColor") :
+			gameSystem->getColor("hudContainerInsideColor")
+		);
+	*((Vector4*) gameLogic->resumeButtonEntry.second["borderColor"]) = gameSystem->getColor("hudContainerBorderColor");
+	*((Vector4*) gameLogic->resumeButtonEntry.second["outsideColor"]) = gameSystem->getColor("hudContainerOutsideColor");
+	((UIMetrics*) gameLogic->resumeButtonEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
+	((UIMetrics*) gameLogic->resumeButtonEntry.second["metrics"])->size = ((DrawButton*) gameGraphics->drawers["button"])->getSize(gameLogic->resumeButtonEntry.second);
+	gameLogic->drawStack.push_back(gameLogic->resumeButtonEntry);
+	gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->resumeButtonEntry.second["metrics"]);
+
+	// end game button
+	((UIMetrics*) gameLogic->endGameButtonEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
+	*((float*) gameLogic->endGameButtonEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeLarge");
+	*((Vector4*) gameLogic->endGameButtonEntry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
+	*((std::string*) gameLogic->endGameButtonEntry.second["text"]) = "End Game";
+	*((float*) gameLogic->endGameButtonEntry.second["padding"]) = gameSystem->getFloat("hudBigButtonPadding");
+	*((float*) gameLogic->endGameButtonEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
+	*((float*) gameLogic->endGameButtonEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
+	*((Vector4*) gameLogic->endGameButtonEntry.second["insideColor"]) = (
+			gameLogic->activeMenuSelection == &gameLogic->endGameButtonEntry ?
+			gameSystem->getColor("hudContainerHighlightColor") :
+			gameSystem->getColor("hudContainerInsideColor")
+		);
+	*((Vector4*) gameLogic->endGameButtonEntry.second["borderColor"]) = gameSystem->getColor("hudContainerBorderColor");
+	*((Vector4*) gameLogic->endGameButtonEntry.second["outsideColor"]) = gameSystem->getColor("hudContainerOutsideColor");
+	((UIMetrics*) gameLogic->endGameButtonEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
+	((UIMetrics*) gameLogic->endGameButtonEntry.second["metrics"])->size = ((DrawButton*) gameGraphics->drawers["button"])->getSize(gameLogic->endGameButtonEntry.second);
+	gameLogic->drawStack.push_back(gameLogic->endGameButtonEntry);
+	gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->endGameButtonEntry.second["metrics"]);
+
+	// helpful tip labels
+	*((float*) gameLogic->pausedMenuTipEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+	*((Vector4*) gameLogic->pausedMenuTipEntry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
+	*((std::string*) gameLogic->pausedMenuTipEntry.second["text"]) = "Press ESC to return to the game";
+	((UIMetrics*) gameLogic->pausedMenuTipEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_BOTTOM;
+	((UIMetrics*) gameLogic->pausedMenuTipEntry.second["metrics"])->size = ((DrawLabel*) gameGraphics->drawers["label"])->getSize(gameLogic->pausedMenuTipEntry.second);
+	gameLogic->drawStack.push_back(gameLogic->pausedMenuTipEntry);
+	gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->pausedMenuTipEntry.second["metrics"]);
+
+	*((float*) gameLogic->menuTip2Entry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+	*((Vector4*) gameLogic->menuTip2Entry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
+	*((std::string*) gameLogic->menuTip2Entry.second["text"]) = "Use ARROW KEYS to navigate or modify";
+	((UIMetrics*) gameLogic->menuTip2Entry.second["metrics"])->bearing1 = UIMetrics::BEARING_BOTTOM;
+	((UIMetrics*) gameLogic->menuTip2Entry.second["metrics"])->size = ((DrawLabel*) gameGraphics->drawers["label"])->getSize(gameLogic->menuTip2Entry.second);
+	gameLogic->drawStack.push_back(gameLogic->menuTip2Entry);
+	gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->menuTip2Entry.second["metrics"]);
+
+	*((float*) gameLogic->menuTip3Entry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+	*((Vector4*) gameLogic->menuTip3Entry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
+	*((std::string*) gameLogic->menuTip3Entry.second["text"]) = "Press ENTER to select";
+	((UIMetrics*) gameLogic->menuTip3Entry.second["metrics"])->bearing1 = UIMetrics::BEARING_BOTTOM;
+	((UIMetrics*) gameLogic->menuTip3Entry.second["metrics"])->size = ((DrawLabel*) gameGraphics->drawers["label"])->getSize(gameLogic->menuTip3Entry.second);
+	gameLogic->drawStack.push_back(gameLogic->menuTip3Entry);
+	gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->menuTip3Entry.second["metrics"]);
+
+	// make all buttons the same width
+	float maxWidth = 0.0f;
+	if(((UIMetrics*) gameLogic->resumeButtonEntry.second["metrics"])->size.x > maxWidth)
+		maxWidth = ((UIMetrics*) gameLogic->resumeButtonEntry.second["metrics"])->size.x;
+	if(((UIMetrics*) gameLogic->endGameButtonEntry.second["metrics"])->size.x > maxWidth)
+		maxWidth = ((UIMetrics*) gameLogic->endGameButtonEntry.second["metrics"])->size.x;
+	((UIMetrics*) gameLogic->resumeButtonEntry.second["metrics"])->size.x = maxWidth;
+	((UIMetrics*) gameLogic->endGameButtonEntry.second["metrics"])->size.x = maxWidth;
+
+	// re-arrange the UI
+	gameLogic->uiLayoutAuthority->rearrange();
+	
+	// set up button listeners with new position
+	gameLogic->resumeButtonZoneListener->ll = ((UIMetrics*) gameLogic->resumeButtonEntry.second["metrics"])->position -	((UIMetrics*) gameLogic->resumeButtonEntry.second["metrics"])->size / 2.0f;
+	gameLogic->resumeButtonZoneListener->ur = ((UIMetrics*) gameLogic->resumeButtonEntry.second["metrics"])->position + ((UIMetrics*) gameLogic->resumeButtonEntry.second["metrics"])->size / 2.0f;
+	inputHandler->mouse->addListener(gameLogic->resumeButtonZoneListener);
+	gameLogic->resumeButtonClickListener->ll = gameLogic->resumeButtonZoneListener->ll;
+	gameLogic->resumeButtonClickListener->ur = gameLogic->resumeButtonZoneListener->ur;
+	inputHandler->mouse->addListener(gameLogic->resumeButtonClickListener);
+
+	gameLogic->endGameButtonZoneListener->ll = ((UIMetrics*) gameLogic->endGameButtonEntry.second["metrics"])->position -	((UIMetrics*) gameLogic->endGameButtonEntry.second["metrics"])->size / 2.0f;
+	gameLogic->endGameButtonZoneListener->ur = ((UIMetrics*) gameLogic->endGameButtonEntry.second["metrics"])->position + ((UIMetrics*) gameLogic->endGameButtonEntry.second["metrics"])->size / 2.0f;
+	inputHandler->mouse->addListener(gameLogic->endGameButtonZoneListener);
+	gameLogic->endGameButtonClickListener->ll = gameLogic->endGameButtonZoneListener->ll;
+	gameLogic->endGameButtonClickListener->ur = gameLogic->endGameButtonZoneListener->ur;
+	inputHandler->mouse->addListener(gameLogic->endGameButtonClickListener);
+}
+
+void Schemes::gameOverScheme() {
+}
+
+/*
 void Schemes::welcomeScheme(
 			std::string callsignText
 		) {
@@ -1224,14 +1380,14 @@ void Schemes::dashboardScheme() {
 	*((float*) gameLogic->controlsHelpEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
 	*((Vector4*) gameLogic->controlsHelpEntry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
 	textLines.str("");
-/*
-textLines <<
-		"abg\n"	<<
+
+//textLines <<
+//		"abg\n"	<<
 //		"abg\tabg\tabg\n" <<
-		"abg\tabg\n" <<
-		"abg\n" <<
-		"abg\tabg\tabg\n";
-*/
+//		"abg\tabg\n" <<
+//		"abg\n" <<
+//		"abg\tabg\tabg\n";
+
 	textLines <<
 			"GENERAL CONTROLS\n\n" <<
 			"Toggle Dashboard:\tShift\n" <<
@@ -1344,7 +1500,6 @@ textLines <<
 	gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->scoreboardEntry.second["metrics"]);
 
 	// hint
-/*
 	if(gameLogic->hintExpiration > platform->getExecMills()) {
 		*((float*) gameLogic->hintEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
 		*((Vector4*) gameLogic->hintEntry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
@@ -1372,7 +1527,7 @@ textLines <<
 
 		gameLogic->drawStack.push_back(gameLogic->hintEntry);
 	}
-*/
+
 	// re-arrange the UI
 	gameLogic->uiLayoutAuthority->rearrange();
 
@@ -1400,3 +1555,4 @@ textLines <<
 	inputHandler->mouse->addListener(gameLogic->quitButtonZoneListener);
 	inputHandler->mouse->addListener(gameLogic->quitButtonClickListener);
 }
+*/

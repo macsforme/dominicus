@@ -9,7 +9,7 @@ void main() {
 //	float value = asin(dot(vec3(0.0, 1.0, 0.0), normalize(fragCoord))) / asin(1.0);
 	float value = dot(vec3(0.0, 1.0, 0.0), normalize(fragCoord));
 
-	vec4 apexColor = vec4(0.18, 0.54, 0.90, 1.0);
+	vec4 apexColor = vec4(0.12, 0.36, 0.60, 1.0);
 	vec4 horizonColor = vec4(0.76, 0.88, 1.0, 1.0);
 
 	if(value < 0.0)
