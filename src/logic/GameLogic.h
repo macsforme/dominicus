@@ -146,6 +146,19 @@ KeyAbsoluteListener* cameraAheadKeyListener;
 	DrawStackEntry pausedMenuTipEntry;
 
 	// gameover
+	KeyListener* gameOverKeyListener;
+	KeyAbsoluteListener* deleteKeyListener;
+	DrawStackEntry gameOverTitleEntry;
+	DrawStackEntry yourScoreTitleEntry;
+	DrawStackEntry yourScoreEntry;
+	DrawStackEntry highScoresSectionEntry;
+	DrawStackEntry newHighScoreContainer;
+	DrawStackEntry newHighScoreLabel;
+	DrawStackEntry newHighScoreNameLabel;
+	DrawStackEntry newHighScoreNameField;
+	DrawStackEntry gameOverContinueButton;
+	MouseZoneListener* gameOverContinueButtonZoneListener;
+	MouseButtonListener* gameOverContinueButtonClickListener;
 
 	// settings menu
 	KeyListener* settingsMenuKeyListener;
@@ -205,12 +218,14 @@ DrawStackEntry fpsEntry;
 
 	// general logic info
 	bool mouseActive;
+	std::string playerName;
+	unsigned int deleteKeyPressTime;
+	unsigned int lastCharacterDeletionTime;
+
 //FIXME probably delete this fugly functionality
 	Vector2 keyboardCursorPosition;
 //	unsigned int lastClockUpdate;
-//	std::string myCallsign;
 //	unsigned int lastFrameTime;
-//	unsigned int hintExpiration;
 
 	// time management
 	unsigned int lastUpdate;

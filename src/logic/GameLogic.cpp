@@ -8,7 +8,12 @@
 
 #include "logic/GameLogic.h"
 
-GameLogic::GameLogic() : mouseActive(false), keyboardCursorPosition(Vector2(0.0f, 0.0f)) {
+GameLogic::GameLogic() :
+		mouseActive(false),
+		keyboardCursorPosition(Vector2(0.0f, 0.0f)),
+		playerName(""),
+		deleteKeyPressTime(-1),
+		lastCharacterDeletionTime(0) {
 	// instantiate HUD layout authority
 	uiLayoutAuthority = new UILayoutAuthority(
 			Vector2(gameSystem->getFloat("hudElementMargin") / gameGraphics->resolutionX,
@@ -325,6 +330,8 @@ GameLogic::GameLogic() : mouseActive(false), keyboardCursorPosition(Vector2(0.0f
 	highScoresMenuKeys.push_back(SDLK_RETURN);
 	highScoresMenuKeyListener = new KeyListener(highScoresMenuKeys);
 
+	deleteKeyListener = new KeyAbsoluteListener(SDLK_BACKSPACE);
+
 	highScoresTitleEntry.first = "label";
 	highScoresTitleEntry.second["metrics"] = (void*) new UIMetrics;
 	highScoresTitleEntry.second["fontSize"] = (void*) new float;
@@ -500,6 +507,79 @@ GameLogic::GameLogic() : mouseActive(false), keyboardCursorPosition(Vector2(0.0f
 	pausedMenuTipEntry.second["fontSize"] = (void*) new float;
 	pausedMenuTipEntry.second["fontColor"] = (void*) new Vector4;
 	pausedMenuTipEntry.second["text"] = (void*) new std::string;
+
+	std::vector<SDLKey> gameOverKeys;
+	gameOverKeys.push_back(SDLK_UP);
+	gameOverKeys.push_back(SDLK_DOWN);
+	gameOverKeys.push_back(SDLK_RETURN);
+	gameOverKeys.push_back(SDLK_ESCAPE);
+	gameOverKeyListener = new KeyListener(gameOverKeys);
+
+	gameOverTitleEntry.first = "label";
+	gameOverTitleEntry.second["metrics"] = (void*) new UIMetrics;
+	gameOverTitleEntry.second["fontSize"] = (void*) new float;
+	gameOverTitleEntry.second["fontColor"] = (void*) new Vector4;
+	gameOverTitleEntry.second["text"] = (void*) new std::string;
+
+	yourScoreTitleEntry.first = "label";
+	yourScoreTitleEntry.second["metrics"] = (void*) new UIMetrics;
+	yourScoreTitleEntry.second["fontSize"] = (void*) new float;
+	yourScoreTitleEntry.second["fontColor"] = (void*) new Vector4;
+	yourScoreTitleEntry.second["text"] = (void*) new std::string;
+
+	yourScoreEntry.first = "label";
+	yourScoreEntry.second["metrics"] = (void*) new UIMetrics;
+	yourScoreEntry.second["fontSize"] = (void*) new float;
+	yourScoreEntry.second["fontColor"] = (void*) new Vector4;
+	yourScoreEntry.second["text"] = (void*) new std::string;
+
+	highScoresSectionEntry.first = "label";
+	highScoresSectionEntry.second["metrics"] = (void*) new UIMetrics;
+	highScoresSectionEntry.second["fontSize"] = (void*) new float;
+	highScoresSectionEntry.second["fontColor"] = (void*) new Vector4;
+	highScoresSectionEntry.second["text"] = (void*) new std::string;
+
+	newHighScoreLabel.first = "label";
+	newHighScoreLabel.second["metrics"] = (void*) new UIMetrics;
+	newHighScoreLabel.second["fontSize"] = (void*) new float;
+	newHighScoreLabel.second["fontColor"] = (void*) new Vector4;
+	newHighScoreLabel.second["text"] = (void*) new std::string;
+
+	newHighScoreContainer.first = "container";
+	newHighScoreContainer.second["metrics"] = (void*) new UIMetrics;
+	newHighScoreContainer.second["padding"] = (void*) new float;
+	newHighScoreContainer.second["border"] = (void*) new float;
+	newHighScoreContainer.second["softEdge"] = (void*) new float;
+	newHighScoreContainer.second["insideColor"] = (void*) new Vector4;
+	newHighScoreContainer.second["borderColor"] = (void*) new Vector4;
+	newHighScoreContainer.second["outsideColor"] = (void*) new Vector4;
+
+	newHighScoreNameLabel.first = "label";
+	newHighScoreNameLabel.second["metrics"] = (void*) new UIMetrics;
+	newHighScoreNameLabel.second["fontSize"] = (void*) new float;
+	newHighScoreNameLabel.second["fontColor"] = (void*) new Vector4;
+	newHighScoreNameLabel.second["text"] = (void*) new std::string;
+
+	newHighScoreNameField.first = "field";
+	newHighScoreNameField.second["metrics"] = (void*) new UIMetrics;
+	newHighScoreNameField.second["fontSize"] = (void*) new float;
+	newHighScoreNameField.second["fontColor"] = (void*) new Vector4;
+	newHighScoreNameField.second["boxColor"] = (void*) new Vector4;
+	newHighScoreNameField.second["text"] = (void*) new std::string;
+
+	gameOverContinueButton.first = "button";
+	gameOverContinueButton.second["metrics"] = (void*) new UIMetrics;
+	gameOverContinueButton.second["fontSize"] = (void*) new float;
+	gameOverContinueButton.second["fontColor"] = (void*) new Vector4;
+	gameOverContinueButton.second["text"] = (void*) new std::string;
+	gameOverContinueButton.second["padding"] = (void*) new float;
+	gameOverContinueButton.second["border"] = (void*) new float;
+	gameOverContinueButton.second["softEdge"] = (void*) new float;
+	gameOverContinueButton.second["insideColor"] = (void*) new Vector4;
+	gameOverContinueButton.second["borderColor"] = (void*) new Vector4;
+	gameOverContinueButton.second["outsideColor"] = (void*) new Vector4;
+	gameOverContinueButtonZoneListener = new MouseZoneListener();
+	gameOverContinueButtonClickListener = new MouseButtonListener();
 
 //FIXME reorder all those according to header (well, reorder header too if necessary)
 
@@ -884,6 +964,32 @@ unsigned int GameLogic::execute() {
 			gameGraphics->currentCamera = &towerCamera;
 		}
 	} else if(currentScheme == SCHEME_PLAYING) {
+		// see if we're dead
+		if(gameState->fortress.health == 0.0f) {
+			gameState->pause();
+
+			mainLoopModules.erase(mainLoopModules.find(gameGraphics));
+
+			if(gameSystem->highScores.size() > 0)
+				playerName = gameSystem->highScores[0].second;
+			else
+				playerName = "";
+
+			currentScheme = SCHEME_GAMEOVER;
+			activeMenuSelection = &gameOverContinueButton;
+			inputHandler->keyboard->listenUnicode = true;
+			inputHandler->keyboard->unicodeChars = "";
+
+			reScheme();
+			SDL_ShowCursor(1);
+
+			needRedraw = true;
+
+			SDL_LockAudio();
+			gameAudio->setBackgroundMusic("menuSong");
+			SDL_UnlockAudio();
+		}
+
 		// check clock
 /*
 		time_t rawTime;
@@ -1109,18 +1215,22 @@ unsigned int GameLogic::execute() {
 
 			gameState->resume();
 		} else if(endGameButtonClickListener->wasClicked()) {
-			mainLoopModules.erase(mainLoopModules.find(gameState));
-			delete(gameState);
-			gameState = NULL;
+				inputHandler->keyboard->listenUnicode = true;
+				inputHandler->keyboard->unicodeChars = "";
 
-			currentScheme = SCHEME_MAINMENU;
-			activeMenuSelection = &playButtonEntry;
-			reScheme();
-			needRedraw = true;
+				if(gameSystem->highScores.size() > 0)
+					playerName = gameSystem->highScores[0].second;
+				else
+					playerName = "";
 
-			SDL_LockAudio();
-			gameAudio->setBackgroundMusic("menuSong");
-			SDL_UnlockAudio();
+				currentScheme = SCHEME_GAMEOVER;
+				activeMenuSelection = &gameOverContinueButton;
+				reScheme();
+				needRedraw = true;
+
+				SDL_LockAudio();
+				gameAudio->setBackgroundMusic("menuSong");
+				SDL_UnlockAudio();
 		}
 
 		// key hits
@@ -1165,12 +1275,16 @@ unsigned int GameLogic::execute() {
 
 					gameState->resume();
 				} else if(activeMenuSelection == &endGameButtonEntry) {
-					mainLoopModules.erase(mainLoopModules.find(gameState));
-					delete(gameState);
-					gameState = NULL;
+					inputHandler->keyboard->listenUnicode = true;
+					inputHandler->keyboard->unicodeChars = "";
 
-					currentScheme = SCHEME_MAINMENU;
-					activeMenuSelection = &playButtonEntry;
+					if(gameSystem->highScores.size() > 0)
+						playerName = gameSystem->highScores[0].second;
+					else
+						playerName = "";
+
+					currentScheme = SCHEME_GAMEOVER;
+					activeMenuSelection = &gameOverContinueButton;
 					reScheme();
 					needRedraw = true;
 
@@ -1186,6 +1300,121 @@ unsigned int GameLogic::execute() {
 			}
 		}
 	} else if(currentScheme == SCHEME_GAMEOVER) {
+		// typing
+		if(inputHandler->keyboard->unicodeChars != "") {
+			if(playerName.length() < gameSystem->getFloat("hudFieldWidth")) {
+				for(size_t i = 0; i < inputHandler->keyboard->unicodeChars.length(); ++i) {
+					if(strstr(gameSystem->getString("inputAllowedNameChars").c_str(), inputHandler->keyboard->unicodeChars.substr(i, 1).c_str()) != NULL) {
+						playerName += inputHandler->keyboard->unicodeChars.substr(i, 1);
+
+						reScheme();
+						needRedraw = true;
+					}
+				}
+			}
+
+			inputHandler->keyboard->unicodeChars = "";
+		}
+
+		if(deleteKeyListener->isDown && playerName.length() > 0) {
+			if(deleteKeyPressTime > platform->getExecMills()) {
+				playerName.erase(playerName.length() - 1);
+				deleteKeyPressTime = platform->getExecMills();
+
+				reScheme();
+				needRedraw = true;
+			} else if(
+					deleteKeyPressTime + (unsigned int) (gameSystem->getFloat("inputDeleteKeyRepeatWait") * 1000.0f) <
+							platform->getExecMills() &&
+					lastCharacterDeletionTime + (unsigned int) (gameSystem->getFloat("inputDeleteKeyRepeatRate") * 1000.0f) <
+							platform->getExecMills()
+				) {
+				playerName.erase(playerName.length() - 1);
+				lastCharacterDeletionTime = platform->getExecMills();
+
+				reScheme();
+				needRedraw = true;
+			}
+		} else {
+			deleteKeyPressTime = -1;
+			lastCharacterDeletionTime = 0;
+		}
+
+		// button highlight
+		if(mouseMotionListener->wasMoved()) {
+			if(gameOverContinueButtonZoneListener->isEntered) {
+				if(activeMenuSelection != &gameOverContinueButton) {
+					activeMenuSelection = &gameOverContinueButton;
+					reScheme();
+					needRedraw = true;
+				}
+			} else if(activeMenuSelection != NULL) {
+				activeMenuSelection = NULL;
+				reScheme();
+				needRedraw = true;
+			}
+		}
+
+		// button clicks
+		if(gameOverContinueButtonClickListener->wasClicked()) {
+			if(gameState->score > 0 && (gameSystem->highScores.size() == 0 || gameState->score > gameSystem->highScores[0].first)) {
+				if(playerName != "") {
+					gameSystem->highScores.insert(gameSystem->highScores.begin(), std::make_pair(gameState->score, gameLogic->playerName));
+					while(gameSystem->highScores.size() > (size_t) gameSystem->getFloat("gameMaximumHighScores"))
+						gameSystem->highScores.erase(gameSystem->highScores.end());
+
+					gameSystem->flushPreferences();
+				}
+			}
+
+			mainLoopModules.erase(mainLoopModules.find(gameState));
+			delete(gameState);
+			gameState = NULL;
+
+			currentScheme = SCHEME_MAINMENU;
+			activeMenuSelection = &playButtonEntry;
+			reScheme();
+			needRedraw = true;
+		}
+
+		// key hits
+		for(SDLKey key = gameOverKeyListener->popKey(); key != SDLK_UNKNOWN; key = gameOverKeyListener->popKey()) {
+			if(key == SDLK_UP || key == SDLK_DOWN) {
+				activeMenuSelection = &gameOverContinueButton;
+				reScheme();
+				needRedraw = true;
+			} else if(key == SDLK_RETURN) {
+				if(activeMenuSelection == &gameOverContinueButton) {
+					if(gameSystem->highScores.size() == 0 || gameState->score > gameSystem->highScores[0].first) {
+						if(playerName != "") {
+							gameSystem->highScores.insert(gameSystem->highScores.begin(), std::make_pair(gameState->score, gameLogic->playerName));
+							while(gameSystem->highScores.size() > (size_t) gameSystem->getFloat("gameMaximumHighScores"))
+								gameSystem->highScores.erase(gameSystem->highScores.end());
+
+							gameSystem->flushPreferences();
+						}
+					}
+
+					mainLoopModules.erase(mainLoopModules.find(gameState));
+					delete(gameState);
+					gameState = NULL;
+
+					currentScheme = SCHEME_MAINMENU;
+					activeMenuSelection = &playButtonEntry;
+					reScheme();
+					needRedraw = true;
+				}
+			} else if(key == SDLK_ESCAPE) {
+				mainLoopModules.erase(mainLoopModules.find(gameState));
+				delete(gameState);
+				gameState = NULL;
+
+				currentScheme = SCHEME_MAINMENU;
+				activeMenuSelection = &playButtonEntry;
+				reScheme();
+				needRedraw = true;
+			}
+		}
 	} else if(currentScheme == SCHEME_SETTINGS) {
 		// button highlight
 		if(mouseMotionListener->wasMoved()) {
@@ -1545,99 +1774,6 @@ unsigned int GameLogic::execute() {
 			}
 		}
 	}
-/*
-	// see if we need to toggle the dashboard
-	if(dashboardKeyListener->popKey() != SDLK_UNKNOWN) {
-		if(currentScheme == SCHEME_PLAYING)
-			currentScheme = SCHEME_DASHBOARD;
-		else
-			currentScheme = SCHEME_PLAYING;
-
-		hintExpiration = platform->getExecMills() + 10000;
-
-		reScheme();
-	}
-	if (currentScheme == SCHEME_MAINMENU) {
-	} else if(currentScheme == SCHEME_WELCOME) {
-		// update text field
-		if(inputHandler->keyboard->unicodeChars.length() > 0) {
-			*((std::string*) joinCallsignFieldEntry.second["text"]) += inputHandler->keyboard->unicodeChars;
-			inputHandler->keyboard->unicodeChars.erase();
-
-			reScheme();
-			needRedraw = true;
-		}
-
-		// see if we need to delete text
-		if(deleteKeyListener->popKey() != SDLK_UNKNOWN) {
-			if(((std::string*) joinCallsignFieldEntry.second["text"])->length() > 0) {
-				*((std::string*) joinCallsignFieldEntry.second["text"]) =
-						((std::string*) joinCallsignFieldEntry.second["text"])->substr(0,
-								((std::string*) joinCallsignFieldEntry.second["text"])->length() - 1);
-
-				reScheme();
-				needRedraw = true;
-			}
-		}
-
-		}
-	} else if (currentScheme == SCHEME_PLAYING) {
-		// cursor movement and ship steering
-		if(cursorMovementListener->wasMoved()) {
-			Vector2 zeroVec(0.0f, 0.0f);
-			Vector2 posVec(
-					inputHandler->mouse->position.x * gameGraphics->aspectRatio,
-					inputHandler->mouse->position.y
-				);
-
-			posVec.x /= gameSystem->getFloat("hudControlBoxSize") / 100.0f;
-			posVec.y /= gameSystem->getFloat("hudControlBoxSize") / 100.0f;
-
-			if(posVec.x > 1.0f) posVec.x = 1.0f;
-			else if(posVec.x < -1.0f) posVec.x = -1.0f;
-			if(posVec.y > 1.0f) posVec.y = 1.0f;
-			else if(posVec.y < -1.0f) posVec.y = -1.0f;
-
-			if(distance(zeroVec, posVec) > gameSystem->getFloat("hudControlBoxSpotSize") / 100.0f) {
-				gameState->ships[0]->steering.x = posVec.x;
-				gameState->ships[0]->steering.y = -posVec.y;
-			} else {
-				gameState->ships[0]->steering = Vector2(0.0f, 0.0f);
-			}
-		}
-
-		// test key
-		if(testKeyListener->popKey() != SDLK_UNKNOWN) {
-//			rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(-3.0f), *((Matrix4*) terrainEntry.second["mvpMatrix"]));
-//			printf("T key press\n");
-//while(1) ;
-			delete(gameState->world);
-			gameState->world = new World();
-			((TerrainRenderer*) gameGraphics->drawers["terrainRenderer"])->reloadGraphics();
-			((DrawRadar*) gameGraphics->drawers["radar"])->reloadGraphics();
-
-			reScheme();
-		}
-		if(testKeyAbsoluteListener->isDown) {
-//			printf("R key down\n");
-			if((gameState->ships[0])->speed + 0.1f < gameSystem->getFloat("shipMaxSpeed"))
-//				(gameState->ships[0])->speed = gameSystem->getFloat("shipMaxSpeed");
-				(gameState->ships[0])->speed += 0.1f;
-		} else {
-			if((gameState->ships[0])->speed - 0.1f > 0.0f)
-			(gameState->ships[0])->speed -= 0.1f;
-		}
-
-
-		// update buttons
-		if(
-				quitButtonZoneListener->wasChanged()
-			) {
-			reScheme();
-		}
-	}
-
-*/
 
 	// see if we need to redraw graphics, if we're still in the menus
 	if(needRedraw && mainLoopModules.find(gameGraphics) == mainLoopModules.end())

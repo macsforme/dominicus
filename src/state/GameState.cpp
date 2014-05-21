@@ -367,7 +367,8 @@ unsigned int GameState::execute() {
 	}
 
 	// update fortress stocks
-	fortress.health += deltaTime * gameSystem->getFloat("stateHealthRegenerationRate");
+	if(fortress.health > 0.0f)
+		fortress.health += deltaTime * gameSystem->getFloat("stateHealthRegenerationRate");
 	if(fortress.health > 1.0f) fortress.health = 1.0f;
 
 	fortress.ammunition += deltaTime * gameSystem->getFloat("stateAmmoFiringCost") * ships.size() / (int) gameSystem->getFloat("stateMissileFiringRate") * 2.0f;

@@ -204,11 +204,11 @@ GameSystem::GameSystem() {
 
 	// input standards
 	setStandard("inputPollingFrequency", 120.0f, "Number of times per second to poll the input devices.");
-//	setStandard("inputAllowedCallsignChars", "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-_ ", "Characters allowed to be used in callsigns.");
-//	setStandard("inputAllowedPasswordChars", "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890", "Characters allowed to be used in passwords.");
+	setStandard("inputAllowedNameChars", "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-_ ", "Characters allowed to be used in names on high scores list.");
+	setStandard("inputDeleteKeyRepeatRate", 0.125f, "Wait time in between deletion of characters when backspace key is held down.");
+	setStandard("inputDeleteKeyRepeatWait", 0.5f, "Wait time before commencing rapid delete when backspace key is held down.");
 
 	// logic standards
-	// ship state and control standards
 	setStandard("logicUpdateFrequency", 120.0f, "Number of times per second to update game logic.");
 
 	// display and drawing standards
@@ -241,8 +241,6 @@ GameSystem::GameSystem() {
 	setStandard("hudControlBoxCornerSize", 50.0f, "Percentage of control box quadrant which curved portion should take up.");
 	setStandard("hudControlBoxSpotSize", 8.0f, "Size of ship control box dead spot in percentage of screen height.");
 	setStandard("hudControlBoxColor", Vector4(0.3f, 0.3f, 0.3f, 0.6f), "Thickness of cursor in pixels.");
-//	setStandard("hudConsoleMaxLines", 8.0f, "Maximum number of lines of text the console will display.");
-//	setStandard("hudConsoleLineExpiration", 5.0f, "Number of seconds to display a given line on the console.");
 	setStandard("radarSize", 35.0f, "Size of radar panel in percentage of screen height.");
 	setStandard("radarRefreshSpeed", 1.0f, "Time in seconds for a full radar turn.");
 	setStandard("radarSpotSize", 6.0f, "Size in pixels of radar missile spots.");
@@ -260,9 +258,8 @@ GameSystem::GameSystem() {
 	setStandard("hudContainerHighlightColor", Vector4(0.863f, 0.863f, 0.863f, 0.247f), "Highlight background color of HUD container elements.");
 	setStandard("hudContainerBorderColor", Vector4(0.918f, 1.0f, 0.945f, 0.714f), "Border color of HUD container elements.");
 	setStandard("hudContainerOutsideColor", Vector4(0.918f, 1.0f, 0.945f, 0.0f), "Outside color of HUD container elements.");
-//	setStandard("hudFieldWidth", 20.0f, "Standard field width (in number of '#' characters).");
-//	setStandard("hudFieldInactiveColor", Vector4(0.031f, 0.075f, 0.184f, 0.752f), "Background color for inactive text fields.");
-//	setStandard("hudFieldActiveColor", Vector4(0.0f, 0.0f, 1.0f, 1.0f), "Background color for active text fields.");
+	setStandard("hudFieldWidth", 20.0f, "Standard field width (in number of '#' characters).");
+	setStandard("hudFieldColor", Vector4(0.031f, 0.075f, 0.184f, 0.752f), "Background color for inactive text fields.");
 	setStandard("hudGaugePadding", 20.0f, "Gauge panel padding in pixels.");
 	setStandard("hudGaugeWidth", 200.0f, "Width of gauges in pixels.");
 	setStandard("hudGaugeHeight", 30.0f, "Height of gauges in pixels.");
@@ -290,6 +287,7 @@ GameSystem::GameSystem() {
 
 	// general game standards
 	setStandard("gameStartingLevel", "Easy", "Starting difficulty level.");
+	setStandard("gameMaximumHighScores", 10.0f, "Maximum number of high scores to track.");
 	setStandard("islandMaximumWidth", 1000.0f, "Maximum island width.");
 	setStandard("islandMaximumHeight", 100.0f, "Maximum island height.");
 	setStandard("islandTerrainDensity", 256.0f, "Density of island terrain tessellation.");
