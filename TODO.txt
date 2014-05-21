@@ -1,9 +1,0 @@
-proper destruction
-pointers are int *var, not int* var
-get rid of line breaks due to width
-reorganize class/file structure
-correct file headers
-figure out opengl state changes
-check FIXMEs
-update gameSystem standards and ensure consistent application (and update descriptions/make them not required)
-update gameSystem build string/version stuff to be more concise

@@ -81,7 +81,6 @@
 		030D18BF12D0792200DA9B7B /* InputHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InputHandler.cpp; sourceTree = "<group>"; };
 		030DEBFE126CDD1B000D87ED /* DiamondSquare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiamondSquare.h; sourceTree = "<group>"; };
 		030DEBFF126CDD1B000D87ED /* DiamondSquare.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DiamondSquare.cpp; sourceTree = "<group>"; };
-		030F8DE31264BFAA00190225 /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO.txt; sourceTree = "<group>"; };
 		030F8DEC1264C00100190225 /* shaders */ = {isa = PBXFileReference; lastKnownFileType = folder; path = shaders; sourceTree = "<group>"; };
 		030F8DEF1264C01100190225 /* data */ = {isa = PBXFileReference; lastKnownFileType = folder; path = data; sourceTree = "<group>"; };
 		030F8E101264C0FF00190225 /* dominicusMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = dominicusMain.cpp; sourceTree = "<group>"; };
@@ -417,7 +416,6 @@
 				03BB9B52131F3F50009DFC8B /* graphics */,
 				0387C28A18F3E27600565A43 /* audio */,
 				032B8B351263DF5900DDE564 /* README.txt */,
-				030F8DE31264BFAA00190225 /* TODO.txt */,
 				8D1107310486CEB800E47090 /* crucible island.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				03D47B7D1263E27F001755A6 /* crucible island.icns */,
