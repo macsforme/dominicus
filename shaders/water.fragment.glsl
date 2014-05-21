@@ -31,11 +31,6 @@ void main() {
 			sin(radians(scaledPosition.x * -0.75 + scaledPosition.y * -0.30 + noiseFactor + timer * -1.0) * 360.0) *
 			sin(radians(distance(scaledPosition, vec2(0.0, 0.0)) * 360.0 + timer))
 		) * 0.5 + 0.5;
-/*
-	vec4 crest = vec4(0.8, 0.8, 1.0, 1.0);
-	vec4 deep = vec4(0.05, 0.1, 0.3, 1.0);
-	vec4 moderate = vec4(0.0, 0.2, 0.4, 1.0);
-*/
 
 	vec4 crest = vec4(0.4, 0.4, 0.5, 1.0);
 	vec4 deep = vec4(0.025, 0.05, 0.15, 1.0);
@@ -56,10 +51,7 @@ void main() {
 	vec2 devY = abs(dFdy(positionInterpol));
 
 	float maxDev = max(max(devX.x, devX.y), max(devY.x, devY.y));
-
 	waveColor = mix(waveColor, deep * 0.5 + moderate * 0.5, min(maxDev / 8.0, 1.0));
-
-//	waveColor.a = min(16.0 / maxDev - 0.2, 1.0);
 
 	gl_FragColor = waveColor;
 }

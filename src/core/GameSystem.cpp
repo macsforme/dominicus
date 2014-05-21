@@ -211,12 +211,6 @@ GameSystem::GameSystem() {
 	// ship state and control standards
 	setStandard("logicUpdateFrequency", 120.0f, "Number of times per second to update game logic.");
 
-//	setStandard("shipUpdateFrequency", 60.0f, "Frequency per second of ship position updates by internal state.");
-//	setStandard("shipAccelRate", 15.0f, "Maximum ship acceleration rate in meters per second.");
-//	setStandard("shipMaxSpeed", 15.0f, "Maximum ship speed in meters per second.");
-//	setStandard("shipTurnRate", 60.0f, "Maximum angle a ship can turn in degrees per second.");
-//	setStandard("shipMaxTilt", 60.0f, "Maximum pitch or roll a ship can tilt in degrees.");
-
 	// display and drawing standards
 	setStandard("displayFPSCap", false /* true */, "Whether or not to cap the frames per second to a certain number.");
 	setStandard("displayFPS", 30.0f, "Number of frames per second to draw.");
@@ -229,15 +223,9 @@ GameSystem::GameSystem() {
 	// scene rendering standards
 	setStandard("renderingPerspectiveFOV", 30.0f, "Field-of-view angle for perspective projection.");
 	setStandard("renderingPerspectiveNearClip", 0.5f, "Near clip distance for perspective projection.");
-	setStandard("renderingPerspectiveFarClip", 20000.0f /* 6000.0f */, "Far clip distance for perspective projection.");
-
-	// scene rendering camera standards
-//	setStandard("renderingCameraFollowDistance", 5.0f, "Following distance of ship camera.");
-//	setStandard("renderingCameraAngle", 10.0f, "Following angle from horizon of ship camera.");
-//	setStandard("renderingCameraLag", 1.0f, "How many seconds worth of turning the camera should lag behind the ship.");
+	setStandard("renderingPerspectiveFarClip", 9000.0f, "Far clip distance for perspective projection.");
 
 	// scene rendering effect standards
-//	setStandard("shipPropellerRPM", 1.0f, "Ship propeller spin rate in revolutions per minute.");
 	setStandard("terrainDepth", 10.0f, "How far below the water the ground extends.");
 	setStandard("terrainTextureRepeat", 50.0f, "Number of times to repeat the ground texture over the maximum surface area.");
 	setStandard("terrainNoiseTextureDensity", 512.0f, "Terrain mixing noise texture resolution.");

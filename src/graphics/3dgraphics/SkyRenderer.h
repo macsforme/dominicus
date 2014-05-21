@@ -11,6 +11,9 @@
 
 // program headers
 #include "graphics/GameGraphics.h"
+#include "logic/Camera.h"
+#include "math/MatrixMath.h"
+#include "math/VectorMath.h"
 #include "platform/OpenGLHeaders.h"
 #include "platform/Platform.h"
 #include "state/GameState.h"

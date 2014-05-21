@@ -13,15 +13,14 @@ SkyRenderer::SkyRenderer() {
 	GLuint shaderID = 0;
 	std::vector<GLuint> shaderIDs;
 
-	shaderID = gameGraphics->getShaderID(GL_VERTEX_SHADER, "color"); shaderIDs.push_back(shaderID);
-	shaderID = gameGraphics->getShaderID(GL_FRAGMENT_SHADER, "color"); shaderIDs.push_back(shaderID);
+	shaderID = gameGraphics->getShaderID(GL_VERTEX_SHADER, "sky"); shaderIDs.push_back(shaderID);
+	shaderID = gameGraphics->getShaderID(GL_FRAGMENT_SHADER, "sky"); shaderIDs.push_back(shaderID);
 	shaderProgram = gameGraphics->makeProgram(shaderIDs);
 
 	// set up uniforms and attributes
 	uniforms["mvpMatrix"] = glGetUniformLocation(shaderProgram, "mvpMatrix");
 
 	attributes["position"] = glGetAttribLocation(shaderProgram, "position");
-	attributes["color"] = glGetAttribLocation(shaderProgram, "color");
 
 	// set up vertex buffers
 	glGenBuffers(1, &(vertexBuffers["vertices"]));
@@ -31,10 +30,10 @@ SkyRenderer::SkyRenderer() {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexBuffers["elements"]);
 
 	GLfloat vertDataBufferArray[] = {
-			-1.0f, -1.0f, 0.0f, 0.62f, 0.52f, 0.20f, 1.0f,
-			-1.0f, 1.0f, 0.0f, 0.68f, 0.73f, 0.89f, 1.0f,
-			1.0f, 1.0f, 0.0f, 0.68f, 0.73f, 0.89f, 1.0f,
-			1.0f, -1.0f, 0.0f, 0.62f, 0.52f, 0.20f, 1.0f
+			-1.0f, -1.0f,
+			-1.0f, 1.0f,
+			1.0f, 1.0f,
+			1.0f, -1.0f
 		};
 
 	GLushort vertElementBufferArray[] = {
@@ -55,12 +54,29 @@ void SkyRenderer::execute(std::map<std::string, void*> arguments) {
 	// collect arguments
 
 	// prepare variables
-	Matrix4* mvpMatrix = &(gameGraphics->idMatrix);
+	Matrix4 mvpMatrix; mvpMatrix.identity();
+	scaleMatrix(
+			tan(radians(gameSystem->getFloat("renderingPerspectiveFOV"))),
+			1.0f / (gameGraphics->aspectRatio / tan(radians(gameSystem->getFloat("renderingPerspectiveFOV")))),
+			1.0f,
+			mvpMatrix
+		);
+
+	rotateMatrix(
+			Vector3(1.0f, 0.0f, 0.0f),
+			radians(
+					getAngle(Vector2(
+							mag(Vector2(gameGraphics->currentCamera->mvMatrix.m13, gameGraphics->currentCamera->mvMatrix.m33)),
+							gameGraphics->currentCamera->mvMatrix.m23
+						))
+				),
+			mvpMatrix
+		);
 	float mvpMatrixArray[] = {
-			mvpMatrix->m11, mvpMatrix->m12, mvpMatrix->m13, mvpMatrix->m14,
-			mvpMatrix->m21, mvpMatrix->m22, mvpMatrix->m23, mvpMatrix->m24,
-			mvpMatrix->m31, mvpMatrix->m32, mvpMatrix->m33, mvpMatrix->m34,
-			mvpMatrix->m41, mvpMatrix->m42, mvpMatrix->m43, mvpMatrix->m44
+			mvpMatrix.m11, mvpMatrix.m12, mvpMatrix.m13, mvpMatrix.m14,
+			mvpMatrix.m21, mvpMatrix.m22, mvpMatrix.m23, mvpMatrix.m24,
+			mvpMatrix.m31, mvpMatrix.m32, mvpMatrix.m33, mvpMatrix.m34,
+			mvpMatrix.m41, mvpMatrix.m42, mvpMatrix.m43, mvpMatrix.m44
 		};
 
 	// state
@@ -75,17 +91,13 @@ void SkyRenderer::execute(std::map<std::string, void*> arguments) {
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexBuffers["elements"]);
 
-	glVertexAttribPointer(attributes["position"], 3, GL_FLOAT, GL_FALSE, 7 * sizeof(GL_FLOAT), (GLvoid*) 0);
-	glVertexAttribPointer(attributes["color"], 4, GL_FLOAT, GL_FALSE, 7 * sizeof(GL_FLOAT),
-			(GLvoid*) (3 * sizeof(GLfloat)));
+	glVertexAttribPointer(attributes["position"], 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GL_FLOAT), (GLvoid*) 0);
 
 	glEnableVertexAttribArray(attributes["position"]);
-	glEnableVertexAttribArray(attributes["color"]);
 
 	glDrawElements(GL_QUADS, 4, GL_UNSIGNED_SHORT, (GLvoid*) 0);
 
 	glDisableVertexAttribArray(attributes["position"]);
-	glDisableVertexAttribArray(attributes["color"]);
 
 	// undo state
 	glDisable(GL_BLEND);
