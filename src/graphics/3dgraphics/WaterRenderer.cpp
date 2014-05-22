@@ -72,7 +72,7 @@ void WaterRenderer::execute(std::map<std::string, void*> arguments) {
 	glUseProgram(shaderProgram);
 
 	// set uniforms
-	glUniform1f(uniforms["timer"], (float) (platform->getExecMills() % 3000) / 3000.0f);
+	glUniform1f(uniforms["timer"], (float) (gameState->getGameMills() % 3000) / 3000.0f);
 	glUniformMatrix4fv(uniforms["mvpMatrix"], 1, GL_FALSE, mvpMatrixArray);
 
 	// draw the data stored in GPU memory
