@@ -8,7 +8,9 @@
 
 #include "graphics/GameGraphics.h"
 
-GameGraphics::GameGraphics(bool fullScreen, bool testSystem) : fullScreen(fullScreen) {
+GameGraphics::GameGraphics(bool fullScreen, bool testSystem) :
+		MainLoopMember((unsigned int) gameSystem->getFloat("displayFPS")),
+		fullScreen(fullScreen) {
 	// initialize an SDL window
 	resolutionX = (fullScreen ? gameSystem->displayResolutionX :
 			(int) gameSystem->getFloat("displayWindowedResolutionX"));
@@ -250,12 +252,6 @@ SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 0);
 						0xFF
 					);
 	fourDepthNoiseTexture->setDepth(16);
-
-	// initialize FPS tracking
-	lastFPSTest = 0;
-	fpsCount = 0;
-	currentFPS = 0;
-	frameTime = 0;
 
 	// timers;
 	waveTimer = 0.0f;
@@ -555,13 +551,10 @@ GLuint GameGraphics::getTextureID(std::string filename) {
 	return textureID;
 }
 
-unsigned int GameGraphics::execute() {
+unsigned int GameGraphics::execute(bool unScheduled) {
 	// update camera
 	if(currentCamera != NULL)
 		currentCamera->execute();
-
-	// track the frame time
-	unsigned int frameBeginTime = platform->getExecMills();
 
 	// set timers
 	waveTimer = sin(radians((float) (platform->getExecMills() % 2000) / 2000.0f * 360.0f - 90.0f));
@@ -600,33 +593,12 @@ unsigned int GameGraphics::execute() {
 		renderingError = glGetError();
 	}
 
-	// track FPS
-	unsigned int now = platform->getExecMills();
-	if(now > (lastFPSTest + 1000 / (unsigned int) gameSystem->getFloat("hudFPSTestFrequency"))) {
-		lastFPSTest = now;
-		currentFPS = fpsCount * (unsigned int) gameSystem->getFloat("hudFPSTestFrequency");
-		fpsCount = 0;
-//printf("FPS: %u\n", currentFPS);
-if(gameLogic != NULL) {
-	std::stringstream ss; ss << "FPS: " << currentFPS;
-	*((std::string*) gameLogic->fpsEntry.second["text"]) = ss.str().c_str();
-}
-	}
-
-	++fpsCount;
-
-	// track the frame time
-	frameTime = platform->getExecMills() - frameBeginTime;
+	// track runcount
+	trackRunCount();
 
 	// calculate and return sleep time from superclass unless we aren't capping it
-	if(! gameSystem->getBool("displayFPSCap"))
+	if(unScheduled || ! gameSystem->getBool("displayFPSCap"))
 		return 0;
-
-	unsigned int frequency = (unsigned int) gameSystem->getFloat("displayFPS");
-	unsigned int idealSleepTime = (
-			frequency != 0 ?
-			1000 / frequency : 0
-		);
-
-	return getSleepTime(idealSleepTime);
+	else
+		return getSleepTime();
 }

@@ -33,7 +33,7 @@ public:
 	InputHandler();
 	~InputHandler();
 
-	unsigned int execute();
+	unsigned int execute(bool unScheduled = false);
 };
 
 #endif

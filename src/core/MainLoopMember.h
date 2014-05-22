@@ -16,19 +16,27 @@
 extern Platform* platform;
 
 class MainLoopMember {
-private:
-	unsigned int now;
+protected:
 	unsigned int last;
-	float sleepMills;
+	int targetSleepMills;
+	int workingSleepMills;
+
+	unsigned int lastRunCountCheck;
+	unsigned int runsCounter;
+
+	// called by inherited classes to calculate milliseconds needed to sleep
+	unsigned int getSleepTime();
+
+	MainLoopMember(unsigned int requestedSleepMills);
 
 public:
-	MainLoopMember();
+	unsigned int runRate;
 
 	// returns milliseconds to sleep
-	virtual unsigned int execute() { return 0; };
+	virtual unsigned int execute(bool unScheduled = false) = 0;
 
-protected:
-	unsigned int getSleepTime(unsigned int idealSleepTime);
+	// runcount checking
+	void trackRunCount();
 };
 
 #endif

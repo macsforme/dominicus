@@ -8,7 +8,7 @@
 
 #include "state/GameState.h"
 
-GameState::GameState() {
+GameState::GameState() : MainLoopMember((unsigned int) gameSystem->getFloat("stateUpdateFrequency")) {
 	// randomly generate the island
 	size_t density = (size_t) gameSystem->getFloat("islandTerrainDensity");
 	const float rough = gameSystem->getFloat("islandTerrainRoughness");
@@ -197,7 +197,7 @@ GameState::GameState() {
 GameState::~GameState() {
 }
 
-unsigned int GameState::execute() {
+unsigned int GameState::execute(bool unScheduled) {
 	// mark current game time for this update for consistency
 	lastUpdateGameTime = getGameMills();
 
@@ -377,13 +377,14 @@ unsigned int GameState::execute() {
 //	fortress.shock += deltaTime * ;
 	if(fortress.shock > 1.0f) fortress.shock = 1.0f;
 
+	// track runcount
+	trackRunCount();
+
 	// calculate and return sleep time from superclass
-	unsigned int frequency = (unsigned int) gameSystem->getFloat("stateUpdateFrequency");
-	static const unsigned int idealSleepTime = (
-			frequency != 0 ?
-			1000 / frequency : 0
-		);
-	return getSleepTime(idealSleepTime);
+	if(unScheduled)
+		return 0;
+	else
+		return getSleepTime();
 }
 
 unsigned int GameState::getGameMills() {

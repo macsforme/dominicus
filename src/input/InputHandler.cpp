@@ -8,7 +8,7 @@
 
 #include "input/InputHandler.h"
 
-InputHandler::InputHandler() {
+InputHandler::InputHandler() : MainLoopMember((unsigned int) gameSystem->getFloat("inputPollingFrequency")) {
 	keyboard = new Keyboard();
 	mouse = new Mouse();
 }
@@ -18,7 +18,7 @@ InputHandler::~InputHandler() {
 	delete(mouse);
 }
 
-unsigned int InputHandler::execute() {
+unsigned int InputHandler::execute(bool unScheduled) {
 	// poll SDL for events and forward the ones we use to the appropriate
 	// input handler
 	SDL_Event event;
@@ -48,11 +48,12 @@ unsigned int InputHandler::execute() {
 	keyboard->execute();
 	mouse->execute();
 
+	// track runcount
+	trackRunCount();
+
 	// calculate and return sleep time from superclass
-	unsigned int frequency = (unsigned int) gameSystem->getFloat("inputPollingFrequency");
-	static const unsigned int idealSleepTime = (
-			frequency  != 0 ?
-			1000 / frequency : 0
-		);
-	return getSleepTime(idealSleepTime);
+	if(unScheduled)
+		return 0;
+	else
+		return getSleepTime();
 }

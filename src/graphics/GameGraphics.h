@@ -96,12 +96,6 @@ public:
 	Texture* noiseTexture;
 	Texture* fourDepthNoiseTexture;
 
-	// FPS tracking
-	unsigned int lastFPSTest;
-	unsigned int fpsCount;
-	unsigned int currentFPS;
-	unsigned int frameTime;
-
 	// drawers
 	std::map<std::string, BaseDrawNode*> drawers;
 
@@ -133,7 +127,7 @@ public:
 	GLuint getTextureID(std::string fileName);
 
 	// frame execution
-	unsigned int execute();
+	unsigned int execute(bool unScheduled = false);
 };
 
 #endif

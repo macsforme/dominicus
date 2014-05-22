@@ -107,14 +107,3 @@ void GameAudio::setBackgroundMusic(std::string choice) {
 	sounds[choice].position = 0;
 	SDL_UnlockAudio();
 }
-
-unsigned int GameAudio::execute() {
-	// calculate and return sleep time from superclass
-	unsigned int frequency = (unsigned int) gameSystem->getFloat("audioTickRate");
-	unsigned int idealSleepTime = (
-			frequency != 0 ?
-			1000 / frequency : 0
-		);
-
-	return getSleepTime(idealSleepTime);
-}

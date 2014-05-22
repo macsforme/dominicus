@@ -213,7 +213,7 @@ GameSystem::GameSystem() {
 
 	// display and drawing standards
 	setStandard("displayFPSCap", false /* true */, "Whether or not to cap the frames per second to a certain number.");
-	setStandard("displayFPS", 30.0f, "Number of frames per second to draw.");
+	setStandard("displayFPS", 60.0f, "Number of frames per second to draw.");
 	setStandard("displayStartFullscreen", false, "Whether or not to start the program in full screen mode.");
 	setStandard("displayWindowedResolutionX", 1024.0f, "Windowed horizontal display resolution.");
 	setStandard("displayWindowedResolutionY", 768.0f, "Windowed vertical display resolution.");

@@ -8,32 +8,40 @@
 
 #include "core/MainLoopMember.h"
 
-MainLoopMember::MainLoopMember() {
-	// variable initialization
-	now = platform->getExecMills();
-	last = now;
-	sleepMills = 1.0f;
+MainLoopMember::MainLoopMember(unsigned int requestedSleepMills) {
+	last = 0;
+	targetSleepMills = (int) (requestedSleepMills != 0 ? 1000 / requestedSleepMills : 0);
+	workingSleepMills = targetSleepMills;
+	lastRunCountCheck = 0;
+	runsCounter = 0;
+	runRate = 0;
 }
 
-unsigned int MainLoopMember::getSleepTime(unsigned int idealSleepTime) {
-	now = platform->getExecMills();
-	unsigned int timeDiff = (now - last);
+unsigned int MainLoopMember::getSleepTime() {
+	// calculate the required sleep time
+	unsigned int now = platform->getExecMills();
+	int timeDiff = (int) (now - (unsigned int) last);
 
-	// adjust the target sleep micros by the factor we are off by
-	if(timeDiff == 0) {
-		return (unsigned int) sleepMills;
-	} else if(timeDiff < idealSleepTime / 2) {
-		// avoid over-compensating if we hit way earlier than expected
-		sleepMills *= 1.5f;
-	} else if (timeDiff > idealSleepTime * 2) {
-		// same thing if we hit much later than expected
-		sleepMills /= 1.5f;
-	} else {
-		// perform minute adjustments
-		sleepMills *= ((float) idealSleepTime / (float) (now - last));
-	}
+	int adjustment = (timeDiff - targetSleepMills) / 2;
+	if(adjustment > workingSleepMills)
+		workingSleepMills = 0;
+	else
+		workingSleepMills = workingSleepMills - adjustment;
 
 	last = now;
 
-	return (unsigned int) sleepMills;
+	return workingSleepMills;
+}
+
+void MainLoopMember::trackRunCount() {
+	// track run count per second
+	unsigned int now = platform->getExecMills();
+
+	++runsCounter;
+	if(now > lastRunCountCheck + 1000) {
+		runRate = runsCounter;
+
+		runsCounter = 0;
+		lastRunCountCheck = now;
+	}
 }

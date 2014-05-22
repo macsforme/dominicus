@@ -9,6 +9,7 @@
 #include "logic/GameLogic.h"
 
 GameLogic::GameLogic() :
+		MainLoopMember((unsigned int) gameSystem->getFloat("logicUpdateFrequency")),
 		mouseActive(false),
 		keyboardCursorPosition(Vector2(0.0f, 0.0f)),
 		playerName(""),
@@ -608,7 +609,7 @@ fpsEntry.second["text"] = (void*) new std::string;
 	SDL_UnlockAudio();
 
 	// draw the initial frame
-	gameGraphics->execute();
+	gameGraphics->execute(true);
 
 	// clear the motion listener
 	inputHandler->execute();
@@ -619,7 +620,7 @@ fpsEntry.second["text"] = (void*) new std::string;
 
 currentScheme = SCHEME_LOADING;
 reScheme();
-gameGraphics->execute();
+gameGraphics->execute(true);
 gameState = new GameState();
 mainLoopModules[gameState] = 0;
 gameGraphics->currentCamera = &introCamera;
@@ -692,15 +693,23 @@ void GameLogic::reScheme() {
 		break;
 	}
 
+std::stringstream ss; ss << "FPS: " << gameGraphics->runRate;
+*((std::string*) fpsEntry.second["text"]) = ss.str().c_str();
 ((UIMetrics*) fpsEntry.second["metrics"])->size = ((DrawLabel*) gameGraphics->drawers["label"])->getSize(fpsEntry.second);
 uiLayoutAuthority->metrics.push_back((UIMetrics*) fpsEntry.second["metrics"]);
 drawStack.push_back(fpsEntry);
 uiLayoutAuthority->rearrange();
 }
 
-unsigned int GameLogic::execute() {
+unsigned int GameLogic::execute(bool unScheduled) {
 	bool needRedraw = false;
 
+static unsigned int lastFPSUpdate = 0;
+if(lastFPSUpdate + 1000 < platform->getExecMills()) {
+reScheme();
+needRedraw = true;
+lastFPSUpdate = platform->getExecMills();
+}
 	// get a delta time for schemes that need it
 	float deltaTime = 0.0f;
 	if(gameState != NULL && ! gameState->isPaused && currentScheme == SCHEME_PLAYING) {
@@ -793,7 +802,7 @@ unsigned int GameLogic::execute() {
 		if(playButtonClickListener->wasClicked()) {
 			currentScheme = SCHEME_LOADING;
 			reScheme();
-			gameGraphics->execute();
+			gameGraphics->execute(true);
 
 			gameState = new GameState();
 			mainLoopModules[gameState] = 0;
@@ -878,7 +887,7 @@ unsigned int GameLogic::execute() {
 				if(activeMenuSelection == &playButtonEntry) {
 					currentScheme = SCHEME_LOADING;
 					reScheme();
-					gameGraphics->execute();
+					gameGraphics->execute(true);
 
 					gameState = new GameState();
 					mainLoopModules[gameState] = 0;
@@ -1777,14 +1786,14 @@ unsigned int GameLogic::execute() {
 
 	// see if we need to redraw graphics, if we're still in the menus
 	if(needRedraw && mainLoopModules.find(gameGraphics) == mainLoopModules.end())
-		gameGraphics->execute();
+		gameGraphics->execute(true);
+
+	// track runcount
+	trackRunCount();
 
 	// calculate and return sleep time from superclass
-	unsigned int frequency = (unsigned int) gameSystem->getFloat("logicUpdateFrequency");
-	static const unsigned int idealSleepTime = (
-			frequency  != 0 ?
-			1000 / frequency : 0
-		);
-
-	return getSleepTime(idealSleepTime);
+	if(unScheduled)
+		return 0;
+	else
+		return getSleepTime();
 }

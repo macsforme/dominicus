@@ -252,7 +252,7 @@ private:
 
 public:
 	// looping
-	unsigned int execute();
+	unsigned int execute(bool unScheduled = false);
 };
 
 #endif // GAMELOGIC_H

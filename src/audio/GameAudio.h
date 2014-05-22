@@ -11,7 +11,6 @@
 
 // program headers
 #include "core/GameSystem.h"
-#include "core/MainLoopMember.h"
 #include "platform/Platform.h"
 
 // library headers
@@ -24,7 +23,7 @@
 extern GameSystem* gameSystem;
 extern Platform* platform;
 
-class GameAudio : public MainLoopMember {
+class GameAudio {
 public:
 	struct GameSound {
 		Uint8* buffer;
@@ -44,8 +43,6 @@ public:
 	~GameAudio();
 
 	void setBackgroundMusic(std::string choice);
-
-	unsigned int execute();
 };
 
 #endif
