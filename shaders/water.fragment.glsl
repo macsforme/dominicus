@@ -51,7 +51,7 @@ void main() {
 	vec2 devY = abs(dFdy(positionInterpol));
 
 	float maxDev = max(max(devX.x, devX.y), max(devY.x, devY.y));
-	waveColor = mix(waveColor, deep * 0.5 + moderate * 0.5, min(maxDev / 8.0, 1.0));
+	waveColor = mix(waveColor, deep, min(maxDev / 8.0, 1.0));
 
 	gl_FragColor = waveColor;
 }
