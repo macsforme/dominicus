@@ -67,6 +67,10 @@ int dominicusMain(int argc, char* argv[]) {
 					if(gameState != NULL)
 						gameState->execute(true);
 					gameLogic->execute(true);
+
+					// gameLogic can recreate gameGraphics mid-loop, so don't execute a null iterator
+					if(mainLoopModules.find(itr->first) == mainLoopModules.end())
+						continue;
 				}
 
 				itr->second = itr->first->execute() + platform->getExecMills();

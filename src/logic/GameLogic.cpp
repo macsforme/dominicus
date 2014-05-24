@@ -617,26 +617,6 @@ fpsEntry.second["text"] = (void*) new std::string;
 
 	// zero the lastUpdate time
 	lastUpdate = 0;
-
-currentScheme = SCHEME_LOADING;
-reScheme();
-gameGraphics->execute(true);
-gameState = new GameState();
-mainLoopModules[gameState] = 0;
-gameGraphics->currentCamera = &introCamera;
-mainLoopModules[gameGraphics] = 0;
-((TerrainRenderer*) gameGraphics->drawers["terrainRenderer"])->reloadGraphics();
-((DrawRadar*) gameGraphics->drawers["radar"])->reloadGraphics();
-//SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
-//inputHandler->execute();
-//mouseMotionListener->wasMoved();
-currentScheme = SCHEME_INTRO;
-//SDL_ShowCursor(0);
-activeMenuSelection = NULL;
-reScheme();
-SDL_LockAudio();
-gameAudio->setBackgroundMusic("playingSong");
-SDL_UnlockAudio();
 }
 
 GameLogic::~GameLogic() {
