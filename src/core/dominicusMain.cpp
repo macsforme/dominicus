@@ -62,6 +62,8 @@ int dominicusMain(int argc, char* argv[]) {
 				++itr
 			) {
 			if(itr->second < platform->getExecMills()) {
+				MainLoopMember* thisMember = itr->first;
+
 				if(itr->first == gameGraphics) {
 					// always run gameState and gameLogic before gameState
 					if(gameState != NULL)
@@ -69,8 +71,8 @@ int dominicusMain(int argc, char* argv[]) {
 					gameLogic->execute(true);
 
 					// gameLogic can recreate gameGraphics mid-loop, so don't execute a null iterator
-					if(mainLoopModules.find(itr->first) == mainLoopModules.end())
-						continue;
+					if(mainLoopModules.find(thisMember) == mainLoopModules.end())
+						break;
 				}
 
 				itr->second = itr->first->execute() + platform->getExecMills();
