@@ -108,6 +108,11 @@ void FontManager::rebuildFontTextureCache(unsigned int size) {
 			Texture::FORMAT_RGBA
 		);
 
+	// set all pixels to white with no alpha since our crappy drawer has to use linear sampling
+	for(size_t i = 0; i < maxX * charsSquare; ++i)
+		for(size_t p = 0; p < maxY * charsSquare; ++p)
+			thisFontCache->setColorAt(i, p, 0xFF, 0xFF, 0xFF, 0);
+
 	// copy the bitmaps into the texture and assign the element info
 	unsigned int xIndex = 0, yIndex = 0;
 	for(unsigned int i = 0; i < charList.size(); ++i) {
@@ -234,6 +239,12 @@ void FontManager::buildChar(const char character, unsigned int size, bool rebuil
 			thisData.height,
 			Texture::FORMAT_RGBA
 		);
+
+	// set all pixels to white with no alpha since our crappy drawer has to use linear sampling
+	for(size_t i = 0; i < thisData.width; ++i)
+		for(size_t p = 0; p < thisData.height; ++p)
+			thisData.bitmap->setColorAt(i, p, 0xFF, 0xFF, 0xFF, 0);
+
 	for(int y = 0; y < fontFace->glyph->bitmap.rows; ++y) {
 		for(int x = 0; x < fontFace->glyph->bitmap.width; ++x) {
 			// get the location for the value of this pixel

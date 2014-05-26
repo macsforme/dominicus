@@ -402,8 +402,8 @@ void DrawLabel::execute(std::map<std::string, void*> arguments) {
 	glBindTexture(GL_TEXTURE_2D, gameGraphics->fontManager->textureIDs[(unsigned int) *fontSize]);
 	
 	// texture parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	// draw the data stored in GPU memory
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);
