@@ -1,13 +1,15 @@
 #version 110
 
 // uniforms
-uniform mat4 mvpMatrix;
 uniform sampler2D textures[4];
 uniform vec3 lightColor;
 uniform float depth;
-uniform float height;
+uniform vec4 insideColorMultiplier;
+uniform vec4 outsideColorMultiplier;
+uniform float colorChangeRadius;
 
 // varyings
+varying vec3 towerTransformedPosition;
 varying float yCoordInterpol;
 varying vec3 normalInterpol;
 varying vec2 texCoordInterpol;
@@ -30,14 +32,22 @@ void main() {
 			texture2D(textures[3], texCoordInterpol / 10.0).x
 		);
 
-//	calculatedColor *= texture2D(textures[3], texCoordInterpol);
-
 	vec3 lightVectorNorm = normalize(lightVectorInterpol);
 	vec3 normalNorm = normalize(normalInterpol);
 
 	float lightFactor = pow(max(dot(lightVectorNorm, normalNorm), 0.0), 3.0);
 	lightFactor = max(0.5, lightFactor);
 	calculatedColor *= vec4(min(vec3(lightFactor) * vec3(1.0, 1.0, 1.0), vec3(1.0)), 1.0);
+
+	// color change for EMP
+	if(yCoordInterpol >= 0.0) {
+		if(distance(vec3(0.0), towerTransformedPosition) > colorChangeRadius)
+			calculatedColor *= outsideColorMultiplier;
+		else
+			calculatedColor *= insideColorMultiplier;
+
+		calculatedColor = min(vec4(1.0), calculatedColor);
+	}
 
 	// final setting
 	gl_FragColor = calculatedColor;

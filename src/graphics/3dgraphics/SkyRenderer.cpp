@@ -19,6 +19,10 @@ SkyRenderer::SkyRenderer() {
 
 	// set up uniforms and attributes
 	uniforms["mvpMatrix"] = glGetUniformLocation(shaderProgram, "mvpMatrix");
+	uniforms["waterColor"] = glGetUniformLocation(shaderProgram, "waterColor");
+	uniforms["horizonColor"] = glGetUniformLocation(shaderProgram, "horizonColor");
+	uniforms["baseSkyColor"] = glGetUniformLocation(shaderProgram, "baseSkyColor");
+	uniforms["apexColor"] = glGetUniformLocation(shaderProgram, "apexColor");
 
 	attributes["position"] = glGetAttribLocation(shaderProgram, "position");
 
@@ -86,6 +90,18 @@ void SkyRenderer::execute(std::map<std::string, void*> arguments) {
 
 	// set uniforms
 	glUniformMatrix4fv(uniforms["mvpMatrix"], 1, GL_FALSE, mvpMatrixArray);
+	float shockColorMultiplier = (gameState->fortress.shock >= 0.0f ? 1.0f :
+			(1.0f + gameState->fortress.shock) +
+			gameSystem->getFloat("shockColorMultiplier") * -gameState->fortress.shock
+		);
+	Vector4 waterColor = gameSystem->getColor("waterColor") * shockColorMultiplier;
+	glUniform4f(uniforms["waterColor"], waterColor.x, waterColor.y, waterColor.z, waterColor.w);
+	Vector4 horizonColor = gameSystem->getColor("horizonColor") * shockColorMultiplier;
+	glUniform4f(uniforms["horizonColor"], horizonColor.x, horizonColor.y, horizonColor.z, waterColor.w);
+	Vector4 baseSkyColor = gameSystem->getColor("baseSkyColor") * shockColorMultiplier;
+	glUniform4f(uniforms["baseSkyColor"], baseSkyColor.x, baseSkyColor.y, baseSkyColor.z, baseSkyColor.w);
+	Vector4 apexColor = gameSystem->getColor("apexColor") * shockColorMultiplier;;
+	glUniform4f(uniforms["apexColor"], apexColor.x, apexColor.y, apexColor.z, apexColor.w);
 
 	// draw the data stored in GPU memory
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);

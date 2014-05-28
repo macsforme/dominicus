@@ -71,4 +71,8 @@ inline Matrix3 completeMatrix(Vector3 vector) {
 		);
 }
 
+inline int roundToInt(float number) {
+	return (number > 0.0f ? number + 0.5f : number - 0.5f);
+}
+
 #endif // MISCMATH_H

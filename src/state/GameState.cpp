@@ -192,6 +192,9 @@ GameState::GameState() : MainLoopMember((unsigned int) gameSystem->getFloat("sta
 
 	// set starting score
 	score = 0;
+
+	// initialize shock charging status
+	shockIsCharging = false;
 }
 
 GameState::~GameState() {
@@ -366,16 +369,65 @@ unsigned int GameState::execute(bool unScheduled) {
 		}
 	}
 
-	// update fortress stocks
+	// update EMP status (< 0 = firing, 0 = not in use, > 0 = charging
+	if(fortress.shock < 0.0f) {
+		// firing
+		fortress.shock += deltaTime / gameSystem->getFloat("stateEMPDuration");
+
+		if(fortress.shock > 0.0f)
+			fortress.shock = 0.0f;
+	} else if(shockIsCharging) {
+		if(fortress.shock == 0.0f) {
+			if(
+					fortress.health > gameSystem->getFloat("stateEMPHealthCost") &&
+					fortress.ammunition > gameSystem->getFloat("stateEMPFiringCost")
+				) {
+				// begin charging
+				fortress.health -= gameSystem->getFloat("stateEMPHealthCost");
+				fortress.ammunition -= gameSystem->getFloat("stateEMPFiringCost");
+
+				fortress.shock += deltaTime / gameSystem->getFloat("stateEMPChargingTime");
+			}
+		} else {
+			// continue charging
+			fortress.shock += deltaTime / gameSystem->getFloat("stateEMPChargingTime");
+
+			if(fortress.shock > 1.0f)
+				fortress.shock = 1.0f;
+		}
+	} else if(fortress.shock > 0.0f) {
+		if(fortress.shock == 1.0f) {
+			// fire EMP
+			fortress.shock = -1.0f;
+		} else {
+			// cancel charge and return stocks (overages corrected by subsequent code)
+			fortress.shock = 0.0f;
+			fortress.health += gameSystem->getFloat("stateEMPHealthCost");
+			fortress.ammunition += gameSystem->getFloat("stateEMPFiringCost");
+		}
+	}
+
+	// update health status
 	if(fortress.health > 0.0f)
 		fortress.health += deltaTime * gameSystem->getFloat("stateHealthRegenerationRate");
 	if(fortress.health > 1.0f) fortress.health = 1.0f;
 
+	// update ammo status
 	fortress.ammunition += deltaTime * gameSystem->getFloat("stateAmmoFiringCost") * ships.size() / (int) gameSystem->getFloat("stateMissileFiringRate") * 2.0f;
 	if(fortress.ammunition > 1.0f) fortress.ammunition = 1.0f;
 
-//	fortress.shock += deltaTime * ;
-	if(fortress.shock > 1.0f) fortress.shock = 1.0f;
+	// missile/EMP collisions
+	if(fortress.shock < 0.0f) {
+		for(size_t i = 0; i < missiles.size(); ++i) {
+			if(! missiles[i].alive)
+				continue;
+
+			if(distance(fortress.position, missiles[i].position) < (1.0f + fortress.shock) * gameSystem->getFloat("stateEMPRange")) {
+				missiles[i].alive = false;
+				++score;
+			}
+		}
+	}
 
 	// track runcount
 	trackRunCount();

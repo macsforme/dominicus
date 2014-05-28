@@ -201,6 +201,11 @@ GameSystem::GameSystem() {
 	setStandard("stateHealthRegenerationRate", 0.125f, "Portion of fortress health capacity regenerated each second.");
 	setStandard("stateMissileStrikeDepletion", 0.25f, "Portion of fortress health depleted by one missile strike.");
 	setStandard("stateAmmoFiringCost", 0.05f, "Portion of total ammunition capacity depleted by firing one shell.");
+	setStandard("stateEMPFiringCost", 0.5f, "Portion of total ammunition capacity depleted by firing one EMP.");
+	setStandard("stateEMPHealthCost", 0.25f, "Portion of total health capacity depleted by firing one EMP.");
+	setStandard("stateEMPChargingTime", 2.0f, "Time in seconds required for EMP charge.");
+	setStandard("stateEMPRange", 500.0f, "Radius in world units of EMP blast.");
+	setStandard("stateEMPDuration", 4.0f, "Time required for one full EMP cycle.");
 
 	// input standards
 	setStandard("inputPollingFrequency", 120.0f, "Number of times per second to poll the input devices.");
@@ -224,6 +229,11 @@ GameSystem::GameSystem() {
 	setStandard("renderingPerspectiveFOV", 30.0f, "Field-of-view angle for perspective projection.");
 	setStandard("renderingPerspectiveNearClip", 0.5f, "Near clip distance for perspective projection.");
 	setStandard("renderingPerspectiveFarClip", 9000.0f, "Far clip distance for perspective projection.");
+	setStandard("waterColor", Vector4(0.025f, 0.05f, 0.15f, 1.0f), "Water color.");
+	setStandard("horizonColor", Vector4(1.0f, 0.88f, 0.64f, 1.0f), "Horizon color.");
+	setStandard("baseSkyColor", Vector4(0.76f, 0.88f, 1.0f, 1.0f), "Sky color at approximately halfway up.");
+	setStandard("apexColor", Vector4(0.12f, 0.36f, 0.60f, 1.0f), "Sky color at apex.");
+	setStandard("shockColorMultiplier", 4.0f, "Values to multiply colors by while under EMP.");
 
 	// scene rendering effect standards
 	setStandard("terrainDepth", 10.0f, "How far below the water the ground extends.");
@@ -246,6 +256,7 @@ GameSystem::GameSystem() {
 	setStandard("radarSpotSize", 6.0f, "Size in pixels of radar missile spots.");
 	setStandard("radarCenterSpotSize", 8.0f, "Size in pixels of radar missile spots.");
 	setStandard("radarSpotColor", Vector4(1.0f, 0.0f, 0.0f, 1.0f), "Color of radar missile spots.");
+	setStandard("radarEMPColor", Vector4(1.0f, 1.0f, 1.0f, 0.5f), "Color of radar missile spots.");
 	setStandard("radarRadius", 1500.0f, "Radius of radar coverage.");
 
 	setStandard("hudElementMargin", 36.0f, "Space between HUD elements in pixels (must be even number).");

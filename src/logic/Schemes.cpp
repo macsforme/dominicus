@@ -774,6 +774,7 @@ void Schemes::playingScheme() {
 	inputHandler->keyboard->addListener(gameLogic->quitKeyListener);
 	inputHandler->keyboard->addListener(gameLogic->fullScreenKeyListener);
 	inputHandler->keyboard->addListener(gameLogic->playingKeyListener);
+	inputHandler->keyboard->addListener(gameLogic->fireEMPKeyListener);
 	inputHandler->keyboard->addListener(gameLogic->cameraAheadKeyListener);
 	inputHandler->keyboard->addListener(gameLogic->turretUpKeyListener);
 	inputHandler->keyboard->addListener(gameLogic->turretDownKeyListener);
@@ -858,7 +859,7 @@ void Schemes::playingScheme() {
 	*((Vector2*) gameLogic->gaugePanelEntry.second["progressBarSize"]) = Vector2(gameSystem->getFloat("hudGaugeWidth"), gameSystem->getFloat("hudGaugeHeight"));
 	(*((std::vector<float>*) gameLogic->gaugePanelEntry.second["progressions"]))[0] = gameState->fortress.health;
 	(*((std::vector<float>*) gameLogic->gaugePanelEntry.second["progressions"]))[1] = gameState->fortress.ammunition;
-	(*((std::vector<float>*) gameLogic->gaugePanelEntry.second["progressions"]))[2] = gameState->fortress.shock;
+	(*((std::vector<float>*) gameLogic->gaugePanelEntry.second["progressions"]))[2] = (gameState->fortress.shock < 0.0f ? -gameState->fortress.shock : gameState->fortress.shock);
 	*((Vector4*) gameLogic->gaugePanelEntry.second["backgroundColorTop"]) = gameSystem->getColor("hudGaugeBackgroundColor");
 	*((Vector4*) gameLogic->gaugePanelEntry.second["backgroundColorBottom"]) = Vector4(
 			gameSystem->getColor("hudGaugeBackgroundColor").x * gameSystem->getColor("hudGaugeColorFalloff").x,
@@ -868,7 +869,7 @@ void Schemes::playingScheme() {
 		);
 	(*((std::vector<Vector4>*) gameLogic->gaugePanelEntry.second["progressBarColorsTop"]))[0] = gameSystem->getColor("hudGaugeHealthBarColor");
 	(*((std::vector<Vector4>*) gameLogic->gaugePanelEntry.second["progressBarColorsTop"]))[1] = gameSystem->getColor("hudGaugeAmmoBarColor");
-	(*((std::vector<Vector4>*) gameLogic->gaugePanelEntry.second["progressBarColorsTop"]))[2] = gameSystem->getColor(gameState->fortress.shock < 1.0f ? "hudGaugeShockChargingBarColor" : "hudGaugeShockChargedBarColor");
+	(*((std::vector<Vector4>*) gameLogic->gaugePanelEntry.second["progressBarColorsTop"]))[2] = gameSystem->getColor(gameState->fortress.shock < 1.0f && gameState->fortress.shock > 0.0f ? "hudGaugeShockChargingBarColor" : "hudGaugeShockChargedBarColor");
 	(*((std::vector<Vector4>*) gameLogic->gaugePanelEntry.second["progressBarColorsBottom"]))[0] = Vector4(
 			gameSystem->getColor("hudGaugeHealthBarColor").x * gameSystem->getColor("hudGaugeColorFalloff").x,
 			gameSystem->getColor("hudGaugeHealthBarColor").y * gameSystem->getColor("hudGaugeColorFalloff").y,
@@ -882,10 +883,10 @@ void Schemes::playingScheme() {
 			gameSystem->getColor("hudGaugeAmmoBarColor").w * gameSystem->getColor("hudGaugeColorFalloff").w
 		);
 	(*((std::vector<Vector4>*) gameLogic->gaugePanelEntry.second["progressBarColorsBottom"]))[2] = Vector4(
-			gameSystem->getColor(gameState->fortress.shock < 1.0f ? "hudGaugeShockChargingBarColor" : "hudGaugeShockChargedBarColor").x * gameSystem->getColor("hudGaugeColorFalloff").x,
-			gameSystem->getColor(gameState->fortress.shock < 1.0f ? "hudGaugeShockChargingBarColor" : "hudGaugeShockChargedBarColor").y * gameSystem->getColor("hudGaugeColorFalloff").y,
-			gameSystem->getColor(gameState->fortress.shock < 1.0f ? "hudGaugeShockChargingBarColor" : "hudGaugeShockChargedBarColor").z * gameSystem->getColor("hudGaugeColorFalloff").z,
-			gameSystem->getColor(gameState->fortress.shock < 1.0f ? "hudGaugeShockChargingBarColor" : "hudGaugeShockChargedBarColor").w * gameSystem->getColor("hudGaugeColorFalloff").w
+			gameSystem->getColor(gameState->fortress.shock < 1.0f && gameState->fortress.shock > 0.0f ? "hudGaugeShockChargingBarColor" : "hudGaugeShockChargedBarColor").x * gameSystem->getColor("hudGaugeColorFalloff").x,
+			gameSystem->getColor(gameState->fortress.shock < 1.0f && gameState->fortress.shock > 0.0f ? "hudGaugeShockChargingBarColor" : "hudGaugeShockChargedBarColor").y * gameSystem->getColor("hudGaugeColorFalloff").y,
+			gameSystem->getColor(gameState->fortress.shock < 1.0f && gameState->fortress.shock > 0.0f ? "hudGaugeShockChargingBarColor" : "hudGaugeShockChargedBarColor").z * gameSystem->getColor("hudGaugeColorFalloff").z,
+			gameSystem->getColor(gameState->fortress.shock < 1.0f && gameState->fortress.shock > 0.0f ? "hudGaugeShockChargingBarColor" : "hudGaugeShockChargedBarColor").w * gameSystem->getColor("hudGaugeColorFalloff").w
 		);
 	((UIMetrics*) gameLogic->gaugePanelEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_LEFT;
 	((UIMetrics*) gameLogic->gaugePanelEntry.second["metrics"])->bearing2 = UIMetrics::BEARING_TOP;

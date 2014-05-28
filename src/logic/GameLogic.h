@@ -111,6 +111,7 @@ public:
 
 	// playing
 	KeyListener* playingKeyListener;
+	KeyAbsoluteListener* fireEMPKeyListener;
 	KeyAbsoluteListener* turretUpKeyListener;
 	KeyAbsoluteListener* turretDownKeyListener;
 	KeyAbsoluteListener* turretLeftKeyListener;

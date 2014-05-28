@@ -216,7 +216,8 @@ void DrawRadar::execute(std::map<std::string, void*> arguments) {
 			1.0f,
 			heightMapMatrix
 		);
-	scaleMatrix(actualSize.x / 2.0f, actualSize.y / 2.0f, 1.0f, heightMapMatrix);
+	scaleMatrix(actualSize.x / 2.0f - padding.x, actualSize.y / 2.0f - padding.y, 1.0f, heightMapMatrix);
+
 	translateMatrix(metrics->position.x, metrics->position.y, 0.0f, heightMapMatrix);
 
 	float heightMapMatrixArray[] = {
@@ -305,7 +306,7 @@ void DrawRadar::execute(std::map<std::string, void*> arguments) {
 	glDisable(GL_BLEND);
 	glDisable(GL_SCISSOR_TEST);
 
-	// draw tower position and missile locations
+	// draw missile locations
 	static float lastRotation = gameState->lastUpdateGameTime % (unsigned int) (gameSystem->getFloat("radarRefreshSpeed") * 1000.0f) / (gameSystem->getFloat("radarRefreshSpeed") * 1000.0f) * 360.0f;
 	float currentRotation = gameState->lastUpdateGameTime % (unsigned int) (gameSystem->getFloat("radarRefreshSpeed") * 1000.0f) / (gameSystem->getFloat("radarRefreshSpeed") * 1000.0f) * 360.0f;
 
@@ -334,7 +335,7 @@ void DrawRadar::execute(std::map<std::string, void*> arguments) {
 		if(missileAngle > lastRotation && missileAngle < currentRotation)
 			missileCache.push_back(gameState->missiles[i]);
 	}
-
+//missileCache.clear(); for(size_t i = 0; i < gameState->missiles.size(); ++i) if(gameState->missiles[i].alive) missileCache.push_back(gameState->missiles[i]);
 	lastRotation = currentRotation;
 
 	Vector2 spotSize(
@@ -387,6 +388,25 @@ void DrawRadar::execute(std::map<std::string, void*> arguments) {
 		spotDrawer->execute(drawerArguments);
 	}
 
+	// draw EMP wave
+	if(gameState->fortress.shock < 0.0f) {
+		insideColor = gameSystem->getColor("radarEMPColor");
+		outsideColor = Vector4(
+				gameSystem->getColor("radarEMPColor").x,
+				gameSystem->getColor("radarEMPColor").y,
+				gameSystem->getColor("radarEMPColor").z,
+				0.0f
+			);
+		spotPosition = metrics->position;
+		spotSize = Vector2(
+					(1.0f + gameState->fortress.shock) * gameSystem->getFloat("stateEMPRange") * (actualSize.x / 2.0f - padding.x) / gameSystem->getFloat("radarRadius"),
+					(1.0f + gameState->fortress.shock) * gameSystem->getFloat("stateEMPRange") * (actualSize.y / 2.0f - padding.y) / gameSystem->getFloat("radarRadius")
+			);
+
+		spotDrawer->execute(drawerArguments);
+	}
+
+	// draw tower location
 	insideColor = gameSystem->getColor("hudGaugeHealthBarColor");
 	outsideColor = Vector4(
 			gameSystem->getColor("hudGaugeHealthBarColor").x,

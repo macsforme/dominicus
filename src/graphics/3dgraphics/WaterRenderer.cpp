@@ -20,6 +20,10 @@ WaterRenderer::WaterRenderer() {
 	// set up uniforms and attributes
 	uniforms["timer"] = glGetUniformLocation(shaderProgram, "timer");
 	uniforms["mvpMatrix"] = glGetUniformLocation(shaderProgram, "mvpMatrix");
+	uniforms["towerTransformMatrix"] = glGetUniformLocation(shaderProgram, "towerTransformMatrix");
+	uniforms["insideColorMultiplier"] = glGetUniformLocation(shaderProgram, "insideColorMultiplier");
+	uniforms["outsideColorMultiplier"] = glGetUniformLocation(shaderProgram, "outsideColorMultiplier");
+	uniforms["colorChangeRadius"] = glGetUniformLocation(shaderProgram, "colorChangeRadius");
 
 	attributes["position"] = glGetAttribLocation(shaderProgram, "position");
 
@@ -64,6 +68,15 @@ void WaterRenderer::execute(std::map<std::string, void*> arguments) {
 			mvpMatrix.m41, mvpMatrix.m42, mvpMatrix.m43, mvpMatrix.m44
 		};
 
+	Matrix4 towerTransformMatrix; towerTransformMatrix.identity();
+	translateMatrix(-gameState->fortress.position.x, -gameState->fortress.position.y, -gameState->fortress.position.z, towerTransformMatrix);
+	float towerTransformMatrixArray[] = {
+			towerTransformMatrix.m11, towerTransformMatrix.m12, towerTransformMatrix.m13, towerTransformMatrix.m14,
+			towerTransformMatrix.m21, towerTransformMatrix.m22, towerTransformMatrix.m23, towerTransformMatrix.m24,
+			towerTransformMatrix.m31, towerTransformMatrix.m32, towerTransformMatrix.m33, towerTransformMatrix.m34,
+			towerTransformMatrix.m41, towerTransformMatrix.m42, towerTransformMatrix.m43, towerTransformMatrix.m44
+		};
+
 	// state
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -74,6 +87,20 @@ void WaterRenderer::execute(std::map<std::string, void*> arguments) {
 	// set uniforms
 	glUniform1f(uniforms["timer"], (float) (gameState->getGameMills() % 3000) / 3000.0f);
 	glUniformMatrix4fv(uniforms["mvpMatrix"], 1, GL_FALSE, mvpMatrixArray);
+	glUniformMatrix4fv(uniforms["towerTransformMatrix"], 1, GL_FALSE, towerTransformMatrixArray);
+	glUniform4f(uniforms["insideColorMultiplier"], 1.0f, 1.0f, 1.0f, 1.0f);
+	float shockColorMultiplier = (gameState->fortress.shock >= 0.0f ? 1.0f :
+			(1.0f + gameState->fortress.shock) +
+			gameSystem->getFloat("shockColorMultiplier") * -gameState->fortress.shock
+		);
+	glUniform4f(
+			uniforms["outsideColorMultiplier"],
+			shockColorMultiplier,
+			shockColorMultiplier,
+			shockColorMultiplier,
+			1.0f
+		);
+	glUniform1f(uniforms["colorChangeRadius"], (gameState->fortress.shock + 1.0f) * gameSystem->getFloat("stateEMPRange"));
 
 	// draw the data stored in GPU memory
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);

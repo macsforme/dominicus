@@ -18,12 +18,16 @@ TerrainRenderer::TerrainRenderer() {
 	shaderProgram = gameGraphics->makeProgram(shaderIDs);
 
 	// set up uniforms and attributes
-	uniforms["mvpMatrix"] = glGetUniformLocation(shaderProgram, "mvpMatrix");
+	uniforms["mvMatrix"] = glGetUniformLocation(shaderProgram, "mvMatrix");
+	uniforms["pMatrix"] = glGetUniformLocation(shaderProgram, "pMatrix");
+	uniforms["towerTransformMatrix"] = glGetUniformLocation(shaderProgram, "towerTransformMatrix");
 	uniforms["textures"] = glGetUniformLocation(shaderProgram, "textures");
 	uniforms["lightPosition"] = glGetUniformLocation(shaderProgram, "lightPosition");
 	uniforms["lightColor"] = glGetUniformLocation(shaderProgram, "lightColor");
 	uniforms["depth"] = glGetUniformLocation(shaderProgram, "depth");
-	uniforms["height"] = glGetUniformLocation(shaderProgram, "height");
+	uniforms["insideColorMultiplier"] = glGetUniformLocation(shaderProgram, "insideColorMultiplier");
+	uniforms["outsideColorMultiplier"] = glGetUniformLocation(shaderProgram, "outsideColorMultiplier");
+	uniforms["colorChangeRadius"] = glGetUniformLocation(shaderProgram, "colorChangeRadius");
 
 	attributes["position"] = glGetAttribLocation(shaderProgram, "position");
 	attributes["normal"] = glGetAttribLocation(shaderProgram, "normal");
@@ -124,13 +128,29 @@ void TerrainRenderer::reloadGraphics() {
 
 void TerrainRenderer::execute(std::map<std::string, void*> arguments) {
 	// prepare variables
-	Matrix4 mvpMatrix = gameGraphics->currentCamera->mvMatrix;
-	mvpMatrix *= gameGraphics->ppMatrix;
-	float mvpMatrixArray[] = {
-			mvpMatrix.m11, mvpMatrix.m12, mvpMatrix.m13, mvpMatrix.m14,
-			mvpMatrix.m21, mvpMatrix.m22, mvpMatrix.m23, mvpMatrix.m24,
-			mvpMatrix.m31, mvpMatrix.m32, mvpMatrix.m33, mvpMatrix.m34,
-			mvpMatrix.m41, mvpMatrix.m42, mvpMatrix.m43, mvpMatrix.m44
+	Matrix4 mvMatrix = gameGraphics->currentCamera->mvMatrix;
+	float mvMatrixArray[] = {
+			mvMatrix.m11, mvMatrix.m12, mvMatrix.m13, mvMatrix.m14,
+			mvMatrix.m21, mvMatrix.m22, mvMatrix.m23, mvMatrix.m24,
+			mvMatrix.m31, mvMatrix.m32, mvMatrix.m33, mvMatrix.m34,
+			mvMatrix.m41, mvMatrix.m42, mvMatrix.m43, mvMatrix.m44
+		};
+
+	Matrix4 pMatrix = gameGraphics->ppMatrix;
+	float pMatrixArray[] = {
+			pMatrix.m11, pMatrix.m12, pMatrix.m13, pMatrix.m14,
+			pMatrix.m21, pMatrix.m22, pMatrix.m23, pMatrix.m24,
+			pMatrix.m31, pMatrix.m32, pMatrix.m33, pMatrix.m34,
+			pMatrix.m41, pMatrix.m42, pMatrix.m43, pMatrix.m44
+		};
+
+	Matrix4 towerTransformMatrix; towerTransformMatrix.identity();
+	translateMatrix(-gameState->fortress.position.x, -gameState->fortress.position.y, -gameState->fortress.position.z, towerTransformMatrix);
+	float towerTransformMatrixArray[] = {
+			towerTransformMatrix.m11, towerTransformMatrix.m12, towerTransformMatrix.m13, towerTransformMatrix.m14,
+			towerTransformMatrix.m21, towerTransformMatrix.m22, towerTransformMatrix.m23, towerTransformMatrix.m24,
+			towerTransformMatrix.m31, towerTransformMatrix.m32, towerTransformMatrix.m33, towerTransformMatrix.m34,
+			towerTransformMatrix.m41, towerTransformMatrix.m42, towerTransformMatrix.m43, towerTransformMatrix.m44
 		};
 
 	// state
@@ -146,12 +166,26 @@ void TerrainRenderer::execute(std::map<std::string, void*> arguments) {
 	glUseProgram(shaderProgram);
 
 	// set uniforms
-	glUniformMatrix4fv(uniforms["mvpMatrix"], 1, GL_FALSE, mvpMatrixArray);
+	glUniformMatrix4fv(uniforms["mvMatrix"], 1, GL_FALSE, mvMatrixArray);
+	glUniformMatrix4fv(uniforms["pMatrix"], 1, GL_FALSE, pMatrixArray);
+	glUniformMatrix4fv(uniforms["towerTransformMatrix"], 1, GL_FALSE, towerTransformMatrixArray);
+	glUniform4f(uniforms["insideColorMultiplier"], 1.0f, 1.0f, 1.0f, 1.0f);
+	float shockColorMultiplier = (gameState->fortress.shock >= 0.0f ? 1.0f :
+			(1.0f + gameState->fortress.shock) +
+			gameSystem->getFloat("shockColorMultiplier") * -gameState->fortress.shock
+		);
+	glUniform4f(
+			uniforms["outsideColorMultiplier"],
+			shockColorMultiplier,
+			shockColorMultiplier,
+			shockColorMultiplier,
+			1.0f
+		);
+	glUniform1f(uniforms["colorChangeRadius"], (gameState->fortress.shock + 1.0f) * gameSystem->getFloat("stateEMPRange"));
 
 	GLint textureUniforms[] = { 0, 1, 2, 3, 4 };
 	glUniform1iv(uniforms["textures"], 5, textureUniforms);
 	glUniform1f(uniforms["depth"], (GLfloat) gameSystem->getFloat("terrainDepth"));
-	glUniform1f(uniforms["height"], (GLfloat) gameSystem->getFloat("islandMaximumHeight"));
 
 	// activate the textures
 	for(int i = 0; i < 3; ++i) {

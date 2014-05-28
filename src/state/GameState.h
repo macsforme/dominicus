@@ -104,6 +104,8 @@ public:
 	std::vector<Missile> missiles;
 	unsigned int score;
 
+	bool shockIsCharging;
+
 	bool isPaused;
 	unsigned int lastUpdateGameTime;
 	int gameTimeMargin;
