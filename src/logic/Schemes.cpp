@@ -799,6 +799,9 @@ void Schemes::playingScheme() {
 	// missiles
 	gameLogic->drawStack.push_back(gameLogic->missileEntry);
 
+	// shells
+	gameLogic->drawStack.push_back(gameLogic->shellEntry);
+
 	// clock
 /*
 	*((float*) gameLogic->clockLabel.second["fontSize"]) = gameSystem->getFloat("fontSizeLarge");

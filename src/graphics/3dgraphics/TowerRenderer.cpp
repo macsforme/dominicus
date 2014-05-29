@@ -160,6 +160,7 @@ void TowerRenderer::execute(std::map<std::string, void*> arguments) {
 		};
 
 	Matrix4 turretMvMatrix; turretMvMatrix.identity();
+	translateMatrix((gameState->recoil >= 0.0f ? -gameState->recoil : -(1.0f + gameState->recoil)) * gameSystem->getFloat("stateTurretRecoilDistance"), 0.0f, 0.0f, turretMvMatrix);
 	rotateMatrix(Vector3(0.0f, 0.0f, 1.0f), radians(gameState->fortress.tilt), turretMvMatrix);
 	rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(gameState->fortress.rotation), turretMvMatrix);
 	translateMatrix(turretOrigin.x, turretOrigin.y, turretOrigin.z, turretMvMatrix);

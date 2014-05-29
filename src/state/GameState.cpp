@@ -184,6 +184,20 @@ GameState::GameState() : MainLoopMember((unsigned int) gameSystem->getFloat("sta
 			shipMesh.vertices[shipMesh.faceGroups["missileorigin"][0].vertices[2]]
 		) / 3.0f;
 
+	// determine shell origins and size
+	Mesh towerMesh("tower");
+	turretOrigin = (
+			towerMesh.vertices[towerMesh.faceGroups["turretorigin"][0].vertices[0]] +
+			towerMesh.vertices[towerMesh.faceGroups["turretorigin"][0].vertices[1]] +
+			towerMesh.vertices[towerMesh.faceGroups["turretorigin"][0].vertices[2]]
+		) / 3.0f;
+	shellOrigin = (
+			towerMesh.vertices[towerMesh.faceGroups["shellorigin"][0].vertices[0]] +
+			towerMesh.vertices[towerMesh.faceGroups["shellorigin"][0].vertices[1]] +
+			towerMesh.vertices[towerMesh.faceGroups["shellorigin"][0].vertices[2]]
+		) / 3.0f;
+	shellRadius = distance(shellOrigin, towerMesh.vertices[towerMesh.faceGroups["shellorigin"][0].vertices[0]]);
+
 	// set start time
 	isPaused = false;
 	lastUpdateGameTime = 0;
@@ -193,8 +207,9 @@ GameState::GameState() : MainLoopMember((unsigned int) gameSystem->getFloat("sta
 	// set starting score
 	score = 0;
 
-	// initialize shock charging status
+	// initialize other stuff
 	shockIsCharging = false;
+	recoil = 0.0f;
 }
 
 GameState::~GameState() {
@@ -369,6 +384,30 @@ unsigned int GameState::execute(bool unScheduled) {
 		}
 	}
 
+	// update turret recoil
+	if(recoil < 0.0f) {
+		recoil += deltaTime / gameSystem->getFloat("stateTurretRecoilSpeed");
+
+		if(recoil >= 0.0f)
+			recoil = 1.0f - recoil;
+	} else if(recoil > 0.0f) {
+		recoil -= deltaTime / gameSystem->getFloat("stateTurretRecoilRecoverySpeed");
+
+		if(recoil < 0.0f)
+			recoil = 0.0f;
+	}
+
+	// update shells
+	size_t i = 0;
+	while(i < shells.size()) {
+		shells[i].position += shells[i].direction * deltaTime * gameSystem->getFloat("stateShellSpeed");
+
+		if(distance(fortress.position, shells[i].position) >= gameSystem->getFloat("stateShellExpirationDistance"))
+			shells.erase(shells.begin() + i);
+		else
+			++i;
+	}
+
 	// update EMP status (< 0 = firing, 0 = not in use, > 0 = charging
 	if(fortress.shock < 0.0f) {
 		// firing
@@ -467,4 +506,50 @@ void GameState::resume() {
 void GameState::bumpStart() {
 	int fullEntryTime = (int) (gameSystem->getFloat("stateShipEntryTime") * 1000.0f);
 	gameTimeMargin -= fullEntryTime - (int) getGameMills();
+}
+
+void GameState::fireShell() {
+	if(fortress.ammunition < gameSystem->getFloat("stateAmmoFiringCost"))
+		return;
+
+	Matrix4 shellMatrix; shellMatrix.identity();
+	translateMatrix(
+			(recoil >= 0.0f ? -recoil : -(1.0f + recoil)) * gameSystem->getFloat("stateTurretRecoilDistance"),
+			0.0f,
+			0.0f,
+			shellMatrix
+		);
+	Vector3 turretOffset = shellOrigin - turretOrigin;
+	translateMatrix(turretOffset.x, turretOffset.y, turretOffset.z, shellMatrix);
+	rotateMatrix(Vector3(0.0f, 0.0f, 1.0f), radians(fortress.tilt), shellMatrix);
+	translateMatrix(turretOrigin.x, turretOrigin.y, turretOrigin.z, shellMatrix);
+	rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(fortress.rotation), shellMatrix);
+	translateMatrix(fortress.position.x, fortress.position.y, fortress.position.z, shellMatrix);
+
+	Vector4 shellPosition = Vector4(0.0f, 0.0f, 0.0f, 1.0f) * shellMatrix;
+
+	Shell shell;
+	shell.position = Vector3(
+			shellPosition.x / shellPosition.w,
+			shellPosition.y / shellPosition.w,
+			shellPosition.z / shellPosition.w
+		);
+
+	shellPosition = Vector4(1.0f, 0.0f, 0.0f, 0.0f) * shellMatrix;
+
+	shell.direction = Vector3(
+			shellPosition.x,
+			shellPosition.y,
+			shellPosition.z
+		);
+	shell.direction.norm();
+
+	shells.push_back(shell);
+
+	fortress.ammunition -= gameSystem->getFloat("stateAmmoFiringCost");
+
+	if(recoil == 0.0f)
+		recoil = -1.0f;
+	else if(recoil > 0.0f)
+		recoil = -1.0f + recoil;
 }

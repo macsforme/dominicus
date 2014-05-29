@@ -107,6 +107,10 @@ MissileRenderer::~MissileRenderer() {
 }
 
 void MissileRenderer::execute(std::map<std::string, void*> arguments) {
+	// prepare variables
+	Vector4 lightPosition(1.0f, 1.0f, -1.0f, 0.0f);
+	lightPosition = lightPosition * gameGraphics->currentCamera->lightMatrix;
+
 	// state
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_DEPTH_TEST);
@@ -122,7 +126,7 @@ void MissileRenderer::execute(std::map<std::string, void*> arguments) {
 	glUniform3f(uniforms["ambientColor"], 0.15f, 0.15f, 0.15f);
 	glUniform3f(uniforms["diffuseColor"], 0.5f, 0.5f, 0.5f);
 	glUniform3f(uniforms["specularColor"], 0.8f, 0.8f, 0.8f);
-	glUniform3f(uniforms["lightPosition"], 1.0f, 1.0f, -1.0f);
+	glUniform3f(uniforms["lightPosition"], lightPosition.x, lightPosition.y, lightPosition.z);
 	glUniform1f(uniforms["shininess"], 10.0f);
 
 	// set the overall drawing state
@@ -145,7 +149,7 @@ void MissileRenderer::execute(std::map<std::string, void*> arguments) {
 		if(! gameState->missiles[i].alive)
 			continue;
 
-		// calculate the matrix for this ship position
+		// calculate the matrix for this missile position
 		Matrix4 mvMatrix; mvMatrix.identity();
 		rotateMatrix(Vector3(0.0f, 0.0f, 1.0f), radians(gameState->missiles[i].tilt), mvMatrix);
 		rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(gameState->missiles[i].rotation), mvMatrix);

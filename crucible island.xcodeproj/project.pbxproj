@@ -12,6 +12,7 @@
 		0315B631134C2CF7002AD1CE /* Schemes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0315B630134C2CF7002AD1CE /* Schemes.cpp */; };
 		0330C498133A2AB6006199BE /* TextBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03BB9B83131F3F50009DFC8B /* TextBlock.cpp */; };
 		033A25851929C4FB00A4BB35 /* DrawSpot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 033A25831929C4FB00A4BB35 /* DrawSpot.cpp */; };
+		034AF1231936D67F00272390 /* ShellRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 034AF1211936D67F00272390 /* ShellRenderer.cpp */; };
 		0353219118C931EF002FC13A /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0353219018C931EF002FC13A /* Cocoa.framework */; };
 		0353219318C93204002FC13A /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0353219218C93204002FC13A /* OpenGL.framework */; };
 		0353219518C93216002FC13A /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0353219418C93216002FC13A /* SDL.framework */; };
@@ -104,6 +105,9 @@
 		032B8B351263DF5900DDE564 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 		033A25831929C4FB00A4BB35 /* DrawSpot.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawSpot.cpp; sourceTree = "<group>"; };
 		033A25841929C4FB00A4BB35 /* DrawSpot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawSpot.h; sourceTree = "<group>"; };
+		034AF1201936D23600272390 /* Sphere.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Sphere.h; sourceTree = "<group>"; };
+		034AF1211936D67F00272390 /* ShellRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShellRenderer.cpp; sourceTree = "<group>"; };
+		034AF1221936D67F00272390 /* ShellRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShellRenderer.h; sourceTree = "<group>"; };
 		0353219018C931EF002FC13A /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = ../../../../../../System/Library/Frameworks/Cocoa.framework; sourceTree = "<group>"; };
 		0353219218C93204002FC13A /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = ../../../../../../System/Library/Frameworks/OpenGL.framework; sourceTree = "<group>"; };
 		0353219418C93216002FC13A /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = ../../../../../../Library/Frameworks/SDL.framework; sourceTree = "<group>"; };
@@ -261,9 +265,10 @@
 		030F8EC41264D4BC00190225 /* geometry */ = {
 			isa = PBXGroup;
 			children = (
-				030F8EC51264D4BC00190225 /* Mesh.h */,
 				030DEBFE126CDD1B000D87ED /* DiamondSquare.h */,
 				030DEBFF126CDD1B000D87ED /* DiamondSquare.cpp */,
+				030F8EC51264D4BC00190225 /* Mesh.h */,
+				034AF1201936D23600272390 /* Sphere.h */,
 			);
 			name = geometry;
 			path = src/geometry;
@@ -367,6 +372,8 @@
 		03BB9B6A131F3F50009DFC8B /* 3dgraphics */ = {
 			isa = PBXGroup;
 			children = (
+				034AF1221936D67F00272390 /* ShellRenderer.h */,
+				034AF1211936D67F00272390 /* ShellRenderer.cpp */,
 				03F4FD671921DC2F00B5A322 /* MissileRenderer.h */,
 				03F4FD661921DC2F00B5A322 /* MissileRenderer.cpp */,
 				03ACFE4218FCD8C200A6B447 /* ShipRenderer.h */,
@@ -527,6 +534,7 @@
 				035466621912C17200F4953E /* DrawControlBox.cpp in Sources */,
 				035466671912C17200F4953E /* DrawRadar.cpp in Sources */,
 				0315B631134C2CF7002AD1CE /* Schemes.cpp in Sources */,
+				034AF1231936D67F00272390 /* ShellRenderer.cpp in Sources */,
 				03E508FA18FE1B340056ECE6 /* TowerRenderer.cpp in Sources */,
 				03C9206C13693A51000C4373 /* GameState.cpp in Sources */,
 				03ACFE4918FCD8C200A6B447 /* ShipRenderer.cpp in Sources */,

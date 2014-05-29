@@ -276,6 +276,7 @@ SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 0);
 	drawers["grayOut"] = new DrawGrayOut();
 
 	drawers["missileRenderer"] = new MissileRenderer();
+	drawers["shellRenderer"] = new ShellRenderer();
 	drawers["skyRenderer"] = new SkyRenderer();
 	drawers["shipRenderer"] = new ShipRenderer();
 	drawers["terrainRenderer"] = new TerrainRenderer();

@@ -93,9 +93,6 @@ public:
 };
 
 class GameState : public MainLoopMember {
-private:
-	Vector3 shipMissileOrigin;
-
 public:
 	Mesh island;
 	Fortress fortress;
@@ -104,8 +101,13 @@ public:
 	std::vector<Missile> missiles;
 	unsigned int score;
 
-	bool shockIsCharging;
+	Vector3 shipMissileOrigin;
+	Vector3 turretOrigin;
+	Vector3 shellOrigin;
+	float shellRadius;
 
+	float recoil;
+	bool shockIsCharging;
 	bool isPaused;
 	unsigned int lastUpdateGameTime;
 	int gameTimeMargin;
@@ -120,6 +122,8 @@ public:
 	void pause();
 	void resume();
 	void bumpStart();
+
+	void fireShell();
 };
 
 #endif // GAMESTATE_H

@@ -201,11 +201,16 @@ GameSystem::GameSystem() {
 	setStandard("stateHealthRegenerationRate", 0.125f, "Portion of fortress health capacity regenerated each second.");
 	setStandard("stateMissileStrikeDepletion", 0.25f, "Portion of fortress health depleted by one missile strike.");
 	setStandard("stateAmmoFiringCost", 0.05f, "Portion of total ammunition capacity depleted by firing one shell.");
+	setStandard("stateShellSpeed", 100.0f, "Shell speed in world units per second.");
+	setStandard("stateShellExpirationDistance", 1500.0f, "Distance at which shells are deleted.");
 	setStandard("stateEMPFiringCost", 0.5f, "Portion of total ammunition capacity depleted by firing one EMP.");
 	setStandard("stateEMPHealthCost", 0.25f, "Portion of total health capacity depleted by firing one EMP.");
 	setStandard("stateEMPChargingTime", 2.0f, "Time in seconds required for EMP charge.");
 	setStandard("stateEMPRange", 500.0f, "Radius in world units of EMP blast.");
 	setStandard("stateEMPDuration", 4.0f, "Time required for one full EMP cycle.");
+	setStandard("stateTurretRecoilSpeed", 0.125f, "Time it takes for turret to recoil after shot.");
+	setStandard("stateTurretRecoilRecoverySpeed", 1.0f, "Time it takes for turret to recover from recoil after shot.");
+	setStandard("stateTurretRecoilDistance", 3.0f, "Distance in world units of turret recoil.");
 
 	// input standards
 	setStandard("inputPollingFrequency", 120.0f, "Number of times per second to poll the input devices.");
@@ -234,13 +239,12 @@ GameSystem::GameSystem() {
 	setStandard("baseSkyColor", Vector4(0.76f, 0.88f, 1.0f, 1.0f), "Sky color at approximately halfway up.");
 	setStandard("apexColor", Vector4(0.12f, 0.36f, 0.60f, 1.0f), "Sky color at apex.");
 	setStandard("shockColorMultiplier", 4.0f, "Values to multiply colors by while under EMP.");
-
-	// scene rendering effect standards
 	setStandard("terrainDepth", 10.0f, "How far below the water the ground extends.");
 	setStandard("terrainTextureRepeat", 50.0f, "Number of times to repeat the ground texture over the maximum surface area.");
 	setStandard("terrainNoiseTextureDensity", 512.0f, "Terrain mixing noise texture resolution.");
 	setStandard("terrainNoiseTextureRoughness", 0.6f, "Terrain mixing noise texture roughness factor.");
 	setStandard("terrainNoiseTextureDepth", 4.0f, "Terrain mixing noise texture color depth.");
+	setStandard("shellDensity", 32.0f, "Number of segments for shell sphere.");
 
 	// HUD standards
 	setStandard("hudFPSTestFrequency", 1.0f, "Frequency per second of the FPS test.");

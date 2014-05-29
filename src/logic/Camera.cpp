@@ -34,13 +34,14 @@ void PresentationCamera::execute() {
 
 	mvMatrix.identity();
 	translateMatrix(-gameState->fortress.position.x, -gameState->fortress.position.y, -gameState->fortress.position.z, mvMatrix);
-	rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians((float) (platform->getExecMills() % 32000) / 32000.0f * 360.0f), mvMatrix);
-	rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(-30.0f * (sin(PI + (float) (platform->getExecMills() % 16000) / 16000.0f * 2.0f * PI) * 0.5f + 0.5f )), mvMatrix);
-	translateMatrix(0.0f, 0.0f, 25.0f + (sin(-PI + (float) (platform->getExecMills() % 32000) / 32000.0f * 2.0f * PI) * 0.5f + 0.5f ) * 50.0f, mvMatrix);
+	translateMatrix(0.0f, -10.0f, 0.0f, mvMatrix);
+	rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians((float) (platform->getExecMills() % 16000) / 16000.0f * 360.0f), mvMatrix);
+	rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(-30.0f * (sin(PI + (float) (platform->getExecMills() % 8000) / 8000.0f * 2.0f * PI) * 0.5f + 0.5f )), mvMatrix);
+	translateMatrix(0.0f, 0.0f, 25.0f + (sin(-PI + (float) (platform->getExecMills() % 16000) / 16000.0f * 2.0f * PI) * 0.5f + 0.5f ) * 50.0f, mvMatrix);
 
 	lightMatrix.identity();
-	rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians((float) (platform->getExecMills() % 32000) / 32000.0f * 360.0f), lightMatrix);
-	rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(-30.0f * (sin(PI + (float) (platform->getExecMills() % 16000) / 16000.0f * 2.0f * PI) * 0.5f + 0.5f )), lightMatrix);
+	rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians((float) (platform->getExecMills() % 16000) / 16000.0f * 360.0f), lightMatrix);
+	rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(-30.0f * (sin(PI + (float) (platform->getExecMills() % 8000) / 8000.0f * 2.0f * PI) * 0.5f + 0.5f )), lightMatrix);
 }
 
 void RoamingCamera::execute() {

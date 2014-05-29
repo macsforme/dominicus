@@ -354,6 +354,7 @@ GameLogic::GameLogic() :
 	std::vector<SDLKey> playingKeys;
 	playingKeys.push_back(SDLK_RETURN);
 	playingKeys.push_back(SDLK_ESCAPE);
+	playingKeys.push_back(SDLK_SPACE);
 	playingKeys.push_back(SDLK_BACKQUOTE);
 	playingKeys.push_back(SDLK_BACKSLASH);
 	playingKeyListener = new KeyListener(playingKeys);
@@ -444,6 +445,8 @@ GameLogic::GameLogic() :
 	towerEntry.first = "towerRenderer";
 
 	missileEntry.first = "missileRenderer";
+
+	shellEntry.first = "shellRenderer";
 
 	std::vector<SDLKey> introKeys;
 	introKeys.push_back(SDLK_SPACE);
@@ -1074,7 +1077,9 @@ lastFPSUpdate = platform->getExecMills();
 
 		// key hits
 		for(SDLKey key = playingKeyListener->popKey(); key != SDLK_UNKNOWN; key = playingKeyListener->popKey()) {
-			if(key == SDLK_RETURN) {
+			if(key == SDLK_SPACE) {
+				gameState->fireShell();
+			} else if(key == SDLK_RETURN) {
 				mainLoopModules.erase(mainLoopModules.find(gameState));
 				delete(gameState);
 				gameState = new GameState();
