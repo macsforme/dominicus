@@ -89,9 +89,10 @@ void WaterRenderer::execute(std::map<std::string, void*> arguments) {
 	glUniformMatrix4fv(uniforms["mvpMatrix"], 1, GL_FALSE, mvpMatrixArray);
 	glUniformMatrix4fv(uniforms["towerTransformMatrix"], 1, GL_FALSE, towerTransformMatrixArray);
 	glUniform4f(uniforms["insideColorMultiplier"], 1.0f, 1.0f, 1.0f, 1.0f);
-	float shockColorMultiplier = (gameState->fortress.shock >= 0.0f ? 1.0f :
-			(1.0f + gameState->fortress.shock) +
-			gameSystem->getFloat("shockColorMultiplier") * -gameState->fortress.shock
+	float shockColorMultiplier = (
+			gameState->fortress.shock <= 0.0f || gameState->fortress.shock >= 1.0f ?
+			1.0f :
+			1.0f - gameState->fortress.shock + gameState->fortress.shock * gameSystem->getFloat("shockColorMultiplier")
 		);
 	glUniform4f(
 			uniforms["outsideColorMultiplier"],
@@ -100,7 +101,11 @@ void WaterRenderer::execute(std::map<std::string, void*> arguments) {
 			shockColorMultiplier,
 			1.0f
 		);
-	glUniform1f(uniforms["colorChangeRadius"], (gameState->fortress.shock + 1.0f) * gameSystem->getFloat("stateEMPRange"));
+	glUniform1f(uniforms["colorChangeRadius"],
+			gameState->fortress.shock <= 0.0f || gameState->fortress.shock >= 1.0f ?
+			0.0f :
+			(1.0f - gameState->fortress.shock) * gameSystem->getFloat("stateEMPRange")
+		);
 
 	// draw the data stored in GPU memory
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);

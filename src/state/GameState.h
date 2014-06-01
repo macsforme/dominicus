@@ -29,13 +29,13 @@ class Fortress {
 public:
 	float health;
 	float ammunition;
-	float shock;
+	float shock; // > 1 = charging, > 0 = firing, 0 = at rest
 
 	Vector3 position;
 	float rotation;
 	float tilt;
 
-	float turretRecoil;
+	float turretRecoil; // > 1 = recoiling, > 0 = recovering, 0 = at rest
 
 	Fortress() :
 			health(1.0f),
@@ -105,6 +105,7 @@ public:
 	Vector3 turretOrigin;
 	Vector3 shellOrigin;
 	float shellRadius;
+	float missileLength;
 
 	float recoil;
 	bool shockIsCharging;

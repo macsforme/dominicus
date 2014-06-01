@@ -176,7 +176,7 @@ GameState::GameState() : MainLoopMember((unsigned int) gameSystem->getFloat("sta
 		if(itr->y > fortress.position.y)
 			fortress.position = *itr;
 
-	// determine missile origin
+	// determine some state info from models
 	Mesh shipMesh("ship");
 	shipMissileOrigin = (
 			shipMesh.vertices[shipMesh.faceGroups["missileorigin"][0].vertices[0]] +
@@ -184,19 +184,30 @@ GameState::GameState() : MainLoopMember((unsigned int) gameSystem->getFloat("sta
 			shipMesh.vertices[shipMesh.faceGroups["missileorigin"][0].vertices[2]]
 		) / 3.0f;
 
-	// determine shell origins and size
 	Mesh towerMesh("tower");
 	turretOrigin = (
 			towerMesh.vertices[towerMesh.faceGroups["turretorigin"][0].vertices[0]] +
 			towerMesh.vertices[towerMesh.faceGroups["turretorigin"][0].vertices[1]] +
 			towerMesh.vertices[towerMesh.faceGroups["turretorigin"][0].vertices[2]]
 		) / 3.0f;
+
 	shellOrigin = (
 			towerMesh.vertices[towerMesh.faceGroups["shellorigin"][0].vertices[0]] +
 			towerMesh.vertices[towerMesh.faceGroups["shellorigin"][0].vertices[1]] +
 			towerMesh.vertices[towerMesh.faceGroups["shellorigin"][0].vertices[2]]
 		) / 3.0f;
+
 	shellRadius = distance(shellOrigin, towerMesh.vertices[towerMesh.faceGroups["shellorigin"][0].vertices[0]]);
+
+	Mesh missileMesh("missile");
+	float minXValue = 0.0f, maxXValue = 0.0f;
+	for(size_t i = 0; i < missileMesh.vertices.size(); ++i) {
+		if(missileMesh.vertices[i].x < minXValue)
+			minXValue = missileMesh.vertices[i].x;
+		if(missileMesh.vertices[i].x > maxXValue)
+			maxXValue = missileMesh.vertices[i].x;
+	}
+	missileLength = maxXValue - minXValue;
 
 	// set start time
 	isPaused = false;
@@ -314,6 +325,13 @@ unsigned int GameState::execute(bool unScheduled) {
 
 	delete[] shipMissiles;
 
+	// keep track of original positions for missile/shell collisions
+	std::vector<Vector3> previousMissilePositions;
+
+	for(size_t i = 0; i < missiles.size(); ++i)
+		previousMissilePositions.push_back(missiles[i].position);
+
+	// do movement
 	for(size_t i = 0; i < missiles.size(); ++i) {
 		if(! missiles[i].alive)
 			continue;
@@ -384,39 +402,107 @@ unsigned int GameState::execute(bool unScheduled) {
 		}
 	}
 
-	// update turret recoil
-	if(recoil < 0.0f) {
-		recoil += deltaTime / gameSystem->getFloat("stateTurretRecoilSpeed");
+	// missile/shell collisions
+	for(size_t i = 0; i < missiles.size(); ++i) {
+		if(! missiles[i].alive)
+			continue;
 
-		if(recoil >= 0.0f)
-			recoil = 1.0f - recoil;
-	} else if(recoil > 0.0f) {
-		recoil -= deltaTime / gameSystem->getFloat("stateTurretRecoilRecoverySpeed");
+		if(missiles[i].position == previousMissilePositions[i])
+			continue;
 
-		if(recoil < 0.0f)
-			recoil = 0.0f;
+		Vector3 missileStartPos = previousMissilePositions[i];
+		Vector3 missileTravelVec = missiles[i].position - missileStartPos;
+		Vector3 missileLengthVector = missileTravelVec * missileLength / mag(missileTravelVec);
+
+		size_t p = 0;
+		while(p < shells.size()) {
+			Vector3 shellStartPos = shells[p].position;
+			Vector3 shellTravelVec = shells[p].direction * deltaTime * gameSystem->getFloat("stateShellSpeed");
+
+			// calculate the closest point of approach for these two vectors
+			// not really sure how this works since I ripped it off from a math tutorial, but it seems to do the trick
+			Vector3 travelsVector = missileTravelVec - shellTravelVec;
+			float dotProd = dot(travelsVector, travelsVector);
+			Vector3 originsVector = missileStartPos - shellStartPos;
+			float cpaProgression = -dot(originsVector, travelsVector) / dotProd;
+
+			if(isnan(cpaProgression) || cpaProgression < 0.0f)
+				cpaProgression = 0.0f;
+			if(cpaProgression > 1.0f)
+				cpaProgression = 1.0f;
+
+			// from the closest point of approach, see if any other point along the missile length is closer
+			travelsVector = missileLengthVector;
+			dotProd = dot(travelsVector, travelsVector);
+			originsVector = (missileStartPos + missileTravelVec * cpaProgression) - (shellStartPos + shellTravelVec * cpaProgression);
+			float cpaMissileProgression = -dot(originsVector, travelsVector) / dotProd;
+
+			if(isnan(cpaMissileProgression) || cpaMissileProgression < 0.0f)
+				cpaMissileProgression = 0.0f;
+			if(cpaMissileProgression > 1.0f)
+				cpaMissileProgression = 1.0f;
+
+			if(distance(
+					shellStartPos + shellTravelVec * cpaProgression,
+					missileStartPos + missileTravelVec * cpaProgression + missileLengthVector * cpaMissileProgression
+				) < gameSystem->getFloat("stateMissileRadius")) {
+				missiles[i].alive = false;
+				shells.erase(shells.begin() + p);
+				++score;
+
+				break;
+			}
+
+			++p;
+		}
 	}
 
-	// update shells
+	// update shell positions
 	size_t i = 0;
 	while(i < shells.size()) {
 		shells[i].position += shells[i].direction * deltaTime * gameSystem->getFloat("stateShellSpeed");
 
-		if(distance(fortress.position, shells[i].position) >= gameSystem->getFloat("stateShellExpirationDistance"))
+		if(
+				distance(fortress.position, shells[i].position) >= gameSystem->getFloat("stateShellExpirationDistance") ||
+				shells[i].position.y < 0.0f
+			)
 			shells.erase(shells.begin() + i);
 		else
 			++i;
 	}
 
-	// update EMP status (< 0 = firing, 0 = not in use, > 0 = charging
-	if(fortress.shock < 0.0f) {
-		// firing
-		fortress.shock += deltaTime / gameSystem->getFloat("stateEMPDuration");
+	// update turret recoil
+	if(recoil > 1.0f) {
+		recoil -= deltaTime / gameSystem->getFloat("stateTurretRecoilSpeed");
+	} else if(recoil > 0.0f) {
+		recoil -= deltaTime / gameSystem->getFloat("stateTurretRecoilRecoverySpeed");
+	} else {
+		recoil = 0.0f;
+	}
 
-		if(fortress.shock > 0.0f)
+	// update EMP status
+	if(fortress.shock > 1.0f) {
+		if(shockIsCharging) {
+			// charging
+			fortress.shock -= deltaTime / gameSystem->getFloat("stateEMPChargingTime");
+
+			if(fortress.shock < 1.0f)
+				fortress.shock = 1.0f;
+		} else {
+			// cancel charge and return stocks (overages corrected by subsequent code)
 			fortress.shock = 0.0f;
-	} else if(shockIsCharging) {
-		if(fortress.shock == 0.0f) {
+			fortress.health += gameSystem->getFloat("stateEMPHealthCost");
+			fortress.ammunition += gameSystem->getFloat("stateEMPFiringCost");
+		}
+	} else if(fortress.shock > 0.0f) {
+		if(! shockIsCharging || fortress.shock < 1.0f)
+			// fire or contine discharging
+			fortress.shock -= deltaTime / gameSystem->getFloat("stateEMPDuration");
+	} else {
+		// at rest
+		fortress.shock = 0.0f;
+
+		if(shockIsCharging) {
 			if(
 					fortress.health > gameSystem->getFloat("stateEMPHealthCost") &&
 					fortress.ammunition > gameSystem->getFloat("stateEMPFiringCost")
@@ -425,24 +511,8 @@ unsigned int GameState::execute(bool unScheduled) {
 				fortress.health -= gameSystem->getFloat("stateEMPHealthCost");
 				fortress.ammunition -= gameSystem->getFloat("stateEMPFiringCost");
 
-				fortress.shock += deltaTime / gameSystem->getFloat("stateEMPChargingTime");
+				fortress.shock = 2.0f - deltaTime / gameSystem->getFloat("stateEMPChargingTime");
 			}
-		} else {
-			// continue charging
-			fortress.shock += deltaTime / gameSystem->getFloat("stateEMPChargingTime");
-
-			if(fortress.shock > 1.0f)
-				fortress.shock = 1.0f;
-		}
-	} else if(fortress.shock > 0.0f) {
-		if(fortress.shock == 1.0f) {
-			// fire EMP
-			fortress.shock = -1.0f;
-		} else {
-			// cancel charge and return stocks (overages corrected by subsequent code)
-			fortress.shock = 0.0f;
-			fortress.health += gameSystem->getFloat("stateEMPHealthCost");
-			fortress.ammunition += gameSystem->getFloat("stateEMPFiringCost");
 		}
 	}
 
@@ -452,16 +522,21 @@ unsigned int GameState::execute(bool unScheduled) {
 	if(fortress.health > 1.0f) fortress.health = 1.0f;
 
 	// update ammo status
-	fortress.ammunition += deltaTime * gameSystem->getFloat("stateAmmoFiringCost") * ships.size() / (int) gameSystem->getFloat("stateMissileFiringRate") * 2.0f;
+	fortress.ammunition +=
+			deltaTime *
+			gameSystem->getFloat("stateAmmoFiringCost") *
+			(float) ships.size() /
+			gameSystem->getFloat("stateMissileFiringRate") *
+			gameSystem->getFloat("stateAmmoReloadMultiplier");
 	if(fortress.ammunition > 1.0f) fortress.ammunition = 1.0f;
 
 	// missile/EMP collisions
-	if(fortress.shock < 0.0f) {
+	if(fortress.shock > 0.0f && fortress.shock < 1.0f) {
 		for(size_t i = 0; i < missiles.size(); ++i) {
 			if(! missiles[i].alive)
 				continue;
 
-			if(distance(fortress.position, missiles[i].position) < (1.0f + fortress.shock) * gameSystem->getFloat("stateEMPRange")) {
+			if(distance(fortress.position, missiles[i].position) < (1.0f - fortress.shock) * gameSystem->getFloat("stateEMPRange")) {
 				missiles[i].alive = false;
 				++score;
 			}
@@ -548,8 +623,10 @@ void GameState::fireShell() {
 
 	fortress.ammunition -= gameSystem->getFloat("stateAmmoFiringCost");
 
-	if(recoil == 0.0f)
-		recoil = -1.0f;
-	else if(recoil > 0.0f)
-		recoil = -1.0f + recoil;
+	if(recoil > 0.0f) {
+		if(recoil < 1.0f)
+			recoil = 1.0f + (1.0f - recoil);
+	} else {
+		recoil = 2.0f;
+	}
 }

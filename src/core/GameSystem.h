@@ -15,8 +15,8 @@
 // Version number (positive integer increased by 1 at each release)
 #define PROGRAM_VERSION "1"
 
-// Build identifier string (DEVEL# | ALPHA# | BETA# | STABLE)
-#define PROGRAM_BUILDSTRING "DEVEL1"
+// Build identifier string (DEVEL | ALPHA# | BETA# | STABLE)
+#define PROGRAM_BUILDSTRING "DEVEL"
 
 // forward declarations
 class Platform;

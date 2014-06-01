@@ -90,10 +90,12 @@ void SkyRenderer::execute(std::map<std::string, void*> arguments) {
 
 	// set uniforms
 	glUniformMatrix4fv(uniforms["mvpMatrix"], 1, GL_FALSE, mvpMatrixArray);
-	float shockColorMultiplier = (gameState->fortress.shock >= 0.0f ? 1.0f :
-			(1.0f + gameState->fortress.shock) +
-			gameSystem->getFloat("shockColorMultiplier") * -gameState->fortress.shock
+	float shockColorMultiplier = (
+			gameState->fortress.shock <= 0.0f || gameState->fortress.shock >= 1.0f ?
+			1.0f :
+			1.0f - gameState->fortress.shock + gameState->fortress.shock * gameSystem->getFloat("shockColorMultiplier")
 		);
+
 	Vector4 waterColor = gameSystem->getColor("waterColor") * shockColorMultiplier;
 	glUniform4f(uniforms["waterColor"], waterColor.x, waterColor.y, waterColor.z, waterColor.w);
 	Vector4 horizonColor = gameSystem->getColor("horizonColor") * shockColorMultiplier;
