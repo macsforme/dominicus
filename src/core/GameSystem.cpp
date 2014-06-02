@@ -289,7 +289,7 @@ GameSystem::GameSystem() {
 	setStandard("hudGrayOutColor", Vector4(0.0f, 0.0f, 0.05f, 0.75f), "Color of gray screen during pause.");
 
 	// font standards
-	setStandard("fontFile", "FreeSansBold.ttf", "Font file to load for use by HUD and menus.");
+	setStandard("fontFile", "TitilliumWeb-Bold.ttf", "Font file to load for use by HUD and menus.");
 	setStandard("fontSizeSmall", 16.0f, "Font size for small display in points (1/72 inch).");
 	setStandard("fontSizeMedium", 24.0f, "Font size for standard display in points (1/72 inch).");
 	setStandard("fontSizeLarge", 34.0f, "Font size for enlarged display in points (1/72 inch).");
