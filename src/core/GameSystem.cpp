@@ -296,6 +296,7 @@ GameSystem::GameSystem() {
 	setStandard("fontSizeSuper", 46.0f, "Font size for title display in points (1/72 inch).");
 	setStandard("fontColorLight", Vector4(1.0f, 1.0f, 1.0f, 1.0f), "Light font color.");
 	setStandard("fontColorDark", Vector4(0.5f, 0.5f, 0.5f, 1.0f), "Medium font color.");
+	setStandard("helpTextScreenPortion", 0.8f, "Horizontal portion of screen taken up by help text.");
 
 	// audio standards
 	setStandard("audioTickRate", 50.0f, "Audio manager tick rate.");
