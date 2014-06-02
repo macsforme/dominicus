@@ -3,3 +3,6 @@
 
 # Xcode files not already under version control
 crucible island.xcodeproj
+
+# SDL files
+src/platform/macosx/SDLMain.*
