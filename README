@@ -67,7 +67,7 @@ When you have downloaded FreeType 2, execute the following commands (or appropri
 
 Freetype 2 should now be installed where the Crucible Island Xcode project file can find it.
 
-To build Crucible Island, open the file "crucible island.xcodeproj" in the source directory. Expand the "frameworks" group near the bottom of the files panel on the left, and verify that the files "SDL.framework," "libfreetype.a," and "libpng.a" are not shown in red text. This will show you that you installed the dependencies correctly. Press the keys Command-B, or select "Build" from the Product menu, to build the project. When you activate the Utilities pane (using the icon in the upper-right corner of the Xcode window) and click on the "crucible island.app" in the Navigator pane, the full path to the application bundle should be shown in the Utilities pane.
+To build Crucible Island, open the file "crucible island.xcodeproj" in the source directory. Expand the "frameworks" group near the bottom of the files panel on the left, and verify that the files "SDL.framework," "libfreetype.a," and "libpng.a" are not shown in red text. This will show you that you installed the dependencies correctly. Press the keys Command-B, or select "Build" from the Product menu, to build the project. When you activate the Utilities pane (using the icon in the upper-right corner of the Xcode window) and click on the "Crucible Island.app" in the Navigator pane, the full path to the application bundle should be shown in the Utilities pane.
 
 
 BUG REPORTS

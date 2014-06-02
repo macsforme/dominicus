@@ -169,7 +169,7 @@
 		03BB9B84131F3F50009DFC8B /* TextBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextBlock.h; sourceTree = "<group>"; };
 		03BB9B88131F3F50009DFC8B /* Texture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Texture.cpp; sourceTree = "<group>"; };
 		03BB9B89131F3F50009DFC8B /* Texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Texture.h; sourceTree = "<group>"; };
-		03C806C7130E4FED0037D309 /* crucible island.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "crucible island.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		03C806C7130E4FED0037D309 /* Crucible Island.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Crucible Island.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		03C9206A13693A51000C4373 /* GameState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameState.h; path = src/state/GameState.h; sourceTree = "<group>"; };
 		03C9206B13693A51000C4373 /* GameState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameState.cpp; path = src/state/GameState.cpp; sourceTree = "<group>"; };
 		03D47B7D1263E27F001755A6 /* crucible island.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = "crucible island.icns"; sourceTree = "<group>"; };
@@ -432,7 +432,7 @@
 				030F8DEC1264C00100190225 /* shaders */,
 				030F8DEF1264C01100190225 /* data */,
 				032B8AE812639AC900DDE564 /* frameworks */,
-				03C806C7130E4FED0037D309 /* crucible island.app */,
+				03C806C7130E4FED0037D309 /* Crucible Island.app */,
 			);
 			name = dominicus;
 			sourceTree = "<group>";
@@ -440,9 +440,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		03C806C6130E4FED0037D309 /* crucible island */ = {
+		03C806C6130E4FED0037D309 /* Crucible Island */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 03C806CB130E500B0037D309 /* Build configuration list for PBXNativeTarget "crucible island" */;
+			buildConfigurationList = 03C806CB130E500B0037D309 /* Build configuration list for PBXNativeTarget "Crucible Island" */;
 			buildPhases = (
 				03C806C3130E4FED0037D309 /* Resources */,
 				03C806C4130E4FED0037D309 /* Sources */,
@@ -453,9 +453,9 @@
 			);
 			dependencies = (
 			);
-			name = "crucible island";
+			name = "Crucible Island";
 			productName = dominicus;
-			productReference = 03C806C7130E4FED0037D309 /* crucible island.app */;
+			productReference = 03C806C7130E4FED0037D309 /* Crucible Island.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -479,7 +479,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				03C806C6130E4FED0037D309 /* crucible island */,
+				03C806C6130E4FED0037D309 /* Crucible Island */,
 			);
 		};
 /* End PBXProject section */
@@ -583,7 +583,7 @@
 				INSTALL_PATH = "$(HOME)/Applications";
 				OTHER_LDFLAGS = "";
 				PREBINDING = NO;
-				PRODUCT_NAME = "crucible island";
+				PRODUCT_NAME = "Crucible Island";
 			};
 			name = Debug;
 		};
@@ -606,7 +606,7 @@
 				INSTALL_PATH = "$(HOME)/Applications";
 				OTHER_LDFLAGS = "";
 				PREBINDING = NO;
-				PRODUCT_NAME = "crucible island";
+				PRODUCT_NAME = "Crucible Island";
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -662,7 +662,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		03C806CB130E500B0037D309 /* Build configuration list for PBXNativeTarget "crucible island" */ = {
+		03C806CB130E500B0037D309 /* Build configuration list for PBXNativeTarget "Crucible Island" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				03C806C9130E4FED0037D309 /* Debug */,
