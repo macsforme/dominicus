@@ -1,0 +1,5 @@
+# Mac OS X Desktop Services Store
+.DS_Store
+
+# Xcode files not already under version control
+crucible island.xcodeproj
