@@ -225,6 +225,7 @@ DrawStackEntry fpsEntry;
 	std::string playerName;
 	unsigned int deleteKeyPressTime;
 	unsigned int lastCharacterDeletionTime;
+	unsigned int leftArrowPressTime, rightArrowPressTime, upArrowPressTime, downArrowPressTime;
 
 //FIXME probably delete this fugly functionality
 	Vector2 keyboardCursorPosition;
