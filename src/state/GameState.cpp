@@ -213,7 +213,7 @@ GameState::GameState() : MainLoopMember((unsigned int) gameSystem->getFloat("sta
 	isPaused = false;
 	lastUpdateGameTime = 0;
 	gameTimeMargin = platform->getExecMills();
-	lastSimulationUpdate = 0;
+	lastUpdateGameTime = 0;
 
 	// set starting score
 	score = 0;
@@ -227,16 +227,14 @@ GameState::~GameState() {
 }
 
 unsigned int GameState::execute(bool unScheduled) {
-	// mark current game time for this update for consistency
-	lastUpdateGameTime = getGameMills();
-
 	// get a delta time for stuff that doesn't use precomputed state
+	unsigned int newGameTime = getGameMills();
 	float deltaTime = 0.0f;
-	if(! isPaused) {
-		unsigned int currentGameTime = getGameMills();
-		deltaTime = (float) (currentGameTime - lastSimulationUpdate) / 1000.0f;
-		lastSimulationUpdate = currentGameTime;
-	}
+	if(! isPaused)
+		deltaTime = (float) (newGameTime - lastUpdateGameTime) / 1000.0f;
+
+	// mark current game time for this update for consistency
+	lastUpdateGameTime = newGameTime;
 
 	// update/add ships as appropriate
 	float shipOrbitDistance = (gameSystem->getFloat("islandMaximumWidth") * 0.5f + gameSystem->getFloat("stateShipOrbitMargin"));

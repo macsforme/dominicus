@@ -113,7 +113,6 @@ public:
 	unsigned int lastUpdateGameTime;
 	int gameTimeMargin;
 
-	int lastSimulationUpdate;
 	unsigned int execute(bool unScheduled = false);
 
 	GameState();
