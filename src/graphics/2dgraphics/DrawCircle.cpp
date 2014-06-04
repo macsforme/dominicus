@@ -1,4 +1,4 @@
-// DrawContainer.cpp
+// DrawCircle.cpp
 //
 // Dominicus
 // Copyright 2010-2011, Joshua Bodine
@@ -6,9 +6,9 @@
 // Released under the terms of the "Simplified BSD License." See the file
 // licenses/DOMINICUS.txt for the license text.
 
-#include "graphics/2dgraphics/DrawCursor.h"
+#include "graphics/2dgraphics/DrawCircle.h"
 
-DrawCursor::DrawCursor() {
+DrawCircle::DrawCircle() {
 	// set up shader
 	GLuint shaderID = 0;
 	std::vector<GLuint> shaderIDs;
@@ -34,7 +34,7 @@ DrawCursor::DrawCursor() {
 	glGenBuffers(1, &(vertexBuffers["elements"]));
 }
 
-void DrawCursor::execute(std::map<std::string, void*> arguments) {
+void DrawCircle::execute(std::map<std::string, void*> arguments) {
 	// set up geometry
 	Vector2 position = *((Vector2*) arguments["position"]);
 	Vector2 size = Vector2(
@@ -150,7 +150,7 @@ void DrawCursor::execute(std::map<std::string, void*> arguments) {
 	glDisable(GL_BLEND);
 }
 
-void DrawCursor::drawCurve(
+void DrawCircle::drawCurve(
 		std::vector<VertexEntry>* quadVertices,
 		Vector2 position,
 		Vector2 size,

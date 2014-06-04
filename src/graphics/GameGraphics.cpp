@@ -263,9 +263,8 @@ SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 0);
 
 	// instantiate drawers
 	drawers["splash"] = new DrawSplash();
-	drawers["controlBox"] = new DrawControlBox();
 	drawers["container"] = new DrawContainer();
-	drawers["cursor"] = new DrawCursor();
+	drawers["circle"] = new DrawCircle();
 	drawers["label"] = new DrawLabel();
 	drawers["field"] = new DrawField();
 	drawers["button"] = new DrawButton();
@@ -297,9 +296,8 @@ GameGraphics::~GameGraphics() {
 
 	// delete drawers
 	delete((DrawSplash*) drawers["splash"]);
-	delete((DrawControlBox*) drawers["controlBox"]);
 	delete((DrawContainer*) drawers["container"]);
-	delete((DrawCursor*) drawers["cursor"]);
+	delete((DrawCircle*) drawers["circle"]);
 	delete((DrawLabel*) drawers["label"]);
 	delete((DrawField*) drawers["field"]);
 	delete((DrawButton*) drawers["button"]);

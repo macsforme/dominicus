@@ -253,13 +253,12 @@ GameSystem::GameSystem() {
 
 	// HUD standards
 	setStandard("hudFPSTestFrequency", 1.0f, "Frequency per second of the FPS test.");
-	setStandard("hudCursorSize", 50.0f, "Height of cursor in pixels.");
-	setStandard("hudCursorInsideColor", Vector4(0.0f, 0.0f, 0.0f, 0.5f), "Thickness of cursor in pixels.");
-	setStandard("hudCursorBorderColor", Vector4(0.0f, 0.0f, 0.0f, 1.0f), "Thickness of cursor in pixels.");
-	setStandard("hudControlBoxSize", 40.0f, "Size of ship control box in percentage of screen height.");
-	setStandard("hudControlBoxCornerSize", 50.0f, "Percentage of control box quadrant which curved portion should take up.");
-	setStandard("hudControlBoxSpotSize", 8.0f, "Size of ship control box dead spot in percentage of screen height.");
-	setStandard("hudControlBoxColor", Vector4(0.3f, 0.3f, 0.3f, 0.6f), "Thickness of cursor in pixels.");
+	setStandard("hudControlSpotSize", 80.0f, "Width and height of control spot in pixels.");
+	setStandard("hudControlSpotBorder", 5.0f, "Thickness of control spot border in pixels.");
+	setStandard("hudControlSpotColor", Vector4(0.3f, 0.3f, 0.3f, 0.6f), "Color of control spot.");
+	setStandard("hudCursorSize", 40.0f, "Width and height of cursor in pixels.");
+	setStandard("hudCursorColor", Vector4(0.0f, 0.0f, 0.0f, 0.5f), "Color of cursor.");
+	setStandard("hudCursorRange", 0.5f, "Portion of screen height which is radius of cursor range.");
 	setStandard("radarSize", 35.0f, "Size of radar panel in percentage of screen height.");
 	setStandard("radarRefreshSpeed", 1.0f, "Time in seconds for a full radar turn.");
 	setStandard("radarSpotSize", 6.0f, "Size in pixels of radar missile spots.");
@@ -267,7 +266,6 @@ GameSystem::GameSystem() {
 	setStandard("radarSpotColor", Vector4(1.0f, 0.0f, 0.0f, 1.0f), "Color of radar missile spots.");
 	setStandard("radarEMPColor", Vector4(1.0f, 1.0f, 1.0f, 0.5f), "Color of radar missile spots.");
 	setStandard("radarRadius", 1500.0f, "Radius of radar coverage.");
-
 	setStandard("hudElementMargin", 36.0f, "Space between HUD elements in pixels (must be even number).");
 //	setStandard("hudContainerPadding", 12.0f, "Space between HUD elements' external border and content in pixels.");
 	setStandard("hudButtonPadding", 12.0f, "Space between HUD buttons' external border and content in pixels.");
@@ -283,7 +281,7 @@ GameSystem::GameSystem() {
 	setStandard("hudGaugePadding", 20.0f, "Gauge panel padding in pixels.");
 	setStandard("hudGaugeWidth", 200.0f, "Width of gauges in pixels.");
 	setStandard("hudGaugeHeight", 30.0f, "Height of gauges in pixels.");
-	setStandard("hudGaugeBackgroundColor", Vector4(0.3f, 0.3f, 0.3f, 1.0f), "Background color of gauges.");
+	setStandard("hudGaugeBackgroundColor", Vector4(0.3f, 0.3f, 0.3f, 0.6f), "Background color of gauges.");
 	setStandard("hudGaugeColorFalloff", Vector4(0.3f, 0.3f, 0.3f, 0.75f), "Factor to be multiplied into gauge color for falloff at bottom.");
 	setStandard("hudGaugeHealthBarColor", Vector4(0.0f, 1.0f, 0.0f, 1.0f), "Color of health gauge.");
 	setStandard("hudGaugeAmmoBarColor", Vector4(0.0f, 1.0f, 1.0f, 1.0f), "Color of ammunition gauge.");

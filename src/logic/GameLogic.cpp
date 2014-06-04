@@ -370,7 +370,16 @@ GameLogic::GameLogic() :
 	turretRightKeyListener = new KeyAbsoluteListener(SDLK_RIGHT);
 	cameraAheadKeyListener = new KeyAbsoluteListener(SDLK_SPACE);
 
-	cursorEntry.first = "cursor";
+	controlSpotEntry.first = "circle";
+	controlSpotEntry.second["size"] = (void*) new float;
+	controlSpotEntry.second["position"] = (void*) new Vector2;
+	controlSpotEntry.second["border"] = (void*) new float;
+	controlSpotEntry.second["softEdge"] = (void*) new float;
+	controlSpotEntry.second["insideColor"] = (void*) new Vector4;
+	controlSpotEntry.second["borderColor"] = (void*) new Vector4;
+	controlSpotEntry.second["outsideColor"] = (void*) new Vector4;
+
+	cursorEntry.first = "circle";
 	cursorEntry.second["size"] = (void*) new float;
 	cursorEntry.second["position"] = NULL;
 	cursorEntry.second["border"] = (void*) new float;
@@ -396,9 +405,6 @@ GameLogic::GameLogic() :
 	playingTipEntry.second["fontSize"] = (void*) new float;
 	playingTipEntry.second["fontColor"] = (void*) new Vector4;
 	playingTipEntry.second["text"] = (void*) new std::string;
-
-	controlBoxEntry.first = "controlBox";
-	controlBoxEntry.second["drawCorners"] = (void*) new bool;
 
 	gaugePanelEntry.first = "gaugePanel";
 	gaugePanelEntry.second["metrics"] = (void*) new UIMetrics;
@@ -1018,13 +1024,7 @@ lastFPSUpdate = platform->getExecMills();
 			reScheme();
 		}
 
-		// arrow key dampening; this will actually put the time behind by one frame
-		if(! turretLeftKeyListener->isDown) leftArrowPressTime = gameState->lastUpdateGameTime;
-		if(! turretRightKeyListener->isDown) rightArrowPressTime = gameState->lastUpdateGameTime;
-		if(! turretUpKeyListener->isDown) upArrowPressTime = gameState->lastUpdateGameTime;
-		if(! turretDownKeyListener->isDown) downArrowPressTime = gameState->lastUpdateGameTime;
-
-		// mouse motion
+		// see if changing to mouse motion
 		if(mouseMotionListener->wasMoved()) {
 			if(! mouseActive) {
 				SDL_WarpMouse(
@@ -1038,50 +1038,35 @@ lastFPSUpdate = platform->getExecMills();
 				reScheme();
 			}
 
-			// constrain to control box
-			if(inputHandler->mouse->position.x > gameSystem->getFloat("hudControlBoxSize") / 100.0f / gameGraphics->aspectRatio) {
-				SDL_WarpMouse(
-						(gameSystem->getFloat("hudControlBoxSize") / 100.0f / gameGraphics->aspectRatio + 1.0f) / 2.0f * gameGraphics->resolutionX,
-						(-inputHandler->mouse->position.y + 1.0f) / 2.0f * gameGraphics->resolutionY
-					);
-				inputHandler->execute();
-			}
-			if(inputHandler->mouse->position.x < -gameSystem->getFloat("hudControlBoxSize") / 100.0f / gameGraphics->aspectRatio) {
-				SDL_WarpMouse(
-						(-gameSystem->getFloat("hudControlBoxSize") / 100.0f / gameGraphics->aspectRatio + 1.0f) / 2.0f * gameGraphics->resolutionX,
-						(-inputHandler->mouse->position.y + 1.0f) / 2.0f * gameGraphics->resolutionY
-					);
-				inputHandler->execute();
-			}
-			if(inputHandler->mouse->position.y > gameSystem->getFloat("hudControlBoxSize") / 100.0f) {
-				SDL_WarpMouse(
-						(inputHandler->mouse->position.x + 1.0f) / 2.0f * gameGraphics->resolutionX,
-						(-gameSystem->getFloat("hudControlBoxSize") / 100.0f + 1.0f) / 2.0f * gameGraphics->resolutionY
-					);
-				inputHandler->execute();
-			}
-			if(inputHandler->mouse->position.y < -gameSystem->getFloat("hudControlBoxSize") / 100.0f) {
-				SDL_WarpMouse(
-						(inputHandler->mouse->position.x + 1.0f) / 2.0f * gameGraphics->resolutionX,
-						(gameSystem->getFloat("hudControlBoxSize") / 100.0f + 1.0f) / 2.0f * gameGraphics->resolutionY
-					);
-				inputHandler->execute();
-			}
+			// constrain to control radius
+			Vector2 correctAspectMousePosition(inputHandler->mouse->position.x * gameGraphics->aspectRatio, inputHandler->mouse->position.y);
+			if(mag(correctAspectMousePosition) > gameSystem->getFloat("hudCursorRange")) {
+				Vector2 mousePositionVector = correctAspectMousePosition * gameSystem->getFloat("hudCursorRange") / mag(correctAspectMousePosition);
 
-			mouseMotionListener->wasMoved();
+				SDL_WarpMouse(
+						gameGraphics->resolutionX / 2 + (unsigned short int) (mousePositionVector.x * (float) (gameGraphics->resolutionX / 2) / gameGraphics->aspectRatio),
+						gameGraphics->resolutionY / 2 - (unsigned short int) (mousePositionVector.y * (float) (gameGraphics->resolutionY / 2))
+					);
+
+				inputHandler->execute();
+
+				mouseMotionListener->wasMoved();
+			}
 		}
 
 		// do movement
 		if(mouseActive) {
-			Vector2 effectiveMousePosition = Vector2(
-				inputHandler->mouse->position.x * gameGraphics->aspectRatio * 100.0f / gameSystem->getFloat("hudControlBoxSize"),
-				inputHandler->mouse->position.y * 100.0f / gameSystem->getFloat("hudControlBoxSize")
-				);
-			float effectiveDeadAreaRadius = gameSystem->getFloat("hudControlBoxSpotSize") / gameSystem->getFloat("hudControlBoxSize");
+			Vector2 correctAspectMousePosition(inputHandler->mouse->position.x * gameGraphics->aspectRatio, inputHandler->mouse->position.y);
+			float effectiveDeadAreaRadius = gameSystem->getFloat("hudControlSpotSize") / (float) gameGraphics->resolutionY;
 
-			if(distance(Vector2(0.0f, 0.0f), effectiveMousePosition) > effectiveDeadAreaRadius) {
-				gameState->fortress.addRotation(gameSystem->getFloat("stateTurretTurnSpeed") * deltaTime * effectiveMousePosition.x);
-				gameState->fortress.addTilt(gameSystem->getFloat("stateTurretTurnSpeed") * deltaTime * effectiveMousePosition.y);
+			if(mag(correctAspectMousePosition) > effectiveDeadAreaRadius) {
+				Vector2 movementVector =
+						correctAspectMousePosition * (mag(correctAspectMousePosition) - effectiveDeadAreaRadius) /
+						(gameSystem->getFloat("hudCursorRange") - effectiveDeadAreaRadius) /
+						gameSystem->getFloat("hudCursorRange");
+
+				gameState->fortress.addRotation(gameSystem->getFloat("stateTurretTurnSpeed") * deltaTime * movementVector.x);
+				gameState->fortress.addTilt(gameSystem->getFloat("stateTurretTurnSpeed") * deltaTime * movementVector.y);
 			}
 		}
 
@@ -1124,6 +1109,12 @@ lastFPSUpdate = platform->getExecMills();
 					gameState->pause();
 			}
 		}
+
+		// arrow key dampening; this will actually put the time behind by one frame
+		if(! turretLeftKeyListener->isDown) leftArrowPressTime = gameState->lastUpdateGameTime;
+		if(! turretRightKeyListener->isDown) rightArrowPressTime = gameState->lastUpdateGameTime;
+		if(! turretUpKeyListener->isDown) upArrowPressTime = gameState->lastUpdateGameTime;
+		if(! turretDownKeyListener->isDown) downArrowPressTime = gameState->lastUpdateGameTime;
 
 		// keys down
 		gameState->shockIsCharging = fireEMPKeyListener->isDown;

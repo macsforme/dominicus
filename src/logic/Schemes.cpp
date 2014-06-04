@@ -839,20 +839,36 @@ void Schemes::playingScheme() {
 	gameLogic->drawStack.push_back(gameLogic->playingTipEntry);
 	gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->playingTipEntry.second["metrics"]);
 
-	// control box
-	*((bool*) gameLogic->controlBoxEntry.second["drawCorners"]) = (gameLogic->mouseActive ? true : false);
-	gameLogic->drawStack.push_back(gameLogic->controlBoxEntry);
+	// control spot
+	*((float*) gameLogic->controlSpotEntry.second["size"]) = gameSystem->getFloat("hudControlSpotSize");
+	*((Vector2*) gameLogic->controlSpotEntry.second["position"]) = Vector2(0.0f, 0.0f);
+	*((float*) gameLogic->controlSpotEntry.second["border"]) = gameSystem->getFloat("hudControlSpotBorder");
+	*((float*) gameLogic->controlSpotEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
+	*((Vector4*) gameLogic->controlSpotEntry.second["insideColor"]) = Vector4(
+			gameSystem->getColor("hudControlSpotColor").x,
+			gameSystem->getColor("hudControlSpotColor").y,
+			gameSystem->getColor("hudControlSpotColor").z,
+			0.0f
+		);
+	*((Vector4*) gameLogic->controlSpotEntry.second["borderColor"]) = gameSystem->getColor("hudControlSpotColor");
+	*((Vector4*) gameLogic->controlSpotEntry.second["outsideColor"]) = Vector4(
+			gameSystem->getColor("hudControlSpotColor").x,
+			gameSystem->getColor("hudControlSpotColor").y,
+			gameSystem->getColor("hudControlSpotColor").z,
+			0.0f
+		);
+	gameLogic->drawStack.push_back(gameLogic->controlSpotEntry);
 
 	// gauge panel
 	*((float*) gameLogic->gaugePanelEntry.second["padding"]) = gameSystem->getFloat("hudGaugePadding");
 	*((float*) gameLogic->gaugePanelEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
 	*((float*) gameLogic->gaugePanelEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
-	*((Vector4*) gameLogic->gaugePanelEntry.second["insideColor"]) = gameSystem->getColor("hudControlBoxColor");
-	*((Vector4*) gameLogic->gaugePanelEntry.second["borderColor"]) = gameSystem->getColor("hudControlBoxColor");
+	*((Vector4*) gameLogic->gaugePanelEntry.second["insideColor"]) = gameSystem->getColor("hudGaugeBackgroundColor");
+	*((Vector4*) gameLogic->gaugePanelEntry.second["borderColor"]) = gameSystem->getColor("hudGaugeBackgroundColor");
 	*((Vector4*) gameLogic->gaugePanelEntry.second["outsideColor"]) = Vector4(
-			gameSystem->getColor("hudControlBoxColor").x,
-			gameSystem->getColor("hudControlBoxColor").y,
-			gameSystem->getColor("hudControlBoxColor").z,
+			gameSystem->getColor("hudGaugeBackgroundColor").x,
+			gameSystem->getColor("hudGaugeBackgroundColor").y,
+			gameSystem->getColor("hudGaugeBackgroundColor").z,
 			0.0f
 		);
 	*((size_t*) gameLogic->gaugePanelEntry.second["elements"]) = 3;
@@ -901,12 +917,12 @@ void Schemes::playingScheme() {
 	*((float*) gameLogic->radarEntry.second["padding"]) = gameSystem->getFloat("hudGaugePadding");
 	*((float*) gameLogic->radarEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
 	*((float*) gameLogic->radarEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
-	*((Vector4*) gameLogic->radarEntry.second["insideColor"]) = gameSystem->getColor("hudControlBoxColor");
-	*((Vector4*) gameLogic->radarEntry.second["borderColor"]) = gameSystem->getColor("hudControlBoxColor");
+	*((Vector4*) gameLogic->radarEntry.second["insideColor"]) = gameSystem->getColor("hudGaugeBackgroundColor");
+	*((Vector4*) gameLogic->radarEntry.second["borderColor"]) = gameSystem->getColor("hudGaugeBackgroundColor");
 	*((Vector4*) gameLogic->radarEntry.second["outsideColor"]) = Vector4(
-			gameSystem->getColor("hudControlBoxColor").x,
-			gameSystem->getColor("hudControlBoxColor").y,
-			gameSystem->getColor("hudControlBoxColor").z,
+			gameSystem->getColor("hudGaugeBackgroundColor").x,
+			gameSystem->getColor("hudGaugeBackgroundColor").y,
+			gameSystem->getColor("hudGaugeBackgroundColor").z,
 			0.0f
 		);
 	((UIMetrics*) gameLogic->radarEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_RIGHT;
@@ -920,16 +936,16 @@ void Schemes::playingScheme() {
 	if(gameLogic->mouseActive) {
 		*((float*) gameLogic->cursorEntry.second["size"]) = gameSystem->getFloat("hudCursorSize");
 		gameLogic->cursorEntry.second["position"] = (gameLogic->mouseActive ? (void*) &inputHandler->mouse->position : &gameLogic->keyboardCursorPosition);
-		*((float*) gameLogic->cursorEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
+		*((float*) gameLogic->cursorEntry.second["border"]) = 0.0f;
 		*((float*) gameLogic->cursorEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
-		*((Vector4*) gameLogic->cursorEntry.second["insideColor"]) = gameSystem->getColor("hudCursorInsideColor");
-		*((Vector4*) gameLogic->cursorEntry.second["borderColor"]) = gameSystem->getColor("hudCursorBorderColor");
-		*((Vector4*) gameLogic->cursorEntry.second["outsideColor"]) = Vector4(
-				gameSystem->getColor("hudCursorBorderColor").x,
-				gameSystem->getColor("hudCursorBorderColor").y,
-				gameSystem->getColor("hudCursorBorderColor").z,
+		*((Vector4*) gameLogic->cursorEntry.second["insideColor"]) = gameSystem->getColor("hudCursorColor");
+		*((Vector4*) gameLogic->cursorEntry.second["borderColor"]) = Vector4(
+				gameSystem->getColor("hudCursorColor").x,
+				gameSystem->getColor("hudCursorColor").y,
+				gameSystem->getColor("hudCursorColor").z,
 				0.0f
 			);
+		*((Vector4*) gameLogic->cursorEntry.second["outsideColor"]) = Vector4(0.0f, 0.0f, 0.0f, 0.0f);
 		gameLogic->drawStack.push_back(gameLogic->cursorEntry);
 	}
 

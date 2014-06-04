@@ -20,7 +20,7 @@ class MouseZoneListener;
 #include "core/GameSystem.h"
 #include "core/MainLoopMember.h"
 #include "graphics/GameGraphics.h"
-#include "graphics/2dgraphics/DrawControlBox.h"
+#include "graphics/2dgraphics/DrawCircle.h"
 #include "graphics/2dgraphics/DrawGrayOut.h"
 #include "graphics/2dgraphics/DrawRadar.h"
 #include "graphics/2dgraphics/DrawLabel.h"
@@ -119,11 +119,11 @@ public:
 	KeyAbsoluteListener* turretLeftKeyListener;
 	KeyAbsoluteListener* turretRightKeyListener;
 KeyAbsoluteListener* cameraAheadKeyListener;
+	DrawStackEntry controlSpotEntry;
 	DrawStackEntry cursorEntry;
 	DrawStackEntry clockLabel;
 	DrawStackEntry scoreLabel;
 	DrawStackEntry playingTipEntry;
-	DrawStackEntry controlBoxEntry;
 	DrawStackEntry gaugePanelEntry;
 	DrawStackEntry radarEntry;
 	DrawStackEntry skyEntry;
