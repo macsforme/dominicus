@@ -196,9 +196,9 @@ GameSystem::GameSystem() {
 	setStandard("stateMissileSpeed", 100.0f, "Missile speed in world units per second.");
 	setStandard("stateMissileFiringRate", 12.0f, "Wait time in between missile firings for each ship.");
 	setStandard("stateMissileRadius", 4.0f, "Radius in world units of missile collision area.");
-	setStandard("stateFortressMinimumTilt", -10.0f, "Minimum tilt angle of fortress turret.");
+	setStandard("stateFortressMinimumTilt", 0.0f, "Minimum tilt angle of fortress turret.");
 	setStandard("stateFortressMaximumTilt", 45.0f, "Maximum tilt angle of fortress turret.");
-	setStandard("stateTurretTurnSpeed", 67.5f, "Turning speed of turret in degrees per second.");
+	setStandard("stateTurretTurnSpeed", 90.0f, "Turning speed of turret in degrees per second.");
 	setStandard("stateHealthRegenerationRate", 0.0625f, "Portion of fortress health capacity regenerated each second.");
 	setStandard("stateMissileStrikeDepletion", 0.5f, "Portion of fortress health depleted by one missile strike.");
 	setStandard("stateAmmoFiringCost", 0.1f, "Portion of total ammunition capacity depleted by firing one shell.");
@@ -213,8 +213,9 @@ GameSystem::GameSystem() {
 	setStandard("stateTurretRecoilSpeed", 0.125f, "Time it takes for turret to recoil after shot.");
 	setStandard("stateTurretRecoilRecoverySpeed", 1.0f, "Time it takes for turret to recover from recoil after shot.");
 	setStandard("stateTurretRecoilDistance", 3.0f, "Distance in world units of turret recoil.");
-	setStandard("stateKeyDampeningTime", 0.25f, "Time in seconds over which to dampen arrow key presses");
-	setStandard("stateKeyDampeningExponent", 1.5f, "Power to raise fractional key movement values to when dampening key input");
+	setStandard("stateKeyDampeningBasePortion", 0.0f, "Portion of movement to make when key initially pressed.");
+	setStandard("stateKeyDampeningTime", 0.5f, "Time in seconds over which to dampen arrow key presses");
+	setStandard("stateKeyDampeningExponent", 1.0f, "Power to raise fractional key movement values to when dampening key input");
 
 	// input standards
 	setStandard("inputPollingFrequency", 120.0f, "Number of times per second to poll the input devices.");

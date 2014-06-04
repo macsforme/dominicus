@@ -1147,22 +1147,50 @@ lastFPSUpdate = platform->getExecMills();
 			}
 		} else {
 			if(turretLeftKeyListener->isDown) {
-				float dampeningFactor = pow((float) (gameState->lastUpdateGameTime - leftArrowPressTime) / 1000.0f / gameSystem->getFloat("stateKeyDampeningTime"), gameSystem->getFloat("stateKeyDampeningExponent"));
+				float dampeningFactor = gameSystem->getFloat("stateKeyDampeningBasePortion") +
+						(1.0f - gameSystem->getFloat("stateKeyDampeningBasePortion")) *
+						pow(
+								(float) (gameState->lastUpdateGameTime - leftArrowPressTime) /
+								1000.0f /
+								gameSystem->getFloat("stateKeyDampeningTime"),
+								gameSystem->getFloat("stateKeyDampeningExponent")
+							);
 				gameState->fortress.addRotation(-gameSystem->getFloat("stateTurretTurnSpeed") * deltaTime * (dampeningFactor < 1.0f ? dampeningFactor : 1.0f));
 				mouseActive = false;
 			}
 			if(turretRightKeyListener->isDown) {
-				float dampeningFactor = pow((float) (gameState->lastUpdateGameTime - rightArrowPressTime) / 1000.0f / gameSystem->getFloat("stateKeyDampeningTime"), gameSystem->getFloat("stateKeyDampeningExponent"));
+				float dampeningFactor = gameSystem->getFloat("stateKeyDampeningBasePortion") +
+						(1.0f - gameSystem->getFloat("stateKeyDampeningBasePortion")) *
+						pow(
+								(float) (gameState->lastUpdateGameTime - rightArrowPressTime) /
+								1000.0f /
+								gameSystem->getFloat("stateKeyDampeningTime"),
+								gameSystem->getFloat("stateKeyDampeningExponent")
+							);
 				gameState->fortress.addRotation(gameSystem->getFloat("stateTurretTurnSpeed") * deltaTime * (dampeningFactor < 1.0f ? dampeningFactor : 1.0f));
 				mouseActive = false;
 			}
 			if(turretUpKeyListener->isDown) {
-				float dampeningFactor = pow((float) (gameState->lastUpdateGameTime - upArrowPressTime) / 1000.0f / gameSystem->getFloat("stateKeyDampeningTime"), gameSystem->getFloat("stateKeyDampeningExponent"));
+				float dampeningFactor = gameSystem->getFloat("stateKeyDampeningBasePortion") +
+						(1.0f - gameSystem->getFloat("stateKeyDampeningBasePortion")) *
+						pow(
+								(float) (gameState->lastUpdateGameTime - upArrowPressTime) /
+								1000.0f /
+								gameSystem->getFloat("stateKeyDampeningTime"),
+								gameSystem->getFloat("stateKeyDampeningExponent")
+							);
 				gameState->fortress.addTilt(gameSystem->getFloat("stateTurretTurnSpeed") * deltaTime * (dampeningFactor < 1.0f ? dampeningFactor : 1.0f));
 				mouseActive = false;
 			}
 			if(turretDownKeyListener->isDown) {
-				float dampeningFactor = pow((float) (gameState->lastUpdateGameTime - downArrowPressTime) / 1000.0f / gameSystem->getFloat("stateKeyDampeningTime"), gameSystem->getFloat("stateKeyDampeningExponent"));
+				float dampeningFactor = gameSystem->getFloat("stateKeyDampeningBasePortion") +
+						(1.0f - gameSystem->getFloat("stateKeyDampeningBasePortion")) *
+						pow(
+								(float) (gameState->lastUpdateGameTime - downArrowPressTime) /
+								1000.0f /
+								gameSystem->getFloat("stateKeyDampeningTime"),
+								gameSystem->getFloat("stateKeyDampeningExponent")
+							);
 				gameState->fortress.addTilt(-gameSystem->getFloat("stateTurretTurnSpeed") * deltaTime * (dampeningFactor < 1.0f ? dampeningFactor : 1.0f));
 				mouseActive = false;
 			}
