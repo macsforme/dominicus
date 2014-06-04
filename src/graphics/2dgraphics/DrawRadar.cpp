@@ -8,7 +8,7 @@
 
 #include "graphics/2dgraphics/DrawRadar.h"
 
-DrawRadar::DrawRadar() : containerDrawer(new DrawContainer()), spotDrawer(new DrawSpot()) {
+DrawRadar::DrawRadar() : lastRotation(0), containerDrawer(new DrawContainer()), spotDrawer(new DrawSpot()) {
 	// set up shader
 	GLuint shaderID = 0;
 	std::vector<GLuint> shaderIDs;
@@ -307,17 +307,18 @@ void DrawRadar::execute(std::map<std::string, void*> arguments) {
 	glDisable(GL_SCISSOR_TEST);
 
 	// draw missile locations
-	static float lastRotation = gameState->lastUpdateGameTime % (unsigned int) (gameSystem->getFloat("radarRefreshSpeed") * 1000.0f) / (gameSystem->getFloat("radarRefreshSpeed") * 1000.0f) * 360.0f;
 	float currentRotation = gameState->lastUpdateGameTime % (unsigned int) (gameSystem->getFloat("radarRefreshSpeed") * 1000.0f) / (gameSystem->getFloat("radarRefreshSpeed") * 1000.0f) * 360.0f;
 
-	for(size_t i = 0; i < missileCache.size(); ++i) {
+	size_t i = 0;
+	while(i < missileCache.size()) {
 		float missileAngle = getAngle(
 				Vector2(missileCache[i].position.x, missileCache[i].position.z) -
 				Vector2(gameState->fortress.position.x, gameState->fortress.position.z)
 			);
-		if(missileAngle > lastRotation && missileAngle < currentRotation) {
+		if(missileAngle > lastRotation && missileAngle <= currentRotation) {
 			missileCache.erase(missileCache.begin() + i);
-			i = 0;
+		} else {
+			++i;
 		}
 	}
 
@@ -331,8 +332,11 @@ void DrawRadar::execute(std::map<std::string, void*> arguments) {
 			) >= gameSystem->getFloat("radarRadius"))
 				continue;
 
-		float missileAngle = getAngle(Vector2(gameState->missiles[i].position.x, gameState->missiles[i].position.z) - Vector2(gameState->fortress.position.x, gameState->fortress.position.z));
-		if(missileAngle > lastRotation && missileAngle < currentRotation)
+		float missileAngle = getAngle(
+				Vector2(gameState->missiles[i].position.x, gameState->missiles[i].position.z) -
+				Vector2(gameState->fortress.position.x, gameState->fortress.position.z)
+			);
+		if(missileAngle > lastRotation && missileAngle <= currentRotation)
 			missileCache.push_back(gameState->missiles[i]);
 	}
 //missileCache.clear(); for(size_t i = 0; i < gameState->missiles.size(); ++i) if(gameState->missiles[i].alive) missileCache.push_back(gameState->missiles[i]);

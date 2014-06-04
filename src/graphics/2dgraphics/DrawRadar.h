@@ -36,6 +36,7 @@ extern GameState* gameState;
 class DrawRadar : public BaseUIElement {
 private:
 	std::vector<Missile> missileCache;
+	float lastRotation;
 
 	GLuint radarTextureID;
 	GLuint progressionTextureID;
