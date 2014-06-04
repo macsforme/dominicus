@@ -230,8 +230,8 @@ GameSystem::GameSystem() {
 	setStandard("displayFPSCap", false /* true */, "Whether or not to cap the frames per second to a certain number.");
 	setStandard("displayFPS", 60.0f, "Number of frames per second to draw.");
 	setStandard("displayStartFullscreen", false, "Whether or not to start the program in full screen mode.");
-	setStandard("displayWindowedResolutionX", 1024.0f, "Windowed horizontal display resolution.");
-	setStandard("displayWindowedResolutionY", 768.0f, "Windowed vertical display resolution.");
+	setStandard("displayWindowedResolutionX", 800.0f, "Lowest supported windowed horizontal display resolution.");
+	setStandard("displayWindowedResolutionY", 600.0f, "lowest supported vertical display resolution.");
 	setStandard("displayColorDepth", 24.0f, "Color depth of display (may only affect full screen mode).");
 	setStandard("colorClear", Vector4(174.0f / 255.0f, 187.0f / 255.0f, 224.0f / 255.0f, 1.0f), "Color of empty space.");
 
@@ -266,10 +266,10 @@ GameSystem::GameSystem() {
 	setStandard("radarSpotColor", Vector4(1.0f, 0.0f, 0.0f, 1.0f), "Color of radar missile spots.");
 	setStandard("radarEMPColor", Vector4(1.0f, 1.0f, 1.0f, 0.5f), "Color of radar missile spots.");
 	setStandard("radarRadius", 1500.0f, "Radius of radar coverage.");
-	setStandard("hudElementMargin", 36.0f, "Space between HUD elements in pixels (must be even number).");
-//	setStandard("hudContainerPadding", 12.0f, "Space between HUD elements' external border and content in pixels.");
-	setStandard("hudButtonPadding", 12.0f, "Space between HUD buttons' external border and content in pixels.");
-	setStandard("hudBigButtonPadding", 16.0f, "Space between large HUD buttons' external border and content in pixels.");
+	setStandard("hudElementMargin", 28.0f, "Space between HUD elements in pixels (must be even number).");
+//	setStandard("hudContainerPadding", 10.0f, "Space between HUD elements' external border and content in pixels.");
+	setStandard("hudButtonPadding", 10.0f, "Space between HUD buttons' external border and content in pixels.");
+	setStandard("hudBigButtonPadding", 12.0f, "Space between large HUD buttons' external border and content in pixels.");
 	setStandard("hudContainerBorder", 2.0f, "Thickness in pixels of HUD container element borders.");
 	setStandard("hudContainerSoftEdge", 2.0f, "Thickness in pixels of HUD container element border antialiased portion.");
 	setStandard("hudContainerInsideColor", Vector4(0.15f, 0.15f, 0.15f, 0.75f), "Background color of HUD container elements.");
@@ -291,10 +291,10 @@ GameSystem::GameSystem() {
 
 	// font standards
 	setStandard("fontFile", "TitilliumWeb-Bold.ttf", "Font file to load for use by HUD and menus.");
-	setStandard("fontSizeSmall", 16.0f, "Font size for small display in points (1/72 inch).");
-	setStandard("fontSizeMedium", 24.0f, "Font size for standard display in points (1/72 inch).");
-	setStandard("fontSizeLarge", 34.0f, "Font size for enlarged display in points (1/72 inch).");
-	setStandard("fontSizeSuper", 46.0f, "Font size for title display in points (1/72 inch).");
+	setStandard("fontSizeSmall", 12.0f, "Font size for small display in points (1/72 inch).");
+	setStandard("fontSizeMedium", 18.0f, "Font size for standard display in points (1/72 inch).");
+	setStandard("fontSizeLarge", 26.0f, "Font size for enlarged display in points (1/72 inch).");
+	setStandard("fontSizeSuper", 36.0f, "Font size for title display in points (1/72 inch).");
 	setStandard("fontColorLight", Vector4(1.0f, 1.0f, 1.0f, 1.0f), "Light font color.");
 	setStandard("fontColorDark", Vector4(0.5f, 0.5f, 0.5f, 1.0f), "Medium font color.");
 	setStandard("helpTextScreenPortion", 0.8f, "Horizontal portion of screen taken up by help text.");
