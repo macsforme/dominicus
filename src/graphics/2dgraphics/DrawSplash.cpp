@@ -33,15 +33,13 @@ DrawSplash::DrawSplash() {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexBuffers["elements"]);
 
 	Texture* texture = gameGraphics->getTexture("branding/splash");
-	float yBump = (
-			((float) gameGraphics->resolutionX / (float) gameGraphics->resolutionY) -
-			((float) texture->width / (float) texture->height)
-		) * 0.5f;	// preserve aspect ratio of image
+	// preserve aspect ratio of image
+	float yBump = ((float) gameGraphics->resolutionY / (float) gameGraphics->resolutionX) / ((float) texture->height / (float) texture->width) / 2.0f;
 	GLfloat vertexBufferArray[] = {
-			-1.0f, -1.0f, 0.0f, 0.0f, 0.0f + yBump, 1.0f, 1.0f, 1.0f, 1.0f,
-			-1.0f, 1.0f, 0.0f, 0.0f, 1.0f - yBump, 1.0f, 1.0f, 1.0f, 1.0f,
-			1.0f, 1.0f, 0.0f, 1.0f, 1.0f - yBump, 1.0f, 1.0f, 1.0f, 1.0f,
-			1.0f, -1.0f, 0.0f, 1.0f, 0.0f + yBump, 1.0f, 1.0f, 1.0f, 1.0f
+			-1.0f, -1.0f, 0.0f, 0.0f, 0.5f - yBump, 1.0f, 1.0f, 1.0f, 1.0f,
+			-1.0f, 1.0f, 0.0f, 0.0f, 0.5f + yBump, 1.0f, 1.0f, 1.0f, 1.0f,
+			1.0f, 1.0f, 0.0f, 1.0f, 0.5f + yBump, 1.0f, 1.0f, 1.0f, 1.0f,
+			1.0f, -1.0f, 0.0f, 1.0f, 0.5f - yBump, 1.0f, 1.0f, 1.0f, 1.0f
 		};
 
 	GLushort elementBufferArray[] = { 0, 1, 2, 3 };

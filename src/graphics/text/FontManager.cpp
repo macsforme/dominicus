@@ -101,16 +101,16 @@ void FontManager::rebuildFontTextureCache(unsigned int size) {
 	// calculate the size of the texture needed
 	uint8_t charsSquare = (uint8_t)sqrt((double)charList.size()) + 1;	// add one due to integer rounding
 
-	// create a local texture for the font cache
+	// create a local texture for the font cache, raising the texture size to the next power of 2
 	Texture* thisFontCache = new Texture(
-			maxX * charsSquare,
-			maxY * charsSquare,
+			pow(2.0f, (float) ((int) log2(maxX * charsSquare) + 1)),
+			pow(2.0f, (float) ((int) log2(maxY * charsSquare) + 1)),
 			Texture::FORMAT_RGBA
 		);
 
 	// set all pixels to white with no alpha since our crappy drawer has to use linear sampling
-	for(size_t i = 0; i < maxX * charsSquare; ++i)
-		for(size_t p = 0; p < maxY * charsSquare; ++p)
+	for(size_t i = 0; i < thisFontCache->width; ++i)
+		for(size_t p = 0; p < thisFontCache->height; ++p)
 			thisFontCache->setColorAt(i, p, 0xFF, 0xFF, 0xFF, 0);
 
 	// copy the bitmaps into the texture and assign the element info

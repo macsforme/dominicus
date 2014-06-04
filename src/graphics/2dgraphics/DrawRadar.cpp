@@ -46,8 +46,8 @@ DrawRadar::DrawRadar() : lastRotation(0), containerDrawer(new DrawContainer()), 
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elementBufferArray), elementBufferArray,
 			GL_STATIC_DRAW);
 
-	// create the progression texture
-	size_t textureDimension = gameSystem->getFloat("radarSize") / 100.0f * (float) gameGraphics->resolutionY - gameSystem->getFloat("hudGaugePadding") * 2.0f;
+	// create the progression texture (next power of 2)
+	size_t textureDimension = pow(2.0f, (float) ((int) log2(gameSystem->getFloat("radarSize") / 100.0f * (float) gameGraphics->resolutionY - gameSystem->getFloat("hudGaugePadding") * 2.0f) + 1));
 	Texture progressionTexture(textureDimension, textureDimension, Texture::FORMAT_RGBA);
 	for(size_t i = 0; i < textureDimension; ++i) {
 		for(size_t p = 0; p < textureDimension; ++p) {
