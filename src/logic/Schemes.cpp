@@ -259,7 +259,7 @@ void Schemes::helpScheme() {
 	// controls label
 	*((float*) gameLogic->controlsEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
 	*((Vector4*) gameLogic->controlsEntry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
-	*((std::string*) gameLogic->controlsEntry.second["text"]) = "Move Turret:\tArrow Keys / Mouse Movement\nFire Cannon:\tSpace / Left Mouse Button\nCharge / Fire Shock Field:\tTab / Right Mouse Button\nPause / Resume:\tesc\nToggle Fullscreen:\tF1\nFast Quit:\tF12";
+	*((std::string*) gameLogic->controlsEntry.second["text"]) = "Move Turret:\tArrow Keys / Mouse Movement\nFire Cannon:\tSpace / Left Mouse Button\nCharge / Fire EMP:\tTab / Right Mouse Button\nPause / Resume:\tesc\nToggle Fullscreen:\tF1\nFast Quit:\tF12";
 	((UIMetrics*) gameLogic->controlsEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
 	((UIMetrics*) gameLogic->controlsEntry.second["metrics"])->size = ((DrawLabel*) gameGraphics->drawers["label"])->getSize(gameLogic->controlsEntry.second);
 	gameLogic->drawStack.push_back(gameLogic->controlsEntry);
@@ -771,10 +771,11 @@ void Schemes::loadingScheme() {
 void Schemes::playingScheme() {
 	// input
 	inputHandler->mouse->addListener(gameLogic->mouseMotionListener);
+	inputHandler->mouse->addListener(gameLogic->primaryFireClickListener);
+	inputHandler->mouse->addListener(gameLogic->secondaryFireClickListener);
 	inputHandler->keyboard->addListener(gameLogic->quitKeyListener);
 	inputHandler->keyboard->addListener(gameLogic->fullScreenKeyListener);
 	inputHandler->keyboard->addListener(gameLogic->playingKeyListener);
-	inputHandler->keyboard->addListener(gameLogic->fireEMPKeyListener);
 	inputHandler->keyboard->addListener(gameLogic->cameraAheadKeyListener);
 	inputHandler->keyboard->addListener(gameLogic->turretUpKeyListener);
 	inputHandler->keyboard->addListener(gameLogic->turretDownKeyListener);
@@ -1044,7 +1045,7 @@ void Schemes::pausedScheme() {
 	// controls label
 	*((float*) gameLogic->controlsEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
 	*((Vector4*) gameLogic->controlsEntry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
-	*((std::string*) gameLogic->controlsEntry.second["text"]) = "Move Turret:\tArrow Keys / Mouse Movement\nFire Cannon:\tSpace / Left Mouse Button\nCharge / Fire Shock Field:\tTab / Right Mouse Button\nPause / Resume:\tesc\nToggle Fullscreen:\tF1\nFast Quit:\tF12";
+	*((std::string*) gameLogic->controlsEntry.second["text"]) = "Move Turret:\tArrow Keys / Mouse Movement\nFire Cannon:\tSpace / Left Mouse Button\nCharge / Fire EMP:\tTab / Right Mouse Button\nPause / Resume:\tesc\nToggle Fullscreen:\tF1\nFast Quit:\tF12";
 	((UIMetrics*) gameLogic->controlsEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
 	((UIMetrics*) gameLogic->controlsEntry.second["metrics"])->size = ((DrawLabel*) gameGraphics->drawers["label"])->getSize(gameLogic->controlsEntry.second);
 	gameLogic->drawStack.push_back(gameLogic->controlsEntry);

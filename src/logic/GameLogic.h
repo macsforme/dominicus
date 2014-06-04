@@ -113,12 +113,13 @@ public:
 
 	// playing
 	KeyListener* playingKeyListener;
-	KeyAbsoluteListener* fireEMPKeyListener;
 	KeyAbsoluteListener* turretUpKeyListener;
 	KeyAbsoluteListener* turretDownKeyListener;
 	KeyAbsoluteListener* turretLeftKeyListener;
 	KeyAbsoluteListener* turretRightKeyListener;
 KeyAbsoluteListener* cameraAheadKeyListener;
+	MouseButtonListener* primaryFireClickListener;
+	MouseButtonListener* secondaryFireClickListener;
 	DrawStackEntry controlSpotEntry;
 	DrawStackEntry cursorEntry;
 	DrawStackEntry clockLabel;

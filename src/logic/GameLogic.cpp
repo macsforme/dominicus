@@ -359,16 +359,19 @@ GameLogic::GameLogic() :
 	playingKeys.push_back(SDLK_RETURN);
 	playingKeys.push_back(SDLK_ESCAPE);
 	playingKeys.push_back(SDLK_SPACE);
+	playingKeys.push_back(SDLK_TAB);
 	playingKeys.push_back(SDLK_BACKQUOTE);
 	playingKeys.push_back(SDLK_BACKSLASH);
 	playingKeyListener = new KeyListener(playingKeys);
 
-	fireEMPKeyListener = new KeyAbsoluteListener(SDLK_TAB);
 	turretUpKeyListener = new KeyAbsoluteListener(SDLK_UP);
 	turretDownKeyListener = new KeyAbsoluteListener(SDLK_DOWN);
 	turretLeftKeyListener = new KeyAbsoluteListener(SDLK_LEFT);
 	turretRightKeyListener = new KeyAbsoluteListener(SDLK_RIGHT);
 	cameraAheadKeyListener = new KeyAbsoluteListener(SDLK_SPACE);
+
+	primaryFireClickListener = new MouseButtonListener();
+	secondaryFireClickListener = new MouseButtonListener(SDL_BUTTON_RIGHT);
 
 	controlSpotEntry.first = "circle";
 	controlSpotEntry.second["size"] = (void*) new float;
@@ -922,7 +925,6 @@ lastFPSUpdate = platform->getExecMills();
 		// button clicks
 		if(introMouseButtonListener->wasClicked()) {
 			gameState->bumpStart();
-			fireEMPKeyListener->isDown = false;
 			currentScheme = SCHEME_PLAYING;
 			reScheme();
 			SDL_ShowCursor(0);
@@ -936,7 +938,6 @@ lastFPSUpdate = platform->getExecMills();
 		for(SDLKey key = introKeyListener->popKey(); key != SDLK_UNKNOWN; key = introKeyListener->popKey()) {
 			if(key == SDLK_SPACE) {
 				gameState->bumpStart();
-				fireEMPKeyListener->isDown = false;
 				currentScheme = SCHEME_PLAYING;
 				reScheme();
 				SDL_ShowCursor(0);
@@ -960,7 +961,6 @@ lastFPSUpdate = platform->getExecMills();
 
 		// expiration of intro time
 		if((float) gameState->lastUpdateGameTime / 1000.0f > gameSystem->getFloat("stateShipEntryTime")) {
-			fireEMPKeyListener->isDown = false;
 			currentScheme = SCHEME_PLAYING;
 			reScheme();
 			SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
@@ -1070,10 +1070,20 @@ lastFPSUpdate = platform->getExecMills();
 			}
 		}
 
+		// button clicks
+		if(primaryFireClickListener->wasClicked()) {
+			gameState->fireShell();
+		}
+		if(secondaryFireClickListener->wasClicked()) {
+			gameState->shockIsCharging = ! gameState->shockIsCharging;
+		}
+
 		// key hits
 		for(SDLKey key = playingKeyListener->popKey(); key != SDLK_UNKNOWN; key = playingKeyListener->popKey()) {
 			if(key == SDLK_SPACE) {
 				gameState->fireShell();
+			} else if(key == SDLK_TAB) {
+				gameState->shockIsCharging = ! gameState->shockIsCharging;
 			} else if(key == SDLK_RETURN) {
 				mainLoopModules.erase(mainLoopModules.find(gameState));
 				delete(gameState);
@@ -1117,8 +1127,6 @@ lastFPSUpdate = platform->getExecMills();
 		if(! turretDownKeyListener->isDown) downArrowPressTime = gameState->lastUpdateGameTime;
 
 		// keys down
-		gameState->shockIsCharging = fireEMPKeyListener->isDown;
-
 		if(gameGraphics->currentCamera == &roamingCamera) {
 			if(turretLeftKeyListener->isDown)
 				roamingCamera.rotationX += gameSystem->getFloat("stateTurretTurnSpeed") * deltaTime;
@@ -1233,7 +1241,6 @@ lastFPSUpdate = platform->getExecMills();
 			if(gameGraphics->currentCamera == &introCamera) {
 				currentScheme = SCHEME_INTRO;
 			} else {
-				fireEMPKeyListener->isDown = false;
 				currentScheme = SCHEME_PLAYING;
 				SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
 				SDL_ShowCursor(0);
@@ -1294,7 +1301,6 @@ lastFPSUpdate = platform->getExecMills();
 					if(gameGraphics->currentCamera == &introCamera) {
 						currentScheme = SCHEME_INTRO;
 					} else {
-						fireEMPKeyListener->isDown = false;
 						currentScheme = SCHEME_PLAYING;
 						SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
 						SDL_ShowCursor(0);
