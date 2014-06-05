@@ -314,6 +314,15 @@ GameLogic::GameLogic() :
 	fullscreenButtonZoneListener = new MouseZoneListener();
 	fullscreenButtonClickListener = new MouseButtonListener();
 	
+	windowedScreenResolutionEntry.first = "label";
+	windowedScreenResolutionEntry.second["metrics"] = (void*) new UIMetrics;
+	windowedScreenResolutionEntry.second["fontSize"] = (void*) new float;
+	windowedScreenResolutionEntry.second["fontColor"] = (void*) new Vector4;
+	windowedScreenResolutionEntry.second["wrap"] = (void*) new float;
+	windowedScreenResolutionEntry.second["text"] = (void*) new std::string;
+	windowedScreenResolutionButtonZoneListener = new MouseZoneListener();
+	windowedScreenResolutionButtonClickListener = new MouseButtonListener();
+
 	resetHighScoresEntry.first = "button";
 	resetHighScoresEntry.second["metrics"] = (void*) new UIMetrics;
 	resetHighScoresEntry.second["fontSize"] = (void*) new float;
@@ -1206,8 +1215,8 @@ lastFPSUpdate = platform->getExecMills();
 			if(turretDownKeyListener->isDown)
 				newKeyboardCursorPosition.y -= 1.0f;
 
-			newKeyboardCursorPosition.x *= gameSystem->getFloat("hudControlBoxSize") / 100.0f / gameGraphics->aspectRatio;
-			newKeyboardCursorPosition.y *= gameSystem->getFloat("hudControlBoxSize") / 100.0f;
+//			newKeyboardCursorPosition.x *= gameSystem->getFloat("hudControlBoxSize") / 100.0f / gameGraphics->aspectRatio;
+//			newKeyboardCursorPosition.y *= gameSystem->getFloat("hudControlBoxSize") / 100.0f;
 
 			if(! mouseActive && newKeyboardCursorPosition != keyboardCursorPosition) {
 				keyboardCursorPosition = newKeyboardCursorPosition;
@@ -1483,6 +1492,12 @@ lastFPSUpdate = platform->getExecMills();
 					reScheme();
 					needRedraw = true;
 				}
+			} else if(windowedScreenResolutionButtonZoneListener->isEntered) {
+				if(activeMenuSelection != &windowedScreenResolutionEntry) {
+					activeMenuSelection = &windowedScreenResolutionEntry;
+					reScheme();
+					needRedraw = true;
+				}
 			} else if(backButtonZoneListener->isEntered) {
 				if(activeMenuSelection != &backButtonEntry) {
 					activeMenuSelection = &backButtonEntry;
@@ -1541,6 +1556,51 @@ lastFPSUpdate = platform->getExecMills();
 
 			reScheme();
 			needRedraw = true;
+		} else if(windowedScreenResolutionButtonClickListener->wasClicked()) {
+			std::vector< std::pair<unsigned int, unsigned int> > allowedResolutions = gameSystem->getAllowedWindowResolutions();
+
+			size_t i = 0;
+			while(i < allowedResolutions.size()) {
+				std::stringstream resolutionText;
+				resolutionText << allowedResolutions[i].first << "x" << allowedResolutions[i].second;
+
+				if(resolutionText.str() == gameSystem->getString("displayWindowedResolution"))
+					break;
+
+				++i;
+			}
+
+			++i;
+			if(i >= allowedResolutions.size())
+				i = 0;
+
+			std::stringstream resolutionText;
+			resolutionText << allowedResolutions[i].first << "x" << allowedResolutions[i].second;
+
+			// only update it if more than one resolution is allowed
+			if(resolutionText.str() != gameSystem->getString("displayWindowedResolution")) {
+				gameSystem->setStandard("displayWindowedResolution", resolutionText.str().c_str());
+				gameSystem->flushPreferences();
+
+				if(! gameGraphics->fullScreen) {
+					// recreate the window
+					delete(gameGraphics);
+
+					gameGraphics = new GameGraphics(false);
+
+					inputHandler->execute();
+					mouseMotionListener->wasMoved();
+
+					delete(uiLayoutAuthority);
+					uiLayoutAuthority = new UILayoutAuthority(
+							Vector2(gameSystem->getFloat("hudElementMargin") / (float) gameGraphics->resolutionX,
+									gameSystem->getFloat("hudElementMargin") / (float) gameGraphics->resolutionY)
+						);
+				}
+
+				reScheme();
+				needRedraw = true;
+			}
 		} else if(backButtonClickListener->wasClicked()) {
 			currentScheme = SCHEME_MAINMENU;
 			activeMenuSelection = NULL;
@@ -1563,6 +1623,10 @@ lastFPSUpdate = platform->getExecMills();
 					reScheme();
 					needRedraw = true;
 				} else if(activeMenuSelection == &resetHighScoresEntry) {
+					activeMenuSelection = &windowedScreenResolutionEntry;
+					reScheme();
+					needRedraw = true;
+				} else if(activeMenuSelection == &windowedScreenResolutionEntry) {
 					activeMenuSelection = &fullscreenSettingEntry;
 					reScheme();
 					needRedraw = true;
@@ -1597,6 +1661,10 @@ lastFPSUpdate = platform->getExecMills();
 					reScheme();
 					needRedraw = true;
 				} else if(activeMenuSelection == &fullscreenSettingEntry) {
+					activeMenuSelection = &windowedScreenResolutionEntry;
+					reScheme();
+					needRedraw = true;
+				} else if(activeMenuSelection == &windowedScreenResolutionEntry) {
 					activeMenuSelection = &resetHighScoresEntry;
 					reScheme();
 					needRedraw = true;
@@ -1646,6 +1714,57 @@ lastFPSUpdate = platform->getExecMills();
 
 					reScheme();
 					needRedraw = true;
+				} else if(activeMenuSelection == &windowedScreenResolutionEntry) {
+					std::vector< std::pair<unsigned int, unsigned int> > allowedResolutions = gameSystem->getAllowedWindowResolutions();
+
+					size_t i = 0;
+					while(i < allowedResolutions.size()) {
+						std::stringstream resolutionText;
+						resolutionText << allowedResolutions[i].first << "x" << allowedResolutions[i].second;
+
+						if(resolutionText.str() == gameSystem->getString("displayWindowedResolution"))
+							break;
+
+						++i;
+					}
+
+					if(key == SDLK_RIGHT) {
+						++i;
+						if(i >= allowedResolutions.size())
+							i = 0;
+					} else {
+						if(i == 0)
+							i = allowedResolutions.size() - 1;
+						else
+							--i;
+					}
+					std::stringstream resolutionText;
+					resolutionText << allowedResolutions[i].first << "x" << allowedResolutions[i].second;
+
+					// only update it if more than one resolution is allowed
+					if(resolutionText.str() != gameSystem->getString("displayWindowedResolution")) {
+						gameSystem->setStandard("displayWindowedResolution", resolutionText.str().c_str());
+						gameSystem->flushPreferences();
+
+						if(! gameGraphics->fullScreen) {
+							// recreate the window
+							delete(gameGraphics);
+
+							gameGraphics = new GameGraphics(false);
+
+							inputHandler->execute();
+							mouseMotionListener->wasMoved();
+
+							delete(uiLayoutAuthority);
+							uiLayoutAuthority = new UILayoutAuthority(
+									Vector2(gameSystem->getFloat("hudElementMargin") / (float) gameGraphics->resolutionX,
+											gameSystem->getFloat("hudElementMargin") / (float) gameGraphics->resolutionY)
+								);
+						}
+
+						reScheme();
+						needRedraw = true;
+					}
 				}
 			} else if(key == SDLK_RETURN) {
 				if(activeMenuSelection == &resetHighScoresEntry) {

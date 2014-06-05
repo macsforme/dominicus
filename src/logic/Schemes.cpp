@@ -277,7 +277,7 @@ void Schemes::helpScheme() {
 	// instructions label
 	*((float*) gameLogic->instructionsEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
 	*((Vector4*) gameLogic->instructionsEntry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
-	*((float*) gameLogic->instructionsEntry.second["wrap"]) = 2.0f * (gameGraphics->resolutionX > 1024 ? gameSystem->getFloat("helpTextScreenPortion") * 1024.0f / (float) gameGraphics->resolutionX : gameSystem->getFloat("helpTextScreenPortion")) - (gameSystem->getFloat("hudElementMargin") * 2.0f / (float) gameGraphics->resolutionX);
+	*((float*) gameLogic->instructionsEntry.second["wrap"]) = 2.0f * (gameSystem->getFloat("helpTextScreenPortion")) - (gameSystem->getFloat("hudElementMargin") * 2.0f / (float) gameGraphics->resolutionX);
 	*((std::string*) gameLogic->instructionsEntry.second["text"]) = "Welcome to Crucible Island. You occupy a tower atop an island mountain range. Enemy ships circle the island firing missiles at you. You must shoot down these missiles using your cannon or by firing electromagnetic pulses. Firing cannon shells depletes your ammunition reservoir, and firing electromagnetic pulses requires a charging period and depletes both your ammunition and health reservoirs. A missile impact will deplete your health reservoir. Your ammunition and health reservoirs will constantly recharge. As the game goes on, additional enemy ships will join the others, causing the rate of fire to increase. Your health level, ammunition level, and electromagnetic pulse charging indicators are shown on gauges on your screen. Your radar and heads-up display show enemy ship and incoming missile positions. You gain one point for every enemy missile you destroy. When your health level reaches zero, the game is over. Good luck!";
 	((UIMetrics*) gameLogic->instructionsEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
 	((UIMetrics*) gameLogic->instructionsEntry.second["metrics"])->size = ((DrawLabel*) gameGraphics->drawers["label"])->getSize(gameLogic->instructionsEntry.second);
@@ -550,6 +550,16 @@ void Schemes::settingsScheme() {
 	gameLogic->drawStack.push_back(gameLogic->fullscreenSettingEntry);
 	gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->fullscreenSettingEntry.second["metrics"]);
 
+	// windowed screen resolution setting control label
+	*((float*) gameLogic->windowedScreenResolutionEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
+	*((Vector4*) gameLogic->windowedScreenResolutionEntry.second["fontColor"]) = (gameLogic->activeMenuSelection == &gameLogic->windowedScreenResolutionEntry ? gameSystem->getColor("fontColorLight") : gameSystem->getColor("fontColorDark"));
+	std::stringstream windowedResolutionSettingText; windowedResolutionSettingText << "Window Resolution: " << gameSystem->getString("displayWindowedResolution");
+	*((std::string*) gameLogic->windowedScreenResolutionEntry.second["text"]) = windowedResolutionSettingText.str();
+	((UIMetrics*) gameLogic->windowedScreenResolutionEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
+	((UIMetrics*) gameLogic->windowedScreenResolutionEntry.second["metrics"])->size = ((DrawLabel*) gameGraphics->drawers["label"])->getSize(gameLogic->windowedScreenResolutionEntry.second);
+	gameLogic->drawStack.push_back(gameLogic->windowedScreenResolutionEntry);
+	gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->windowedScreenResolutionEntry.second["metrics"]);
+
 	// high scores reset button
 	((UIMetrics*) gameLogic->resetHighScoresEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
 	*((float*) gameLogic->resetHighScoresEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
@@ -617,42 +627,49 @@ void Schemes::settingsScheme() {
 	gameLogic->uiLayoutAuthority->rearrange();
 	
 	// set up button listeners with new positions
-	gameLogic->levelButtonZoneListener->ll = ((UIMetrics*) gameLogic->levelSettingEntry.second["metrics"])->position -	((UIMetrics*) gameLogic->levelSettingEntry.second["metrics"])->size / 2.0f;
+	gameLogic->levelButtonZoneListener->ll = ((UIMetrics*) gameLogic->levelSettingEntry.second["metrics"])->position - ((UIMetrics*) gameLogic->levelSettingEntry.second["metrics"])->size / 2.0f;
 	gameLogic->levelButtonZoneListener->ur = ((UIMetrics*) gameLogic->levelSettingEntry.second["metrics"])->position + ((UIMetrics*) gameLogic->levelSettingEntry.second["metrics"])->size / 2.0f;
 	inputHandler->mouse->addListener(gameLogic->levelButtonZoneListener);
 	gameLogic->levelButtonClickListener->ll = gameLogic->levelButtonZoneListener->ll;
 	gameLogic->levelButtonClickListener->ur = gameLogic->levelButtonZoneListener->ur;
 	inputHandler->mouse->addListener(gameLogic->levelButtonClickListener);
 
-	gameLogic->musicButtonZoneListener->ll = ((UIMetrics*) gameLogic->musicSettingEntry.second["metrics"])->position -	((UIMetrics*) gameLogic->musicSettingEntry.second["metrics"])->size / 2.0f;
+	gameLogic->musicButtonZoneListener->ll = ((UIMetrics*) gameLogic->musicSettingEntry.second["metrics"])->position - ((UIMetrics*) gameLogic->musicSettingEntry.second["metrics"])->size / 2.0f;
 	gameLogic->musicButtonZoneListener->ur = ((UIMetrics*) gameLogic->musicSettingEntry.second["metrics"])->position + ((UIMetrics*) gameLogic->musicSettingEntry.second["metrics"])->size / 2.0f;
 	inputHandler->mouse->addListener(gameLogic->musicButtonZoneListener);
 	gameLogic->musicButtonClickListener->ll = gameLogic->musicButtonZoneListener->ll;
 	gameLogic->musicButtonClickListener->ur = gameLogic->musicButtonZoneListener->ur;
 	inputHandler->mouse->addListener(gameLogic->musicButtonClickListener);
 
-	gameLogic->audioEffectsButtonZoneListener->ll = ((UIMetrics*) gameLogic->audioEffectsSettingEntry.second["metrics"])->position -	((UIMetrics*) gameLogic->audioEffectsSettingEntry.second["metrics"])->size / 2.0f;
+	gameLogic->audioEffectsButtonZoneListener->ll = ((UIMetrics*) gameLogic->audioEffectsSettingEntry.second["metrics"])->position - ((UIMetrics*) gameLogic->audioEffectsSettingEntry.second["metrics"])->size / 2.0f;
 	gameLogic->audioEffectsButtonZoneListener->ur = ((UIMetrics*) gameLogic->audioEffectsSettingEntry.second["metrics"])->position + ((UIMetrics*) gameLogic->audioEffectsSettingEntry.second["metrics"])->size / 2.0f;
 	inputHandler->mouse->addListener(gameLogic->audioEffectsButtonZoneListener);
 	gameLogic->audioEffectsButtonClickListener->ll = gameLogic->audioEffectsButtonZoneListener->ll;
 	gameLogic->audioEffectsButtonClickListener->ur = gameLogic->audioEffectsButtonZoneListener->ur;
 	inputHandler->mouse->addListener(gameLogic->audioEffectsButtonClickListener);
 
-	gameLogic->fullscreenButtonZoneListener->ll = ((UIMetrics*) gameLogic->fullscreenSettingEntry.second["metrics"])->position -	((UIMetrics*) gameLogic->fullscreenSettingEntry.second["metrics"])->size / 2.0f;
+	gameLogic->fullscreenButtonZoneListener->ll = ((UIMetrics*) gameLogic->fullscreenSettingEntry.second["metrics"])->position - ((UIMetrics*) gameLogic->fullscreenSettingEntry.second["metrics"])->size / 2.0f;
 	gameLogic->fullscreenButtonZoneListener->ur = ((UIMetrics*) gameLogic->fullscreenSettingEntry.second["metrics"])->position + ((UIMetrics*) gameLogic->fullscreenSettingEntry.second["metrics"])->size / 2.0f;
 	inputHandler->mouse->addListener(gameLogic->fullscreenButtonZoneListener);
 	gameLogic->fullscreenButtonClickListener->ll = gameLogic->fullscreenButtonZoneListener->ll;
 	gameLogic->fullscreenButtonClickListener->ur = gameLogic->fullscreenButtonZoneListener->ur;
 	inputHandler->mouse->addListener(gameLogic->fullscreenButtonClickListener);
 
-	gameLogic->backButtonZoneListener->ll = ((UIMetrics*) gameLogic->backButtonEntry.second["metrics"])->position -	((UIMetrics*) gameLogic->backButtonEntry.second["metrics"])->size / 2.0f;
+	gameLogic->windowedScreenResolutionButtonZoneListener->ll = ((UIMetrics*) gameLogic->windowedScreenResolutionEntry.second["metrics"])->position - ((UIMetrics*) gameLogic->windowedScreenResolutionEntry.second["metrics"])->size / 2.0f;
+	gameLogic->windowedScreenResolutionButtonZoneListener->ur = ((UIMetrics*) gameLogic->windowedScreenResolutionEntry.second["metrics"])->position + ((UIMetrics*) gameLogic->windowedScreenResolutionEntry.second["metrics"])->size / 2.0f;
+	inputHandler->mouse->addListener(gameLogic->windowedScreenResolutionButtonZoneListener);
+	gameLogic->windowedScreenResolutionButtonClickListener->ll = gameLogic->windowedScreenResolutionButtonZoneListener->ll;
+	gameLogic->windowedScreenResolutionButtonClickListener->ur = gameLogic->windowedScreenResolutionButtonZoneListener->ur;
+	inputHandler->mouse->addListener(gameLogic->windowedScreenResolutionButtonClickListener);
+
+	gameLogic->backButtonZoneListener->ll = ((UIMetrics*) gameLogic->backButtonEntry.second["metrics"])->position - ((UIMetrics*) gameLogic->backButtonEntry.second["metrics"])->size / 2.0f;
 	gameLogic->backButtonZoneListener->ur = ((UIMetrics*) gameLogic->backButtonEntry.second["metrics"])->position + ((UIMetrics*) gameLogic->backButtonEntry.second["metrics"])->size / 2.0f;
 	inputHandler->mouse->addListener(gameLogic->backButtonZoneListener);
 	gameLogic->backButtonClickListener->ll = gameLogic->backButtonZoneListener->ll;
 	gameLogic->backButtonClickListener->ur = gameLogic->backButtonZoneListener->ur;
 	inputHandler->mouse->addListener(gameLogic->backButtonClickListener);
 
-	gameLogic->resetHighScoresButtonZoneListener->ll = ((UIMetrics*) gameLogic->resetHighScoresEntry.second["metrics"])->position -	((UIMetrics*) gameLogic->resetHighScoresEntry.second["metrics"])->size / 2.0f;
+	gameLogic->resetHighScoresButtonZoneListener->ll = ((UIMetrics*) gameLogic->resetHighScoresEntry.second["metrics"])->position - ((UIMetrics*) gameLogic->resetHighScoresEntry.second["metrics"])->size / 2.0f;
 	gameLogic->resetHighScoresButtonZoneListener->ur = ((UIMetrics*) gameLogic->resetHighScoresEntry.second["metrics"])->position + ((UIMetrics*) gameLogic->resetHighScoresEntry.second["metrics"])->size / 2.0f;
 	inputHandler->mouse->addListener(gameLogic->resetHighScoresButtonZoneListener);
 	gameLogic->resetHighScoresButtonClickListener->ll = gameLogic->resetHighScoresButtonZoneListener->ll;
@@ -1240,7 +1257,7 @@ void Schemes::gameOverScheme() {
 		*((std::string*) gameLogic->newHighScoreNameField.second["text"]) += "|";
 
 		// name prompt container
-		*((float*) gameLogic->newHighScoreContainer.second["padding"]) = gameSystem->getFloat("hudBigButtonPadding");
+		*((float*) gameLogic->newHighScoreContainer.second["padding"]) = gameSystem->getFloat("hudContainerPadding");
 		*((float*) gameLogic->newHighScoreContainer.second["border"]) = 0.0f;
 		*((float*) gameLogic->newHighScoreContainer.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
 		*((Vector4*) gameLogic->newHighScoreContainer.second["insideColor"]) = gameSystem->getColor("hudContainerInsideColor");
@@ -1250,12 +1267,13 @@ void Schemes::gameOverScheme() {
 		((UIMetrics*) gameLogic->newHighScoreContainer.second["metrics"])->size = Vector2(
 				((UIMetrics*) gameLogic->newHighScoreNameLabel.second["metrics"])->size.x +
 						((UIMetrics*) gameLogic->newHighScoreNameField.second["metrics"])->size.x +
-						gameSystem->getFloat("hudButtonPadding") / gameGraphics->resolutionX * 2.0f * 3.0f,
+						gameSystem->getFloat("hudContainerPadding") / gameGraphics->resolutionX * 4.0f +
+						gameSystem->getFloat("hudElementMargin") / gameGraphics->resolutionX * 2.0f,
 				(((UIMetrics*) gameLogic->newHighScoreNameLabel.second["metrics"])->size.y >
 						((UIMetrics*) gameLogic->newHighScoreNameField.second["metrics"])->size.y ?
 						((UIMetrics*) gameLogic->newHighScoreNameLabel.second["metrics"])->size.y :
 						((UIMetrics*) gameLogic->newHighScoreNameField.second["metrics"])->size.y) +
-						gameSystem->getFloat("hudBigButtonPadding") / gameGraphics->resolutionY * 4.0f
+						gameSystem->getFloat("hudContainerPadding") / gameGraphics->resolutionY * 4.0f
 			);
 		gameLogic->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->newHighScoreContainer.second["metrics"]);
 	}
@@ -1288,14 +1306,14 @@ void Schemes::gameOverScheme() {
 		((UIMetrics*) gameLogic->newHighScoreNameLabel.second["metrics"])->position = Vector2(
 				((UIMetrics*) gameLogic->newHighScoreContainer.second["metrics"])->position.x -
 						((UIMetrics*) gameLogic->newHighScoreContainer.second["metrics"])->size.x / 2.0f +
-						gameSystem->getFloat("hudBigButtonPadding") / gameGraphics->resolutionX * 2.0f +
+						gameSystem->getFloat("hudContainerPadding") / gameGraphics->resolutionX * 2.0f +
 						((UIMetrics*) gameLogic->newHighScoreNameLabel.second["metrics"])->size.x / 2.0f,
 				((UIMetrics*) gameLogic->newHighScoreContainer.second["metrics"])->position.y
 			);
 		((UIMetrics*) gameLogic->newHighScoreNameField.second["metrics"])->position = Vector2(
 				((UIMetrics*) gameLogic->newHighScoreContainer.second["metrics"])->position.x +
 						((UIMetrics*) gameLogic->newHighScoreContainer.second["metrics"])->size.x / 2.0f -
-						gameSystem->getFloat("hudBigButtonPadding") / gameGraphics->resolutionX * 2.0f -
+						gameSystem->getFloat("hudContainerPadding") / gameGraphics->resolutionX * 2.0f -
 						((UIMetrics*) gameLogic->newHighScoreNameField.second["metrics"])->size.x / 2.0f,
 				((UIMetrics*) gameLogic->newHighScoreContainer.second["metrics"])->position.y
 			);

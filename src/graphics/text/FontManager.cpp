@@ -36,7 +36,7 @@ FontManager::FontManager() {
 			FT_Set_Char_Size(
 					fontFace,
 					0,
-					(int) gameSystem->getFloat("fontStandardSize") * 64,
+					(int) gameSystem->getFloat("fontSizeSmall") * 64,
 					0,
 					0
 				)

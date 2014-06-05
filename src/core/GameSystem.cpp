@@ -16,6 +16,13 @@ bool GameSystem::isStandard(const char* key) const {
 }
 
 GameSystem::StandardEntry GameSystem::getStandard(const char* key) {
+	if(standards.find(key) == standards.end()) {
+		std::stringstream logMessage;
+		logMessage << "Non-existent standards key requested: " << key << ".";
+
+		log(LOG_FATAL, logMessage.str().c_str());
+	}
+
 	return standards[key];
 }
 
@@ -83,7 +90,8 @@ void GameSystem::setStandard(const char* key, bool value,
 }
 
 void GameSystem::flushPreferences() {
-	platform->setPreference("preferencesVersion", 1.0f);
+	platform->setPreference("preferencesVersion", 2.0f);
+	platform->setPreference("displayWindowedResolution", getString("displayWindowedResolution").c_str());
 	platform->setPreference("displayStartFullscreen", (getBool("displayStartFullscreen") == true ? 1.0f : 0.0f));
 	platform->setPreference("audioMusicVolume", getFloat("audioMusicVolume"));
 	platform->setPreference("audioEffectsVolume", getFloat("audioEffectsVolume"));
@@ -98,34 +106,6 @@ void GameSystem::flushPreferences() {
 		stringStream << "\"";
 		platform->setPreference("highScores", stringStream.str().c_str());
 	}
-}
-
-std::vector<SDLKey> GameSystem::getBindingKeys(std::string action) {
-	std::vector<SDLKey> keys;
-
-	for(
-			KeyBindingStorage::iterator itr = keyBindings.begin();
-			itr != keyBindings.end();
-			++itr
-		)
-		if(itr->first == action)
-			keys.push_back(itr->second);
-
-	return keys;
-}
-
-std::vector<Uint8> GameSystem::getBindingMouseButtons(std::string action) {
-	std::vector<Uint8> buttons;
-
-	for(
-			MouseButtonBindingStorage::iterator itr = mouseButtonBindings.begin();
-			itr != mouseButtonBindings.end();
-			++itr
-		)
-		if(itr->first == action)
-			buttons.push_back(itr->second);
-
-	return buttons;
 }
 
 void GameSystem::log(LogDetail detail, std::string report) {
@@ -150,6 +130,44 @@ void GameSystem::log(LogDetail detail, std::string report) {
 
 		exit(1);
 	}
+}
+
+std::vector< std::pair<unsigned int, unsigned int> > GameSystem::getAllowedWindowResolutions() {
+	// return all resolutions within limit of screen resolution factor
+	std::string resolutionsString = getString("displayWindowedResolutions");
+	std::vector< std::pair<unsigned int, unsigned int> > resolutions;
+
+	size_t stringOffset = 0;
+	while(stringOffset < resolutionsString.length()) {
+		std::string resolution = resolutionsString.substr(stringOffset, resolutionsString.find(',', stringOffset) - stringOffset);
+		std::pair<unsigned int, unsigned int> resolutionPair;
+		resolutionPair.first = (unsigned int) atoi(resolution.substr(0, resolution.find('x')).c_str());
+		resolutionPair.second = (unsigned int) atoi(resolution.substr(resolution.find('x') + 1, std::string::npos).c_str());
+
+		if(resolutionPair.second <= (unsigned int) ((float) displayResolutionY * getFloat("displayWindowedMaxPortion")))
+			resolutions.push_back(resolutionPair);
+
+		stringOffset += resolution.length() + 1;
+	}
+
+	return resolutions;
+}
+
+void GameSystem::applyScreenResolution(std::string resolution) {
+	std::string resolutionsString = getString("displayWindowedResolutions");
+	float scalingFactor = atof(resolution.substr(resolution.find('x') + 1, std::string::npos).c_str()) /
+			atof(resolutionsString.substr(resolutionsString.find('x') + 1, resolutionsString.find(',') - resolutionsString.find('x') + 1).c_str());
+
+	// round sizes to nearest even integer
+	setStandard("hudElementMargin", (float) (roundToInt(getFloat("hudBaseElementMargin") * scalingFactor / 2.0f) * 2));
+	setStandard("hudContainerPadding", (float) (roundToInt(getFloat("hudBaseContainerPadding") * scalingFactor / 2.0f) * 2));
+	setStandard("hudButtonPadding", (float) (roundToInt(getFloat("hudBaseButtonPadding") * scalingFactor / 2.0f) * 2));
+	setStandard("hudBigButtonPadding", (float) (roundToInt(getFloat("hudBaseBigButtonPadding") * scalingFactor / 2.0f) * 2));
+	setStandard("hudGaugePadding", (float) (roundToInt(getFloat("hudBaseGaugePadding") * scalingFactor / 2.0f) * 2));
+	setStandard("fontSizeSmall", (float) (roundToInt(getFloat("fontBaseSizeSmall") * scalingFactor / 2.0f) * 2));
+	setStandard("fontSizeMedium", (float) (roundToInt(getFloat("fontBaseSizeMedium") * scalingFactor / 2.0f) * 2));
+	setStandard("fontSizeLarge", (float) (roundToInt(getFloat("fontBaseSizeLarge") * scalingFactor / 2.0f) * 2));
+	setStandard("fontSizeSuper", (float) (roundToInt(getFloat("fontBaseSizeSuper") * scalingFactor / 2.0f) * 2));
 }
 
 GameSystem::GameSystem() {
@@ -185,6 +203,40 @@ GameSystem::GameSystem() {
 	sprintf(fullDateString, "%04i-%02i-%02i", year, month, day);
 	versionStream << fullDateString;
 	versionString = versionStream.str();
+
+	// get the display resolution
+	SDL_VideoInfo* vidInfo = (SDL_VideoInfo*) SDL_GetVideoInfo();
+	if(vidInfo == NULL)
+		log(LOG_FATAL, "Could not obtain screen resolution from SDL.");
+
+	displayResolutionX = (unsigned short int) vidInfo->current_w;
+	displayResolutionY = (unsigned short int) vidInfo->current_h;
+
+	// window and element scaling
+	setStandard("displayWindowedResolutions", "800x600,1024x768,1152x864,1280x1024,1600x1200", "Supported resolutions for windowed mode.");
+	setStandard("displayWindowedMaxPortion", 0.9f, "Maximum portion of vertical screen resolution to take up in windowed mode.");
+
+	std::vector< std::pair<unsigned int, unsigned int> > allowedResolutions = getAllowedWindowResolutions();
+
+	std::stringstream allowedResolutionsText;
+	for(size_t i = 0; i < allowedResolutions.size(); ++i)
+		allowedResolutionsText << (i > 0 ? "," : "") << allowedResolutions[i].first << "x" << allowedResolutions[i].second;
+	setStandard("displayWindowedResolutions", allowedResolutionsText.str().c_str());
+
+	std::stringstream maximumResolutionText;
+	maximumResolutionText << allowedResolutions[allowedResolutions.size() - 1].first << "x" <<
+			allowedResolutions[allowedResolutions.size() - 1].second;
+	setStandard("displayWindowedResolution", maximumResolutionText.str().c_str());
+
+	setStandard("hudBaseElementMargin", 28.0f, "Base value for space between HUD elements in pixels (must be even number).");
+	setStandard("hudBaseContainerPadding", 10.0f, "Base value for space between HUD elements' external border and content in pixels.");
+	setStandard("hudBaseButtonPadding", 10.0f, "Base value for space between HUD buttons' external border and content in pixels.");
+	setStandard("hudBaseBigButtonPadding", 12.0f, "Base value for space between large HUD buttons' external border and content in pixels.");
+	setStandard("hudBaseGaugePadding", 20.0f, "Base value for gauge panel padding in pixels.");
+	setStandard("fontBaseSizeSmall", 12.0f, "Font size for small display in points (1/72 inch).");
+	setStandard("fontBaseSizeMedium", 18.0f, "Font size for standard display in points (1/72 inch).");
+	setStandard("fontBaseSizeLarge", 26.0f, "Font size for enlarged display in points (1/72 inch).");
+	setStandard("fontBaseSizeSuper", 36.0f, "Font size for title display in points (1/72 inch).");
 
 	// state standards
 	setStandard("stateUpdateFrequency", 120.0f, "Number of times per second the core state updates.");
@@ -230,9 +282,7 @@ GameSystem::GameSystem() {
 	setStandard("displayFPSCap", false /* true */, "Whether or not to cap the frames per second to a certain number.");
 	setStandard("displayFPS", 60.0f, "Number of frames per second to draw.");
 	setStandard("displayStartFullscreen", false, "Whether or not to start the program in full screen mode.");
-	setStandard("displayWindowedResolutionX", 800.0f, "Lowest supported windowed horizontal display resolution.");
-	setStandard("displayWindowedResolutionY", 600.0f, "lowest supported vertical display resolution.");
-	setStandard("displayColorDepth", 24.0f, "Color depth of display (may only affect full screen mode).");
+	setStandard("displayColorDepth", 16.0f, "Color depth of display (may only affect full screen mode).");
 	setStandard("colorClear", Vector4(174.0f / 255.0f, 187.0f / 255.0f, 224.0f / 255.0f, 1.0f), "Color of empty space.");
 
 	// scene rendering standards
@@ -266,10 +316,6 @@ GameSystem::GameSystem() {
 	setStandard("radarSpotColor", Vector4(1.0f, 0.0f, 0.0f, 1.0f), "Color of radar missile spots.");
 	setStandard("radarEMPColor", Vector4(1.0f, 1.0f, 1.0f, 0.5f), "Color of radar missile spots.");
 	setStandard("radarRadius", 1500.0f, "Radius of radar coverage.");
-	setStandard("hudElementMargin", 28.0f, "Space between HUD elements in pixels (must be even number).");
-//	setStandard("hudContainerPadding", 10.0f, "Space between HUD elements' external border and content in pixels.");
-	setStandard("hudButtonPadding", 10.0f, "Space between HUD buttons' external border and content in pixels.");
-	setStandard("hudBigButtonPadding", 12.0f, "Space between large HUD buttons' external border and content in pixels.");
 	setStandard("hudContainerBorder", 2.0f, "Thickness in pixels of HUD container element borders.");
 	setStandard("hudContainerSoftEdge", 2.0f, "Thickness in pixels of HUD container element border antialiased portion.");
 	setStandard("hudContainerInsideColor", Vector4(0.15f, 0.15f, 0.15f, 0.75f), "Background color of HUD container elements.");
@@ -278,7 +324,6 @@ GameSystem::GameSystem() {
 	setStandard("hudContainerOutsideColor", Vector4(0.15f, 0.15f, 0.15f, 0.0f), "Outside color of HUD container elements.");
 	setStandard("hudFieldWidth", 20.0f, "Standard field width (in number of '#' characters).");
 	setStandard("hudFieldColor", Vector4(0.031f, 0.075f, 0.184f, 0.752f), "Background color for inactive text fields.");
-	setStandard("hudGaugePadding", 20.0f, "Gauge panel padding in pixels.");
 	setStandard("hudGaugeWidth", 200.0f, "Width of gauges in pixels.");
 	setStandard("hudGaugeHeight", 30.0f, "Height of gauges in pixels.");
 	setStandard("hudGaugeBackgroundColor", Vector4(0.3f, 0.3f, 0.3f, 0.6f), "Background color of gauges.");
@@ -291,13 +336,9 @@ GameSystem::GameSystem() {
 
 	// font standards
 	setStandard("fontFile", "TitilliumWeb-Bold.ttf", "Font file to load for use by HUD and menus.");
-	setStandard("fontSizeSmall", 12.0f, "Font size for small display in points (1/72 inch).");
-	setStandard("fontSizeMedium", 18.0f, "Font size for standard display in points (1/72 inch).");
-	setStandard("fontSizeLarge", 26.0f, "Font size for enlarged display in points (1/72 inch).");
-	setStandard("fontSizeSuper", 36.0f, "Font size for title display in points (1/72 inch).");
 	setStandard("fontColorLight", Vector4(1.0f, 1.0f, 1.0f, 1.0f), "Light font color.");
 	setStandard("fontColorDark", Vector4(0.5f, 0.5f, 0.5f, 1.0f), "Medium font color.");
-	setStandard("helpTextScreenPortion", 0.8f, "Horizontal portion of screen taken up by help text.");
+	setStandard("helpTextScreenPortion", 0.9f, "Horizontal portion of screen taken up by help text.");
 
 	// audio standards
 	setStandard("audioTickRate", 50.0f, "Audio manager tick rate.");
@@ -315,43 +356,10 @@ GameSystem::GameSystem() {
 	setStandard("islandTerrainBlends", 4.0f, "Island terrain generation blending factor.");
 	setStandard("islandTerrainSink", 0.5f, "Island terrain generation sink to sea level factor.");
 
-	// key bindings
-//	keyBindings.push_back(std::make_pair("quit", SDLK_F12));
-//	keyBindings.push_back(std::make_pair("fullScreenToggle", SDLK_F1));
-//	keyBindings.push_back(std::make_pair("dashboardToggle", SDLK_LSHIFT));
-//	keyBindings.push_back(std::make_pair("dashboardToggle", SDLK_RSHIFT));
-//	keyBindings.push_back(std::make_pair("cancel", SDLK_ESCAPE));
-//	keyBindings.push_back(std::make_pair("playerInfoDisplayToggle", SDLK_F3));
-//	keyBindings.push_back(std::make_pair("radarDisplayToggle", SDLK_F4));
-//	keyBindings.push_back(std::make_pair("debugInfoDisplayToggle", SDLK_F5));
-//	keyBindings.push_back(std::make_pair("accelerate", SDLK_SPACE));
-//	keyBindings.push_back(std::make_pair("firePrimary", SDLK_3));
-//	keyBindings.push_back(std::make_pair("fireSecondary", SDLK_4));
-//	keyBindings.push_back(std::make_pair("yawRight", SDLK_RIGHT));
-//	keyBindings.push_back(std::make_pair("yawLeft", SDLK_LEFT));
-//	keyBindings.push_back(std::make_pair("pitchUp", SDLK_UP));
-//	keyBindings.push_back(std::make_pair("pitchDown", SDLK_DOWN));
-
-	// temporary key bindings for development
-//	keyBindings.push_back(std::make_pair("cameraSwitch", SDLK_k));
-//	keyBindings.push_back(std::make_pair("fpsCapToggle", SDLK_c));
-/*
-std::pair<unsigned int, std::string> highScoresPair;
-highScoresPair = std::make_pair(10, "kierra"); highScores.push_back(highScoresPair);
-highScoresPair = std::make_pair(9, "snick"); highScores.push_back(highScoresPair);
-highScoresPair = std::make_pair(8, "orbit"); highScores.push_back(highScoresPair);
-highScoresPair = std::make_pair(7, "contamination"); highScores.push_back(highScoresPair);
-highScoresPair = std::make_pair(6, "Bulldozer"); highScores.push_back(highScoresPair);
-highScoresPair = std::make_pair(5, "Augustus"); highScores.push_back(highScoresPair);
-highScoresPair = std::make_pair(4, "Constitution"); highScores.push_back(highScoresPair);
-highScoresPair = std::make_pair(3, "Wasp^32"); highScores.push_back(highScoresPair);
-highScoresPair = std::make_pair(2, "Hornet"); highScores.push_back(highScoresPair);
-highScoresPair = std::make_pair(1, "Josh"); highScores.push_back(highScoresPair);
-*/
-//highScores.clear();
-
 	// load standards from preferences (or save standard preferences if no file)
-	if(platform->getPreferenceFloat("preferencesVersion") == 1.0f) {
+	if(platform->getPreferenceFloat("preferencesVersion") == 2.0f) {
+		if(strstr(getString("displayWindowedResolutions").c_str(), platform->getPreferenceString("displayWindowedResolution").c_str()) != NULL)
+			setStandard("displayWindowedResolution", platform->getPreferenceString("displayWindowedResolution").c_str());
 		setStandard("displayStartFullscreen", (platform->getPreferenceFloat("displayStartFullscreen")  == 1.0f ? true : false));
 		setStandard("audioMusicVolume", platform->getPreferenceFloat("audioMusicVolume"));
 		setStandard("audioEffectsVolume", platform->getPreferenceFloat("audioEffectsVolume"));
@@ -370,14 +378,6 @@ highScoresPair = std::make_pair(1, "Josh"); highScores.push_back(highScoresPair)
 	} else {
 		flushPreferences();
 	}
-
-	// get the display resolution
-	SDL_VideoInfo* vidInfo = (SDL_VideoInfo*) SDL_GetVideoInfo();
-	if(vidInfo == NULL)
-		log(LOG_FATAL, "Could not obtain screen resolution from SDL.");
-
-	displayResolutionX = (unsigned short int) vidInfo->current_w;
-	displayResolutionY = (unsigned short int) vidInfo->current_h;
 
 	// log the build version
 	std::stringstream buildInfo;

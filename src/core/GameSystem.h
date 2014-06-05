@@ -24,6 +24,7 @@ class Platform;
 // program headers
 #include "platform/OpenGLHeaders.h"
 #include "platform/Platform.h"
+#include "math/MiscMath.h"
 #include "math/VectorMath.h"
 
 // library headers
@@ -95,13 +96,13 @@ public:
 	// standards/preferences integration
 	void flushPreferences();
 	
-	// input device bindings
-	std::vector<SDLKey> getBindingKeys(std::string action);
-	std::vector<Uint8> getBindingMouseButtons(std::string action);
-
 	// high score data
 	std::vector< std::pair<unsigned int, std::string> > highScores;
 	
+	// window element scaling
+	std::vector< std::pair<unsigned int, unsigned int> > getAllowedWindowResolutions();
+	void applyScreenResolution(std::string resolution);
+
 	// object management
 	GameSystem();
 };

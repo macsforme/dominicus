@@ -13,9 +13,9 @@ GameGraphics::GameGraphics(bool fullScreen, bool testSystem) :
 		fullScreen(fullScreen) {
 	// initialize an SDL window
 	resolutionX = (fullScreen ? gameSystem->displayResolutionX :
-			(int) gameSystem->getFloat("displayWindowedResolutionX"));
+			atoi(gameSystem->getString("displayWindowedResolution").substr(0, gameSystem->getString("displayWindowedResolution").find('x')).c_str()));
 	resolutionY = (fullScreen ? gameSystem->displayResolutionY :
-			(int) gameSystem->getFloat("displayWindowedResolutionY"));
+			atoi(gameSystem->getString("displayWindowedResolution").substr(gameSystem->getString("displayWindowedResolution").find('x') + 1, std::string::npos).c_str()));
 	aspectRatio = (float) resolutionX / (float) resolutionY;
 
 	Uint32 flags = SDL_OPENGL | (fullScreen ? SDL_FULLSCREEN : 0);
@@ -49,6 +49,11 @@ SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 0);
 
 	if(! fullScreen)
 		SDL_WM_SetCaption(PROGRAM_IDENTIFIER, NULL);
+
+	// apply window element scaling
+	std::stringstream resolutionText;
+	resolutionText << resolutionX << "x" << resolutionY;
+	gameSystem->applyScreenResolution(resolutionText.str().c_str());
 
 	// if specified, do system test
 	if(testSystem) {
