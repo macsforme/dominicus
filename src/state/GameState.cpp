@@ -209,6 +209,18 @@ GameState::GameState() : MainLoopMember((unsigned int) gameSystem->getFloat("sta
 	}
 	missileLength = maxXValue - minXValue;
 
+
+	float maxDist = 0.0f;
+	for(size_t i = 0; i < missileMesh.faceGroups["lightgrain"].size(); ++i) {
+		if(absolute(missileMesh.vertices[missileMesh.faceGroups["lightgrain"][i].vertices[0]].y) > maxDist)
+			maxDist = absolute(missileMesh.vertices[missileMesh.faceGroups["lightgrain"][i].vertices[0]].y);
+		if(absolute(missileMesh.vertices[missileMesh.faceGroups["lightgrain"][i].vertices[1]].y) > maxDist)
+			maxDist = absolute(missileMesh.vertices[missileMesh.faceGroups["lightgrain"][i].vertices[1]].y);
+		if(absolute(missileMesh.vertices[missileMesh.faceGroups["lightgrain"][i].vertices[2]].y) > maxDist)
+			maxDist = absolute(missileMesh.vertices[missileMesh.faceGroups["lightgrain"][i].vertices[2]].y);
+	}
+	missileRadius = maxDist;
+
 	// set start time
 	isPaused = false;
 	lastUpdateGameTime = 0;
@@ -443,7 +455,7 @@ unsigned int GameState::execute(bool unScheduled) {
 			if(distance(
 					shellStartPos + shellTravelVec * cpaProgression,
 					missileStartPos + missileTravelVec * cpaProgression + missileLengthVector * cpaMissileProgression
-				) < gameSystem->getFloat("stateMissileRadius")) {
+				) <= missileRadius * gameSystem->getFloat("stateMissileRadiusMultiplier")) {
 				missiles[i].alive = false;
 				shells.erase(shells.begin() + p);
 				++score;

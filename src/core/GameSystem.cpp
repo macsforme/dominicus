@@ -247,7 +247,7 @@ GameSystem::GameSystem() {
 	setStandard("stateShipAddRate", 17.0f, "Time between ships being added to the world.");
 	setStandard("stateMissileSpeed", 100.0f, "Missile speed in world units per second.");
 	setStandard("stateMissileFiringRate", 12.0f, "Wait time in between missile firings for each ship.");
-	setStandard("stateMissileRadius", 4.0f, "Radius in world units of missile collision area.");
+	setStandard("stateMissileRadiusMultiplier", 1.5f, "Multiplier of missile radius for actual collision area.");
 	setStandard("stateFortressMinimumTilt", 0.0f, "Minimum tilt angle of fortress turret.");
 	setStandard("stateFortressMaximumTilt", 45.0f, "Maximum tilt angle of fortress turret.");
 	setStandard("stateTurretTurnSpeed", 90.0f, "Turning speed of turret in degrees per second.");

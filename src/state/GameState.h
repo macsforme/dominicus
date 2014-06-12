@@ -106,6 +106,7 @@ public:
 	Vector3 shellOrigin;
 	float shellRadius;
 	float missileLength;
+	float missileRadius;
 
 	float recoil;
 	bool shockIsCharging;
