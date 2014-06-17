@@ -44,7 +44,7 @@ void main() {
 
 	if(weight > 0.95)
 		waveColor = crest;
-	else if (weight > 0.9)
+	else if(weight > 0.9)
 		waveColor = mix(moderate, crest, vec4((weight - 0.9) * 15.0));
 	else if(weight > 0.3)
 		waveColor = mix(deep, moderate, vec4((weight - 0.3) / 0.6));

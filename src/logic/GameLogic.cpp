@@ -1337,7 +1337,7 @@ lastFPSUpdate = platform->getExecMills();
 					gameAudio->setBackgroundMusic("menuSong");
 					SDL_UnlockAudio();
 				}
-			} else if (key == SDLK_ESCAPE) {
+			} else if(key == SDLK_ESCAPE) {
 				currentScheme = SCHEME_MAINMENU;
 				activeMenuSelection = &playButtonEntry;
 				reScheme();
@@ -1771,7 +1771,7 @@ lastFPSUpdate = platform->getExecMills();
 					reScheme();
 					needRedraw = true;
 				}
-			} else if (key == SDLK_ESCAPE) {
+			} else if(key == SDLK_ESCAPE) {
 				currentScheme = SCHEME_MAINMENU;
 				activeMenuSelection = &playButtonEntry;
 				reScheme();
@@ -1884,7 +1884,7 @@ lastFPSUpdate = platform->getExecMills();
 					reScheme();
 					needRedraw = true;
 				}
-			} else if (key == SDLK_ESCAPE) {
+			} else if(key == SDLK_ESCAPE) {
 				currentScheme = SCHEME_MAINMENU;
 				activeMenuSelection = &playButtonEntry;
 				reScheme();

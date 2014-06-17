@@ -66,7 +66,7 @@ void Platform::sleepMills(unsigned int mills) {
 	nanosleep(&delayTime, NULL);
 }
 
-void Platform::loadExtensions(){
+void Platform::loadExtensions() {
 	;
 }
 
