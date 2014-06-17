@@ -85,19 +85,19 @@ void SkyRenderer::execute(std::map<std::string, void*> arguments) {
 
 	// set uniforms
 	glUniformMatrix4fv(uniforms["mvpMatrix"], 1, GL_FALSE, mvpMatrixArray);
-	float shockColorMultiplier = (
-			gameState->fortress.shock <= 0.0f || gameState->fortress.shock >= 1.0f ?
+	float empColorMultiplier = (
+			gameState->fortress.emp <= 0.0f || gameState->fortress.emp >= 1.0f ?
 			1.0f :
-			1.0f - gameState->fortress.shock + gameState->fortress.shock * gameSystem->getFloat("shockColorMultiplier")
+			1.0f - gameState->fortress.emp + gameState->fortress.emp * gameSystem->getFloat("empColorMultiplier")
 		);
 
-	Vector4 waterColor = gameSystem->getColor("waterColor") * shockColorMultiplier;
+	Vector4 waterColor = gameSystem->getColor("waterColor") * empColorMultiplier;
 	glUniform4f(uniforms["waterColor"], waterColor.x, waterColor.y, waterColor.z, waterColor.w);
-	Vector4 horizonColor = gameSystem->getColor("horizonColor") * shockColorMultiplier;
+	Vector4 horizonColor = gameSystem->getColor("horizonColor") * empColorMultiplier;
 	glUniform4f(uniforms["horizonColor"], horizonColor.x, horizonColor.y, horizonColor.z, waterColor.w);
-	Vector4 baseSkyColor = gameSystem->getColor("baseSkyColor") * shockColorMultiplier;
+	Vector4 baseSkyColor = gameSystem->getColor("baseSkyColor") * empColorMultiplier;
 	glUniform4f(uniforms["baseSkyColor"], baseSkyColor.x, baseSkyColor.y, baseSkyColor.z, baseSkyColor.w);
-	Vector4 apexColor = gameSystem->getColor("apexColor") * shockColorMultiplier;;
+	Vector4 apexColor = gameSystem->getColor("apexColor") * empColorMultiplier;;
 	glUniform4f(uniforms["apexColor"], apexColor.x, apexColor.y, apexColor.z, apexColor.w);
 
 	// draw the data stored in GPU memory

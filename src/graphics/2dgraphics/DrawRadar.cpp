@@ -388,7 +388,7 @@ void DrawRadar::execute(std::map<std::string, void*> arguments) {
 	}
 
 	// draw EMP wave
-	if(gameState->fortress.shock > 0.0f && gameState->fortress.shock < 1.0f) {
+	if(gameState->fortress.emp > 0.0f && gameState->fortress.emp < 1.0f) {
 		insideColor = gameSystem->getColor("radarEMPColor");
 		outsideColor = Vector4(
 				gameSystem->getColor("radarEMPColor").x,
@@ -398,8 +398,8 @@ void DrawRadar::execute(std::map<std::string, void*> arguments) {
 			);
 		spotPosition = metrics->position;
 		spotSize = Vector2(
-					(1.0f - gameState->fortress.shock) * gameSystem->getFloat("stateEMPRange") * (actualSize.x / 2.0f - padding.x) / gameSystem->getFloat("radarRadius"),
-					(1.0f - gameState->fortress.shock) * gameSystem->getFloat("stateEMPRange") * (actualSize.y / 2.0f - padding.y) / gameSystem->getFloat("radarRadius")
+					(1.0f - gameState->fortress.emp) * gameSystem->getFloat("stateEMPRange") * (actualSize.x / 2.0f - padding.x) / gameSystem->getFloat("radarRadius"),
+					(1.0f - gameState->fortress.emp) * gameSystem->getFloat("stateEMPRange") * (actualSize.y / 2.0f - padding.y) / gameSystem->getFloat("radarRadius")
 			);
 
 		spotDrawer->execute(drawerArguments);

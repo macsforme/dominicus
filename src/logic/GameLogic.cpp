@@ -1023,7 +1023,7 @@ lastFPSUpdate = platform->getExecMills();
 		if(
 				(*((std::vector<float>*) gaugePanelEntry.second["progressions"]))[0] != gameState->fortress.health ||
 				(*((std::vector<float>*) gaugePanelEntry.second["progressions"]))[1] != gameState->fortress.ammunition ||
-				(*((std::vector<float>*) gaugePanelEntry.second["progressions"]))[2] != gameState->fortress.shock
+				(*((std::vector<float>*) gaugePanelEntry.second["progressions"]))[2] != gameState->fortress.emp
 			) {
 			reScheme();
 		}
@@ -1079,7 +1079,7 @@ lastFPSUpdate = platform->getExecMills();
 			gameState->fireShell();
 		}
 		if(secondaryFireClickListener->wasClicked()) {
-			gameState->shockIsCharging = ! gameState->shockIsCharging;
+			gameState->empIsCharging = ! gameState->empIsCharging;
 		}
 
 		// key hits
@@ -1087,7 +1087,7 @@ lastFPSUpdate = platform->getExecMills();
 			if(key == SDLK_SPACE) {
 				gameState->fireShell();
 			} else if(key == SDLK_TAB) {
-				gameState->shockIsCharging = ! gameState->shockIsCharging;
+				gameState->empIsCharging = ! gameState->empIsCharging;
 			} else if(key == SDLK_RETURN) {
 				mainLoopModules.erase(mainLoopModules.find(gameState));
 				delete gameState;

@@ -84,22 +84,22 @@ void WaterRenderer::execute(std::map<std::string, void*> arguments) {
 	glUniformMatrix4fv(uniforms["mvpMatrix"], 1, GL_FALSE, mvpMatrixArray);
 	glUniformMatrix4fv(uniforms["fortressTransformMatrix"], 1, GL_FALSE, fortressTransformMatrixArray);
 	glUniform4f(uniforms["insideColorMultiplier"], 1.0f, 1.0f, 1.0f, 1.0f);
-	float shockColorMultiplier = (
-			gameState->fortress.shock <= 0.0f || gameState->fortress.shock >= 1.0f ?
+	float empColorMultiplier = (
+			gameState->fortress.emp <= 0.0f || gameState->fortress.emp >= 1.0f ?
 			1.0f :
-			1.0f - gameState->fortress.shock + gameState->fortress.shock * gameSystem->getFloat("shockColorMultiplier")
+			1.0f - gameState->fortress.emp + gameState->fortress.emp * gameSystem->getFloat("empColorMultiplier")
 		);
 	glUniform4f(
 			uniforms["outsideColorMultiplier"],
-			shockColorMultiplier,
-			shockColorMultiplier,
-			shockColorMultiplier,
+			empColorMultiplier,
+			empColorMultiplier,
+			empColorMultiplier,
 			1.0f
 		);
 	glUniform1f(uniforms["colorChangeRadius"],
-			gameState->fortress.shock <= 0.0f || gameState->fortress.shock >= 1.0f ?
+			gameState->fortress.emp <= 0.0f || gameState->fortress.emp >= 1.0f ?
 			0.0f :
-			(1.0f - gameState->fortress.shock) * gameSystem->getFloat("stateEMPRange")
+			(1.0f - gameState->fortress.emp) * gameSystem->getFloat("stateEMPRange")
 		);
 
 	// draw the data stored in GPU memory

@@ -226,7 +226,7 @@ GameState::GameState() : MainLoopMember((unsigned int) gameSystem->getFloat("sta
 	score = 0;
 
 	// initialize other stuff
-	shockIsCharging = false;
+	empIsCharging = false;
 	recoil = 0.0f;
 }
 
@@ -486,28 +486,28 @@ unsigned int GameState::execute(bool unScheduled) {
 	}
 
 	// update EMP status
-	if(fortress.shock > 1.0f) {
-		if(shockIsCharging) {
+	if(fortress.emp > 1.0f) {
+		if(empIsCharging) {
 			// charging
-			fortress.shock -= deltaTime / gameSystem->getFloat("stateEMPChargingTime");
+			fortress.emp -= deltaTime / gameSystem->getFloat("stateEMPChargingTime");
 
-			if(fortress.shock < 1.0f)
-				fortress.shock = 1.0f;
+			if(fortress.emp < 1.0f)
+				fortress.emp = 1.0f;
 		} else {
 			// cancel charge and return stocks (overages corrected by subsequent code)
-			fortress.shock = 0.0f;
+			fortress.emp = 0.0f;
 			fortress.health += gameSystem->getFloat("stateEMPHealthCost");
 			fortress.ammunition += gameSystem->getFloat("stateEMPFiringCost");
 		}
-	} else if(fortress.shock > 0.0f) {
-		if(! shockIsCharging || fortress.shock < 1.0f)
+	} else if(fortress.emp > 0.0f) {
+		if(! empIsCharging || fortress.emp < 1.0f)
 			// fire or contine discharging
-			fortress.shock -= deltaTime / gameSystem->getFloat("stateEMPDuration");
+			fortress.emp -= deltaTime / gameSystem->getFloat("stateEMPDuration");
 	} else {
 		// at rest
-		fortress.shock = 0.0f;
+		fortress.emp = 0.0f;
 
-		if(shockIsCharging) {
+		if(empIsCharging) {
 			if(
 					fortress.health > gameSystem->getFloat("stateEMPHealthCost") &&
 					fortress.ammunition > gameSystem->getFloat("stateEMPFiringCost")
@@ -516,7 +516,7 @@ unsigned int GameState::execute(bool unScheduled) {
 				fortress.health -= gameSystem->getFloat("stateEMPHealthCost");
 				fortress.ammunition -= gameSystem->getFloat("stateEMPFiringCost");
 
-				fortress.shock = 2.0f - deltaTime / gameSystem->getFloat("stateEMPChargingTime");
+				fortress.emp = 2.0f - deltaTime / gameSystem->getFloat("stateEMPChargingTime");
 			}
 		}
 	}
@@ -536,12 +536,12 @@ unsigned int GameState::execute(bool unScheduled) {
 	if(fortress.ammunition > 1.0f) fortress.ammunition = 1.0f;
 
 	// missile/EMP collisions
-	if(fortress.shock > 0.0f && fortress.shock < 1.0f) {
+	if(fortress.emp > 0.0f && fortress.emp < 1.0f) {
 		for(size_t i = 0; i < missiles.size(); ++i) {
 			if(! missiles[i].alive)
 				continue;
 
-			if(distance(fortress.position, missiles[i].position) < (1.0f - fortress.shock) * gameSystem->getFloat("stateEMPRange")) {
+			if(distance(fortress.position, missiles[i].position) < (1.0f - fortress.emp) * gameSystem->getFloat("stateEMPRange")) {
 				missiles[i].alive = false;
 				++score;
 			}

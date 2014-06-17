@@ -24,7 +24,7 @@ class Fortress {
 public:
 	float health;
 	float ammunition;
-	float shock; // > 1 = charging, > 0 = firing, 0 = at rest
+	float emp; // > 1 = charging, > 0 = firing, 0 = at rest
 
 	Vector3 position;
 	float rotation;
@@ -35,7 +35,7 @@ public:
 	Fortress() :
 			health(1.0f),
 			ammunition(1.0f),
-			shock(0.0f),
+			emp(0.0f),
 			position(Vector3(0.0f, 0.0f, 0.0f)),
 			rotation(0.0f),
 			tilt(0.0f),
@@ -104,7 +104,7 @@ public:
 	float missileRadius;
 
 	float recoil;
-	bool shockIsCharging;
+	bool empIsCharging;
 	bool isPaused;
 	unsigned int lastUpdateGameTime;
 	int gameTimeMargin;

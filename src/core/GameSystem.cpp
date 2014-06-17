@@ -288,7 +288,7 @@ GameSystem::GameSystem() {
 	setStandard("horizonColor", Vector4(1.0f, 0.88f, 0.64f, 1.0f), "Horizon color.");
 	setStandard("baseSkyColor", Vector4(0.76f, 0.88f, 1.0f, 1.0f), "Sky color at approximately halfway up.");
 	setStandard("apexColor", Vector4(0.12f, 0.36f, 0.60f, 1.0f), "Sky color at apex.");
-	setStandard("shockColorMultiplier", 4.0f, "Values to multiply colors by while under EMP.");
+	setStandard("empColorMultiplier", 4.0f, "Values to multiply colors by while under EMP.");
 	setStandard("terrainDepth", 10.0f, "How far below the water the ground extends.");
 	setStandard("terrainTextureRepeat", 50.0f, "Number of times to repeat the ground texture over the maximum surface area.");
 	setStandard("terrainNoiseTextureDensity", 512.0f, "Terrain mixing noise texture resolution.");
@@ -325,8 +325,8 @@ GameSystem::GameSystem() {
 	setStandard("hudGaugeColorFalloff", Vector4(0.3f, 0.3f, 0.3f, 0.75f), "Factor to be multiplied into gauge color for falloff at bottom.");
 	setStandard("hudGaugeHealthBarColor", Vector4(0.0f, 1.0f, 0.0f, 1.0f), "Color of health gauge.");
 	setStandard("hudGaugeAmmoBarColor", Vector4(0.0f, 1.0f, 1.0f, 1.0f), "Color of ammunition gauge.");
-	setStandard("hudGaugeShockChargingBarColor", Vector4(1.0f, 1.0f, 0.0f, 1.0f), "Color of shock gauge while charging.");
-	setStandard("hudGaugeShockChargedBarColor", Vector4(1.0f, 0.0f, 0.0f, 1.0f), "Color of shock gauge when charged.");
+	setStandard("hudGaugeEMPChargingBarColor", Vector4(1.0f, 1.0f, 0.0f, 1.0f), "Color of EMP gauge while charging.");
+	setStandard("hudGaugeEMPChargedBarColor", Vector4(1.0f, 0.0f, 0.0f, 1.0f), "Color of EMP gauge when charged.");
 	setStandard("hudGrayOutColor", Vector4(0.0f, 0.0f, 0.05f, 0.75f), "Color of gray screen during pause.");
 
 	// font standards
