@@ -35,6 +35,7 @@
 		036C99671915C49B00776051 /* DrawGaugePanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 036C99641915AD1A00776051 /* DrawGaugePanel.cpp */; };
 		036CFFE118EB5D4800C1B797 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 036CFFDF18EB5D4800C1B797 /* Camera.cpp */; };
 		0387C28D18F3E2A300565A43 /* GameAudio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0387C28B18F3E2A300565A43 /* GameAudio.cpp */; };
+		039DC976194FC6A8002251C5 /* DEVELOPMENT in Resources */ = {isa = PBXBuildFile; fileRef = 039DC975194FC6A8002251C5 /* DEVELOPMENT */; };
 		03AAEE08193F242800A17362 /* DrawCircle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03AAEE06193F242800A17362 /* DrawCircle.cpp */; };
 		03ACFE4918FCD8C200A6B447 /* ShipRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03ACFE4118FCD8C200A6B447 /* ShipRenderer.cpp */; };
 		03ACFE4A18FCD8C200A6B447 /* SkyRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03ACFE4318FCD8C200A6B447 /* SkyRenderer.cpp */; };
@@ -148,6 +149,7 @@
 		0387C28B18F3E2A300565A43 /* GameAudio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameAudio.cpp; path = src/audio/GameAudio.cpp; sourceTree = "<group>"; };
 		0387C28C18F3E2A300565A43 /* GameAudio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameAudio.h; path = src/audio/GameAudio.h; sourceTree = "<group>"; };
 		038FC1DE12A0EA3A00AE328B /* OpenGLHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLHeaders.h; sourceTree = "<group>"; };
+		039DC975194FC6A8002251C5 /* DEVELOPMENT */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = DEVELOPMENT; sourceTree = "<group>"; };
 		03AAEE06193F242800A17362 /* DrawCircle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawCircle.cpp; sourceTree = "<group>"; };
 		03AAEE07193F242800A17362 /* DrawCircle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawCircle.h; sourceTree = "<group>"; };
 		03ACFE4118FCD8C200A6B447 /* ShipRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShipRenderer.cpp; sourceTree = "<group>"; };
@@ -419,8 +421,9 @@
 				0303172813204EAE009B9AFD /* logic */,
 				03BB9B52131F3F50009DFC8B /* graphics */,
 				0387C28A18F3E27600565A43 /* audio */,
-				034AF126193C85C100272390 /* README */,
 				034AF124193C84C700272390 /* COPYING */,
+				039DC975194FC6A8002251C5 /* DEVELOPMENT */,
+				034AF126193C85C100272390 /* README */,
 				8D1107310486CEB800E47090 /* crucible island.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				03D47B7D1263E27F001755A6 /* crucible island.icns */,
@@ -487,6 +490,7 @@
 				034AF127193C85C100272390 /* README in Resources */,
 				03C806CC130E500D0037D309 /* InfoPlist.strings in Resources */,
 				03C806CD130E50140037D309 /* crucible island.icns in Resources */,
+				039DC976194FC6A8002251C5 /* DEVELOPMENT in Resources */,
 				03C806CE130E50340037D309 /* shaders in Resources */,
 				034AF125193C84C700272390 /* COPYING in Resources */,
 				03C806CF130E50340037D309 /* data in Resources */,
