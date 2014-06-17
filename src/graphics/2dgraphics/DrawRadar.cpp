@@ -405,7 +405,7 @@ void DrawRadar::execute(std::map<std::string, void*> arguments) {
 		spotDrawer->execute(drawerArguments);
 	}
 
-	// draw tower location
+	// draw fortress location
 	insideColor = gameSystem->getColor("hudGaugeHealthBarColor");
 	outsideColor = Vector4(
 			gameSystem->getColor("hudGaugeHealthBarColor").x,

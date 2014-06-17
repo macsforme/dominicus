@@ -7,7 +7,7 @@ uniform vec4 outsideColorMultiplier;
 uniform float colorChangeRadius;
 
 // varyings
-varying vec3 towerTransformedPosition;
+varying vec3 fortressTransformedPosition;
 varying vec2 positionInterpol;
 
 // quick hackish noise functions
@@ -58,7 +58,7 @@ void main() {
 	waveColor = mix(waveColor, deep, min(maxDev / 8.0, 1.0));
 
 	// color change for EMP
-	if(distance(vec3(0.0), towerTransformedPosition) > colorChangeRadius)
+	if(distance(vec3(0.0), fortressTransformedPosition) > colorChangeRadius)
 		waveColor *= outsideColorMultiplier;
 	else
 		waveColor *= insideColorMultiplier;

@@ -15,7 +15,7 @@ WaterRenderer::WaterRenderer() {
 	// set up uniforms and attributes
 	uniforms["timer"] = glGetUniformLocation(shaderProgram, "timer");
 	uniforms["mvpMatrix"] = glGetUniformLocation(shaderProgram, "mvpMatrix");
-	uniforms["towerTransformMatrix"] = glGetUniformLocation(shaderProgram, "towerTransformMatrix");
+	uniforms["fortressTransformMatrix"] = glGetUniformLocation(shaderProgram, "fortressTransformMatrix");
 	uniforms["insideColorMultiplier"] = glGetUniformLocation(shaderProgram, "insideColorMultiplier");
 	uniforms["outsideColorMultiplier"] = glGetUniformLocation(shaderProgram, "outsideColorMultiplier");
 	uniforms["colorChangeRadius"] = glGetUniformLocation(shaderProgram, "colorChangeRadius");
@@ -63,13 +63,13 @@ void WaterRenderer::execute(std::map<std::string, void*> arguments) {
 			mvpMatrix.m41, mvpMatrix.m42, mvpMatrix.m43, mvpMatrix.m44
 		};
 
-	Matrix4 towerTransformMatrix; towerTransformMatrix.identity();
-	translateMatrix(-gameState->fortress.position.x, -gameState->fortress.position.y, -gameState->fortress.position.z, towerTransformMatrix);
-	float towerTransformMatrixArray[] = {
-			towerTransformMatrix.m11, towerTransformMatrix.m12, towerTransformMatrix.m13, towerTransformMatrix.m14,
-			towerTransformMatrix.m21, towerTransformMatrix.m22, towerTransformMatrix.m23, towerTransformMatrix.m24,
-			towerTransformMatrix.m31, towerTransformMatrix.m32, towerTransformMatrix.m33, towerTransformMatrix.m34,
-			towerTransformMatrix.m41, towerTransformMatrix.m42, towerTransformMatrix.m43, towerTransformMatrix.m44
+	Matrix4 fortressTransformMatrix; fortressTransformMatrix.identity();
+	translateMatrix(-gameState->fortress.position.x, -gameState->fortress.position.y, -gameState->fortress.position.z, fortressTransformMatrix);
+	float fortressTransformMatrixArray[] = {
+			fortressTransformMatrix.m11, fortressTransformMatrix.m12, fortressTransformMatrix.m13, fortressTransformMatrix.m14,
+			fortressTransformMatrix.m21, fortressTransformMatrix.m22, fortressTransformMatrix.m23, fortressTransformMatrix.m24,
+			fortressTransformMatrix.m31, fortressTransformMatrix.m32, fortressTransformMatrix.m33, fortressTransformMatrix.m34,
+			fortressTransformMatrix.m41, fortressTransformMatrix.m42, fortressTransformMatrix.m43, fortressTransformMatrix.m44
 		};
 
 	// state
@@ -82,7 +82,7 @@ void WaterRenderer::execute(std::map<std::string, void*> arguments) {
 	// set uniforms
 	glUniform1f(uniforms["timer"], (float) (gameState->getGameMills() % 3000) / 3000.0f);
 	glUniformMatrix4fv(uniforms["mvpMatrix"], 1, GL_FALSE, mvpMatrixArray);
-	glUniformMatrix4fv(uniforms["towerTransformMatrix"], 1, GL_FALSE, towerTransformMatrixArray);
+	glUniformMatrix4fv(uniforms["fortressTransformMatrix"], 1, GL_FALSE, fortressTransformMatrixArray);
 	glUniform4f(uniforms["insideColorMultiplier"], 1.0f, 1.0f, 1.0f, 1.0f);
 	float shockColorMultiplier = (
 			gameState->fortress.shock <= 0.0f || gameState->fortress.shock >= 1.0f ?

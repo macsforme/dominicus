@@ -59,7 +59,7 @@
 		03C80756130E51C20037D309 /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 030F8F001264DBF300190225 /* libfreetype.a */; };
 		03C8075E130E52030037D309 /* SDLMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 030F8E151264C0FF00190225 /* SDLMain.m */; };
 		03C9206C13693A51000C4373 /* GameState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03C9206B13693A51000C4373 /* GameState.cpp */; };
-		03E508FA18FE1B340056ECE6 /* TowerRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03E508F818FE1B340056ECE6 /* TowerRenderer.cpp */; };
+		03E508FA18FE1B340056ECE6 /* FortressRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03E508F818FE1B340056ECE6 /* FortressRenderer.cpp */; };
 		03F4FD681921DC2F00B5A322 /* MissileRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03F4FD661921DC2F00B5A322 /* MissileRenderer.cpp */; };
 /* End PBXBuildFile section */
 
@@ -171,8 +171,8 @@
 		03C9206A13693A51000C4373 /* GameState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameState.h; path = src/state/GameState.h; sourceTree = "<group>"; };
 		03C9206B13693A51000C4373 /* GameState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameState.cpp; path = src/state/GameState.cpp; sourceTree = "<group>"; };
 		03D47B7D1263E27F001755A6 /* crucible island.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = "crucible island.icns"; sourceTree = "<group>"; };
-		03E508F818FE1B340056ECE6 /* TowerRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TowerRenderer.cpp; sourceTree = "<group>"; };
-		03E508F918FE1B340056ECE6 /* TowerRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TowerRenderer.h; sourceTree = "<group>"; };
+		03E508F818FE1B340056ECE6 /* FortressRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FortressRenderer.cpp; sourceTree = "<group>"; };
+		03E508F918FE1B340056ECE6 /* FortressRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FortressRenderer.h; sourceTree = "<group>"; };
 		03F4FD661921DC2F00B5A322 /* MissileRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MissileRenderer.cpp; sourceTree = "<group>"; };
 		03F4FD671921DC2F00B5A322 /* MissileRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MissileRenderer.h; sourceTree = "<group>"; };
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -366,6 +366,8 @@
 		03BB9B6A131F3F50009DFC8B /* 3dgraphics */ = {
 			isa = PBXGroup;
 			children = (
+				03E508F918FE1B340056ECE6 /* FortressRenderer.h */,
+				03E508F818FE1B340056ECE6 /* FortressRenderer.cpp */,
 				03F4FD671921DC2F00B5A322 /* MissileRenderer.h */,
 				03F4FD661921DC2F00B5A322 /* MissileRenderer.cpp */,
 				034AF1221936D67F00272390 /* ShellRenderer.h */,
@@ -376,8 +378,6 @@
 				03ACFE4318FCD8C200A6B447 /* SkyRenderer.cpp */,
 				03ACFE4618FCD8C200A6B447 /* TerrainRenderer.h */,
 				03ACFE4518FCD8C200A6B447 /* TerrainRenderer.cpp */,
-				03E508F918FE1B340056ECE6 /* TowerRenderer.h */,
-				03E508F818FE1B340056ECE6 /* TowerRenderer.cpp */,
 				03ACFE4818FCD8C200A6B447 /* WaterRenderer.h */,
 				03ACFE4718FCD8C200A6B447 /* WaterRenderer.cpp */,
 			);
@@ -531,7 +531,7 @@
 				035466671912C17200F4953E /* DrawRadar.cpp in Sources */,
 				0315B631134C2CF7002AD1CE /* Schemes.cpp in Sources */,
 				034AF1231936D67F00272390 /* ShellRenderer.cpp in Sources */,
-				03E508FA18FE1B340056ECE6 /* TowerRenderer.cpp in Sources */,
+				03E508FA18FE1B340056ECE6 /* FortressRenderer.cpp in Sources */,
 				03C9206C13693A51000C4373 /* GameState.cpp in Sources */,
 				03ACFE4918FCD8C200A6B447 /* ShipRenderer.cpp in Sources */,
 				03ACFE4A18FCD8C200A6B447 /* SkyRenderer.cpp in Sources */,

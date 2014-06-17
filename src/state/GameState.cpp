@@ -160,7 +160,7 @@ GameState::GameState() : MainLoopMember((unsigned int) gameSystem->getFloat("sta
 	// auto-normal
 	island.autoNormal();
 
-	// set the tower position
+	// set the fortress position
 	fortress.position = Vector3(0.0f, 0.0f, 0.0f);
 
 	for(
@@ -179,20 +179,20 @@ GameState::GameState() : MainLoopMember((unsigned int) gameSystem->getFloat("sta
 			shipMesh.vertices[shipMesh.faceGroups["missileorigin"][0].vertices[2]]
 		) / 3.0f;
 
-	Mesh towerMesh("tower");
+	Mesh fortressMesh("fortress");
 	turretOrigin = (
-			towerMesh.vertices[towerMesh.faceGroups["turretorigin"][0].vertices[0]] +
-			towerMesh.vertices[towerMesh.faceGroups["turretorigin"][0].vertices[1]] +
-			towerMesh.vertices[towerMesh.faceGroups["turretorigin"][0].vertices[2]]
+			fortressMesh.vertices[fortressMesh.faceGroups["turretorigin"][0].vertices[0]] +
+			fortressMesh.vertices[fortressMesh.faceGroups["turretorigin"][0].vertices[1]] +
+			fortressMesh.vertices[fortressMesh.faceGroups["turretorigin"][0].vertices[2]]
 		) / 3.0f;
 
 	shellOrigin = (
-			towerMesh.vertices[towerMesh.faceGroups["shellorigin"][0].vertices[0]] +
-			towerMesh.vertices[towerMesh.faceGroups["shellorigin"][0].vertices[1]] +
-			towerMesh.vertices[towerMesh.faceGroups["shellorigin"][0].vertices[2]]
+			fortressMesh.vertices[fortressMesh.faceGroups["shellorigin"][0].vertices[0]] +
+			fortressMesh.vertices[fortressMesh.faceGroups["shellorigin"][0].vertices[1]] +
+			fortressMesh.vertices[fortressMesh.faceGroups["shellorigin"][0].vertices[2]]
 		) / 3.0f;
 
-	shellRadius = distance(shellOrigin, towerMesh.vertices[towerMesh.faceGroups["shellorigin"][0].vertices[0]]);
+	shellRadius = distance(shellOrigin, fortressMesh.vertices[fortressMesh.faceGroups["shellorigin"][0].vertices[0]]);
 
 	Mesh missileMesh("missile");
 	float minXValue = 0.0f, maxXValue = 0.0f;
@@ -370,9 +370,9 @@ unsigned int GameState::execute(bool unScheduled) {
 			missiles[i].position.y = distanceTraveled;
 		} else {
 			// initial turn phase or final turn phase
-			float lateralDistanceToTower = distance(missiles[i].originPosition, Vector3(fortress.position.x, 0.0f, fortress.position.y));
+			float lateralDistanceTofortress = distance(missiles[i].originPosition, Vector3(fortress.position.x, 0.0f, fortress.position.y));
 			static float phaseSplitFactor = 1.0f + cos(radians(45.0f)) * 1.0f / (1.0f - sin(radians(45.0f)));
-			float initialTurnPhaseLatDist = 1.0f / phaseSplitFactor * lateralDistanceToTower;
+			float initialTurnPhaseLatDist = 1.0f / phaseSplitFactor * lateralDistanceTofortress;
 			float finalTurnPhaseRadius = 1.0f / (1.0f - (sin(radians(45.0f)))) * initialTurnPhaseLatDist;
 			float distanceTraveledIntoTurnPhases = distanceTraveled - fortress.position.y;
 

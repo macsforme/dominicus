@@ -460,7 +460,7 @@ GameLogic::GameLogic() :
 
 	shipEntry.first = "shipRenderer";
 
-	towerEntry.first = "towerRenderer";
+	fortressEntry.first = "fortressRenderer";
 
 	missileEntry.first = "missileRenderer";
 
@@ -935,7 +935,7 @@ lastFPSUpdate = platform->getExecMills();
 			SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
 			inputHandler->execute();
 			mouseMotionListener->wasMoved();
-			gameGraphics->currentCamera = &towerCamera;
+			gameGraphics->currentCamera = &fortressCamera;
 		}
 
 		// key hits
@@ -948,7 +948,7 @@ lastFPSUpdate = platform->getExecMills();
 				SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
 				inputHandler->execute();
 				mouseMotionListener->wasMoved();
-				gameGraphics->currentCamera = &towerCamera;
+				gameGraphics->currentCamera = &fortressCamera;
 			} else if(key == SDLK_ESCAPE) {
 				gameState->pause();
 
@@ -971,7 +971,7 @@ lastFPSUpdate = platform->getExecMills();
 			inputHandler->execute();
 			mouseMotionListener->wasMoved();
 			SDL_ShowCursor(0);
-			gameGraphics->currentCamera = &towerCamera;
+			gameGraphics->currentCamera = &fortressCamera;
 		}
 	} else if(currentScheme == SCHEME_PLAYING) {
 		// see if we're dead
@@ -1097,14 +1097,14 @@ lastFPSUpdate = platform->getExecMills();
 				((TerrainRenderer*) gameGraphics->drawers["terrainRenderer"])->reloadGraphics();
 				((DrawRadar*) gameGraphics->drawers["radar"])->reloadGraphics();
 			} else if(key == SDLK_BACKSLASH) {
-				if(gameGraphics->currentCamera == &towerCamera)
+				if(gameGraphics->currentCamera == &fortressCamera)
 					gameGraphics->currentCamera = &orbitCamera;
 				else if(gameGraphics->currentCamera == &orbitCamera)
 					gameGraphics->currentCamera = &presentationCamera;
 				else if(gameGraphics->currentCamera == &presentationCamera)
 					gameGraphics->currentCamera = &roamingCamera;
 				else if(gameGraphics->currentCamera == &roamingCamera)
-					gameGraphics->currentCamera = &towerCamera;
+					gameGraphics->currentCamera = &fortressCamera;
 			} else if(key == SDLK_ESCAPE) {
 				gameState->pause();
 

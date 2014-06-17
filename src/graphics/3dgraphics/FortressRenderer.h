@@ -1,8 +1,8 @@
-// TowerRenderer.h
+// FortressRenderer.h
 // Crucible Island
 
-#ifndef TOWERRENDERER_H
-#define TOWERRENDERER_H
+#ifndef FORTRESSRENDERER_H
+#define FORTRESSRENDERER_H
 
 // program headers
 #include "core/GameSystem.h"
@@ -26,20 +26,20 @@ extern GameSystem* gameSystem;
 extern Platform* platform;
 
 // class definition
-class TowerRenderer : public BaseDrawNode {
+class FortressRenderer : public BaseDrawNode {
 	// internal model data
 public:
 	Vector3 turretOrigin;
 	Vector3 cameraOrigin;
 
 private:
-	Mesh towerMesh;
+	Mesh fortressMesh;
 
 public:
-	TowerRenderer();
-	~TowerRenderer();
+	FortressRenderer();
+	~FortressRenderer();
 
 	void execute(std::map<std::string, void*> arguments);
 };
 
-#endif // TOWERRENDERER_H
+#endif // FORTRESSRENDERER_H

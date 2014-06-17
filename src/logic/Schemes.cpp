@@ -806,8 +806,8 @@ void Schemes::playingScheme() {
 	// ships
 	gameLogic->drawStack.push_back(gameLogic->shipEntry);
 
-	// tower
-	gameLogic->drawStack.push_back(gameLogic->towerEntry);
+	// fortress
+	gameLogic->drawStack.push_back(gameLogic->fortressEntry);
 
 	// missiles
 	gameLogic->drawStack.push_back(gameLogic->missileEntry);
@@ -988,8 +988,8 @@ void Schemes::introScheme() {
 	// ships
 	gameLogic->drawStack.push_back(gameLogic->shipEntry);
 
-	// tower
-	gameLogic->drawStack.push_back(gameLogic->towerEntry);
+	// fortress
+	gameLogic->drawStack.push_back(gameLogic->fortressEntry);
 
 	// missiles
 	gameLogic->drawStack.push_back(gameLogic->missileEntry);
@@ -1026,8 +1026,8 @@ void Schemes::pausedScheme() {
 	// ships
 	gameLogic->drawStack.push_back(gameLogic->shipEntry);
 
-	// tower
-	gameLogic->drawStack.push_back(gameLogic->towerEntry);
+	// fortress
+	gameLogic->drawStack.push_back(gameLogic->fortressEntry);
 
 	// missiles
 	gameLogic->drawStack.push_back(gameLogic->missileEntry);

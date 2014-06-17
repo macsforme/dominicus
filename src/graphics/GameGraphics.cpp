@@ -279,7 +279,7 @@ SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 0);
 	drawers["skyRenderer"] = new SkyRenderer();
 	drawers["shipRenderer"] = new ShipRenderer();
 	drawers["terrainRenderer"] = new TerrainRenderer();
-	drawers["towerRenderer"] = new TowerRenderer();
+	drawers["fortressRenderer"] = new FortressRenderer();
 	drawers["waterRenderer"] = new WaterRenderer();
 
 	// set camera
@@ -310,7 +310,7 @@ GameGraphics::~GameGraphics() {
 	delete (TerrainRenderer*) drawers["terrainRenderer"];
 	delete (WaterRenderer*) drawers["waterRenderer"];
 	delete (ShipRenderer*) drawers["shipRenderer"];
-	delete (TowerRenderer*) drawers["towerRenderer"];
+	delete (FortressRenderer*) drawers["fortressRenderer"];
 
 	// delete shaders
 	std::map<std::string, GLuint>::iterator shaderItr;

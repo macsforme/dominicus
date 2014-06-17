@@ -1,37 +1,37 @@
-// ShipRenderer.cpp
+// FortressRenderer.cpp
 // Crucible Island
 
-#include "graphics/3dgraphics/TowerRenderer.h"
+#include "graphics/3dgraphics/FortressRenderer.h"
 
-TowerRenderer::TowerRenderer() {
-	towerMesh = Mesh("tower");
+FortressRenderer::FortressRenderer() {
+	fortressMesh = Mesh("fortress");
 
 	// determine camera origin
 	cameraOrigin = (
-			towerMesh.vertices[towerMesh.faceGroups["cameraorigin"][0].vertices[0]] +
-			towerMesh.vertices[towerMesh.faceGroups["cameraorigin"][0].vertices[1]] +
-			towerMesh.vertices[towerMesh.faceGroups["cameraorigin"][0].vertices[2]]
+			fortressMesh.vertices[fortressMesh.faceGroups["cameraorigin"][0].vertices[0]] +
+			fortressMesh.vertices[fortressMesh.faceGroups["cameraorigin"][0].vertices[1]] +
+			fortressMesh.vertices[fortressMesh.faceGroups["cameraorigin"][0].vertices[2]]
 		) / 3.0f;
 
 	// center turret and determine origin
 	turretOrigin = (
-			towerMesh.vertices[towerMesh.faceGroups["turretorigin"][0].vertices[0]] +
-			towerMesh.vertices[towerMesh.faceGroups["turretorigin"][0].vertices[1]] +
-			towerMesh.vertices[towerMesh.faceGroups["turretorigin"][0].vertices[2]]
+			fortressMesh.vertices[fortressMesh.faceGroups["turretorigin"][0].vertices[0]] +
+			fortressMesh.vertices[fortressMesh.faceGroups["turretorigin"][0].vertices[1]] +
+			fortressMesh.vertices[fortressMesh.faceGroups["turretorigin"][0].vertices[2]]
 		) / 3.0f;
 
-	bool* vertexMoved = new bool[towerMesh.vertices.size()];
-	for(size_t i = 0; i < towerMesh.vertices.size(); ++i)
+	bool* vertexMoved = new bool[fortressMesh.vertices.size()];
+	for(size_t i = 0; i < fortressMesh.vertices.size(); ++i)
 		vertexMoved[i] = false;
 
 	for(
-			std::vector<Mesh::Face>::iterator itr = towerMesh.faceGroups["turret"].begin();
-			itr != towerMesh.faceGroups["turret"].end();
+			std::vector<Mesh::Face>::iterator itr = fortressMesh.faceGroups["turret"].begin();
+			itr != fortressMesh.faceGroups["turret"].end();
 			++itr
 		) {
 		for(size_t i = 0; i < 3; ++i) {
 			if(! vertexMoved[itr->vertices[i]]) {
-				towerMesh.vertices[itr->vertices[i]] -= turretOrigin;
+				fortressMesh.vertices[itr->vertices[i]] -= turretOrigin;
 
 				vertexMoved[itr->vertices[i]] = true;
 			}
@@ -68,8 +68,8 @@ TowerRenderer::TowerRenderer() {
 	unsigned int totalFaces = 0;
 	for(
 			std::map<std::string, std::vector<Mesh::Face> >::iterator itr =
-					towerMesh.faceGroups.begin();
-			itr != towerMesh.faceGroups.end();
+					fortressMesh.faceGroups.begin();
+			itr != fortressMesh.faceGroups.end();
 			++itr
 		)
 		totalFaces += itr->second.size();
@@ -79,8 +79,8 @@ TowerRenderer::TowerRenderer() {
 
 	for(
 			std::map<std::string, std::vector<Mesh::Face> >::iterator itr =
-					towerMesh.faceGroups.begin();
-			itr != towerMesh.faceGroups.end();
+					fortressMesh.faceGroups.begin();
+			itr != fortressMesh.faceGroups.end();
 			++itr
 		) {
 		const unsigned int firstIndex = bufferIndex;
@@ -88,16 +88,16 @@ TowerRenderer::TowerRenderer() {
 		// insert the vertex attribute data
 		for(size_t i = 0; i < itr->second.size(); ++i) {
 			for(size_t p = 0; p < 3; ++p) {
-				vertDataBufferArray[bufferIndex * 36 + p * 12 + 0] = towerMesh.vertices[itr->second[i].vertices[p]].x;
-				vertDataBufferArray[bufferIndex * 36 + p * 12 + 1] = towerMesh.vertices[itr->second[i].vertices[p]].y;
-				vertDataBufferArray[bufferIndex * 36 + p * 12 + 2] = towerMesh.vertices[itr->second[i].vertices[p]].z;
+				vertDataBufferArray[bufferIndex * 36 + p * 12 + 0] = fortressMesh.vertices[itr->second[i].vertices[p]].x;
+				vertDataBufferArray[bufferIndex * 36 + p * 12 + 1] = fortressMesh.vertices[itr->second[i].vertices[p]].y;
+				vertDataBufferArray[bufferIndex * 36 + p * 12 + 2] = fortressMesh.vertices[itr->second[i].vertices[p]].z;
 
-				vertDataBufferArray[bufferIndex * 36 + p * 12 + 3] = towerMesh.normals[itr->second[i].normals[p]].x;
-				vertDataBufferArray[bufferIndex * 36 + p * 12 + 4] = towerMesh.normals[itr->second[i].normals[p]].y;
-				vertDataBufferArray[bufferIndex * 36 + p * 12 + 5] = towerMesh.normals[itr->second[i].normals[p]].z;
+				vertDataBufferArray[bufferIndex * 36 + p * 12 + 3] = fortressMesh.normals[itr->second[i].normals[p]].x;
+				vertDataBufferArray[bufferIndex * 36 + p * 12 + 4] = fortressMesh.normals[itr->second[i].normals[p]].y;
+				vertDataBufferArray[bufferIndex * 36 + p * 12 + 5] = fortressMesh.normals[itr->second[i].normals[p]].z;
 
-				vertDataBufferArray[bufferIndex * 36 + p * 12 + 6] = towerMesh.texCoords[itr->second[i].texCoords[p]].x;
-				vertDataBufferArray[bufferIndex * 36 + p * 12 + 7] = towerMesh.texCoords[itr->second[i].texCoords[p]].y;
+				vertDataBufferArray[bufferIndex * 36 + p * 12 + 6] = fortressMesh.texCoords[itr->second[i].texCoords[p]].x;
+				vertDataBufferArray[bufferIndex * 36 + p * 12 + 7] = fortressMesh.texCoords[itr->second[i].texCoords[p]].y;
 
 				vertDataBufferArray[bufferIndex * 36 + p * 12 + 8] = 1.0f;
 				vertDataBufferArray[bufferIndex * 36 + p * 12 + 9] = 1.0f;
@@ -129,11 +129,11 @@ TowerRenderer::TowerRenderer() {
 	delete[] vertDataBufferArray;
 }
 
-TowerRenderer::~TowerRenderer() {
+FortressRenderer::~FortressRenderer() {
 // FIXME destroy variables
 }
 
-void TowerRenderer::execute(std::map<std::string, void*> arguments) {
+void FortressRenderer::execute(std::map<std::string, void*> arguments) {
 	Matrix4 mvMatrix; mvMatrix.identity();
 	translateMatrix(gameState->fortress.position.x, gameState->fortress.position.y, gameState->fortress.position.z, mvMatrix);
 	mvMatrix = mvMatrix * gameGraphics->currentCamera->mvMatrix;
@@ -206,8 +206,8 @@ void TowerRenderer::execute(std::map<std::string, void*> arguments) {
 
 	for(
 			std::map<std::string, std::vector<Mesh::Face> >::iterator itr =
-					towerMesh.faceGroups.begin();
-			itr != towerMesh.faceGroups.end();
+					fortressMesh.faceGroups.begin();
+			itr != fortressMesh.faceGroups.end();
 			++itr
 		) {
 		// don't draw the missile origin

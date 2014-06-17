@@ -25,7 +25,7 @@ class MouseZoneListener;
 #include "graphics/3dgraphics/MissileRenderer.h"
 #include "graphics/3dgraphics/ShellRenderer.h"
 #include "graphics/3dgraphics/TerrainRenderer.h"
-#include "graphics/3dgraphics/TowerRenderer.h"
+#include "graphics/3dgraphics/FortressRenderer.h"
 #include "graphics/3dgraphics/WaterRenderer.h"
 #include "graphics/texture/Texture.h"
 #include "input/InputHandler.h"
@@ -126,7 +126,7 @@ KeyAbsoluteListener* cameraAheadKeyListener;
 	DrawStackEntry waterEntry;
 	DrawStackEntry terrainEntry;
 	DrawStackEntry shipEntry;
-	DrawStackEntry towerEntry;
+	DrawStackEntry fortressEntry;
 	DrawStackEntry missileEntry;
 	DrawStackEntry shellEntry;
 
@@ -214,7 +214,7 @@ DrawStackEntry fpsEntry;
 
 	// cameras
 	IntroCamera introCamera;
-	TowerCamera towerCamera;
+	FortressCamera fortressCamera;
 	OrbitCamera orbitCamera;
 	PresentationCamera presentationCamera;
 	RoamingCamera roamingCamera;

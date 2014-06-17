@@ -9,7 +9,7 @@ uniform vec4 outsideColorMultiplier;
 uniform float colorChangeRadius;
 
 // varyings
-varying vec3 towerTransformedPosition;
+varying vec3 fortressTransformedPosition;
 varying float yCoordInterpol;
 varying vec3 normalInterpol;
 varying vec2 texCoordInterpol;
@@ -41,7 +41,7 @@ void main() {
 
 	// color change for EMP
 	if(yCoordInterpol >= 0.0) {
-		if(distance(vec3(0.0), towerTransformedPosition) > colorChangeRadius)
+		if(distance(vec3(0.0), fortressTransformedPosition) > colorChangeRadius)
 			calculatedColor *= outsideColorMultiplier;
 		else
 			calculatedColor *= insideColorMultiplier;

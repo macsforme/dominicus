@@ -51,7 +51,7 @@ class Camera;
 #include "graphics/3dgraphics/SkyRenderer.h"
 #include "graphics/3dgraphics/WaterRenderer.h"
 #include "graphics/3dgraphics/TerrainRenderer.h"
-#include "graphics/3dgraphics/TowerRenderer.h"
+#include "graphics/3dgraphics/FortressRenderer.h"
 #include "input/InputHandler.h"
 #include "logic/Camera.h"
 #include "logic/GameLogic.h"
