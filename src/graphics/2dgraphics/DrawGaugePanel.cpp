@@ -8,9 +8,9 @@ DrawGaugePanel::DrawGaugePanel() :
 
 DrawGaugePanel::~DrawGaugePanel() {
 	// memory management
-	delete(containerDrawer);
-	delete(progressBarDrawer);
-	delete(textureDrawer);
+	delete containerDrawer;
+	delete progressBarDrawer;
+	delete textureDrawer;
 }
 
 Vector2 DrawGaugePanel::getSize(std::map<std::string, void*> arguments) {
@@ -41,11 +41,11 @@ Vector2 DrawGaugePanel::getSize(std::map<std::string, void*> arguments) {
 		*((float*) arguments["padding"]) / (float) gameGraphics->resolutionY * 2.0f
 	);
 
-	return(Vector2(
+	return Vector2(
 			padding.x * 3.0f + maxTextureSize.x + progressBarSize.x,
 			padding.y + ((maxTextureSize.y > progressBarSize.y ? maxTextureSize.y : progressBarSize.y) +
 					padding.y) * (float) (*((size_t*) arguments["elements"]))
-		));
+		);
 }
 
 void DrawGaugePanel::execute(std::map<std::string, void*> arguments) {

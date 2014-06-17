@@ -97,7 +97,7 @@ DrawRadar::~DrawRadar() {
 		glDeleteProgram(shaderProgram);
 
 	// delete variables
-	delete(containerDrawer);
+	delete containerDrawer;
 
 //FIXME destroy textures in GL
 }
@@ -161,7 +161,7 @@ void DrawRadar::reloadGraphics() {
 
 	glDisable(GL_TEXTURE_2D);
 
-	delete(radarTexture);
+	delete radarTexture;
 
 	// clear the missile cache
 	missileCache.clear();

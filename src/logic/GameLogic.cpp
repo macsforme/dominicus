@@ -731,7 +731,7 @@ lastFPSUpdate = platform->getExecMills();
 
 		Camera* currentCamera = gameGraphics->currentCamera;
 
-		delete(gameGraphics);
+		delete gameGraphics;
 
 		gameGraphics = new GameGraphics(fullScreenGraphics);
 
@@ -748,7 +748,7 @@ lastFPSUpdate = platform->getExecMills();
 			((DrawRadar*) gameGraphics->drawers["radar"])->reloadGraphics();
 		}
 
-		delete(uiLayoutAuthority);
+		delete uiLayoutAuthority;
 		uiLayoutAuthority = new UILayoutAuthority(
 				Vector2(gameSystem->getFloat("hudElementMargin") / (float) gameGraphics->resolutionX,
 						gameSystem->getFloat("hudElementMargin") / (float) gameGraphics->resolutionY)
@@ -1090,7 +1090,7 @@ lastFPSUpdate = platform->getExecMills();
 				gameState->shockIsCharging = ! gameState->shockIsCharging;
 			} else if(key == SDLK_RETURN) {
 				mainLoopModules.erase(mainLoopModules.find(gameState));
-				delete(gameState);
+				delete gameState;
 				gameState = new GameState();
 				mainLoopModules[gameState] = 0;
 
@@ -1413,7 +1413,7 @@ lastFPSUpdate = platform->getExecMills();
 			}
 
 			mainLoopModules.erase(mainLoopModules.find(gameState));
-			delete(gameState);
+			delete gameState;
 			gameState = NULL;
 
 			currentScheme = SCHEME_MAINMENU;
@@ -1441,7 +1441,7 @@ lastFPSUpdate = platform->getExecMills();
 					}
 
 					mainLoopModules.erase(mainLoopModules.find(gameState));
-					delete(gameState);
+					delete gameState;
 					gameState = NULL;
 
 					currentScheme = SCHEME_MAINMENU;
@@ -1451,7 +1451,7 @@ lastFPSUpdate = platform->getExecMills();
 				}
 			} else if(key == SDLK_ESCAPE) {
 				mainLoopModules.erase(mainLoopModules.find(gameState));
-				delete(gameState);
+				delete gameState;
 				gameState = NULL;
 
 				currentScheme = SCHEME_MAINMENU;
@@ -1579,14 +1579,14 @@ lastFPSUpdate = platform->getExecMills();
 
 				if(! gameGraphics->fullScreen) {
 					// recreate the window
-					delete(gameGraphics);
+					delete gameGraphics;
 
 					gameGraphics = new GameGraphics(false);
 
 					inputHandler->execute();
 					mouseMotionListener->wasMoved();
 
-					delete(uiLayoutAuthority);
+					delete uiLayoutAuthority;
 					uiLayoutAuthority = new UILayoutAuthority(
 							Vector2(gameSystem->getFloat("hudElementMargin") / (float) gameGraphics->resolutionX,
 									gameSystem->getFloat("hudElementMargin") / (float) gameGraphics->resolutionY)
@@ -1743,14 +1743,14 @@ lastFPSUpdate = platform->getExecMills();
 
 						if(! gameGraphics->fullScreen) {
 							// recreate the window
-							delete(gameGraphics);
+							delete gameGraphics;
 
 							gameGraphics = new GameGraphics(false);
 
 							inputHandler->execute();
 							mouseMotionListener->wasMoved();
 
-							delete(uiLayoutAuthority);
+							delete uiLayoutAuthority;
 							uiLayoutAuthority = new UILayoutAuthority(
 									Vector2(gameSystem->getFloat("hudElementMargin") / (float) gameGraphics->resolutionX,
 											gameSystem->getFloat("hudElementMargin") / (float) gameGraphics->resolutionY)

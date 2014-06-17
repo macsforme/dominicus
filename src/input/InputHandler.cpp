@@ -9,8 +9,8 @@ InputHandler::InputHandler() : MainLoopMember((unsigned int) gameSystem->getFloa
 }
 
 InputHandler::~InputHandler() {
-	delete(keyboard);
-	delete(mouse);
+	delete keyboard;
+	delete mouse;
 }
 
 unsigned int InputHandler::execute(bool unScheduled) {

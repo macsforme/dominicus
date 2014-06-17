@@ -288,29 +288,29 @@ SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 0);
 
 GameGraphics::~GameGraphics() {
 	// destroy fonts
-	delete(fontManager);
+	delete fontManager;
 
 	// destroy textures
-	delete(noiseTexture);
-	delete(fourDepthNoiseTexture);
+	delete noiseTexture;
+	delete fourDepthNoiseTexture;
 
 	// delete drawers
-	delete((DrawSplash*) drawers["splash"]);
-	delete((DrawContainer*) drawers["container"]);
-	delete((DrawCircle*) drawers["circle"]);
-	delete((DrawLabel*) drawers["label"]);
-	delete((DrawField*) drawers["field"]);
-	delete((DrawButton*) drawers["button"]);
-	delete((DrawTexture*) drawers["texture"]);
-	delete((DrawGaugePanel*) drawers["gaugePanel"]);
-	delete((DrawProgressBar*) drawers["progressBar"]);
-	delete ((DrawRadar*) drawers["radar"]);
+	delete (DrawSplash*) drawers["splash"];
+	delete (DrawContainer*) drawers["container"];
+	delete (DrawCircle*) drawers["circle"];
+	delete (DrawLabel*) drawers["label"];
+	delete (DrawField*) drawers["field"];
+	delete (DrawButton*) drawers["button"];
+	delete (DrawTexture*) drawers["texture"];
+	delete (DrawGaugePanel*) drawers["gaugePanel"];
+	delete (DrawProgressBar*) drawers["progressBar"];
+	delete (DrawRadar*) drawers["radar"];
 
-	delete((MissileRenderer*) drawers["missileRenderer"]);
-	delete((TerrainRenderer*) drawers["terrainRenderer"]);
-	delete((WaterRenderer*) drawers["waterRenderer"]);
-	delete((ShipRenderer*) drawers["shipRenderer"]);
-	delete((TowerRenderer*) drawers["towerRenderer"]);
+	delete (MissileRenderer*) drawers["missileRenderer"];
+	delete (TerrainRenderer*) drawers["terrainRenderer"];
+	delete (WaterRenderer*) drawers["waterRenderer"];
+	delete (ShipRenderer*) drawers["shipRenderer"];
+	delete (TowerRenderer*) drawers["towerRenderer"];
 
 	// delete shaders
 	std::map<std::string, GLuint>::iterator shaderItr;
@@ -327,7 +327,7 @@ GameGraphics::~GameGraphics() {
 	std::map<std::string, Texture*>::iterator textureItr;
 
 	for(textureItr = textures.begin(); textureItr != textures.end(); ++textureItr)
-		delete(textureItr->second);
+		delete textureItr->second;
 
 	std::map<std::string, GLuint>::iterator textureIDItr;
 
@@ -512,7 +512,7 @@ Texture* GameGraphics::getTexture(std::string filename) {
 GLuint GameGraphics::getTextureID(std::string filename) {
 	// return the stored texture ID if it exists
 	if(textureIDs.find(filename) != textureIDs.end())
-		return(textureIDs.find(filename)->second);
+		return textureIDs.find(filename)->second;
 
 	std::stringstream filenameStream;
 	filenameStream <<

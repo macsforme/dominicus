@@ -44,10 +44,9 @@ inline Matrix4 getXVectorTransformationMatrix(Vector4 vector) {
 
 	return transformationMatrix;
 }
-*/
 
 inline bool fEq(float a, float b) {
-	return (absolute(a - b) < 0.001 ? true : false);
+	return absolute(a - b) < 0.001 ? true : false;
 }
 
 inline Matrix3 completeMatrix(Vector3 vector) {
@@ -65,6 +64,7 @@ inline Matrix3 completeMatrix(Vector3 vector) {
 			fEq(absolute(vector.y), 1.0f) ? 1.0f : vector.x / sqrt(vector.x * vector.x + vector.z * vector.z)
 		);
 }
+*/
 
 inline int roundToInt(float number) {
 	return (number > 0.0f ? number + 0.5f : number - 0.5f);

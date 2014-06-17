@@ -59,7 +59,7 @@ FontManager::~FontManager() {
 				sizeItr != charItr->second.end();
 				++sizeItr
 			)
-			delete(sizeItr->second.bitmap);
+			delete sizeItr->second.bitmap;
 
 	// delete any textures we've used
 	for(
@@ -169,7 +169,7 @@ void FontManager::rebuildFontTextureCache(unsigned int size) {
 	glDisable(GL_TEXTURE_2D);
 
 	// free memory
-	delete(thisFontCache);
+	delete thisFontCache;
 }
 
 void FontManager::buildChar(const char character, unsigned int size, bool rebuildCache) {

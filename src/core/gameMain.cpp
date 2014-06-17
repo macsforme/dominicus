@@ -83,12 +83,12 @@ int gameMain(int argc, char* argv[]) {
 	}
 
 	// clean up objects in reverse order
-	delete(gameLogic);
-	delete(inputHandler);
-	delete(gameGraphics);
-	delete(gameAudio);
-	delete(gameSystem);
-	delete(platform);
+	delete gameLogic;
+	delete inputHandler;
+	delete gameGraphics;
+	delete gameAudio;
+	delete gameSystem;
+	delete platform;
 
 	return 0;
 }

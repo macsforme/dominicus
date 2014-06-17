@@ -32,7 +32,7 @@ DrawField::DrawField() : labelDrawer(new DrawLabel()) {
 
 DrawField::~DrawField() {
 	// memory management
-	delete(labelDrawer);
+	delete labelDrawer;
 
 	// delete buffers
 	if(glIsBuffer(vertexBuffers["vertices"]))
@@ -62,11 +62,11 @@ Vector2 DrawField::getSize(std::map<std::string, void*> arguments) {
 			(unsigned int) *fontSize
 		);
 
-	return(Vector2(
+	return Vector2(
 			(float) textBlock.width / (float) gameGraphics->resolutionX * 2.0f,
 			gameGraphics->fontManager->lineHeights[(unsigned int) *fontSize] /
 					(float) gameGraphics->resolutionY * 2.0f
-		));
+		);
 }
 
 void DrawField::execute(std::map<std::string, void*> arguments) {
@@ -155,7 +155,7 @@ void DrawField::execute(std::map<std::string, void*> arguments) {
 
 	std::string labelString = *((std::string*) arguments["text"]);
 
-	delete(textBlock);
+	delete textBlock;
 	textBlock = new TextBlock(
 			labelString.c_str(),
 			gameGraphics->resolutionX,
@@ -168,7 +168,7 @@ void DrawField::execute(std::map<std::string, void*> arguments) {
 			spaceWidth * 2.0f > metrics->size.x) {
 		labelString = labelString.substr(1);
 
-		delete(textBlock);
+		delete textBlock;
 		textBlock = new TextBlock(
 				labelString.c_str(),
 				gameGraphics->resolutionX,
@@ -202,7 +202,7 @@ void DrawField::execute(std::map<std::string, void*> arguments) {
 
 	labelDrawer->execute(labelArguments);
 
-	delete((std::string*) labelArguments["text"]);
-	delete((UIMetrics*) labelArguments["metrics"]);
+	delete (std::string*) labelArguments["text"];
+	delete (UIMetrics*) labelArguments["metrics"];
 
 }

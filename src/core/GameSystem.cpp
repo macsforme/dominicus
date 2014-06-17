@@ -42,7 +42,7 @@ float GameSystem::getFloat(const char* key) {
 }
 
 bool GameSystem::getBool(const char* key) {
-	return (getString(key) != "false");
+	return getString(key) != "false";
 }
 
 void GameSystem::setStandard(const char* key, const char* value,

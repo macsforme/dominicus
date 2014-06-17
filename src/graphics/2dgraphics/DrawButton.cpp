@@ -8,8 +8,8 @@ DrawButton::DrawButton() :
 
 DrawButton::~DrawButton() {
 	// memory management
-	delete(containerDrawer);
-	delete(labelDrawer);
+	delete containerDrawer;
+	delete labelDrawer;
 }
 
 Vector2 DrawButton::getSize(std::map<std::string, void*> arguments) {

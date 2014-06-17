@@ -561,7 +561,7 @@ unsigned int GameState::execute(bool unScheduled) {
 unsigned int GameState::getGameMills() {
 	// execution time since game began (excluding pauses)
 	if(isPaused)
-		return((unsigned int) gameTimeMargin);
+		return (unsigned int) gameTimeMargin;
 	else
 		return (unsigned int) (platform->getExecMills() - gameTimeMargin);
 }

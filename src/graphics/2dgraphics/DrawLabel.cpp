@@ -140,13 +140,13 @@ Vector2 DrawLabel::getSize(std::map<std::string, void*> arguments) {
 		// skip part that actually sets text positions
 
 		for(size_t i = 0; i < numSections; ++i)
-			delete(textBlocks[i]);
+			delete textBlocks[i];
 	}
 
-	return(Vector2(
+	return Vector2(
 			(float) textBlock.width / (float) gameGraphics->resolutionX * 2.0f,
 			(float) textBlock.height / (float) gameGraphics->resolutionY * 2.0f
-		));
+		);
 }
 
 void DrawLabel::execute(std::map<std::string, void*> arguments) {
@@ -292,7 +292,7 @@ void DrawLabel::execute(std::map<std::string, void*> arguments) {
 		}
 
 		for(size_t i = 0; i < numSections; ++i)
-			delete(textBlocks[i]);
+			delete textBlocks[i];
 	}
 
 	// get the actual size so possibly incorrect metrics don't skew the text
