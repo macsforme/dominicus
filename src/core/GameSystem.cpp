@@ -355,7 +355,7 @@ GameSystem::GameSystem() {
 	if(platform->getPreferenceFloat("preferencesVersion") == 2.0f) {
 		if(strstr(getString("displayWindowedResolutions").c_str(), platform->getPreferenceString("displayWindowedResolution").c_str()) != NULL)
 			setStandard("displayWindowedResolution", platform->getPreferenceString("displayWindowedResolution").c_str());
-		setStandard("displayStartFullscreen", (platform->getPreferenceFloat("displayStartFullscreen")  == 1.0f ? true : false));
+		setStandard("displayStartFullscreen", (platform->getPreferenceFloat("displayStartFullscreen") == 1.0f ? true : false));
 		setStandard("audioMusicVolume", platform->getPreferenceFloat("audioMusicVolume"));
 		setStandard("audioEffectsVolume", platform->getPreferenceFloat("audioEffectsVolume"));
 		setStandard("gameStartingLevel", platform->getPreferenceString("gameStartingLevel").c_str());

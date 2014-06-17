@@ -277,7 +277,7 @@ Texture::Texture(std::string filename) {
 	if(
 			fileBMPHeader.dataOffset - sizeof(fileMagic) - sizeof(fileBMPHeader) != 40 &&
 			fileBMPHeader.dataOffset - sizeof(fileMagic) - sizeof(fileBMPHeader) != 108
-       ) {
+		) {
 		gameSystem->log(
 				GameSystem::LOG_FATAL,
 				std::string("The BMP image file " +

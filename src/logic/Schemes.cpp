@@ -836,7 +836,7 @@ void Schemes::playingScheme() {
 	// score
 	*((float*) gameLogic->scoreLabel.second["fontSize"]) = gameSystem->getFloat("fontSizeLarge");
 	*((Vector4*) gameLogic->scoreLabel.second["fontColor"]) = gameSystem->getColor("fontColorLight");
-	char scoreString[8];  scoreString[0] = '\0'; if(gameState->score <= 9999999) sprintf(scoreString, "%u", gameState->score);
+	char scoreString[8]; scoreString[0] = '\0'; if(gameState->score <= 9999999) sprintf(scoreString, "%u", gameState->score);
 	*((std::string*) gameLogic->scoreLabel.second["text"]) = scoreString;
 	((UIMetrics*) gameLogic->scoreLabel.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
 	((UIMetrics*) gameLogic->scoreLabel.second["metrics"])->size = ((DrawLabel*) gameGraphics->drawers["label"])->getSize(gameLogic->scoreLabel.second);
@@ -1191,7 +1191,7 @@ void Schemes::gameOverScheme() {
 	// score label
 	*((float*) gameLogic->yourScoreEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
 	*((Vector4*) gameLogic->yourScoreEntry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
-	char scoreString[8];  scoreString[0] = '\0'; if(gameState->score <= 9999999) sprintf(scoreString, "%u", gameState->score);
+	char scoreString[8]; scoreString[0] = '\0'; if(gameState->score <= 9999999) sprintf(scoreString, "%u", gameState->score);
 	*((std::string*) gameLogic->yourScoreEntry.second["text"]) = scoreString;
 	((UIMetrics*) gameLogic->yourScoreEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
 	((UIMetrics*) gameLogic->yourScoreEntry.second["metrics"])->size = ((DrawLabel*) gameGraphics->drawers["label"])->getSize(gameLogic->yourScoreEntry.second);
