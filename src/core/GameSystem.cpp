@@ -353,7 +353,7 @@ GameSystem::GameSystem() {
 
 	// load standards from preferences (or save standard preferences if no file)
 	if(platform->getPreferenceFloat("preferencesVersion") == 2.0f) {
-		if(strstr(getString("displayWindowedResolutions").c_str(), platform->getPreferenceString("displayWindowedResolution").c_str()) != NULL)
+		if(getString("displayWindowedResolutions").find(platform->getPreferenceString("displayWindowedResolution")) != std::string::npos)
 			setStandard("displayWindowedResolution", platform->getPreferenceString("displayWindowedResolution").c_str());
 		setStandard("displayStartFullscreen", (platform->getPreferenceFloat("displayStartFullscreen") == 1.0f ? true : false));
 		setStandard("audioMusicVolume", platform->getPreferenceFloat("audioMusicVolume"));

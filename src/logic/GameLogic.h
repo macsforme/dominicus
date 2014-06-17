@@ -225,6 +225,7 @@ DrawStackEntry fpsEntry;
 	unsigned int deleteKeyPressTime;
 	unsigned int lastCharacterDeletionTime;
 	unsigned int leftArrowPressTime, rightArrowPressTime, upArrowPressTime, downArrowPressTime;
+	unsigned int lastFPSUpdate;
 
 //FIXME probably delete this fugly functionality
 	Vector2 keyboardCursorPosition;

@@ -13,7 +13,8 @@ GameLogic::GameLogic() :
 		leftArrowPressTime(0),
 		rightArrowPressTime(0),
 		upArrowPressTime(0),
-		downArrowPressTime(0) {
+		downArrowPressTime(0),
+		lastFPSUpdate(0) {
 	// instantiate HUD layout authority
 	uiLayoutAuthority = new UILayoutAuthority(
 			Vector2(gameSystem->getFloat("hudElementMargin") / gameGraphics->resolutionX,
@@ -705,7 +706,6 @@ uiLayoutAuthority->rearrange();
 unsigned int GameLogic::execute(bool unScheduled) {
 	bool needRedraw = false;
 
-static unsigned int lastFPSUpdate = 0;
 if(lastFPSUpdate + 1000 < platform->getExecMills()) {
 reScheme();
 needRedraw = true;
@@ -1349,7 +1349,7 @@ lastFPSUpdate = platform->getExecMills();
 		if(inputHandler->keyboard->unicodeChars != "") {
 			if(playerName.length() < gameSystem->getFloat("hudFieldWidth")) {
 				for(size_t i = 0; i < inputHandler->keyboard->unicodeChars.length(); ++i) {
-					if(strstr(gameSystem->getString("inputAllowedNameChars").c_str(), inputHandler->keyboard->unicodeChars.substr(i, 1).c_str()) != NULL) {
+					if(gameSystem->getString("inputAllowedNameChars").find(inputHandler->keyboard->unicodeChars.substr(i, 1)) != std::string::npos) {
 						playerName += inputHandler->keyboard->unicodeChars.substr(i, 1);
 
 						reScheme();
