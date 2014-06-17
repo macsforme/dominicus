@@ -15,7 +15,7 @@ GameSystem::StandardEntry GameSystem::getStandard(const char* key) {
 		std::stringstream logMessage;
 		logMessage << "Non-existent standards key requested: " << key << ".";
 
-		log(LOG_FATAL, logMessage.str().c_str());
+		this->log(LOG_FATAL, logMessage.str().c_str());
 	}
 
 	return standards[key];
@@ -202,7 +202,7 @@ GameSystem::GameSystem() {
 	// get the display resolution
 	SDL_VideoInfo* vidInfo = (SDL_VideoInfo*) SDL_GetVideoInfo();
 	if(vidInfo == NULL)
-		log(LOG_FATAL, "Could not obtain screen resolution from SDL.");
+		this->log(LOG_FATAL, "Could not obtain screen resolution from SDL.");
 
 	displayResolutionX = (unsigned short int) vidInfo->current_w;
 	displayResolutionY = (unsigned short int) vidInfo->current_h;
@@ -377,5 +377,5 @@ GameSystem::GameSystem() {
 	// log the build version
 	std::stringstream buildInfo;
 	buildInfo << "Game Version: " << versionString;
-	log(LOG_INFO, buildInfo.str().c_str());
+	this->log(LOG_INFO, buildInfo.str().c_str());
 }
