@@ -200,14 +200,14 @@
 		0303172813204EAE009B9AFD /* logic */ = {
 			isa = PBXGroup;
 			children = (
-				0303173113204F1F009B9AFD /* GameLogic.h */,
-				0303173013204F1F009B9AFD /* GameLogic.cpp */,
-				0315B60A134C2AB8002AD1CE /* UILayoutAuthority.h */,
-				0315B609134C2AB8002AD1CE /* UILayoutAuthority.cpp */,
-				0315B62F134C2CF7002AD1CE /* Schemes.h */,
-				0315B630134C2CF7002AD1CE /* Schemes.cpp */,
 				036CFFE018EB5D4800C1B797 /* Camera.h */,
 				036CFFDF18EB5D4800C1B797 /* Camera.cpp */,
+				0303173113204F1F009B9AFD /* GameLogic.h */,
+				0303173013204F1F009B9AFD /* GameLogic.cpp */,
+				0315B62F134C2CF7002AD1CE /* Schemes.h */,
+				0315B630134C2CF7002AD1CE /* Schemes.cpp */,
+				0315B60A134C2AB8002AD1CE /* UILayoutAuthority.h */,
+				0315B609134C2AB8002AD1CE /* UILayoutAuthority.cpp */,
 			);
 			name = logic;
 			sourceTree = "<group>";
@@ -217,10 +217,10 @@
 			children = (
 				0399B0F1194FD78400832790 /* gameMain.h */,
 				0399B0F0194FD78400832790 /* gameMain.cpp */,
-				035E0E7512DCE54D00F84121 /* MainLoopMember.h */,
-				035E0E7612DCE54D00F84121 /* MainLoopMember.cpp */,
 				03590EEC131E181C00EDF7A7 /* GameSystem.h */,
 				03590EED131E181C00EDF7A7 /* GameSystem.cpp */,
+				035E0E7512DCE54D00F84121 /* MainLoopMember.h */,
+				035E0E7612DCE54D00F84121 /* MainLoopMember.cpp */,
 			);
 			name = core;
 			path = src/core;
@@ -229,8 +229,8 @@
 		030F8E121264C0FF00190225 /* platform */ = {
 			isa = PBXGroup;
 			children = (
-				030F8E8B1264CD7700190225 /* Platform.h */,
 				038FC1DE12A0EA3A00AE328B /* OpenGLHeaders.h */,
+				030F8E8B1264CD7700190225 /* Platform.h */,
 				030F8E131264C0FF00190225 /* macosx */,
 			);
 			name = platform;
@@ -251,10 +251,10 @@
 		030F8EAE1264CFFC00190225 /* math */ = {
 			isa = PBXGroup;
 			children = (
-				030F8EB01264CFFC00190225 /* ScalarMath.h */,
-				030F8EB11264CFFC00190225 /* VectorMath.h */,
 				030F8EAF1264CFFC00190225 /* MatrixMath.h */,
 				0358003012E2DC8E00CB625F /* MiscMath.h */,
+				030F8EB01264CFFC00190225 /* ScalarMath.h */,
+				030F8EB11264CFFC00190225 /* VectorMath.h */,
 			);
 			name = math;
 			path = src/math;
@@ -292,10 +292,10 @@
 				0353219018C931EF002FC13A /* Cocoa.framework */,
 				0353219218C93204002FC13A /* OpenGL.framework */,
 				0353219418C93216002FC13A /* SDL.framework */,
-				0353219618C93238002FC13A /* libz.1.2.5.dylib */,
-				0353219818C934A7002FC13A /* libbz2.1.0.dylib */,
 				030F8F001264DBF300190225 /* libfreetype.a */,
 				034AF128193C94BC00272390 /* libpng16.a */,
+				0353219818C934A7002FC13A /* libbz2.1.0.dylib */,
+				0353219618C93238002FC13A /* libz.1.2.5.dylib */,
 			);
 			name = frameworks;
 			sourceTree = "<group>";
@@ -366,10 +366,10 @@
 		03BB9B6A131F3F50009DFC8B /* 3dgraphics */ = {
 			isa = PBXGroup;
 			children = (
-				034AF1221936D67F00272390 /* ShellRenderer.h */,
-				034AF1211936D67F00272390 /* ShellRenderer.cpp */,
 				03F4FD671921DC2F00B5A322 /* MissileRenderer.h */,
 				03F4FD661921DC2F00B5A322 /* MissileRenderer.cpp */,
+				034AF1221936D67F00272390 /* ShellRenderer.h */,
+				034AF1211936D67F00272390 /* ShellRenderer.cpp */,
 				03ACFE4218FCD8C200A6B447 /* ShipRenderer.h */,
 				03ACFE4118FCD8C200A6B447 /* ShipRenderer.cpp */,
 				03ACFE4418FCD8C200A6B447 /* SkyRenderer.h */,
@@ -419,9 +419,9 @@
 				034AF124193C84C700272390 /* COPYING */,
 				039DC975194FC6A8002251C5 /* DEVELOPMENT */,
 				034AF126193C85C100272390 /* README */,
+				03D47B7D1263E27F001755A6 /* crucible island.icns */,
 				8D1107310486CEB800E47090 /* crucible island.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
-				03D47B7D1263E27F001755A6 /* crucible island.icns */,
 				030F8DEC1264C00100190225 /* shaders */,
 				030F8DEF1264C01100190225 /* data */,
 				032B8AE812639AC900DDE564 /* frameworks */,
