@@ -157,8 +157,8 @@ void ShipRenderer::execute(std::map<std::string, void*> arguments) {
 				itr != shipMesh.faceGroups.end();
 				++itr
 			) {
-			// don't draw the missile origin
-			if(itr->first == "missileorigin")
+			// don't draw the missile origin or submerged portion
+			if(itr->first == "missileorigin" || itr->first == "submerged")
 				continue;
 
 			// set the texture
