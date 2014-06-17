@@ -1,10 +1,5 @@
 // GameGraphics.h
-//
-// Dominicus
-// Copyright 2010-2011, Joshua Bodine
-//
-// Released under the terms of the "Simplified BSD License." See the file
-// licenses/DOMINICUS.txt for the license text.
+// Crucible Island
 
 #ifndef GAMEGRAPHICS_H
 #define GAMEGRAPHICS_H
@@ -130,4 +125,4 @@ public:
 	unsigned int execute(bool unScheduled = false);
 };
 
-#endif
+#endif // GAMEGRAPHICS_H

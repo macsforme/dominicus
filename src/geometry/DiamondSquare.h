@@ -1,10 +1,5 @@
 // DiamondSquare.h
-//
-// Dominicus
-// Copyright 2010-2011, Joshua Bodine
-//
-// Released under the terms of the "Simplified BSD License." See the file
-// licenses/DOMINICUS.txt for the license text.
+// Crucible Island
 //
 // RIP Sergeant Sean Drenth #6894, Phoenix Police, EOW 10-18-2010.
 
@@ -25,4 +20,4 @@ public:
 	DiamondSquare(unsigned int size, float roughness);
 };
 
-#endif
+#endif // DIAMONDSQUARE_H

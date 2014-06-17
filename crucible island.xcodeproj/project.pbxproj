@@ -35,6 +35,7 @@
 		036C99671915C49B00776051 /* DrawGaugePanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 036C99641915AD1A00776051 /* DrawGaugePanel.cpp */; };
 		036CFFE118EB5D4800C1B797 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 036CFFDF18EB5D4800C1B797 /* Camera.cpp */; };
 		0387C28D18F3E2A300565A43 /* GameAudio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0387C28B18F3E2A300565A43 /* GameAudio.cpp */; };
+		0399B0F2194FD78400832790 /* gameMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0399B0F0194FD78400832790 /* gameMain.cpp */; };
 		039DC976194FC6A8002251C5 /* DEVELOPMENT in Resources */ = {isa = PBXBuildFile; fileRef = 039DC975194FC6A8002251C5 /* DEVELOPMENT */; };
 		03AAEE08193F242800A17362 /* DrawCircle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03AAEE06193F242800A17362 /* DrawCircle.cpp */; };
 		03ACFE4918FCD8C200A6B447 /* ShipRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03ACFE4118FCD8C200A6B447 /* ShipRenderer.cpp */; };
@@ -51,7 +52,6 @@
 		03C806D5130E509E0037D309 /* Platform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 030F8E8C1264CD8D00190225 /* Platform.cpp */; };
 		03C806D6130E509F0037D309 /* InputHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 030D18BF12D0792200DA9B7B /* InputHandler.cpp */; };
 		03C806DC130E50A60037D309 /* Keyboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 030F8F3C1264DD1300190225 /* Keyboard.cpp */; };
-		03C806DF130E50A90037D309 /* dominicusMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 030F8E101264C0FF00190225 /* dominicusMain.cpp */; };
 		03C806E3130E50AD0037D309 /* MainLoopMember.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 035E0E7612DCE54D00F84121 /* MainLoopMember.cpp */; };
 		03C806E9130E50B30037D309 /* DiamondSquare.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 030DEBFF126CDD1B000D87ED /* DiamondSquare.cpp */; };
 		03C806F7130E50D00037D309 /* Mouse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 035A3C4512841B390001E186 /* Mouse.cpp */; };
@@ -60,7 +60,6 @@
 		03C8075E130E52030037D309 /* SDLMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 030F8E151264C0FF00190225 /* SDLMain.m */; };
 		03C9206C13693A51000C4373 /* GameState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03C9206B13693A51000C4373 /* GameState.cpp */; };
 		03E508FA18FE1B340056ECE6 /* TowerRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03E508F818FE1B340056ECE6 /* TowerRenderer.cpp */; };
-		03EA006313839E1F00791980 /* Collisions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03EA006213839E1F00791980 /* Collisions.cpp */; };
 		03F4FD681921DC2F00B5A322 /* MissileRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03F4FD661921DC2F00B5A322 /* MissileRenderer.cpp */; };
 /* End PBXBuildFile section */
 
@@ -86,8 +85,6 @@
 		030DEBFF126CDD1B000D87ED /* DiamondSquare.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DiamondSquare.cpp; sourceTree = "<group>"; };
 		030F8DEC1264C00100190225 /* shaders */ = {isa = PBXFileReference; lastKnownFileType = folder; path = shaders; sourceTree = "<group>"; };
 		030F8DEF1264C01100190225 /* data */ = {isa = PBXFileReference; lastKnownFileType = folder; path = data; sourceTree = "<group>"; };
-		030F8E101264C0FF00190225 /* dominicusMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = dominicusMain.cpp; sourceTree = "<group>"; };
-		030F8E111264C0FF00190225 /* dominicusMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dominicusMain.h; sourceTree = "<group>"; };
 		030F8E141264C0FF00190225 /* SDLMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDLMain.h; sourceTree = "<group>"; };
 		030F8E151264C0FF00190225 /* SDLMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDLMain.m; sourceTree = "<group>"; };
 		030F8E1E1264C3E800190225 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
@@ -149,6 +146,8 @@
 		0387C28B18F3E2A300565A43 /* GameAudio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameAudio.cpp; path = src/audio/GameAudio.cpp; sourceTree = "<group>"; };
 		0387C28C18F3E2A300565A43 /* GameAudio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameAudio.h; path = src/audio/GameAudio.h; sourceTree = "<group>"; };
 		038FC1DE12A0EA3A00AE328B /* OpenGLHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLHeaders.h; sourceTree = "<group>"; };
+		0399B0F0194FD78400832790 /* gameMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gameMain.cpp; sourceTree = "<group>"; };
+		0399B0F1194FD78400832790 /* gameMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gameMain.h; sourceTree = "<group>"; };
 		039DC975194FC6A8002251C5 /* DEVELOPMENT */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = DEVELOPMENT; sourceTree = "<group>"; };
 		03AAEE06193F242800A17362 /* DrawCircle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawCircle.cpp; sourceTree = "<group>"; };
 		03AAEE07193F242800A17362 /* DrawCircle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawCircle.h; sourceTree = "<group>"; };
@@ -174,8 +173,6 @@
 		03D47B7D1263E27F001755A6 /* crucible island.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = "crucible island.icns"; sourceTree = "<group>"; };
 		03E508F818FE1B340056ECE6 /* TowerRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TowerRenderer.cpp; sourceTree = "<group>"; };
 		03E508F918FE1B340056ECE6 /* TowerRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TowerRenderer.h; sourceTree = "<group>"; };
-		03EA006113839E1F00791980 /* Collisions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Collisions.h; path = src/state/Collisions.h; sourceTree = "<group>"; };
-		03EA006213839E1F00791980 /* Collisions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Collisions.cpp; path = src/state/Collisions.cpp; sourceTree = "<group>"; };
 		03F4FD661921DC2F00B5A322 /* MissileRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MissileRenderer.cpp; sourceTree = "<group>"; };
 		03F4FD671921DC2F00B5A322 /* MissileRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MissileRenderer.h; sourceTree = "<group>"; };
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -218,8 +215,8 @@
 		030F8E0F1264C0FF00190225 /* core */ = {
 			isa = PBXGroup;
 			children = (
-				030F8E111264C0FF00190225 /* dominicusMain.h */,
-				030F8E101264C0FF00190225 /* dominicusMain.cpp */,
+				0399B0F1194FD78400832790 /* gameMain.h */,
+				0399B0F0194FD78400832790 /* gameMain.cpp */,
 				035E0E7512DCE54D00F84121 /* MainLoopMember.h */,
 				035E0E7612DCE54D00F84121 /* MainLoopMember.cpp */,
 				03590EEC131E181C00EDF7A7 /* GameSystem.h */,
@@ -308,8 +305,6 @@
 			children = (
 				03C9206A13693A51000C4373 /* GameState.h */,
 				03C9206B13693A51000C4373 /* GameState.cpp */,
-				03EA006113839E1F00791980 /* Collisions.h */,
-				03EA006213839E1F00791980 /* Collisions.cpp */,
 			);
 			name = state;
 			sourceTree = "<group>";
@@ -507,7 +502,6 @@
 				03C806D5130E509E0037D309 /* Platform.cpp in Sources */,
 				03C806D6130E509F0037D309 /* InputHandler.cpp in Sources */,
 				03C806DC130E50A60037D309 /* Keyboard.cpp in Sources */,
-				03C806DF130E50A90037D309 /* dominicusMain.cpp in Sources */,
 				03ACFE4B18FCD8C200A6B447 /* TerrainRenderer.cpp in Sources */,
 				035466691912C17200F4953E /* DrawTexture.cpp in Sources */,
 				035466611912C17200F4953E /* DrawContainer.cpp in Sources */,
@@ -517,6 +511,7 @@
 				03C806F7130E50D00037D309 /* Mouse.cpp in Sources */,
 				03F4FD681921DC2F00B5A322 /* MissileRenderer.cpp in Sources */,
 				03C80701130E50D90037D309 /* main.cpp in Sources */,
+				0399B0F2194FD78400832790 /* gameMain.cpp in Sources */,
 				03C8075E130E52030037D309 /* SDLMain.m in Sources */,
 				035466651912C17200F4953E /* DrawLabel.cpp in Sources */,
 				03590F84131E446000EDF7A7 /* GameSystem.cpp in Sources */,
@@ -542,7 +537,6 @@
 				03ACFE4A18FCD8C200A6B447 /* SkyRenderer.cpp in Sources */,
 				03ACFE4C18FCD8C200A6B447 /* WaterRenderer.cpp in Sources */,
 				035466641912C17200F4953E /* DrawGrayOut.cpp in Sources */,
-				03EA006313839E1F00791980 /* Collisions.cpp in Sources */,
 				03AAEE08193F242800A17362 /* DrawCircle.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

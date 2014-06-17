@@ -1,10 +1,5 @@
 // Mesh.h
-//
-// Dominicus
-// Copyright 2010-2011, Joshua Bodine
-//
-// Released under the terms of the "Simplified BSD License." See the file
-// licenses/DOMINICUS.txt for the license text.
+// Crucible Island
 
 #ifndef MESH_H
 #define MESH_H
@@ -337,4 +332,4 @@ public:
 	}
 };
 
-#endif
+#endif // MESH_H

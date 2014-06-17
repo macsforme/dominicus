@@ -1,10 +1,5 @@
 // FontManager.h
-//
-// Dominicus
-// Copyright 2010-2011, Joshua Bodine
-//
-// Released under the terms of the "Simplified BSD License." See the file
-// licenses/DOMINICUS.txt for the license text.
+// Crucible Island
 
 #ifndef FONTMANAGER_H
 #define FONTMANAGER_H
@@ -77,4 +72,4 @@ public:
 	void populateCommonChars(unsigned int size);
 };
 
-#endif
+#endif // FONTMANAGER_H

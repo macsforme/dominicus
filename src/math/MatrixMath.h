@@ -1,9 +1,5 @@
 // MatrixMath.h
-//
-// Dominicus
-// Copyright 2010-2011, Joshua Bodine
-//
-// Released under the terms of the "Simplified BSD License." See the file
+// Crucible Island
 // licenses/DOMINICUS.txt for the license text.
 
 #ifndef MATRIXMATH_H
@@ -379,4 +375,4 @@ inline void translateMatrix(float x, float y, float z, Matrix4& mat) {
 		);
 }
 
-#endif
+#endif // MATRIXMATH_H

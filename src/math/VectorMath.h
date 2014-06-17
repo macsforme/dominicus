@@ -1,10 +1,5 @@
 // VectorMath.h
-//
-// Dominicus
-// Copyright 2010-2011, Joshua Bodine
-//
-// Released under the terms of the "Simplified BSD License." See the file
-// licenses/DOMINICUS.txt for the license text.
+// Crucible Island
 
 #ifndef VECTORMATH_H
 #define VECTORMATH_H
@@ -204,4 +199,4 @@ inline float mag(Vector4 vec) {
 	return absolute(distance(midPoint, vec));
 }
 
-#endif
+#endif // VECTORMATH_H

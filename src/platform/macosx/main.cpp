@@ -1,13 +1,8 @@
 // main.cpp
-//
-// Dominicus
-// Copyright 2010-2011, Joshua Bodine
-//
-// Released under the terms of the "Simplified BSD License." See the file
-// licenses/DOMINICUS.txt for the license text.
+// Crucible Island
 
 // program headers
-#include "core/dominicusMain.h"
+#include "core/gameMain.h"
 
 // library headers
 #include <iostream>
@@ -22,7 +17,7 @@ int main(int argc, char* argv[]) {
 	}
 
 	// call the main program routine
-	int returnVal = dominicusMain(argc, argv);
+	int returnVal = gameMain(argc, argv);
 
 	// destroy SDL
 	SDL_Quit();
@@ -30,4 +25,3 @@ int main(int argc, char* argv[]) {
 	// return
 	return returnVal;
 }
-

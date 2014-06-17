@@ -1,10 +1,5 @@
 // GameLogic.cpp
-//
-// Dominicus
-// Copyright 2010-2011, Joshua Bodine
-//
-// Released under the terms of the "Simplified BSD License." See the file
-// licenses/DOMINICUS.txt for the license text.
+// Crucible Island
 
 #include "logic/GameLogic.h"
 
@@ -726,7 +721,7 @@ lastFPSUpdate = platform->getExecMills();
 
 	// universal logic
 	if(quitKeyListener->popKey() != SDLK_UNKNOWN )
-		keepDominicusAlive = false;
+		keepProgramAlive = false;
 	if(fullScreenKeyListener->popKey() != SDLK_UNKNOWN) {
 		bool fullScreenGraphics = ! gameGraphics->fullScreen;
 
@@ -840,7 +835,7 @@ lastFPSUpdate = platform->getExecMills();
 			reScheme();
 			needRedraw = true;
 		} else if(quitButtonClickListener->wasClicked()) {
-			keepDominicusAlive = false;
+			keepProgramAlive = false;
 		}
 
 		// key hits
@@ -926,7 +921,7 @@ lastFPSUpdate = platform->getExecMills();
 					reScheme();
 					needRedraw = true;
 				} else if(activeMenuSelection == &quitButtonEntry) {
-					keepDominicusAlive = false;
+					keepProgramAlive = false;
 				}
 			}
 		}

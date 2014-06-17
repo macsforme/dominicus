@@ -1,14 +1,8 @@
-// dominicusMain.h
-//
-// Dominicus
-// Copyright 2010-2011, Joshua Bodine
-//
-// Released under the terms of the "Simplified BSD License." See the file
-// licenses/DOMINICUS.txt for the license text.
+// gameMain.h
+// Crucible Island
 
-
-#ifndef DOMINICUSMAIN_H
-#define DOMINICUSMAIN_H
+#ifndef GAMEMAIN_H
+#define GAMEMAIN_H
 
 // program headers
 #include "audio/GameAudio.h"
@@ -27,6 +21,6 @@
 #include <vector>
 
 // main game function declaration
-int dominicusMain(int argc, char* argv[]);
+int gameMain(int argc, char* argv[]);
 
-#endif
+#endif // GAMEMAIN_H

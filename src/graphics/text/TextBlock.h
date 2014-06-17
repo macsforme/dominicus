@@ -1,13 +1,8 @@
 // TextBlock.h
-//
-// Dominicus
-// Copyright 2010-2011, Joshua Bodine
-//
-// Released under the terms of the "Simplified BSD License." See the file
-// licenses/DOMINICUS.txt for the license text.
+// Crucible Island
 
-#ifndef FONTBLOCK_H
-#define FONTBLOCK_H
+#ifndef TEXTBLOCK_H
+#define TEXTBLOCK_H
 
 // program headers
 #include "graphics/text/FontManager.h"
@@ -30,4 +25,4 @@ public:
 			FontManager* fontManager, unsigned int size);
 };
 
-#endif
+#endif // TEXTBLOCK_H

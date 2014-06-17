@@ -1,10 +1,5 @@
 // GameLogic.h
-//
-// Dominicus
-// Copyright 2010-2011, Joshua Bodine
-//
-// Released under the terms of the "Simplified BSD License." See the file
-// licenses/DOMINICUS.txt for the license text.
+// Crucible Island
 
 #ifndef GAMELOGIC_H
 #define GAMELOGIC_H
@@ -59,7 +54,7 @@ extern GameLogic* gameLogic;
 extern GameState* gameState;
 extern GameSystem* gameSystem;
 extern InputHandler* inputHandler;
-extern bool keepDominicusAlive;
+extern bool keepProgramAlive;
 extern std::map<MainLoopMember*,unsigned int> mainLoopModules;
 
 // class definition

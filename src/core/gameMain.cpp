@@ -1,12 +1,7 @@
-// dominicusMain.cpp
-//
-// Dominicus
-// Copyright 2010-2011, Joshua Bodine
-//
-// Released under the terms of the "Simplified BSD License." See the file
-// licenses/DOMINICUS.txt for the license text.
+// gameMain.cpp
+// Crucible Island
 
-#include "core/dominicusMain.h"
+#include "core/gameMain.h"
 
 // global variable declarations
 GameAudio* gameAudio;
@@ -21,10 +16,10 @@ Platform* platform;
 std::map<MainLoopMember*,unsigned int> mainLoopModules;
 
 // global main loop continuation flag
-bool keepDominicusAlive;
+bool keepProgramAlive;
 
 // main game function
-int dominicusMain(int argc, char* argv[]) {
+int gameMain(int argc, char* argv[]) {
 	// nullify
 	gameAudio = NULL;
 	gameGraphics = NULL;
@@ -49,9 +44,9 @@ int dominicusMain(int argc, char* argv[]) {
 	mainLoopModules[gameLogic] = 0;
 
 	// main program loop
-	keepDominicusAlive = true;
+	keepProgramAlive = true;
 
-	while(keepDominicusAlive) {
+	while(keepProgramAlive) {
 		// if the next execution time for any module is less than now, run it,
 		// and calculate the maximum possible sleep time
 		unsigned int nextPlannedLoop = -1;

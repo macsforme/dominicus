@@ -1,10 +1,5 @@
 // InputHandler.cpp
-//
-// Dominicus
-// Copyright 2010-2011, Joshua Bodine
-//
-// Released under the terms of the "Simplified BSD License." See the file
-// licenses/DOMINICUS.txt for the license text.
+// Crucible Island
 
 #include "input/InputHandler.h"
 
@@ -26,7 +21,7 @@ unsigned int InputHandler::execute(bool unScheduled) {
 	while(SDL_PollEvent(&event)) {
 		switch(event.type) {
 		case SDL_QUIT:
-			keepDominicusAlive = false;
+			keepProgramAlive = false;
 			
 			break;
 		case SDL_KEYDOWN:

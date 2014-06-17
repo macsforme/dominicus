@@ -1,14 +1,9 @@
 // Platform.cpp
-//
-// Dominicus
-// Copyright 2010-2011, Joshua Bodine
-//
-// Released under the terms of the "Simplified BSD License." See the file
-// licenses/DOMINICUS.txt for the license text.
+// Crucible Island
 
 #include "platform/Platform.h"
 
-// platform-specific headers
+// platform-specific system headers
 #include <CoreFoundation/CoreFoundation.h>
 #include <iostream>
 #include <sstream>

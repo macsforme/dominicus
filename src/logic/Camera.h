@@ -1,10 +1,5 @@
 // Camera.h
-//
-// Dominicus
-// Copyright 2010-2011, Joshua Bodine
-//
-// Released under the terms of the "Simplified BSD License." See the file
-// licenses/DOMINICUS.txt for the license text.
+// Crucible Island
 
 #ifndef CAMERA_H
 #define CAMERA_H
@@ -61,4 +56,4 @@ public:
 	void execute();
 };
 
-#endif
+#endif // CAMERA_H

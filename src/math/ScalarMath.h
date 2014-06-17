@@ -1,10 +1,5 @@
 // ScalarMath.h
-//
-// Dominicus
-// Copyright 2010-2011, Joshua Bodine
-//
-// Released under the terms of the "Simplified BSD License." See the file
-// licenses/DOMINICUS.txt for the license text.
+// Crucible Island
 
 #ifndef SCALARMATH_H
 #define SCALARMATH_H
@@ -40,4 +35,4 @@ inline float round(float num, unsigned short int places) {
 	return((float) ((int) (num * pow(10.0f, (float) places))) / pow(10.0f, (float) places));
 }
 
-#endif
+#endif // SCALARMATH_H

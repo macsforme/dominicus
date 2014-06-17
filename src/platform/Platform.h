@@ -1,10 +1,5 @@
 // Platform.h
-//
-// Dominicus
-// Copyright 2010-2011, Joshua Bodine
-//
-// Released under the terms of the "Simplified BSD License." See the file
-// licenses/DOMINICUS.txt for the license text.
+// Crucible Island
 
 #ifndef PLATFORM_H
 #define PLATFORM_H
@@ -64,5 +59,4 @@ public:
 	void setPreference(const char* key, float value);
 };
 
-#endif
-
+#endif // PLATFORM_H
