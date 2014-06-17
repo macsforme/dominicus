@@ -398,7 +398,7 @@ GLuint GameGraphics::getShaderID(GLenum shaderType, std::string shaderName) {
 	for(size_t i = 0; i < fileLines.size(); ++i)
 		bytes += fileLines[i].size() + 1;
 
-	shaderSource = (GLchar**) malloc(fileLines.size() * sizeof(size_t));
+	shaderSource = (GLchar**) malloc(fileLines.size() * sizeof(GLchar*));
 
 	for(size_t i = 0; i < fileLines.size(); ++i) {
 		shaderSource[i] = (GLchar*) malloc(fileLines[i].size() + 1);
