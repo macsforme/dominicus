@@ -15,7 +15,6 @@
 		034AF1231936D67F00272390 /* ShellRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 034AF1211936D67F00272390 /* ShellRenderer.cpp */; };
 		034AF125193C84C700272390 /* COPYING in Resources */ = {isa = PBXBuildFile; fileRef = 034AF124193C84C700272390 /* COPYING */; };
 		034AF127193C85C100272390 /* README in Resources */ = {isa = PBXBuildFile; fileRef = 034AF126193C85C100272390 /* README */; };
-		034AF129193C94BC00272390 /* libpng16.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 034AF128193C94BC00272390 /* libpng16.a */; };
 		0353219118C931EF002FC13A /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0353219018C931EF002FC13A /* Cocoa.framework */; };
 		0353219318C93204002FC13A /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0353219218C93204002FC13A /* OpenGL.framework */; };
 		0353219518C93216002FC13A /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0353219418C93216002FC13A /* SDL.framework */; };
@@ -108,7 +107,6 @@
 		034AF1221936D67F00272390 /* ShellRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShellRenderer.h; sourceTree = "<group>"; };
 		034AF124193C84C700272390 /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
 		034AF126193C85C100272390 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
-		034AF128193C94BC00272390 /* libpng16.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpng16.a; path = ../../../../../../usr/local/lib/libpng16.a; sourceTree = "<group>"; };
 		0353219018C931EF002FC13A /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = ../../../../../../System/Library/Frameworks/Cocoa.framework; sourceTree = "<group>"; };
 		0353219218C93204002FC13A /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = ../../../../../../System/Library/Frameworks/OpenGL.framework; sourceTree = "<group>"; };
 		0353219418C93216002FC13A /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = ../../../../../../Library/Frameworks/SDL.framework; sourceTree = "<group>"; };
@@ -190,7 +188,6 @@
 				0353219718C93238002FC13A /* libz.1.2.5.dylib in Frameworks */,
 				0353219118C931EF002FC13A /* Cocoa.framework in Frameworks */,
 				0353219318C93204002FC13A /* OpenGL.framework in Frameworks */,
-				034AF129193C94BC00272390 /* libpng16.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -293,7 +290,6 @@
 				0353219218C93204002FC13A /* OpenGL.framework */,
 				0353219418C93216002FC13A /* SDL.framework */,
 				030F8F001264DBF300190225 /* libfreetype.a */,
-				034AF128193C94BC00272390 /* libpng16.a */,
 				0353219818C934A7002FC13A /* libbz2.1.0.dylib */,
 				0353219618C93238002FC13A /* libz.1.2.5.dylib */,
 			);

@@ -39,19 +39,6 @@ The Xcode project file is set to look for required library files in certain loca
 
 To set up SDL, download the Mac OS X framework from http://www.libsdl.org/download-1.2.php (make sure you select the latest SDL 1.2 build). Place the SDL.framework file in the /Library/Frameworks/ directory. Copy the corresponding SDLMain.h and SDLMain.m files into the Crucible Island source directory at src/platform/macosx/. These files are not tracked by version control as they must match the version of the SDL framework you have installed.
 
-It appears that FreeType 2 requires libpng in order to create static libraries. To set up libpng, download the latest stable release from http://sourceforge.net/projects/libpng/files/ to your computer. Sourceforge may suggest the latest version to download near the top of the screen, but make sure you obtain the .tar.gz release or else adjust the commands below accordingly.
-
-When you have downloaded libpng, execute the following commands (or appropriate alternatives, as desired) in a shell (such as Terminal.app, in your /Applications/Utilities/ directory) to build and install the software (substitute the appropriate version number in the filename):
-
-# cd ~/Downloads
-# tar -xf libpng-1.6.10.tar.gz				(substitute correct version)
-# sudo mv libpng-1.6.10 /usr/local/src/		(substitute correct version)
-# rm libpng-1.6.10.tar.gz					(substitute correct version)
-# cd /usr/local/src/libpng-1.6.10			(substitute correct version)
-# CFLAGS="-isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -mmacosx-version-min=10.6 -arch i386 -arch x86_64" LDFLAGS="-isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -mmacosx-version-min=10.6 -arch i386 -arch x86_64" ./configure --disable-shared	(substitute latest Mac OS X SDK version)
-# CFLAGS="-isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -mmacosx-version-min=10.6 -arch i386 -arch x86_64" LDFLAGS="-isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -mmacosx-version-min=10.6 -arch i386 -arch x86_64" make	(substitute latest Mac OS X SDK version)
-# sudo make install
-
 To set up FreeType 2, download the latest stable release from http://sourceforge.net/projects/freetype/files/freetype2/ to your computer. Sourceforge may suggest the latest version to download near the top of the screen.
 
 When you have downloaded FreeType 2, execute the following commands (or appropriate alternatives, as desired) in a shell to build and install the software (substitute the appropriate version number in the filename):
@@ -61,7 +48,7 @@ When you have downloaded FreeType 2, execute the following commands (or appropri
 # sudo mv freetype-2.5.3 /usr/local/src/	(substitute correct version)
 # rm freetype-2.5.3.tar.bz2					(substitute correct version)
 # cd /usr/local/src/freetype-2.5.3			(substitute correct version)
-# CFLAGS="-isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -mmacosx-version-min=10.6 -arch i386 -arch x86_64" LDFLAGS="-isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -mmacosx-version-min=10.6 -arch i386 -arch x86_64" ./configure --disable-shared	(substitute latest Mac OS X SDK version)
+# CFLAGS="-isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -mmacosx-version-min=10.6 -arch i386 -arch x86_64" LDFLAGS="-isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -mmacosx-version-min=10.6 -arch i386 -arch x86_64" ./configure --disable-shared --with-png=no	(substitute latest Mac OS X SDK version)
 # CFLAGS="-isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -mmacosx-version-min=10.6 -arch i386 -arch x86_64" LDFLAGS="-isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -mmacosx-version-min=10.6 -arch i386 -arch x86_64" make	(substitute latest Mac OS X SDK version)
 # sudo make install
 
