@@ -277,7 +277,7 @@ GameSystem::GameSystem() {
 	setStandard("displayFPSCap", false /* true */, "Whether or not to cap the frames per second to a certain number.");
 	setStandard("displayFPS", 60.0f, "Number of frames per second to draw.");
 	setStandard("displayStartFullscreen", false, "Whether or not to start the program in full screen mode.");
-	setStandard("displayColorDepth", 16.0f, "Color depth of display (may only affect full screen mode).");
+	setStandard("displayColorDepth", 32.0f, "Color depth of display (may only affect full screen mode).");
 	setStandard("colorClear", Vector4(174.0f / 255.0f, 187.0f / 255.0f, 224.0f / 255.0f, 1.0f), "Color of empty space.");
 
 	// scene rendering standards
