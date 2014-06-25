@@ -729,6 +729,7 @@ lastFPSUpdate = platform->getExecMills();
 	// universal logic
 	if(quitKeyListener->popKey() != SDLK_UNKNOWN )
 		keepProgramAlive = false;
+
 	if(fullScreenKeyListener->popKey() != SDLK_UNKNOWN) {
 		bool fullScreenGraphics = ! gameGraphics->fullScreen;
 

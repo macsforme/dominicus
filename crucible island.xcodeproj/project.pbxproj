@@ -10,6 +10,8 @@
 		0303173213204F1F009B9AFD /* GameLogic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0303173013204F1F009B9AFD /* GameLogic.cpp */; };
 		0315B631134C2CF7002AD1CE /* Schemes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0315B630134C2CF7002AD1CE /* Schemes.cpp */; };
 		0330C498133A2AB6006199BE /* TextBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03BB9B83131F3F50009DFC8B /* TextBlock.cpp */; };
+		03365785195B6BCE00ED33DF /* Mesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03365784195B6BCE00ED33DF /* Mesh.cpp */; };
+		03365787195B6FD300ED33DF /* Sphere.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03365786195B6FD300ED33DF /* Sphere.cpp */; };
 		034AF1231936D67F00272390 /* ShellRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 034AF1211936D67F00272390 /* ShellRenderer.cpp */; };
 		034AF125193C84C700272390 /* COPYING in Resources */ = {isa = PBXBuildFile; fileRef = 034AF124193C84C700272390 /* COPYING */; };
 		034AF127193C85C100272390 /* README in Resources */ = {isa = PBXBuildFile; fileRef = 034AF126193C85C100272390 /* README */; };
@@ -98,6 +100,8 @@
 		030F8F3D1264DD1300190225 /* Keyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Keyboard.h; sourceTree = "<group>"; };
 		0315B62F134C2CF7002AD1CE /* Schemes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Schemes.h; path = src/logic/Schemes.h; sourceTree = "<group>"; };
 		0315B630134C2CF7002AD1CE /* Schemes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Schemes.cpp; path = src/logic/Schemes.cpp; sourceTree = "<group>"; };
+		03365784195B6BCE00ED33DF /* Mesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Mesh.cpp; sourceTree = "<group>"; };
+		03365786195B6FD300ED33DF /* Sphere.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Sphere.cpp; sourceTree = "<group>"; };
 		034AF1201936D23600272390 /* Sphere.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Sphere.h; sourceTree = "<group>"; };
 		034AF1211936D67F00272390 /* ShellRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShellRenderer.cpp; sourceTree = "<group>"; };
 		034AF1221936D67F00272390 /* ShellRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShellRenderer.h; sourceTree = "<group>"; };
@@ -262,7 +266,9 @@
 				030DEBFE126CDD1B000D87ED /* DiamondSquare.h */,
 				030DEBFF126CDD1B000D87ED /* DiamondSquare.cpp */,
 				030F8EC51264D4BC00190225 /* Mesh.h */,
+				03365784195B6BCE00ED33DF /* Mesh.cpp */,
 				034AF1201936D23600272390 /* Sphere.h */,
+				03365786195B6FD300ED33DF /* Sphere.cpp */,
 			);
 			name = geometry;
 			path = src/geometry;
@@ -511,6 +517,7 @@
 				03F4FD681921DC2F00B5A322 /* MissileRenderer.cpp in Sources */,
 				03C80701130E50D90037D309 /* main.cpp in Sources */,
 				0399B0F2194FD78400832790 /* gameMain.cpp in Sources */,
+				03365785195B6BCE00ED33DF /* Mesh.cpp in Sources */,
 				03C8075E130E52030037D309 /* SDLMain.m in Sources */,
 				035466651912C17200F4953E /* DrawLabel.cpp in Sources */,
 				03590F84131E446000EDF7A7 /* GameSystem.cpp in Sources */,
@@ -533,6 +540,7 @@
 				03ACFE4918FCD8C200A6B447 /* ShipRenderer.cpp in Sources */,
 				0379784C195239BA00A9615D /* UILayoutAuthority.cpp in Sources */,
 				03ACFE4A18FCD8C200A6B447 /* SkyRenderer.cpp in Sources */,
+				03365787195B6FD300ED33DF /* Sphere.cpp in Sources */,
 				03ACFE4C18FCD8C200A6B447 /* WaterRenderer.cpp in Sources */,
 				035466641912C17200F4953E /* DrawGrayOut.cpp in Sources */,
 				03AAEE08193F242800A17362 /* DrawCircle.cpp in Sources */,
