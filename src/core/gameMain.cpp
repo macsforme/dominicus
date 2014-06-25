@@ -58,17 +58,11 @@ int gameMain(int argc, char* argv[]) {
 				++itr
 			) {
 			if(itr->second < platform->getExecMills()) {
-				MainLoopMember* thisMember = itr->first;
-
 				if(itr->first == drawingMaster) {
-					// always run gameState and gameLogic before gameState
+					// always run gameState and gameLogic before drawingMaster
 					if(gameState != NULL)
 						gameState->execute(true);
 					gameLogic->execute(true);
-
-					// gameLogic can recreate gameGraphics mid-loop, so don't execute a null iterator
-					if(mainLoopModules.find(thisMember) == mainLoopModules.end())
-						break;
 				}
 
 				itr->second = itr->first->execute() + platform->getExecMills();
