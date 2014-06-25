@@ -49,9 +49,6 @@ public:
 	unsigned int getExecMills();
 	void sleepMills(unsigned int mills);
 
-	// GL context function
-	void loadExtensions();
-
 	// application preferences
 	std::string getPreferenceString(const char* key);
 	float getPreferenceFloat(const char* key);

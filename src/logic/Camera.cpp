@@ -3,10 +3,17 @@
 
 #include "logic/Camera.h"
 
-#include "graphics/GameGraphics.h"
+#include "core/GameSystem.h"
+#include "geometry/Mesh.h"
+#include "graphics/DrawingMaster.h"
 #include "graphics/3dgraphics/FortressRenderer.h"
+#include "math/MiscMath.h"
+#include "platform/Platform.h"
+#include "state/GameState.h"
 
-extern GameGraphics* gameGraphics;
+extern DrawingMaster* drawingMaster;
+extern GameState* gameState;
+extern GameSystem* gameSystem;
 
 void OrbitCamera::execute() {
 	if(gameState == NULL)
@@ -182,9 +189,9 @@ void IntroCamera::execute() {
 
 		translateMatrix(-gameState->fortress.position.x, -gameState->fortress.position.y, -gameState->fortress.position.z, mvMatrix);
 		translateMatrix(
-				segmentProgression * -((FortressRenderer*) gameGraphics->drawers["fortressRenderer"])->cameraOrigin.x,
-				segmentProgression * -((FortressRenderer*) gameGraphics->drawers["fortressRenderer"])->cameraOrigin.y,
-				segmentProgression * -((FortressRenderer*) gameGraphics->drawers["fortressRenderer"])->cameraOrigin.z,
+				segmentProgression * -((FortressRenderer*) drawingMaster->drawers["fortressRenderer"])->cameraOrigin.x,
+				segmentProgression * -((FortressRenderer*) drawingMaster->drawers["fortressRenderer"])->cameraOrigin.y,
+				segmentProgression * -((FortressRenderer*) drawingMaster->drawers["fortressRenderer"])->cameraOrigin.z,
 				mvMatrix
 			);
 		rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(270.0f), mvMatrix);
@@ -203,9 +210,9 @@ void IntroCamera::execute() {
 
 		translateMatrix(-gameState->fortress.position.x, -gameState->fortress.position.y, -gameState->fortress.position.z, mvMatrix);
 		translateMatrix(
-				-((FortressRenderer*) gameGraphics->drawers["fortressRenderer"])->cameraOrigin.x,
-				-((FortressRenderer*) gameGraphics->drawers["fortressRenderer"])->cameraOrigin.y,
-				-((FortressRenderer*) gameGraphics->drawers["fortressRenderer"])->cameraOrigin.z,
+				-((FortressRenderer*) drawingMaster->drawers["fortressRenderer"])->cameraOrigin.x,
+				-((FortressRenderer*) drawingMaster->drawers["fortressRenderer"])->cameraOrigin.y,
+				-((FortressRenderer*) drawingMaster->drawers["fortressRenderer"])->cameraOrigin.z,
 				mvMatrix
 			);
 		rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(270.0f), mvMatrix);
@@ -220,9 +227,9 @@ void IntroCamera::execute() {
 	} else {
 		translateMatrix(-gameState->fortress.position.x, -gameState->fortress.position.y, -gameState->fortress.position.z, mvMatrix);
 		translateMatrix(
-				-((FortressRenderer*) gameGraphics->drawers["fortressRenderer"])->cameraOrigin.x,
-				-((FortressRenderer*) gameGraphics->drawers["fortressRenderer"])->cameraOrigin.y,
-				-((FortressRenderer*) gameGraphics->drawers["fortressRenderer"])->cameraOrigin.z,
+				-((FortressRenderer*) drawingMaster->drawers["fortressRenderer"])->cameraOrigin.x,
+				-((FortressRenderer*) drawingMaster->drawers["fortressRenderer"])->cameraOrigin.y,
+				-((FortressRenderer*) drawingMaster->drawers["fortressRenderer"])->cameraOrigin.z,
 				mvMatrix
 			);
 		rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(270.0f), mvMatrix);
@@ -239,9 +246,9 @@ void FortressCamera::execute() {
 	translateMatrix(-gameState->fortress.position.x, -gameState->fortress.position.y, -gameState->fortress.position.z, mvMatrix);
 	rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), -radians(gameState->fortress.rotation), mvMatrix);
 	translateMatrix(
-			-((FortressRenderer*) gameGraphics->drawers["fortressRenderer"])->cameraOrigin.x,
-			-((FortressRenderer*) gameGraphics->drawers["fortressRenderer"])->cameraOrigin.y,
-			-((FortressRenderer*) gameGraphics->drawers["fortressRenderer"])->cameraOrigin.z,
+			-((FortressRenderer*) drawingMaster->drawers["fortressRenderer"])->cameraOrigin.x,
+			-((FortressRenderer*) drawingMaster->drawers["fortressRenderer"])->cameraOrigin.y,
+			-((FortressRenderer*) drawingMaster->drawers["fortressRenderer"])->cameraOrigin.z,
 			mvMatrix
 		);
 	rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(270.0f), mvMatrix);

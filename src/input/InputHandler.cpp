@@ -3,6 +3,11 @@
 
 #include "input/InputHandler.h"
 
+#include "core/GameSystem.h"
+
+extern GameSystem* gameSystem;
+extern bool keepProgramAlive;
+
 InputHandler::InputHandler() : MainLoopMember((unsigned int) gameSystem->getFloat("inputPollingFrequency")) {
 	keyboard = new Keyboard();
 	mouse = new Mouse();

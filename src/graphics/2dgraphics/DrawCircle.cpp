@@ -3,40 +3,42 @@
 
 #include "graphics/2dgraphics/DrawCircle.h"
 
-DrawCircle::DrawCircle() {
-	// set up shader
-	GLuint shaderID = 0;
-	std::vector<GLuint> shaderIDs;
+#include <vector>
 
-	shaderID = gameGraphics->getShaderID(GL_VERTEX_SHADER, "hudContainer"); shaderIDs.push_back(shaderID);
-	shaderID = gameGraphics->getShaderID(GL_FRAGMENT_SHADER, "hudContainer"); shaderIDs.push_back(shaderID);
-	shaderProgram = gameGraphics->makeProgram(shaderIDs);
+#include "graphics/GameGraphics.h"
+#include "math/VectorMath.h"
 
-	// set up uniforms and attributes
-	uniforms["insideColor"] = glGetUniformLocation(shaderProgram, "insideColor");
-	uniforms["borderColor"] = glGetUniformLocation(shaderProgram, "borderColor");
-	uniforms["outsideColor"] = glGetUniformLocation(shaderProgram, "outsideColor");
-	uniforms["softEdge"] = glGetUniformLocation(shaderProgram, "softEdge");
+extern GameGraphics* gameGraphics;
 
-	attributes["position"] = glGetAttribLocation(shaderProgram, "position");
-	attributes["primCoord"] = glGetAttribLocation(shaderProgram, "primCoord");
-	attributes["curveOriginCoord"] = glGetAttribLocation(shaderProgram, "curveOriginCoord");
-	attributes["border1Dist"] = glGetAttribLocation(shaderProgram, "border1Dist");
-	attributes["border2Dist"] = glGetAttribLocation(shaderProgram, "border2Dist");
+DrawStackArgList DrawCircle::instantiateArgList() {
+	DrawStackArgList argList;
 
-	// set up vertex buffers
-	glGenBuffers(1, &(vertexBuffers["vertices"]));
-	glGenBuffers(1, &(vertexBuffers["elements"]));
+	argList["border"] = (void*) new float;			// thickness of border in pixels
+	argList["borderColor"] = (void*) new Vector4;	// color of border of circle
+	argList["insideColor"] = (void*) new Vector4;	// color of inside of circle
+	argList["outsideColor"] = (void*) new Vector4;	// color of outside of circle
+	argList["position"] = (void*) new Vector2;		// position in screen dimensions
+	argList["size"] = (void*) new Vector2;			// width/height of circle in screen dimensions
+	argList["softEdge"] = (void*) new float;		// thickness of antialiasing of border in pixels
+
+	return argList;
 }
 
-void DrawCircle::execute(std::map<std::string, void*> arguments) {
+void DrawCircle::deleteArgList(DrawStackArgList argList) {
+	if(argList.find("border") != argList.end()) delete (float*) argList["border"];
+	if(argList.find("borderColor") != argList.end()) delete (Vector4*) argList["borderColor"];
+	if(argList.find("insideColor") != argList.end()) delete (Vector4*) argList["insideColor"];
+	if(argList.find("outsideColor") != argList.end()) delete (Vector4*) argList["outsideColor"];
+	if(argList.find("position") != argList.end()) delete (Vector2*) argList["position"];
+	if(argList.find("size") != argList.end()) delete (Vector2*) argList["size"];
+	if(argList.find("softEdge") != argList.end()) delete (float*) argList["softEdge"];
+}
+
+void DrawCircle::execute(DrawStackArgList argList) {
 	// set up geometry
-	Vector2 position = *((Vector2*) arguments["position"]);
-	Vector2 size = Vector2(
-			*((float*) arguments["size"]) * 2.0f / gameGraphics->resolutionX,
-			*((float*) arguments["size"]) * 2.0f / gameGraphics->resolutionY
-		);
-	float border = *((float*) arguments["border"]) * 4.0f / *((float*) arguments["size"]);
+	Vector2 position = *((Vector2*) argList["position"]);
+	Vector2 size = *((Vector2*) argList["size"]);
+	float border = *((float*) argList["border"]) * 4.0f / (((Vector2*) argList["size"])->x / 2.0f * (float) gameGraphics->resolutionX);
 	std::vector<VertexEntry> quadVertices;
 
 	drawCurve(
@@ -104,13 +106,13 @@ void DrawCircle::execute(std::map<std::string, void*> arguments) {
 	glUseProgram(shaderProgram);
 
 	// set uniforms
-	Vector4 insideColor = *((Vector4*) arguments["insideColor"]);
-	Vector4 borderColor = *((Vector4*) arguments["borderColor"]);
-	Vector4 outsideColor = *((Vector4*) arguments["outsideColor"]);
+	Vector4 insideColor = *((Vector4*) argList["insideColor"]);
+	Vector4 borderColor = *((Vector4*) argList["borderColor"]);
+	Vector4 outsideColor = *((Vector4*) argList["outsideColor"]);
 	glUniform4f(uniforms["insideColor"], insideColor.x, insideColor.y, insideColor.z, insideColor.w);
 	glUniform4f(uniforms["borderColor"], borderColor.x, borderColor.y, borderColor.z, borderColor.w);
 	glUniform4f(uniforms["outsideColor"], outsideColor.x, outsideColor.y, outsideColor.z, outsideColor.w);
-	glUniform1f(uniforms["softEdge"], *((float*) arguments["softEdge"]) * 4.0f / *((float*) arguments["size"]));
+	glUniform1f(uniforms["softEdge"], *((float*) argList["softEdge"]) * 4.0f / (((Vector2*) argList["size"])->x / 2.0f * (float) gameGraphics->resolutionX));
 
 	// draw the data stored in GPU memory
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);
@@ -143,54 +145,4 @@ void DrawCircle::execute(std::map<std::string, void*> arguments) {
 
 	// undo state
 	glDisable(GL_BLEND);
-}
-
-void DrawCircle::drawCurve(
-		std::vector<VertexEntry>* quadVertices,
-		Vector2 position,
-		Vector2 size,
-		float rotation,
-		bool highlight,
-		bool concave
-	) {
-	VertexEntry vertices[4];
-
-	// set attributes that stay the same
-	for(size_t i = 0; i < 4; ++i) {
-		vertices[i].curveOriginCoord = Vector2(
-				-(sqrt(2.0f) * cos(radians(rotation + 45.0f))),
-				-(sqrt(2.0f) * sin(radians(rotation + 45.0f)))
-			);
-		vertices[i].highlight = highlight;
-		vertices[i].concave = concave;
-	}
-
-	// set distinct attributes (position, primCoord)
-	vertices[0].position = Vector2(
-			position.x - size.x / 2.0f,
-			position.y - size.y / 2.0f
-		);
-	vertices[0].primCoord = Vector2(-1.0f, -1.0f);
-
-	vertices[1].position = Vector2(
-			position.x - size.x / 2.0f,
-			position.y + size.y / 2.0f
-		);
-	vertices[1].primCoord = Vector2(-1.0f, 1.0f);
-
-	vertices[2].position = Vector2(
-			position.x + size.x / 2.0f,
-			position.y + size.y / 2.0f
-		);
-	vertices[2].primCoord = Vector2(1.0f, 1.0f);
-
-	vertices[3].position = Vector2(
-			position.x + size.x / 2.0f,
-			position.y - size.y / 2.0f
-		);
-	vertices[3].primCoord = Vector2(1.0f, -1.0f);
-
-	// push back the quad vertices
-	for(size_t i = 0; i < 4; ++i)
-		quadVertices->push_back(vertices[i]);
 }

@@ -4,21 +4,11 @@
 #ifndef MOUSE_H
 #define MOUSE_H
 
-// program headers
-#include "core/GameSystem.h"
-#include "graphics/GameGraphics.h"
-#include "math/VectorMath.h"
-
-// library headers
-#include <iostream>
-#include <map>
 #include <SDL.h>
 #include <stdint.h>
 #include <vector>
 
-// global variables
-extern GameGraphics* gameGraphics;
-extern GameSystem* gameSystem;
+#include "math/VectorMath.h"
 
 class MouseButtonListener {
 public:

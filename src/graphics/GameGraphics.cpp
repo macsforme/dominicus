@@ -3,9 +3,26 @@
 
 #include "graphics/GameGraphics.h"
 
+#include <fstream>
+#include <SDL.h>
+#include <sstream>
+#include <stdint.h>
+#include <string.h>
+
+#include "graphics/DrawingMaster.h"
+#include "core/GameSystem.h"
+#include "geometry/DiamondSquare.h"
+#include "math/VectorMath.h"
+#include "platform/Platform.h"
+
+extern DrawingMaster* drawingMaster;
+extern std::map<MainLoopMember*,unsigned int> mainLoopModules;
+extern Platform* platform;
+extern GameSystem* gameSystem;
+
 GameGraphics::GameGraphics(bool fullScreen, bool testSystem) :
-		MainLoopMember((unsigned int) gameSystem->getFloat("displayFPS")),
-		fullScreen(fullScreen) {
+		fullScreen(fullScreen),
+		currentCamera(NULL) {
 	// initialize an SDL window
 	resolutionX = (fullScreen ? gameSystem->displayResolutionX :
 			atoi(gameSystem->getString("displayWindowedResolution").substr(0, gameSystem->getString("displayWindowedResolution").find('x')).c_str()));
@@ -252,38 +269,6 @@ SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 0);
 						0xFF
 					);
 	fourDepthNoiseTexture->setDepth(16);
-
-	// timers;
-	waveTimer = 0.0f;
-	hardTimer = 0.0f;
-
-	// bad programming practice, but set the global variable to us since
-	// we should only exist once, and our drawers need to find us
-	gameGraphics = this;
-
-	// instantiate drawers
-	drawers["splash"] = new DrawSplash();
-	drawers["container"] = new DrawContainer();
-	drawers["circle"] = new DrawCircle();
-	drawers["label"] = new DrawLabel();
-	drawers["field"] = new DrawField();
-	drawers["button"] = new DrawButton();
-	drawers["texture"] = new DrawTexture();
-	drawers["gaugePanel"] = new DrawGaugePanel();
-	drawers["progressBar"] = new DrawProgressBar();
-	drawers["radar"] = new DrawRadar();
-	drawers["grayOut"] = new DrawGrayOut();
-
-	drawers["missileRenderer"] = new MissileRenderer();
-	drawers["shellRenderer"] = new ShellRenderer();
-	drawers["skyRenderer"] = new SkyRenderer();
-	drawers["shipRenderer"] = new ShipRenderer();
-	drawers["terrainRenderer"] = new TerrainRenderer();
-	drawers["fortressRenderer"] = new FortressRenderer();
-	drawers["waterRenderer"] = new WaterRenderer();
-
-	// set camera
-	currentCamera = NULL;
 }
 
 GameGraphics::~GameGraphics() {
@@ -293,24 +278,6 @@ GameGraphics::~GameGraphics() {
 	// destroy textures
 	delete noiseTexture;
 	delete fourDepthNoiseTexture;
-
-	// delete drawers
-	delete (DrawSplash*) drawers["splash"];
-	delete (DrawContainer*) drawers["container"];
-	delete (DrawCircle*) drawers["circle"];
-	delete (DrawLabel*) drawers["label"];
-	delete (DrawField*) drawers["field"];
-	delete (DrawButton*) drawers["button"];
-	delete (DrawTexture*) drawers["texture"];
-	delete (DrawGaugePanel*) drawers["gaugePanel"];
-	delete (DrawProgressBar*) drawers["progressBar"];
-	delete (DrawRadar*) drawers["radar"];
-
-	delete (MissileRenderer*) drawers["missileRenderer"];
-	delete (TerrainRenderer*) drawers["terrainRenderer"];
-	delete (WaterRenderer*) drawers["waterRenderer"];
-	delete (ShipRenderer*) drawers["shipRenderer"];
-	delete (FortressRenderer*) drawers["fortressRenderer"];
 
 	// delete shaders
 	std::map<std::string, GLuint>::iterator shaderItr;
@@ -523,7 +490,8 @@ GLuint GameGraphics::getTextureID(std::string filename) {
 	Texture texture(filenameStream.str().c_str());
 
 	// load the texture into OpenGL
-//	glEnable(GL_TEXTURE_2D);
+	bool texturesWereEnabled = glIsEnabled(GL_TEXTURE_2D);
+	if(! texturesWereEnabled) glEnable(GL_TEXTURE_2D);
 
 	GLuint textureID = 0;
 	glGenTextures(1, &textureID);
@@ -543,21 +511,17 @@ GLuint GameGraphics::getTextureID(std::string filename) {
 
 	glGenerateMipmap(GL_TEXTURE_2D);
 
-//	glDisable(GL_TEXTURE_2D);
+	if(! texturesWereEnabled) glDisable(GL_TEXTURE_2D);
 
 	textureIDs[filename] = textureID;
 
 	return textureID;
 }
 
-unsigned int GameGraphics::execute(bool unScheduled) {
+void GameGraphics::startFrame() {
 	// update camera
 	if(currentCamera != NULL)
 		currentCamera->execute();
-
-	// set timers
-	waveTimer = sin(radians((float) (platform->getExecMills() % 2000) / 2000.0f * 360.0f - 90.0f));
-	hardTimer = ((float) (platform->getExecMills() % 2000) < 1000.0f ? 1.0f : 0.0f);
 
 	// prepare OpenGL for rendering
 	glViewport(0, 0, resolutionX, resolutionY);
@@ -566,17 +530,11 @@ unsigned int GameGraphics::execute(bool unScheduled) {
 	Vector4 clearColor = gameSystem->getColor("colorClear");
 	glClearColor(clearColor.x, clearColor.y, clearColor.z, clearColor.w);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
 
-	// draw everything
-	for(
-			GameLogic::DrawStack::iterator itr = gameLogic->drawStack.begin();
-			itr != gameLogic->drawStack.end();
-			++itr
-		)
-		drawers[itr->first]->execute(itr->second);
-
+void GameGraphics::finishFrame() {
 	// swap buffers
-	if(mainLoopModules.find(gameGraphics) == mainLoopModules.end())
+	if(mainLoopModules.find(drawingMaster) == mainLoopModules.end())
 		glFinish();
 	SDL_GL_SwapBuffers();
 
@@ -591,13 +549,4 @@ unsigned int GameGraphics::execute(bool unScheduled) {
 
 		renderingError = glGetError();
 	}
-
-	// track runcount
-	trackRunCount();
-
-	// calculate and return sleep time from superclass unless we aren't capping it
-	if(unScheduled || ! gameSystem->getBool("displayFPSCap"))
-		return 0;
-	else
-		return getSleepTime();
 }

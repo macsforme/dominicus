@@ -3,6 +3,16 @@
 
 #include "graphics/2dgraphics/DrawLabel.h"
 
+#include <vector>
+
+#include "graphics/GameGraphics.h"
+#include "graphics/text/FontManager.h"
+#include "graphics/text/TextBlock.h"
+#include "graphics/UILayoutAuthority.h"
+#include "platform/OpenGLHeaders.h"
+
+extern GameGraphics* gameGraphics;
+
 DrawLabel::DrawLabel() {
 	// set up shader
 	GLuint shaderID = 0;
@@ -26,26 +36,53 @@ DrawLabel::DrawLabel() {
 }
 
 DrawLabel::~DrawLabel() {
-	// delete buffers
-	if(glIsBuffer(vertexBuffers["vertices"]))
-		glDeleteBuffers(1, &(vertexBuffers["vertices"]));
-	if(glIsBuffer(vertexBuffers["elements"]))
-		glDeleteBuffers(1, &(vertexBuffers["elements"]));
+	// undo shader setup
+	GLsizei shaderCount;
+	GLuint* shaders = new GLuint[2];
+	glGetAttachedShaders(shaderProgram, 2, &shaderCount, shaders);
 
-	// delete shader program
-	if(glIsProgram(shaderProgram))
-		glDeleteProgram(shaderProgram);
+	for(size_t i = 0; i < shaderCount; ++i) {
+		glDetachShader(shaderProgram, shaders[i]);
+		glDeleteShader(shaders[i]);
+	}
+
+	delete[] shaders;
+
+	glDeleteProgram(shaderProgram);
+
+	glDeleteBuffers(1, &(vertexBuffers["vertices"]));
+	glDeleteBuffers(1, &(vertexBuffers["elements"]));
 }
 
-Vector2 DrawLabel::getSize(std::map<std::string, void*> arguments) {
+DrawStackArgList DrawLabel::instantiateArgList() {
+	DrawStackArgList argList;
+
+	argList["fontColor"] = (void*) new Vector4;		// font base color
+	argList["fontSize"] = (void*) new float;		// font point size for this label
+	argList["metrics"] = (void*) new UIMetrics;		// UI element metrics
+	argList["text"] = (void*) new std::string;		// text to draw
+	argList["wrap"] = (void*) new float;			// wrap width for text in pixels (optional)
+
+	return argList;
+}
+
+void DrawLabel::deleteArgList(DrawStackArgList argList) {
+	if(argList.find("fontColor") != argList.end()) delete (Vector4*) argList["fontColor"];
+	if(argList.find("fontSize") != argList.end()) delete (float*) argList["fontSize"];
+	if(argList.find("metrics") != argList.end()) delete (UIMetrics*) argList["metrics"];
+	if(argList.find("text") != argList.end()) delete (std::string*) argList["text"];
+	if(argList.find("wrap") != argList.end()) delete (float*) argList["wrap"];
+}
+
+Vector2 DrawLabel::getSize(DrawStackArgList argList) {
 	// collect arguments
-	float* fontSize = ((float*) arguments["fontSize"]);
-	std::string* text = ((std::string*) arguments["text"]);
+	float* fontSize = ((float*) argList["fontSize"]);
+	std::string* text = ((std::string*) argList["text"]);
 
 	// create the text block
 	unsigned int widthWrap = gameGraphics->resolutionX;
-	if(arguments.find("wrap") != arguments.end())
-		widthWrap = (unsigned int) (*((float*) arguments["wrap"]) / 2.0f * (float) widthWrap);
+	if(argList.find("wrap") != argList.end())
+		widthWrap = (unsigned int) (*((float*) argList["wrap"]) / 2.0f * (float) widthWrap);
 	if(widthWrap == 0)
 		widthWrap = gameGraphics->resolutionX;
 	TextBlock textBlock(
@@ -149,22 +186,17 @@ Vector2 DrawLabel::getSize(std::map<std::string, void*> arguments) {
 		);
 }
 
-void DrawLabel::execute(std::map<std::string, void*> arguments) {
+void DrawLabel::execute(DrawStackArgList argList) {
 	// collect arguments
-	UIMetrics* metrics = ((UIMetrics*) arguments["metrics"]);
-	float* fontSize = ((float*) arguments["fontSize"]);
-	Vector4* fontColor = ((Vector4*) arguments["fontColor"]);
-	std::string* text = ((std::string*) arguments["text"]);
-
-	// color considers timer
-//	float timeFactor = 1.0f;
-//	if((float*) arguments["textTimer"] != NULL)
-//		timeFactor = *((float*) arguments["textTimer"]);
+	UIMetrics* metrics = ((UIMetrics*) argList["metrics"]);
+	float* fontSize = ((float*) argList["fontSize"]);
+	Vector4* fontColor = ((Vector4*) argList["fontColor"]);
+	std::string* text = ((std::string*) argList["text"]);
 
 	// create the text block
 	unsigned int widthWrap = gameGraphics->resolutionX;
-	if(arguments.find("wrap") != arguments.end())
-		widthWrap = (unsigned int) (*((float*) arguments["wrap"]) / 2.0f * (float) widthWrap);
+	if(argList.find("wrap") != argList.end())
+		widthWrap = (unsigned int) (*((float*) argList["wrap"]) / 2.0f * (float) widthWrap);
 	if(widthWrap == 0)
 		widthWrap = gameGraphics->resolutionX;
 

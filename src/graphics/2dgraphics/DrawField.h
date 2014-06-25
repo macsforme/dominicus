@@ -4,43 +4,27 @@
 #ifndef DRAWFIELD_H
 #define DRAWFIELD_H
 
-// forward declarations
-class DrawLabel;
-
-// program headers
-#include "graphics/GameGraphics.h"
-#include "graphics/text/TextBlock.h"
-#include "graphics/2dgraphics/DrawLabel.h"
-#include "logic/UILayoutAuthority.h"
-#include "math/VectorMath.h"
-#include "platform/OpenGLHeaders.h"
-
-// library headers
+#include <map>
 #include <string>
 
-// global variables
-extern GameGraphics* gameGraphics;
+#include "graphics/DrawTypes.h"
+#include "graphics/2dgraphics/DrawLabel.h"
+#include "math/VectorMath.h"
 
 class DrawField : public BaseUIElement {
 private:
 	DrawLabel* labelDrawer;
 
 public:
-	DrawField();
+	DrawField(DrawLabel* newLabelDrawer);
 	~DrawField();
 
-	/*
-		Arguments Layout
-		----------------
-		metrics			UI element metrics
-		fontSize		Font point size for this label (not to be confused with metrics->size)
-		fontColor		Font color
-		text			std::string of text
-		boxColor		Vector4 with box color
-	*/
+	DrawStackArgList instantiateArgList();
+	void deleteArgList(DrawStackArgList argList);
 
-	Vector2 getSize(std::map<std::string, void*> arguments);
-	void execute(std::map<std::string, void*> arguments);
+	Vector2 getSize(DrawStackArgList argList);
+
+	void execute(DrawStackArgList argList);
 };
 
 #endif // DRAWFIELD_H

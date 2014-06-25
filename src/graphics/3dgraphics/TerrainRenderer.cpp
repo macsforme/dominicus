@@ -3,6 +3,26 @@
 
 #include "graphics/3dgraphics/TerrainRenderer.h"
 
+#include <vector>
+
+#include "geometry/Mesh.h"
+#include "graphics/GameGraphics.h"
+#include "logic/Camera.h"
+#include "math/MatrixMath.h"
+#include "math/VectorMath.h"
+#include "state/GameState.h"
+
+#ifndef GL_TEXTURE_MAX_ANISOTROPY_EXT
+#define GL_TEXTURE_MAX_ANISOTROPY_EXT 0x84FE
+#endif
+
+#ifndef GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT
+#define GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT 0x84FF
+#endif
+
+extern GameGraphics* gameGraphics;
+extern GameState* gameState;
+
 TerrainRenderer::TerrainRenderer() {
 	// set up shader
 	GLuint shaderID = 0;
@@ -34,7 +54,22 @@ TerrainRenderer::TerrainRenderer() {
 }
 
 TerrainRenderer::~TerrainRenderer() {
-	;
+	// undo shader setup
+	GLsizei shaderCount;
+	GLuint* shaders = new GLuint[2];
+	glGetAttachedShaders(shaderProgram, 2, &shaderCount, shaders);
+
+	for(size_t i = 0; i < shaderCount; ++i) {
+		glDetachShader(shaderProgram, shaders[i]);
+		glDeleteShader(shaders[i]);
+	}
+
+	delete[] shaders;
+
+	glDeleteProgram(shaderProgram);
+
+	glDeleteBuffers(1, &(vertexBuffers["vertices"]));
+	glDeleteBuffers(1, &(vertexBuffers["elements"]));
 }
 
 void TerrainRenderer::reloadGraphics() {

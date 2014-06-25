@@ -15,12 +15,6 @@ GameLogic::GameLogic() :
 		upArrowPressTime(0),
 		downArrowPressTime(0),
 		lastFPSUpdate(0) {
-	// instantiate HUD layout authority
-	uiLayoutAuthority = new UILayoutAuthority(
-			Vector2(gameSystem->getFloat("hudElementMargin") / gameGraphics->resolutionX,
-					gameSystem->getFloat("hudElementMargin") / gameGraphics->resolutionY)
-		);
-
 	// independent key listeners
 	std::vector<SDLKey> keysVector;
 
@@ -66,6 +60,8 @@ GameLogic::GameLogic() :
 	mainMenuSpacerMetrics = new UIMetrics;
 
 	playButtonEntry.first = "button";
+	playButtonEntry.second = ((DrawButton*) drawingMaster->drawers["button"])->instantiateArgList();
+/*
 	playButtonEntry.second["metrics"] = (void*) new UIMetrics;
 	playButtonEntry.second["fontSize"] = (void*) new float;
 	playButtonEntry.second["fontColor"] = (void*) new Vector4;
@@ -76,10 +72,13 @@ GameLogic::GameLogic() :
 	playButtonEntry.second["insideColor"] = (void*) new Vector4;
 	playButtonEntry.second["borderColor"] = (void*) new Vector4;
 	playButtonEntry.second["outsideColor"] = (void*) new Vector4;
+*/
 	playButtonZoneListener = new MouseZoneListener();
 	playButtonClickListener = new MouseButtonListener();
 
 	settingsButtonEntry.first = "button";
+	settingsButtonEntry.second = ((DrawButton*) drawingMaster->drawers["button"])->instantiateArgList();
+/*
 	settingsButtonEntry.second["metrics"] = (void*) new UIMetrics;
 	settingsButtonEntry.second["fontSize"] = (void*) new float;
 	settingsButtonEntry.second["fontColor"] = (void*) new Vector4;
@@ -90,10 +89,13 @@ GameLogic::GameLogic() :
 	settingsButtonEntry.second["insideColor"] = (void*) new Vector4;
 	settingsButtonEntry.second["borderColor"] = (void*) new Vector4;
 	settingsButtonEntry.second["outsideColor"] = (void*) new Vector4;
+*/
 	settingsButtonZoneListener = new MouseZoneListener();
 	settingsButtonClickListener = new MouseButtonListener();
 
 	helpButtonEntry.first = "button";
+	helpButtonEntry.second = ((DrawButton*) drawingMaster->drawers["button"])->instantiateArgList();
+/*
 	helpButtonEntry.second["metrics"] = (void*) new UIMetrics;
 	helpButtonEntry.second["fontSize"] = (void*) new float;
 	helpButtonEntry.second["fontColor"] = (void*) new Vector4;
@@ -104,10 +106,13 @@ GameLogic::GameLogic() :
 	helpButtonEntry.second["insideColor"] = (void*) new Vector4;
 	helpButtonEntry.second["borderColor"] = (void*) new Vector4;
 	helpButtonEntry.second["outsideColor"] = (void*) new Vector4;
+*/
 	helpButtonZoneListener = new MouseZoneListener();
 	helpButtonClickListener = new MouseButtonListener();
 
 	highScoresButtonEntry.first = "button";
+	highScoresButtonEntry.second = ((DrawButton*) drawingMaster->drawers["button"])->instantiateArgList();
+/*
 	highScoresButtonEntry.second["metrics"] = (void*) new UIMetrics;
 	highScoresButtonEntry.second["fontSize"] = (void*) new float;
 	highScoresButtonEntry.second["fontColor"] = (void*) new Vector4;
@@ -118,10 +123,13 @@ GameLogic::GameLogic() :
 	highScoresButtonEntry.second["insideColor"] = (void*) new Vector4;
 	highScoresButtonEntry.second["borderColor"] = (void*) new Vector4;
 	highScoresButtonEntry.second["outsideColor"] = (void*) new Vector4;
+*/
 	highScoresButtonZoneListener = new MouseZoneListener();
 	highScoresButtonClickListener = new MouseButtonListener();
 
 	quitButtonEntry.first = "button";
+	quitButtonEntry.second = ((DrawButton*) drawingMaster->drawers["button"])->instantiateArgList();
+/*
 	quitButtonEntry.second["metrics"] = (void*) new UIMetrics;
 	quitButtonEntry.second["fontSize"] = (void*) new float;
 	quitButtonEntry.second["fontColor"] = (void*) new Vector4;
@@ -132,6 +140,7 @@ GameLogic::GameLogic() :
 	quitButtonEntry.second["insideColor"] = (void*) new Vector4;
 	quitButtonEntry.second["borderColor"] = (void*) new Vector4;
 	quitButtonEntry.second["outsideColor"] = (void*) new Vector4;
+*/
 	quitButtonZoneListener = new MouseZoneListener();
 	quitButtonClickListener = new MouseButtonListener();
 
@@ -379,7 +388,7 @@ GameLogic::GameLogic() :
 	secondaryFireClickListener = new MouseButtonListener(SDL_BUTTON_RIGHT);
 
 	controlSpotEntry.first = "circle";
-	controlSpotEntry.second["size"] = (void*) new float;
+	controlSpotEntry.second["size"] = (void*) new Vector2;
 	controlSpotEntry.second["position"] = (void*) new Vector2;
 	controlSpotEntry.second["border"] = (void*) new float;
 	controlSpotEntry.second["softEdge"] = (void*) new float;
@@ -388,7 +397,7 @@ GameLogic::GameLogic() :
 	controlSpotEntry.second["outsideColor"] = (void*) new Vector4;
 
 	cursorEntry.first = "circle";
-	cursorEntry.second["size"] = (void*) new float;
+	cursorEntry.second["size"] = (void*) new Vector2;
 	cursorEntry.second["position"] = NULL;
 	cursorEntry.second["border"] = (void*) new float;
 	cursorEntry.second["softEdge"] = (void*) new float;
@@ -617,13 +626,11 @@ fpsEntry.second["fontColor"] = (void*) new Vector4;
 fpsEntry.second["text"] = (void*) new std::string;
 *((std::string*) fpsEntry.second["text"]) = "FPS: 0";
 
-	// set global variable (we only exist once, right?)
-	gameLogic = this;
-
 	// build the initial draw stack
 	currentScheme = SCHEME_MAINMENU;
 	activeMenuSelection = &playButtonEntry;
-	reScheme();
+//FIXME after schemes is gone we can put this back in because we can refer to our own data
+//	reScheme();
 
 	// start audio
 	SDL_LockAudio();
@@ -631,7 +638,7 @@ fpsEntry.second["text"] = (void*) new std::string;
 	SDL_UnlockAudio();
 
 	// draw the initial frame
-	gameGraphics->execute(true);
+//	drawingMaster->execute(true);
 
 	// clear the motion listener
 	inputHandler->execute();
@@ -647,8 +654,8 @@ GameLogic::~GameLogic() {
 
 void GameLogic::reScheme() {
 	// always clear the current stacks
-	drawStack.clear();
-	uiLayoutAuthority->metrics.clear();
+	drawingMaster->drawStack.clear();
+	drawingMaster->uiLayoutAuthority->metrics.clear();
 	inputHandler->keyboard->clearListeners();
 	inputHandler->mouse->clearListeners();
 
@@ -695,12 +702,12 @@ void GameLogic::reScheme() {
 		break;
 	}
 
-std::stringstream ss; ss << "FPS: " << gameGraphics->runRate;
+std::stringstream ss; ss << "FPS: " << drawingMaster->runRate;
 *((std::string*) fpsEntry.second["text"]) = ss.str().c_str();
-((UIMetrics*) fpsEntry.second["metrics"])->size = ((DrawLabel*) gameGraphics->drawers["label"])->getSize(fpsEntry.second);
-uiLayoutAuthority->metrics.push_back((UIMetrics*) fpsEntry.second["metrics"]);
-drawStack.push_back(fpsEntry);
-uiLayoutAuthority->rearrange();
+((UIMetrics*) fpsEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(fpsEntry.second);
+drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) fpsEntry.second["metrics"]);
+drawingMaster->drawStack.push_back(fpsEntry);
+drawingMaster->uiLayoutAuthority->rearrange();
 }
 
 unsigned int GameLogic::execute(bool unScheduled) {
@@ -725,10 +732,6 @@ lastFPSUpdate = platform->getExecMills();
 	if(fullScreenKeyListener->popKey() != SDLK_UNKNOWN) {
 		bool fullScreenGraphics = ! gameGraphics->fullScreen;
 
-		bool isInMainLoopModules = (mainLoopModules.find(gameGraphics) != mainLoopModules.end());
-		if(isInMainLoopModules)
-			mainLoopModules.erase(mainLoopModules.find(gameGraphics));
-
 		Camera* currentCamera = gameGraphics->currentCamera;
 
 		delete gameGraphics;
@@ -737,22 +740,15 @@ lastFPSUpdate = platform->getExecMills();
 
 		gameGraphics->currentCamera = currentCamera;
 
+		drawingMaster->newGraphics();
+
 		inputHandler->execute();
 		mouseMotionListener->wasMoved();
 
-		if(isInMainLoopModules)
-			mainLoopModules[gameGraphics] = 0;
-
 		if(currentScheme == SCHEME_PLAYING || currentScheme == SCHEME_INTRO || currentScheme == SCHEME_PAUSED) {
-			((TerrainRenderer*) gameGraphics->drawers["terrainRenderer"])->reloadGraphics();
-			((DrawRadar*) gameGraphics->drawers["radar"])->reloadGraphics();
+			((TerrainRenderer*) drawingMaster->drawers["terrainRenderer"])->reloadGraphics();
+			((DrawRadar*) drawingMaster->drawers["radar"])->reloadGraphics();
 		}
-
-		delete uiLayoutAuthority;
-		uiLayoutAuthority = new UILayoutAuthority(
-				Vector2(gameSystem->getFloat("hudElementMargin") / (float) gameGraphics->resolutionX,
-						gameSystem->getFloat("hudElementMargin") / (float) gameGraphics->resolutionY)
-			);
 
 		reScheme();
 		needRedraw = true;
@@ -803,14 +799,14 @@ lastFPSUpdate = platform->getExecMills();
 		if(playButtonClickListener->wasClicked()) {
 			currentScheme = SCHEME_LOADING;
 			reScheme();
-			gameGraphics->execute(true);
+			drawingMaster->execute(true);
 
 			gameState = new GameState();
 			mainLoopModules[gameState] = 0;
 
-			mainLoopModules[gameGraphics] = 0;
-			((TerrainRenderer*) gameGraphics->drawers["terrainRenderer"])->reloadGraphics();
-			((DrawRadar*) gameGraphics->drawers["radar"])->reloadGraphics();
+			mainLoopModules[drawingMaster] = 0;
+			((TerrainRenderer*) drawingMaster->drawers["terrainRenderer"])->reloadGraphics();
+			((DrawRadar*) drawingMaster->drawers["radar"])->reloadGraphics();
 			gameGraphics->currentCamera = &introCamera;
 
 			currentScheme = SCHEME_INTRO;
@@ -888,14 +884,14 @@ lastFPSUpdate = platform->getExecMills();
 				if(activeMenuSelection == &playButtonEntry) {
 					currentScheme = SCHEME_LOADING;
 					reScheme();
-					gameGraphics->execute(true);
+					drawingMaster->execute(true);
 
 					gameState = new GameState();
 					mainLoopModules[gameState] = 0;
 
-					mainLoopModules[gameGraphics] = 0;
-					((TerrainRenderer*) gameGraphics->drawers["terrainRenderer"])->reloadGraphics();
-					((DrawRadar*) gameGraphics->drawers["radar"])->reloadGraphics();
+					mainLoopModules[drawingMaster] = 0;
+					((TerrainRenderer*) drawingMaster->drawers["terrainRenderer"])->reloadGraphics();
+					((DrawRadar*) drawingMaster->drawers["radar"])->reloadGraphics();
 					gameGraphics->currentCamera = &introCamera;
 
 					currentScheme = SCHEME_INTRO;
@@ -952,7 +948,7 @@ lastFPSUpdate = platform->getExecMills();
 			} else if(key == SDLK_ESCAPE) {
 				gameState->pause();
 
-				mainLoopModules.erase(mainLoopModules.find(gameGraphics));
+				mainLoopModules.erase(mainLoopModules.find(drawingMaster));
 
 				currentScheme = SCHEME_PAUSED;
 				activeMenuSelection = &resumeButtonEntry;
@@ -978,7 +974,7 @@ lastFPSUpdate = platform->getExecMills();
 		if(gameState->fortress.health == 0.0f) {
 			gameState->pause();
 
-			mainLoopModules.erase(mainLoopModules.find(gameGraphics));
+			mainLoopModules.erase(mainLoopModules.find(drawingMaster));
 
 			if(gameSystem->highScores.size() > 0)
 				playerName = gameSystem->highScores[0].second;
@@ -1094,8 +1090,8 @@ lastFPSUpdate = platform->getExecMills();
 				gameState = new GameState();
 				mainLoopModules[gameState] = 0;
 
-				((TerrainRenderer*) gameGraphics->drawers["terrainRenderer"])->reloadGraphics();
-				((DrawRadar*) gameGraphics->drawers["radar"])->reloadGraphics();
+				((TerrainRenderer*) drawingMaster->drawers["terrainRenderer"])->reloadGraphics();
+				((DrawRadar*) drawingMaster->drawers["radar"])->reloadGraphics();
 			} else if(key == SDLK_BACKSLASH) {
 				if(gameGraphics->currentCamera == &fortressCamera)
 					gameGraphics->currentCamera = &orbitCamera;
@@ -1108,7 +1104,7 @@ lastFPSUpdate = platform->getExecMills();
 			} else if(key == SDLK_ESCAPE) {
 				gameState->pause();
 
-				mainLoopModules.erase(mainLoopModules.find(gameGraphics));
+				mainLoopModules.erase(mainLoopModules.find(drawingMaster));
 
 				currentScheme = SCHEME_PAUSED;
 				activeMenuSelection = &resumeButtonEntry;
@@ -1256,7 +1252,7 @@ lastFPSUpdate = platform->getExecMills();
 			activeMenuSelection = NULL;
 			reScheme();
 
-			mainLoopModules[gameGraphics] = 0;
+			mainLoopModules[drawingMaster] = 0;
 
 			gameState->resume();
 		} else if(endGameButtonClickListener->wasClicked()) {
@@ -1316,7 +1312,7 @@ lastFPSUpdate = platform->getExecMills();
 					activeMenuSelection = NULL;
 					reScheme();
 
-					mainLoopModules[gameGraphics] = 0;
+					mainLoopModules[drawingMaster] = 0;
 
 					gameState->resume();
 				} else if(activeMenuSelection == &endGameButtonEntry) {
@@ -1404,7 +1400,7 @@ lastFPSUpdate = platform->getExecMills();
 		if(gameOverContinueButtonClickListener->wasClicked()) {
 			if(gameState->score > 0 && (gameSystem->highScores.size() == 0 || gameState->score > gameSystem->highScores[0].first)) {
 				if(playerName != "") {
-					gameSystem->highScores.insert(gameSystem->highScores.begin(), std::make_pair(gameState->score, gameLogic->playerName));
+					gameSystem->highScores.insert(gameSystem->highScores.begin(), std::make_pair(gameState->score, playerName));
 					while(gameSystem->highScores.size() > (size_t) gameSystem->getFloat("gameMaximumHighScores"))
 						gameSystem->highScores.erase(gameSystem->highScores.end());
 
@@ -1432,7 +1428,7 @@ lastFPSUpdate = platform->getExecMills();
 				if(activeMenuSelection == &gameOverContinueButton) {
 					if(gameSystem->highScores.size() == 0 || gameState->score > gameSystem->highScores[0].first) {
 						if(playerName != "") {
-							gameSystem->highScores.insert(gameSystem->highScores.begin(), std::make_pair(gameState->score, gameLogic->playerName));
+							gameSystem->highScores.insert(gameSystem->highScores.begin(), std::make_pair(gameState->score, playerName));
 							while(gameSystem->highScores.size() > (size_t) gameSystem->getFloat("gameMaximumHighScores"))
 								gameSystem->highScores.erase(gameSystem->highScores.end());
 
@@ -1583,14 +1579,10 @@ lastFPSUpdate = platform->getExecMills();
 
 					gameGraphics = new GameGraphics(false);
 
+					drawingMaster->newGraphics();
+
 					inputHandler->execute();
 					mouseMotionListener->wasMoved();
-
-					delete uiLayoutAuthority;
-					uiLayoutAuthority = new UILayoutAuthority(
-							Vector2(gameSystem->getFloat("hudElementMargin") / (float) gameGraphics->resolutionX,
-									gameSystem->getFloat("hudElementMargin") / (float) gameGraphics->resolutionY)
-						);
 				}
 
 				reScheme();
@@ -1747,14 +1739,10 @@ lastFPSUpdate = platform->getExecMills();
 
 							gameGraphics = new GameGraphics(false);
 
+							drawingMaster->newGraphics();
+
 							inputHandler->execute();
 							mouseMotionListener->wasMoved();
-
-							delete uiLayoutAuthority;
-							uiLayoutAuthority = new UILayoutAuthority(
-									Vector2(gameSystem->getFloat("hudElementMargin") / (float) gameGraphics->resolutionX,
-											gameSystem->getFloat("hudElementMargin") / (float) gameGraphics->resolutionY)
-								);
 						}
 
 						reScheme();
@@ -1931,8 +1919,8 @@ lastFPSUpdate = platform->getExecMills();
 	}
 
 	// see if we need to redraw graphics, if we're still in the menus
-	if(needRedraw && mainLoopModules.find(gameGraphics) == mainLoopModules.end())
-		gameGraphics->execute(true);
+	if(needRedraw && mainLoopModules.find(drawingMaster) == mainLoopModules.end())
+		drawingMaster->execute(true);
 
 	// track runcount
 	trackRunCount();

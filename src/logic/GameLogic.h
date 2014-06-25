@@ -4,17 +4,13 @@
 #ifndef GAMELOGIC_H
 #define GAMELOGIC_H
 
-// forward declarations
-class GameLogic;
-class MouseButtonListener;
-class MouseMotionListener;
-class MouseZoneListener;
-
 // program headers
 #include "audio/GameAudio.h"
 #include "core/GameSystem.h"
 #include "core/MainLoopMember.h"
+#include "graphics/DrawingMaster.h"
 #include "graphics/GameGraphics.h"
+#include "graphics/2dgraphics/DrawButton.h"
 #include "graphics/2dgraphics/DrawCircle.h"
 #include "graphics/2dgraphics/DrawGrayOut.h"
 #include "graphics/2dgraphics/DrawRadar.h"
@@ -33,7 +29,7 @@ class MouseZoneListener;
 #include "input/Mouse.h"
 #include "logic/Camera.h"
 #include "logic/Schemes.h"
-#include "logic/UILayoutAuthority.h"
+#include "graphics/UILayoutAuthority.h"
 #include "math/MatrixMath.h"
 #include "math/VectorMath.h"
 #include "platform/OpenGLHeaders.h"
@@ -48,9 +44,9 @@ class MouseZoneListener;
 #include <vector>
 
 // global variables
+extern DrawingMaster* drawingMaster;
 extern GameAudio* gameAudio;
 extern GameGraphics* gameGraphics;
-extern GameLogic* gameLogic;
 extern GameState* gameState;
 extern GameSystem* gameSystem;
 extern InputHandler* inputHandler;
@@ -60,13 +56,6 @@ extern std::map<MainLoopMember*,unsigned int> mainLoopModules;
 // class definition
 class GameLogic : public MainLoopMember {
 public:
-	// UI elements
-	UILayoutAuthority* uiLayoutAuthority;
-
-	typedef std::map<std::string, void*> DrawStackArgList;
-	typedef std::pair< std::string, DrawStackArgList > DrawStackEntry;
-	typedef std::vector<DrawStackEntry> DrawStack;
-
 	// main menu
 	KeyListener* quitKeyListener;
 	KeyListener* fullScreenKeyListener;
@@ -208,9 +197,6 @@ KeyAbsoluteListener* cameraAheadKeyListener;
 	DrawStackEntry creditsEntry;
 
 DrawStackEntry fpsEntry;
-
-	// stack of stuff to render each frame
-	DrawStack drawStack;
 
 	// cameras
 	IntroCamera introCamera;

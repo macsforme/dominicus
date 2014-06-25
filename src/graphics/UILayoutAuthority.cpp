@@ -1,7 +1,7 @@
 // UILayoutAuthority.cpp
 // Crucible Island
 
-#include "logic/UILayoutAuthority.h"
+#include "graphics/UILayoutAuthority.h"
 
 UIMetrics* UILayoutAuthority::findPriorElementCenter(int index) {
 	// search for higher-priority elements with our same bearing (reverse order)

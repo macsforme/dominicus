@@ -3,6 +3,14 @@
 
 #include "graphics/2dgraphics/DrawGrayOut.h"
 
+#include <vector>
+
+#include "graphics/GameGraphics.h"
+#include "graphics/UILayoutAuthority.h"
+#include "platform/OpenGLHeaders.h"
+
+extern GameGraphics* gameGraphics;
+
 DrawGrayOut::DrawGrayOut() {
 	// set up shader
 	GLuint shaderID = 0;
@@ -31,24 +39,39 @@ DrawGrayOut::DrawGrayOut() {
 }
 
 DrawGrayOut::~DrawGrayOut() {
-	// delete buffers
-	if(glIsBuffer(vertexBuffers["vertices"]))
-		glDeleteBuffers(1, &(vertexBuffers["vertices"]));
-	if(glIsBuffer(vertexBuffers["elements"]))
-		glDeleteBuffers(1, &(vertexBuffers["elements"]));
+	// undo shader setup
+	GLsizei shaderCount;
+	GLuint* shaders = new GLuint[2];
+	glGetAttachedShaders(shaderProgram, 2, &shaderCount, shaders);
 
-	// delete shader program
-	if(glIsProgram(shaderProgram))
-		glDeleteProgram(shaderProgram);
+	for(size_t i = 0; i < shaderCount; ++i) {
+		glDetachShader(shaderProgram, shaders[i]);
+		glDeleteShader(shaders[i]);
+	}
+
+	delete[] shaders;
+
+	glDeleteProgram(shaderProgram);
+
+	glDeleteBuffers(1, &(vertexBuffers["vertices"]));
+	glDeleteBuffers(1, &(vertexBuffers["elements"]));
 }
 
-Vector2 DrawGrayOut::getSize(std::map<std::string, void*> arguments) {
-	return Vector2(2.0f, 2.0f);
+DrawStackArgList DrawGrayOut::instantiateArgList() {
+	DrawStackArgList argList;
+
+	argList["color"] = (void*) new Vector4;		// color of overlay
+
+	return argList;
 }
 
-void DrawGrayOut::execute(std::map<std::string, void*> arguments) {
+void DrawGrayOut::deleteArgList(DrawStackArgList argList) {
+	if(argList.find("color") != argList.end()) delete (Vector4*) argList["color"];
+}
+
+void DrawGrayOut::execute(DrawStackArgList argList) {
 	// collect arguments
-	Vector4 color = *((Vector4*) arguments["color"]);
+	Vector4 color = *((Vector4*) argList["color"]);
 
 	// update vertex buffers
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);

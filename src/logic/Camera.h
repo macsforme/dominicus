@@ -4,20 +4,9 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-// program headers
-#include "core/GameSystem.h"
-#include "geometry/Mesh.h"
 #include "math/MatrixMath.h"
-#include "math/MiscMath.h"
 #include "math/VectorMath.h"
-#include "platform/Platform.h"
-#include "state/GameState.h"
 
-// global variables
-extern GameState* gameState;
-extern GameSystem* gameSystem;
-
-// class definitions
 class Camera {
 public:
 	Vector3 position;

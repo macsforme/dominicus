@@ -3,6 +3,18 @@
 
 #include "graphics/3dgraphics/FortressRenderer.h"
 
+#include <vector>
+
+#include "core/GameSystem.h"
+#include "graphics/GameGraphics.h"
+#include "logic/Camera.h"
+#include "platform/OpenGLHeaders.h"
+#include "state/GameState.h"
+
+extern GameGraphics* gameGraphics;
+extern GameState* gameState;
+extern GameSystem* gameSystem;
+
 FortressRenderer::FortressRenderer() {
 	fortressMesh = Mesh("fortress");
 
@@ -130,7 +142,22 @@ FortressRenderer::FortressRenderer() {
 }
 
 FortressRenderer::~FortressRenderer() {
-// FIXME destroy variables
+	// undo shader setup
+	GLsizei shaderCount;
+	GLuint* shaders = new GLuint[2];
+	glGetAttachedShaders(shaderProgram, 2, &shaderCount, shaders);
+
+	for(size_t i = 0; i < shaderCount; ++i) {
+		glDetachShader(shaderProgram, shaders[i]);
+		glDeleteShader(shaders[i]);
+	}
+
+	delete[] shaders;
+
+	glDeleteProgram(shaderProgram);
+
+	glDeleteBuffers(1, &(vertexBuffers["vertices"]));
+	glDeleteBuffers(1, &(vertexBuffers["elements"]));
 }
 
 void FortressRenderer::execute(std::map<std::string, void*> arguments) {

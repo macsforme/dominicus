@@ -4,24 +4,13 @@
 #ifndef DRAWCONTAINER_H
 #define DRAWCONTAINER_H
 
-// program headers
-#include "graphics/GameGraphics.h"
-#include "math/MatrixMath.h"
-#include "math/ScalarMath.h"
-#include "math/VectorMath.h"
-#include "platform/OpenGLHeaders.h"
-#include "platform/Platform.h"
-
-// library headers
 #include <map>
-#include <string.h>
 #include <vector>
 
-// global variables
-extern GameGraphics* gameGraphics;
-extern Platform* platform;
+#include "graphics/DrawTypes.h"
+#include "math/VectorMath.h"
 
-class DrawContainer : public BaseDrawNode {
+class DrawContainer : public BaseUIElement {
 protected:
 	struct VertexEntry {
 		Vector2 position;
@@ -31,7 +20,6 @@ protected:
 		bool concave;
 	};
 
-	// utility drawing functions
 	void drawCurve(std::vector<VertexEntry>* quadVertices, Vector2 position, Vector2 size, float rotation,
 			bool highlight = false, bool concave = false);
 	void drawBorder(std::vector<VertexEntry>* quadVertices, Vector2 position, Vector2 size, float rotation,
@@ -41,20 +29,14 @@ protected:
 
 public:
 	DrawContainer();
+	~DrawContainer();
 
-	/*
-		Arguments Layout
-		----------------
-		metrics			UI element metrics
-		padding			width/height of curved edges in pixels
-		border			thickness of border in pixels
-		softEdge		thickness of antialiasing of border in pixels
-		insideColor		color of inside of container
-		borderColor		color of border of container
-		outsideColor	color of outside of container
-	*/
+	DrawStackArgList instantiateArgList();
+	void deleteArgList(DrawStackArgList argList);
 
-	void execute(std::map<std::string, void*> newDrawData);
+	Vector2 getSize(DrawStackArgList argList) { return *((Vector2*) argList["size"]); }
+
+	void execute(DrawStackArgList argList);
 };
 
 #endif // DRAWCONTAINER_H

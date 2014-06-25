@@ -3,6 +3,21 @@
 
 #include "graphics/3dgraphics/ShellRenderer.h"
 
+#include <vector>
+
+#include "core/GameSystem.h"
+#include "geometry/Sphere.h"
+#include "graphics/GameGraphics.h"
+#include "logic/Camera.h"
+#include "math/VectorMath.h"
+#include "math/MatrixMath.h"
+#include "platform/OpenGLHeaders.h"
+#include "state/GameState.h"
+
+extern GameGraphics* gameGraphics;
+extern GameState* gameState;
+extern GameSystem* gameSystem;
+
 ShellRenderer::ShellRenderer() {
 	sphere = makeSphere((size_t) gameSystem->getFloat("shellDensity"));
 
@@ -71,7 +86,22 @@ ShellRenderer::ShellRenderer() {
 }
 
 ShellRenderer::~ShellRenderer() {
-//FIXME destroy variables
+	// undo shader setup
+	GLsizei shaderCount;
+	GLuint* shaders = new GLuint[2];
+	glGetAttachedShaders(shaderProgram, 2, &shaderCount, shaders);
+
+	for(size_t i = 0; i < shaderCount; ++i) {
+		glDetachShader(shaderProgram, shaders[i]);
+		glDeleteShader(shaders[i]);
+	}
+
+	delete[] shaders;
+
+	glDeleteProgram(shaderProgram);
+
+	glDeleteBuffers(1, &(vertexBuffers["vertices"]));
+	glDeleteBuffers(1, &(vertexBuffers["elements"]));
 }
 
 void ShellRenderer::execute(std::map<std::string, void*> arguments) {

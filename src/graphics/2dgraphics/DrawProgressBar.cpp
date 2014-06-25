@@ -3,6 +3,14 @@
 
 #include "graphics/2dgraphics/DrawProgressBar.h"
 
+#include <vector>
+
+#include "graphics/GameGraphics.h"
+#include "graphics/UILayoutAuthority.h"
+#include "platform/OpenGLHeaders.h"
+
+extern GameGraphics* gameGraphics;
+
 DrawProgressBar::DrawProgressBar() {
 	// set up shader
 	GLuint shaderID = 0;
@@ -31,97 +39,121 @@ DrawProgressBar::DrawProgressBar() {
 }
 
 DrawProgressBar::~DrawProgressBar() {
-	// delete buffers
-	if(glIsBuffer(vertexBuffers["vertices"]))
-		glDeleteBuffers(1, &(vertexBuffers["vertices"]));
-	if(glIsBuffer(vertexBuffers["elements"]))
-		glDeleteBuffers(1, &(vertexBuffers["elements"]));
+	// undo shader setup
+	GLsizei shaderCount;
+	GLuint* shaders = new GLuint[2];
+	glGetAttachedShaders(shaderProgram, 2, &shaderCount, shaders);
 
-	// delete shader program
-	if(glIsProgram(shaderProgram))
-		glDeleteProgram(shaderProgram);
+	for(size_t i = 0; i < shaderCount; ++i) {
+		glDetachShader(shaderProgram, shaders[i]);
+		glDeleteShader(shaders[i]);
+	}
+
+	delete[] shaders;
+
+	glDeleteProgram(shaderProgram);
+
+	glDeleteBuffers(1, &(vertexBuffers["vertices"]));
+	glDeleteBuffers(1, &(vertexBuffers["elements"]));
 }
 
-Vector2 DrawProgressBar::getSize(std::map<std::string, void*> arguments) {
-	return Vector2(
-			((Vector2*) arguments["size"])->x / (float) gameGraphics->resolutionX * 2.0f,
-			((Vector2*) arguments["size"])->y / (float) gameGraphics->resolutionY * 2.0f
-		);
+DrawStackArgList DrawProgressBar::instantiateArgList() {
+	DrawStackArgList argList;
+
+	argList["color1Bottom"] = (void*) new Vector4;		// color of first section at bottom
+	argList["color1Top"] = (void*) new Vector4;			// color of first section at top
+	argList["color2Bottom"] = (void*) new Vector4;		// color of second section at bottom
+	argList["color2Top"] = (void*) new Vector4;			// color of second section at top
+	argList["metrics"] = (void*) new UIMetrics;			// UI element metrics
+	argList["progression"] = (void*) new float;			// progress bar completion ratio
+	argList["size"] = (void*) new Vector2;				// width/height of field in screen dimensions
+
+	return argList;
 }
 
-void DrawProgressBar::execute(std::map<std::string, void*> arguments) {
+void DrawProgressBar::deleteArgList(DrawStackArgList argList) {
+	if(argList.find("color1Bottom") != argList.end()) delete (Vector4*) argList["color1Bottom"];
+	if(argList.find("color1Top") != argList.end()) delete (Vector4*) argList["color1Top"];
+	if(argList.find("color2Bottom") != argList.end()) delete (Vector4*) argList["color1Bottom"];
+	if(argList.find("color2Top") != argList.end()) delete (Vector4*) argList["color2Top"];
+	if(argList.find("metrics") != argList.end()) delete (UIMetrics*) argList["metrics"];
+	if(argList.find("progression") != argList.end()) delete (float*) argList["progression"];
+	if(argList.find("size") != argList.end()) delete (Vector2*) argList["size"];
+}
+
+void DrawProgressBar::execute(DrawStackArgList argList) {
 	// collect arguments
-	UIMetrics metrics = *((UIMetrics*) arguments["metrics"]);
-	metrics.size = getSize(arguments);
-	Vector4* color1Top = ((Vector4*) arguments["color1Top"]);
-	Vector4* color1Bottom = ((Vector4*) arguments["color1Bottom"]);
-	Vector4* color2Top = ((Vector4*) arguments["color2Top"]);
-	Vector4* color2Bottom = ((Vector4*) arguments["color2Bottom"]);
-	float* progression = ((float*) arguments["progression"]);
+	UIMetrics metrics = *((UIMetrics*) argList["metrics"]);
+	Vector2 size = getSize(argList);
+	Vector4* color1Top = ((Vector4*) argList["color1Top"]);
+	Vector4* color1Bottom = ((Vector4*) argList["color1Bottom"]);
+	Vector4* color2Top = ((Vector4*) argList["color2Top"]);
+	Vector4* color2Bottom = ((Vector4*) argList["color2Bottom"]);
+	float* progression = ((float*) argList["progression"]);
 
 	// update vertex buffers
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexBuffers["elements"]);
 
 	GLfloat vertexBufferArray[] = {
-			metrics.position.x - metrics.size.x / 2.0f,
-			metrics.position.y - metrics.size.y / 2.0f,
+			metrics.position.x - size.x / 2.0f,
+			metrics.position.y - size.y / 2.0f,
 			0.0f,
 			color1Bottom->x,
 			color1Bottom->y,
 			color1Bottom->z,
 			color1Bottom->w,
 
-			metrics.position.x - metrics.size.x / 2.0f,
-			metrics.position.y + metrics.size.y / 2.0f,
+			metrics.position.x - size.x / 2.0f,
+			metrics.position.y + size.y / 2.0f,
 			0.0f,
 			color1Top->x,
 			color1Top->y,
 			color1Top->z,
 			color1Top->w,
 
-			metrics.position.x - metrics.size.x / 2.0f + metrics.size.x * *progression,
-			metrics.position.y + metrics.size.y / 2.0f,
+			metrics.position.x - size.x / 2.0f + size.x * *progression,
+			metrics.position.y + size.y / 2.0f,
 			0.0f,
 			color1Top->x,
 			color1Top->y,
 			color1Top->z,
 			color1Top->w,
 
-			metrics.position.x - metrics.size.x / 2.0f + metrics.size.x * *progression,
-			metrics.position.y - metrics.size.y / 2.0f,
+			metrics.position.x - size.x / 2.0f + size.x * *progression,
+			metrics.position.y - size.y / 2.0f,
 			0.0f,
 			color1Bottom->x,
 			color1Bottom->y,
 			color1Bottom->z,
 			color1Bottom->w,
 
-			metrics.position.x - metrics.size.x / 2.0f + metrics.size.x * *progression,
-			metrics.position.y - metrics.size.y / 2.0f,
+			metrics.position.x - size.x / 2.0f + size.x * *progression,
+			metrics.position.y - size.y / 2.0f,
 			0.0f,
 			color2Bottom->x,
 			color2Bottom->y,
 			color2Bottom->z,
 			color2Bottom->w,
 
-			metrics.position.x - metrics.size.x / 2.0f + metrics.size.x * *progression,
-			metrics.position.y + metrics.size.y / 2.0f,
+			metrics.position.x - size.x / 2.0f + size.x * *progression,
+			metrics.position.y + size.y / 2.0f,
 			0.0f,
 			color2Top->x,
 			color2Top->y,
 			color2Top->z,
 			color2Top->w,
 
-			metrics.position.x + metrics.size.x / 2.0f,
-			metrics.position.y + metrics.size.y / 2.0f,
+			metrics.position.x + size.x / 2.0f,
+			metrics.position.y + size.y / 2.0f,
 			0.0f,
 			color2Top->x,
 			color2Top->y,
 			color2Top->z,
 			color2Top->w,
 
-			metrics.position.x + metrics.size.x / 2.0f,
-			metrics.position.y - metrics.size.y / 2.0f,
+			metrics.position.x + size.x / 2.0f,
+			metrics.position.y - size.y / 2.0f,
 			0.0f,
 			color2Bottom->x,
 			color2Bottom->y,

@@ -4,29 +4,16 @@
 #ifndef DRAWRADAR_H
 #define DRAWRADAR_H
 
-// forward declarations
-class DrawSpot;
-
-// program headers
-#include "graphics/GameGraphics.h"
-#include "graphics/2dgraphics/DrawContainer.h"
-#include "graphics/2dgraphics/DrawSpot.h"
-#include "graphics/texture/Texture.h"
-#include "logic/UILayoutAuthority.h"
-#include "math/MatrixMath.h"
-#include "math/MiscMath.h"
-#include "math/VectorMath.h"
-#include "platform/OpenGLHeaders.h"
-#include "state/GameState.h"
-
-// library headers
 #include <map>
 #include <string>
 #include <vector>
 
-// global variables
-extern GameGraphics* gameGraphics;
-extern GameState* gameState;
+#include "graphics/DrawTypes.h"
+#include "graphics/2dgraphics/DrawContainer.h"
+#include "graphics/2dgraphics/DrawCircle.h"
+#include "math/VectorMath.h"
+#include "platform/OpenGLHeaders.h"
+#include "state/GameState.h"
 
 class DrawRadar : public BaseUIElement {
 private:
@@ -37,16 +24,20 @@ private:
 	GLuint progressionTextureID;
 
 	DrawContainer* containerDrawer;
-	DrawSpot* spotDrawer;
+	DrawCircle* circleDrawer;
 
 public:
-	DrawRadar();
+	DrawRadar(DrawContainer* newContainerDrawer, DrawCircle* newCircleDrawer);
 	~DrawRadar();
 
 	void reloadGraphics();
 
-	Vector2 getSize(std::map<std::string, void*> arguments);
-	void execute(std::map<std::string, void*> arguments);
+	DrawStackArgList instantiateArgList();
+	void deleteArgList(DrawStackArgList argList);
+
+	Vector2 getSize(DrawStackArgList argList);
+
+	void execute(DrawStackArgList argList);
 };
 
 #endif // DRAWRADAR_H

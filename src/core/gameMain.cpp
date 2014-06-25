@@ -4,6 +4,7 @@
 #include "core/gameMain.h"
 
 // global variable declarations
+DrawingMaster* drawingMaster;
 GameAudio* gameAudio;
 GameGraphics* gameGraphics;
 GameLogic* gameLogic;
@@ -35,7 +36,7 @@ int gameMain(int argc, char* argv[]) {
 	gameSystem = new GameSystem();
 	gameAudio = new GameAudio();
 	gameGraphics = new GameGraphics(gameSystem->getBool("displayStartFullscreen"), true);
-	platform->loadExtensions();
+	drawingMaster = new DrawingMaster();
 	inputHandler = new InputHandler();
 	gameLogic = new GameLogic();
 
@@ -59,7 +60,7 @@ int gameMain(int argc, char* argv[]) {
 			if(itr->second < platform->getExecMills()) {
 				MainLoopMember* thisMember = itr->first;
 
-				if(itr->first == gameGraphics) {
+				if(itr->first == drawingMaster) {
 					// always run gameState and gameLogic before gameState
 					if(gameState != NULL)
 						gameState->execute(true);
@@ -85,6 +86,7 @@ int gameMain(int argc, char* argv[]) {
 	// clean up objects in reverse order
 	delete gameLogic;
 	delete inputHandler;
+	delete drawingMaster;
 	delete gameGraphics;
 	delete gameAudio;
 	delete gameSystem;

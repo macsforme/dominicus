@@ -66,10 +66,6 @@ void Platform::sleepMills(unsigned int mills) {
 	nanosleep(&delayTime, NULL);
 }
 
-void Platform::loadExtensions() {
-	;
-}
-
 std::string Platform::getPreferenceString(const char* key) {
 	std::string toReturn = std::string("");
 	CFStringRef keyRef = CFStringCreateWithCString(NULL, key, kCFStringEncodingASCII);

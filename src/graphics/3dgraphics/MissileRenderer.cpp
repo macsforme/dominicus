@@ -3,6 +3,20 @@
 
 #include "graphics/3dgraphics/MissileRenderer.h"
 
+#include <vector>
+
+#include "core/GameSystem.h"
+#include "graphics/GameGraphics.h"
+#include "logic/Camera.h"
+#include "math/MatrixMath.h"
+#include "math/VectorMath.h"
+#include "platform/OpenGLHeaders.h"
+#include "state/GameState.h"
+
+extern GameGraphics* gameGraphics;
+extern GameState* gameState;
+extern GameSystem* gameSystem;
+
 MissileRenderer::MissileRenderer() {
 	missileMesh = Mesh("missile");
 
@@ -98,7 +112,22 @@ MissileRenderer::MissileRenderer() {
 }
 
 MissileRenderer::~MissileRenderer() {
-//FIXME destroy variables
+	// undo shader setup
+	GLsizei shaderCount;
+	GLuint* shaders = new GLuint[2];
+	glGetAttachedShaders(shaderProgram, 2, &shaderCount, shaders);
+
+	for(size_t i = 0; i < shaderCount; ++i) {
+		glDetachShader(shaderProgram, shaders[i]);
+		glDeleteShader(shaders[i]);
+	}
+
+	delete[] shaders;
+
+	glDeleteProgram(shaderProgram);
+
+	glDeleteBuffers(1, &(vertexBuffers["vertices"]));
+	glDeleteBuffers(1, &(vertexBuffers["elements"]));
 }
 
 void MissileRenderer::execute(std::map<std::string, void*> arguments) {

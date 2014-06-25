@@ -4,20 +4,10 @@
 #ifndef DRAWBUTTON_H
 #define DRAWBUTTON_H
 
-// forward declarations
-class DrawContainer;
-class DrawLabel;
-
-// program headers
-#include "graphics/GameGraphics.h"
+#include "graphics/DrawTypes.h"
 #include "graphics/2dgraphics/DrawContainer.h"
 #include "graphics/2dgraphics/DrawLabel.h"
-#include "logic/UILayoutAuthority.h"
 #include "math/VectorMath.h"
-#include "platform/OpenGLHeaders.h"
-
-// global variables
-extern GameGraphics* gameGraphics;
 
 class DrawButton : public BaseUIElement {
 private:
@@ -25,27 +15,14 @@ private:
 	DrawLabel* labelDrawer;
 
 public:
-	DrawButton();
-	~DrawButton();
+	DrawButton(DrawContainer* newContainerDrawer, DrawLabel* newLabelDrawer);
 
-	/*
-		Arguments Layout
-		----------------
-		mvpMatrix		Orthogonal projection matrix for shader
-		metrics			UI element metrics
-		padding			width/height of curved edges in pixels
-		border			thickness of border in pixels
-		softEdge		thickness of antialiasing of border in pixels
-		insideColor		color of inside of container
-		borderColor		color of border of container
-		outsideCOlor	color of outside of container
-		fontSize		Font point size for this label (not to be confused with metrics->size)
-		fontColor		Font color
-		text			std::string of text
-	*/
+	DrawStackArgList instantiateArgList();
+	void deleteArgList(DrawStackArgList argList);
 
-	Vector2 getSize(std::map<std::string, void*> arguments);
-	void execute(std::map<std::string, void*> arguments);
+	Vector2 getSize(DrawStackArgList argList);
+
+	void execute(DrawStackArgList argList);
 };
 
 #endif // DRAWBUTTON_H

@@ -4,29 +4,22 @@
 #ifndef DRAWSPLASH_H
 #define DRAWSPLASH_H
 
-// forward declarations
-class GameGraphics;
-
-// program headers
-#include "graphics/GameGraphics.h"
-#include "graphics/texture/Texture.h"
-#include "math/MatrixMath.h"
-#include "platform/OpenGLHeaders.h"
-
-// library headers
 #include <map>
-#include <sstream>
 #include <string>
 
+#include "graphics/DrawTypes.h"
+#include "graphics/2dgraphics/DrawTexture.h"
+
 // global variables
-extern GameGraphics* gameGraphics;
 
-class DrawSplash : public BaseDrawNode {
+class DrawSplash : public DrawTexture {
 public:
-	DrawSplash();
-	~DrawSplash();
+	DrawStackArgList instantiateArgList() { return DrawStackArgList(); };
+	void deleteArgList(DrawStackArgList argList) { };
 
-	void execute(std::map<std::string, void*> arguments);
+	Vector2 getSize(DrawStackArgList argList) { return Vector2(2.0f, 2.0f); }
+
+	void execute(DrawStackArgList argList);
 };
 
 #endif // DRAWSPLASH_H

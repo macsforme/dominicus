@@ -3,7 +3,20 @@
 
 #include "graphics/2dgraphics/DrawRadar.h"
 
-DrawRadar::DrawRadar() : lastRotation(0), containerDrawer(new DrawContainer()), spotDrawer(new DrawSpot()) {
+#include "graphics/GameGraphics.h"
+#include "graphics/texture/Texture.h"
+#include "graphics/UILayoutAuthority.h"
+#include "math/MatrixMath.h"
+#include "math/MiscMath.h"
+#include "state/GameState.h"
+
+extern GameGraphics* gameGraphics;
+extern GameState* gameState;
+
+DrawRadar::DrawRadar(DrawContainer* newContainerDrawer, DrawCircle* newCircleDrawer) :
+		lastRotation(0),
+		containerDrawer(newContainerDrawer),
+		circleDrawer(newCircleDrawer) {
 	// set up shader
 	GLuint shaderID = 0;
 	std::vector<GLuint> shaderIDs;
@@ -86,20 +99,26 @@ DrawRadar::DrawRadar() : lastRotation(0), containerDrawer(new DrawContainer()), 
 }
 
 DrawRadar::~DrawRadar() {
-	// delete buffers
-	if(glIsBuffer(vertexBuffers["vertices"]))
-		glDeleteBuffers(1, &(vertexBuffers["vertices"]));
-	if(glIsBuffer(vertexBuffers["elements"]))
-		glDeleteBuffers(1, &(vertexBuffers["elements"]));
+	// undo shader setup
+	GLsizei shaderCount;
+	GLuint* shaders = new GLuint[2];
+	glGetAttachedShaders(shaderProgram, 2, &shaderCount, shaders);
 
-	// delete shader program
-	if(glIsProgram(shaderProgram))
-		glDeleteProgram(shaderProgram);
+	for(size_t i = 0; i < shaderCount; ++i) {
+		glDetachShader(shaderProgram, shaders[i]);
+		glDeleteShader(shaders[i]);
+	}
 
-	// delete variables
-	delete containerDrawer;
+	delete[] shaders;
 
-//FIXME destroy textures in GL
+	glDeleteProgram(shaderProgram);
+
+	glDeleteBuffers(1, &(vertexBuffers["vertices"]));
+	glDeleteBuffers(1, &(vertexBuffers["elements"]));
+
+	// delete textures
+	glDeleteTextures(1, &radarTextureID);
+	glDeleteTextures(1, &progressionTextureID);
 }
 
 void DrawRadar::reloadGraphics() {
@@ -167,25 +186,54 @@ void DrawRadar::reloadGraphics() {
 	missileCache.clear();
 }
 
-Vector2 DrawRadar::getSize(std::map<std::string, void*> arguments) {
+DrawStackArgList DrawRadar::instantiateArgList() {
+	DrawStackArgList argList;
+
+	argList["border"] = (void*) new float;			// thickness of border in pixels
+	argList["borderColor"] = (void*) new Vector4;	// color of border of container
+	argList["insideColor"] = (void*) new Vector4;	// color of inside of container
+	argList["metrics"] = (void*) new UIMetrics;		// UI element metrics
+	argList["outsideColor"] = (void*) new Vector4;	// color of outside of container
+	argList["padding"] = (void*) new float;			// width/height of curved edge in pixels
+	argList["softEdge"] = (void*) new float;		// thickness of antialiasing of border in pixels
+
+	return argList;
+}
+
+void DrawRadar::deleteArgList(DrawStackArgList argList) {
+	if(argList.find("border") != argList.end()) delete (float*) argList["border"];
+	if(argList.find("borderColor") != argList.end()) delete (Vector4*) argList["borderColor"];
+	if(argList.find("insideColor") != argList.end()) delete (Vector4*) argList["insideColor"];
+	if(argList.find("metrics") != argList.end()) delete (UIMetrics*) argList["metrics"];
+	if(argList.find("outsideColor") != argList.end()) delete (Vector4*) argList["outsideColor"];
+	if(argList.find("padding") != argList.end()) delete (float*) argList["padding"];
+	if(argList.find("softEdge") != argList.end()) delete (float*) argList["softEdge"];
+}
+
+Vector2 DrawRadar::getSize(DrawStackArgList argList) {
 	return Vector2(
 			gameSystem->getFloat("radarSize") / 100.0f / gameGraphics->aspectRatio * 2.0f,
 			gameSystem->getFloat("radarSize") / 100.0f * 2.0f
 		);
 }
 
-void DrawRadar::execute(std::map<std::string, void*> arguments) {
+void DrawRadar::execute(DrawStackArgList argList) {
 	// draw container
-	containerDrawer->execute(arguments);
+	std::map<std::string, void*> containerArgs = argList;
+	containerArgs["size"] = new Vector2; *((Vector2*) containerArgs["size"]) = getSize(argList);
+
+	containerDrawer->execute(containerArgs);
+
+	delete (Vector2*) containerArgs["size"];
 
 	// collect arguments
-	UIMetrics* metrics = ((UIMetrics*) arguments["metrics"]);
+	UIMetrics* metrics = ((UIMetrics*) argList["metrics"]);
 
 	// get the actual size so possibly incorrect metrics don't skew the aspect ratio
-	Vector2 actualSize = getSize(arguments);
+	Vector2 actualSize = getSize(argList);
 	Vector2 padding = Vector2(
-			*((float*) arguments["padding"]) / (float) gameGraphics->resolutionX * 2.0f,
-			*((float*) arguments["padding"]) / (float) gameGraphics->resolutionY * 2.0f
+			*((float*) argList["padding"]) / (float) gameGraphics->resolutionX * 2.0f,
+			*((float*) argList["padding"]) / (float) gameGraphics->resolutionY * 2.0f
 		);
 
 	// update vertex buffers
@@ -338,8 +386,8 @@ void DrawRadar::execute(std::map<std::string, void*> arguments) {
 	lastRotation = currentRotation;
 
 	Vector2 spotSize(
-			gameSystem->getFloat("radarSpotSize") / gameGraphics->resolutionY / gameGraphics->aspectRatio,
-			gameSystem->getFloat("radarSpotSize") / gameGraphics->resolutionY
+			gameSystem->getFloat("radarSpotSize") * 2.0f / gameGraphics->resolutionY / gameGraphics->aspectRatio,
+			gameSystem->getFloat("radarSpotSize") * 2.0f / gameGraphics->resolutionY
 		);
 	Vector2 spotPosition(0.0f, 0.0f);
 	float spotEdge = gameSystem->getFloat("hudContainerSoftEdge");
@@ -350,6 +398,7 @@ void DrawRadar::execute(std::map<std::string, void*> arguments) {
 			gameSystem->getColor("radarSpotColor").z,
 			0.0f
 		);
+	float border = 0.0f;
 
 	std::map<std::string,void*> drawerArguments;
 	drawerArguments["size"] = (void*) &spotSize;
@@ -357,6 +406,8 @@ void DrawRadar::execute(std::map<std::string, void*> arguments) {
 	drawerArguments["softEdge"] = (void*) &spotEdge;
 	drawerArguments["insideColor"] = (void*) &insideColor;
 	drawerArguments["outsideColor"] = (void*) &outsideColor;
+	drawerArguments["borderColor"] = (void*) &outsideColor;
+	drawerArguments["border"] = (void*) &border;
 
 	for(size_t i = 0; i < missileCache.size(); ++i) {
 		Vector4 missilePosition(
@@ -384,7 +435,7 @@ void DrawRadar::execute(std::map<std::string, void*> arguments) {
 
 		spotPosition = Vector2(missilePosition.x / missilePosition.w, missilePosition.y / missilePosition.w);
 
-		spotDrawer->execute(drawerArguments);
+		circleDrawer->execute(drawerArguments);
 	}
 
 	// draw EMP wave
@@ -398,11 +449,11 @@ void DrawRadar::execute(std::map<std::string, void*> arguments) {
 			);
 		spotPosition = metrics->position;
 		spotSize = Vector2(
-					(1.0f - gameState->fortress.emp) * gameSystem->getFloat("stateEMPRange") * (actualSize.x / 2.0f - padding.x) / gameSystem->getFloat("radarRadius"),
-					(1.0f - gameState->fortress.emp) * gameSystem->getFloat("stateEMPRange") * (actualSize.y / 2.0f - padding.y) / gameSystem->getFloat("radarRadius")
+					(1.0f - gameState->fortress.emp) * gameSystem->getFloat("stateEMPRange") * (actualSize.x / 2.0f - padding.x) * 2.0f / gameSystem->getFloat("radarRadius"),
+					(1.0f - gameState->fortress.emp) * gameSystem->getFloat("stateEMPRange") * (actualSize.y / 2.0f - padding.y) * 2.0f / gameSystem->getFloat("radarRadius")
 			);
 
-		spotDrawer->execute(drawerArguments);
+		circleDrawer->execute(drawerArguments);
 	}
 
 	// draw fortress location
@@ -415,9 +466,9 @@ void DrawRadar::execute(std::map<std::string, void*> arguments) {
 		);
 	spotPosition = metrics->position;
 	spotSize = Vector2(
-			gameSystem->getFloat("radarCenterSpotSize") / gameGraphics->resolutionY / gameGraphics->aspectRatio,
-			gameSystem->getFloat("radarCenterSpotSize") / gameGraphics->resolutionY
+			gameSystem->getFloat("radarCenterSpotSize") * 2.0f / gameGraphics->resolutionY / gameGraphics->aspectRatio,
+			gameSystem->getFloat("radarCenterSpotSize") * 2.0f / gameGraphics->resolutionY
 		);
 
-	spotDrawer->execute(drawerArguments);
+	circleDrawer->execute(drawerArguments);
 }

@@ -3,6 +3,15 @@
 
 #include "graphics/2dgraphics/DrawTexture.h"
 
+#include <vector>
+
+#include "graphics/GameGraphics.h"
+#include "graphics/texture/Texture.h"
+#include "graphics/UILayoutAuthority.h"
+#include "platform/OpenGLHeaders.h"
+
+extern GameGraphics* gameGraphics;
+
 DrawTexture::DrawTexture() {
 	// set up shader
 	GLuint shaderID = 0;
@@ -33,20 +42,41 @@ DrawTexture::DrawTexture() {
 }
 
 DrawTexture::~DrawTexture() {
-	// delete buffers
-	if(glIsBuffer(vertexBuffers["vertices"]))
-		glDeleteBuffers(1, &(vertexBuffers["vertices"]));
-	if(glIsBuffer(vertexBuffers["elements"]))
-		glDeleteBuffers(1, &(vertexBuffers["elements"]));
+	// undo shader setup
+	GLsizei shaderCount;
+	GLuint* shaders = new GLuint[2];
+	glGetAttachedShaders(shaderProgram, 2, &shaderCount, shaders);
 
-	// delete shader program
-	if(glIsProgram(shaderProgram))
-		glDeleteProgram(shaderProgram);
+	for(size_t i = 0; i < shaderCount; ++i) {
+		glDetachShader(shaderProgram, shaders[i]);
+		glDeleteShader(shaders[i]);
+	}
+
+	delete[] shaders;
+
+	glDeleteProgram(shaderProgram);
+
+	glDeleteBuffers(1, &(vertexBuffers["vertices"]));
+	glDeleteBuffers(1, &(vertexBuffers["elements"]));
 }
 
-Vector2 DrawTexture::getSize(std::map<std::string, void*> arguments) {
+DrawStackArgList DrawTexture::instantiateArgList() {
+	DrawStackArgList argList;
+
+	argList["metrics"] = (void*) new UIMetrics;		// UI element metrics
+	argList["texture"] = (void*) new std::string;	// name of texture to draw
+
+	return argList;
+}
+
+void DrawTexture::deleteArgList(DrawStackArgList argList) {
+	if(argList.find("metrics") != argList.end()) delete (UIMetrics*) argList["metrics"];
+	if(argList.find("texture") != argList.end()) delete (std::string*) argList["texture"];
+}
+
+Vector2 DrawTexture::getSize(DrawStackArgList argList) {
 	// collect arguments
-	std::string texture = *((std::string*) arguments["texture"]);
+	std::string texture = *((std::string*) argList["texture"]);
 
 	return Vector2(
 			(float) gameGraphics->getTexture(texture)->width / (float) gameGraphics->resolutionX * 2.0f,
@@ -54,11 +84,11 @@ Vector2 DrawTexture::getSize(std::map<std::string, void*> arguments) {
 		);
 }
 
-void DrawTexture::execute(std::map<std::string, void*> arguments) {
+void DrawTexture::execute(DrawStackArgList argList) {
 	// collect arguments
-	UIMetrics metrics = *((UIMetrics*) arguments["metrics"]);
-	metrics.size = getSize(arguments);
-	std::string texture = *((std::string*) arguments["texture"]);
+	UIMetrics metrics = *((UIMetrics*) argList["metrics"]);
+	metrics.size = getSize(argList);
+	std::string texture = *((std::string*) argList["texture"]);
 	GLuint textureID = gameGraphics->getTextureID(texture);
 
 	// update vertex buffers

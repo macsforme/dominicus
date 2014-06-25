@@ -3,6 +3,18 @@
 
 #include "graphics/3dgraphics/SkyRenderer.h"
 
+#include <vector>
+
+#include "graphics/GameGraphics.h"
+#include "logic/Camera.h"
+#include "math/MatrixMath.h"
+#include "math/VectorMath.h"
+#include "platform/OpenGLHeaders.h"
+#include "state/GameState.h"
+
+extern GameGraphics* gameGraphics;
+extern GameState* gameState;
+
 SkyRenderer::SkyRenderer() {
 	// set up shader
 	GLuint shaderID = 0;
@@ -46,12 +58,25 @@ SkyRenderer::SkyRenderer() {
 }
 
 SkyRenderer::~SkyRenderer() {
-	;
+	// undo shader setup
+	GLsizei shaderCount;
+	GLuint* shaders = new GLuint[2];
+	glGetAttachedShaders(shaderProgram, 2, &shaderCount, shaders);
+
+	for(size_t i = 0; i < shaderCount; ++i) {
+		glDetachShader(shaderProgram, shaders[i]);
+		glDeleteShader(shaders[i]);
+	}
+
+	delete[] shaders;
+
+	glDeleteProgram(shaderProgram);
+
+	glDeleteBuffers(1, &(vertexBuffers["vertices"]));
+	glDeleteBuffers(1, &(vertexBuffers["elements"]));
 }
 
 void SkyRenderer::execute(std::map<std::string, void*> arguments) {
-	// collect arguments
-
 	// prepare variables
 	Matrix4 mvpMatrix; mvpMatrix.identity();
 	scaleMatrix(
@@ -78,7 +103,7 @@ void SkyRenderer::execute(std::map<std::string, void*> arguments) {
 			mvpMatrix.m41, mvpMatrix.m42, mvpMatrix.m43, mvpMatrix.m44
 		};
 
-	// state
+	// no state changes
 
 	// enable shader
 	glUseProgram(shaderProgram);
@@ -112,6 +137,5 @@ void SkyRenderer::execute(std::map<std::string, void*> arguments) {
 
 	glDisableVertexAttribArray(attributes["position"]);
 
-	// undo state
-	glDisable(GL_BLEND);
+	// no state changes to undo
 }

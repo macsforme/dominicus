@@ -3,7 +3,16 @@
 
 #include "graphics/2dgraphics/DrawField.h"
 
-DrawField::DrawField() : labelDrawer(new DrawLabel()) {
+#include <vector>
+
+#include "graphics/GameGraphics.h"
+#include "graphics/text/TextBlock.h"
+#include "graphics/UILayoutAuthority.h"
+#include "platform/OpenGLHeaders.h"
+
+extern GameGraphics* gameGraphics;
+
+DrawField::DrawField(DrawLabel* newLabelDrawer) : labelDrawer(newLabelDrawer) {
 	// set up shader
 	GLuint shaderID = 0;
 	std::vector<GLuint> shaderIDs;
@@ -31,24 +40,50 @@ DrawField::DrawField() : labelDrawer(new DrawLabel()) {
 }
 
 DrawField::~DrawField() {
-	// memory management
-	delete labelDrawer;
+	// undo shader setup
+	GLsizei shaderCount;
+	GLuint* shaders = new GLuint[2];
+	glGetAttachedShaders(shaderProgram, 2, &shaderCount, shaders);
 
-	// delete buffers
-	if(glIsBuffer(vertexBuffers["vertices"]))
-		glDeleteBuffers(1, &(vertexBuffers["vertices"]));
-	if(glIsBuffer(vertexBuffers["elements"]))
-		glDeleteBuffers(1, &(vertexBuffers["elements"]));
+	for(size_t i = 0; i < shaderCount; ++i) {
+		glDetachShader(shaderProgram, shaders[i]);
+		glDeleteShader(shaders[i]);
+	}
 
-	// delete shader program
-	if(glIsProgram(shaderProgram))
-		glDeleteProgram(shaderProgram);
+	delete[] shaders;
+
+	glDeleteProgram(shaderProgram);
+
+	glDeleteBuffers(1, &(vertexBuffers["vertices"]));
+	glDeleteBuffers(1, &(vertexBuffers["elements"]));
 }
 
-Vector2 DrawField::getSize(std::map<std::string, void*> arguments) {
+DrawStackArgList DrawField::instantiateArgList() {
+	DrawStackArgList argList;
+
+	argList["boxColor"] = (void*) new Vector4;		// background color of field
+	argList["fontColor"] = (void*) new Vector4;		// font base color
+	argList["fontSize"] = (void*) new float;		// font point size for this label
+	argList["metrics"] = (void*) new UIMetrics;		// UI element metrics
+	argList["size"] = (void*) new Vector2;			// width/height of field in screen dimensions
+	argList["text"] = (void*) new std::string;		// text to draw
+
+	return argList;
+}
+
+void DrawField::deleteArgList(DrawStackArgList argList) {
+	if(argList.find("boxColor") != argList.end()) delete (Vector4*) argList["boxColor"];
+	if(argList.find("fontColor") != argList.end()) delete (Vector4*) argList["fontColor"];
+	if(argList.find("fontSize") != argList.end()) delete (float*) argList["fontSize"];
+	if(argList.find("metrics") != argList.end()) delete (UIMetrics*) argList["metrics"];
+	if(argList.find("size") != argList.end()) delete (Vector2*) argList["size"];
+	if(argList.find("text") != argList.end()) delete (std::string*) argList["text"];
+}
+
+Vector2 DrawField::getSize(DrawStackArgList argList) {
 	// collect arguments
-	float* fontSize = ((float*) arguments["fontSize"]);
-	std::string* text = ((std::string*) arguments["text"]);
+	float* fontSize = ((float*) argList["fontSize"]);
+	std::string* text = ((std::string*) argList["text"]);
 
 	// create the text block
 	std::string paddedText = " " + *text + " ";
@@ -69,42 +104,43 @@ Vector2 DrawField::getSize(std::map<std::string, void*> arguments) {
 		);
 }
 
-void DrawField::execute(std::map<std::string, void*> arguments) {
+void DrawField::execute(DrawStackArgList argList) {
 	// collect arguments
-	UIMetrics* metrics = ((UIMetrics*) arguments["metrics"]);
-	Vector4* boxColor = ((Vector4*) arguments["boxColor"]);
+	UIMetrics* metrics = ((UIMetrics*) argList["metrics"]);
+	Vector2 size = *((Vector2*) argList["size"]);
+	Vector4* boxColor = ((Vector4*) argList["boxColor"]);
 
 	// update vertex buffers
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexBuffers["elements"]);
 
 	GLfloat vertexBufferArray[] = {
-			metrics->position.x - metrics->size.x / 2.0f,
-			metrics->position.y - metrics->size.y / 2.0f,
+			metrics->position.x - size.x / 2.0f,
+			metrics->position.y - size.y / 2.0f,
 			0.0f,
 			boxColor->x,
 			boxColor->y,
 			boxColor->z,
 			boxColor->w,
 
-			metrics->position.x - metrics->size.x / 2.0f,
-			metrics->position.y + metrics->size.y / 2.0f,
+			metrics->position.x - size.x / 2.0f,
+			metrics->position.y + size.y / 2.0f,
 			0.0f,
 			boxColor->x,
 			boxColor->y,
 			boxColor->z,
 			boxColor->w,
 
-			metrics->position.x + metrics->size.x / 2.0f,
-			metrics->position.y + metrics->size.y / 2.0f,
+			metrics->position.x + size.x / 2.0f,
+			metrics->position.y + size.y / 2.0f,
 			0.0f,
 			boxColor->x,
 			boxColor->y,
 			boxColor->z,
 			boxColor->w,
 
-			metrics->position.x + metrics->size.x / 2.0f,
-			metrics->position.y - metrics->size.y / 2.0f,
+			metrics->position.x + size.x / 2.0f,
+			metrics->position.y - size.y / 2.0f,
 			0.0f,
 			boxColor->x,
 			boxColor->y,
@@ -149,11 +185,11 @@ void DrawField::execute(std::map<std::string, void*> arguments) {
 			gameGraphics->resolutionX,
 			gameGraphics->resolutionY,
 			gameGraphics->fontManager,
-			(unsigned int) *((float*) arguments["fontSize"])
+			(unsigned int) *((float*) argList["fontSize"])
 		);
 	float spaceWidth = (float) textBlock->width / (float) gameGraphics->resolutionX * 2.0f;
 
-	std::string labelString = *((std::string*) arguments["text"]);
+	std::string labelString = *((std::string*) argList["text"]);
 
 	delete textBlock;
 	textBlock = new TextBlock(
@@ -161,11 +197,11 @@ void DrawField::execute(std::map<std::string, void*> arguments) {
 			gameGraphics->resolutionX,
 			gameGraphics->resolutionY,
 			gameGraphics->fontManager,
-			(unsigned int) *((float*) arguments["fontSize"])
+			(unsigned int) *((float*) argList["fontSize"])
 		);
 
 	while((float) textBlock->width / (float) gameGraphics->resolutionX * 2.0f +
-			spaceWidth * 2.0f > metrics->size.x) {
+			spaceWidth * 2.0f > size.x) {
 		labelString = labelString.substr(1);
 
 		delete textBlock;
@@ -174,29 +210,29 @@ void DrawField::execute(std::map<std::string, void*> arguments) {
 				gameGraphics->resolutionX,
 				gameGraphics->resolutionY,
 				gameGraphics->fontManager,
-				(unsigned int) *((float*) arguments["fontSize"])
+				(unsigned int) *((float*) argList["fontSize"])
 			);
 	}
 
 	// clipped text
-	std::map<std::string, void*> labelArguments = arguments;
+	std::map<std::string, void*> labelArguments = argList;
 
 	labelArguments["text"] = (void*) new std::string;
 	labelArguments["metrics"] = (void*) new UIMetrics;
 
 	*((std::string*) labelArguments["text"]) = labelString;
 
-	*((UIMetrics*) labelArguments["metrics"]) = *((UIMetrics*) arguments["metrics"]);
+	*((UIMetrics*) labelArguments["metrics"]) = *((UIMetrics*) argList["metrics"]);
 	((UIMetrics*) labelArguments["metrics"])->size = labelDrawer->getSize(labelArguments);
 	((UIMetrics*) labelArguments["metrics"])->position.x =
-			((UIMetrics*) arguments["metrics"])->position.x -
-			((UIMetrics*) arguments["metrics"])->size.x / 2.0f +
+			((UIMetrics*) argList["metrics"])->position.x -
+			((UIMetrics*) argList["metrics"])->size.x / 2.0f +
 			spaceWidth +
 			(float) textBlock->width / (float) gameGraphics->resolutionX;
 	((UIMetrics*) labelArguments["metrics"])->position.y =
-			((UIMetrics*) arguments["metrics"])->position.y +
-			((UIMetrics*) arguments["metrics"])->size.y / 2.0f -
-			((UIMetrics*) arguments["metrics"])->size.y * 2.0f / 3.0f +
+			((UIMetrics*) argList["metrics"])->position.y +
+			((UIMetrics*) argList["metrics"])->size.y / 2.0f -
+			((UIMetrics*) argList["metrics"])->size.y * 2.0f / 3.0f +
 			((float) textBlock->originY / (float) textBlock->height - 0.5f) *
 			(float) textBlock->height / gameGraphics->resolutionY * 2.0f;
 

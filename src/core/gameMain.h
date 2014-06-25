@@ -7,6 +7,7 @@
 // program headers
 #include "audio/GameAudio.h"
 #include "core/GameSystem.h"
+#include "graphics/DrawingMaster.h"
 #include "graphics/GameGraphics.h"
 #include "input/InputHandler.h"
 #include "input/Keyboard.h"
