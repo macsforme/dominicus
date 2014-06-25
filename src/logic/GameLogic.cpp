@@ -593,12 +593,14 @@ GameLogic::GameLogic() :
 	newHighScoreNameLabel.second["text"] = (void*) new std::string;
 
 	newHighScoreNameField.first = "field";
+	newHighScoreNameField.second = ((DrawField*) drawingMaster->drawers["field"])->instantiateArgList();
+/*
 	newHighScoreNameField.second["metrics"] = (void*) new UIMetrics;
 	newHighScoreNameField.second["fontSize"] = (void*) new float;
 	newHighScoreNameField.second["fontColor"] = (void*) new Vector4;
 	newHighScoreNameField.second["boxColor"] = (void*) new Vector4;
 	newHighScoreNameField.second["text"] = (void*) new std::string;
-
+*/
 	gameOverContinueButton.first = "button";
 	gameOverContinueButton.second["metrics"] = (void*) new UIMetrics;
 	gameOverContinueButton.second["fontSize"] = (void*) new float;

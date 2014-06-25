@@ -12,6 +12,7 @@
 #include "graphics/GameGraphics.h"
 #include "graphics/2dgraphics/DrawButton.h"
 #include "graphics/2dgraphics/DrawCircle.h"
+#include "graphics/2dgraphics/DrawField.h"
 #include "graphics/2dgraphics/DrawGrayOut.h"
 #include "graphics/2dgraphics/DrawRadar.h"
 #include "graphics/2dgraphics/DrawLabel.h"

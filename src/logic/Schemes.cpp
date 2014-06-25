@@ -1308,7 +1308,8 @@ void Schemes::gameOverScheme() {
 		*((Vector4*) gameLogic->newHighScoreNameField.second["boxColor"]) = gameSystem->getColor("hudFieldColor");
 		*((std::string*) gameLogic->newHighScoreNameField.second["text"]) = "";
 		for(size_t i = 0; i < gameSystem->getFloat("hudFieldWidth") + 1; ++i) *((std::string*) gameLogic->newHighScoreNameField.second["text"]) += "#";
-		((UIMetrics*) gameLogic->newHighScoreNameField.second["metrics"])->size = ((DrawField*) drawingMaster->drawers["field"])->getSize(gameLogic->newHighScoreNameField.second);
+		*((Vector2*) gameLogic->newHighScoreNameField.second["size"]) = ((DrawField*) drawingMaster->drawers["field"])->getSize(gameLogic->newHighScoreNameField.second);
+		((UIMetrics*) gameLogic->newHighScoreNameField.second["metrics"])->size = *((Vector2*) gameLogic->newHighScoreNameField.second["size"]);
 		*((std::string*) gameLogic->newHighScoreNameField.second["text"]) = "\\";
 		*((std::string*) gameLogic->newHighScoreNameField.second["text"]) += gameSystem->getString("fontColorLight");
 		*((std::string*) gameLogic->newHighScoreNameField.second["text"]) += gameLogic->playerName;
