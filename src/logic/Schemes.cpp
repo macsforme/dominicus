@@ -12,6 +12,7 @@
 #include "graphics/2dgraphics/DrawLabel.h"
 #include "graphics/2dgraphics/DrawField.h"
 #include "graphics/2dgraphics/DrawGaugePanel.h"
+#include "graphics/2dgraphics/DrawStrikeEffect.h"
 #include "graphics/2dgraphics/DrawTexture.h"
 #include "logic/GameLogic.h"
 #include "graphics/UILayoutAuthority.h"
@@ -1026,6 +1027,9 @@ void Schemes::playingScheme() {
 		*((Vector4*) gameLogic->cursorEntry.second["outsideColor"]) = Vector4(0.0f, 0.0f, 0.0f, 0.0f);
 		drawingMaster->drawStack.push_back(gameLogic->cursorEntry);
 	}
+
+	// strike effect
+	drawingMaster->drawStack.push_back(gameLogic->strikeEffectEntry);
 
 	// re-arrange the UI
 	drawingMaster->uiLayoutAuthority->rearrange();

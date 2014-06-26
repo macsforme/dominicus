@@ -16,6 +16,7 @@
 #include "graphics/2dgraphics/DrawGrayOut.h"
 #include "graphics/2dgraphics/DrawRadar.h"
 #include "graphics/2dgraphics/DrawLabel.h"
+#include "graphics/2dgraphics/DrawStrikeEffect.h"
 #include "graphics/2dgraphics/DrawTexture.h"
 #include "graphics/3dgraphics/ShipRenderer.h"
 #include "graphics/3dgraphics/SkyRenderer.h"
@@ -119,6 +120,7 @@ KeyAbsoluteListener* cameraAheadKeyListener;
 	DrawStackEntry fortressEntry;
 	DrawStackEntry missileEntry;
 	DrawStackEntry shellEntry;
+	DrawStackEntry strikeEffectEntry;
 
 	// paused
 	KeyListener* pausedMenuKeyListener;

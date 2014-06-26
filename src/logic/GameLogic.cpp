@@ -475,6 +475,8 @@ GameLogic::GameLogic() :
 
 	shellEntry.first = "shellRenderer";
 
+	strikeEffectEntry.first = "strikeEffect";
+
 	std::vector<SDLKey> introKeys;
 	introKeys.push_back(SDLK_SPACE);
 	introKeys.push_back(SDLK_ESCAPE);

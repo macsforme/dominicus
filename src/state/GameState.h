@@ -30,16 +30,13 @@ public:
 	float rotation;
 	float tilt;
 
-	float turretRecoil; // > 1 = recoiling, > 0 = recovering, 0 = at rest
-
 	Fortress() :
 			health(1.0f),
 			ammunition(1.0f),
 			emp(0.0f),
 			position(Vector3(0.0f, 0.0f, 0.0f)),
 			rotation(0.0f),
-			tilt(0.0f),
-			turretRecoil(0.0f) { };
+			tilt(0.0f) { };
 
 	void addRotation(float value) {
 		rotation += value;
@@ -103,8 +100,9 @@ public:
 	float missileLength;
 	float missileRadius;
 
-	float recoil;
+	float recoil; // > 1 = recoiling, > 0 = recovering, 0 = at rest
 	bool empIsCharging;
+	unsigned int lastStrikeTime;
 	bool isPaused;
 	unsigned int lastUpdateGameTime;
 	int gameTimeMargin;

@@ -9,8 +9,7 @@
 
 #include "graphics/DrawTypes.h"
 #include "graphics/2dgraphics/DrawTexture.h"
-
-// global variables
+#include "math/VectorMath.h"
 
 class DrawSplash : public DrawTexture {
 public:

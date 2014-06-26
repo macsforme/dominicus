@@ -218,7 +218,6 @@ GameState::GameState() : MainLoopMember((unsigned int) gameSystem->getFloat("sta
 
 	// set start time
 	isPaused = false;
-	lastUpdateGameTime = 0;
 	gameTimeMargin = platform->getExecMills();
 	lastUpdateGameTime = 0;
 
@@ -228,6 +227,7 @@ GameState::GameState() : MainLoopMember((unsigned int) gameSystem->getFloat("sta
 	// initialize other stuff
 	empIsCharging = false;
 	recoil = 0.0f;
+	lastStrikeTime = 0;
 }
 
 GameState::~GameState() {
@@ -403,6 +403,8 @@ unsigned int GameState::execute(bool unScheduled) {
 				missiles[i].alive = false;
 
 				fortress.missileStrike();
+
+				lastStrikeTime = lastUpdateGameTime;
 			}
 		}
 	}
