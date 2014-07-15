@@ -3,9 +3,9 @@
 
 #include "core/MainLoopMember.h"
 
-MainLoopMember::MainLoopMember(unsigned int requestedSleepMills) {
+MainLoopMember::MainLoopMember(unsigned int requestedFrequency) {
 	last = 0;
-	targetSleepMills = (int) (requestedSleepMills != 0 ? 1000 / requestedSleepMills : 0);
+	targetSleepMills = (int) (requestedFrequency != 0 ? 1000 / requestedFrequency : 0);
 	workingSleepMills = targetSleepMills;
 	lastRunCountCheck = 0;
 	runsCounter = 0;
@@ -15,7 +15,7 @@ MainLoopMember::MainLoopMember(unsigned int requestedSleepMills) {
 unsigned int MainLoopMember::getSleepTime() {
 	// calculate the required sleep time
 	unsigned int now = platform->getExecMills();
-	int timeDiff = (int) (now - (unsigned int) last);
+	int timeDiff = (int) (now - last);
 
 	int adjustment = (timeDiff - targetSleepMills) / 2;
 	if(adjustment > workingSleepMills)

@@ -14,7 +14,7 @@ InputHandler* inputHandler;
 Platform* platform;
 
 // main loop modules (should only be modified by the main loop or GameLogic)
-std::map<MainLoopMember*,unsigned int> mainLoopModules;
+std::map<MainLoopMember*, unsigned int> mainLoopModules;
 
 // global main loop continuation flag
 bool keepProgramAlive;
@@ -63,6 +63,13 @@ int gameMain(int argc, char* argv[]) {
 					if(gameState != NULL)
 						gameState->execute(true);
 					gameLogic->execute(true);
+
+					// if logic re-created drawingmaster, don't execute the old, invalid object
+					if(mainLoopModules.find(itr->first) == mainLoopModules.end()) {
+						itr = mainLoopModules.begin();
+
+						continue;
+					}
 				}
 
 				itr->second = itr->first->execute() + platform->getExecMills();

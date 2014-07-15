@@ -22,7 +22,7 @@ protected:
 	// called by inherited classes to calculate milliseconds needed to sleep
 	unsigned int getSleepTime();
 
-	MainLoopMember(unsigned int requestedSleepMills);
+	MainLoopMember(unsigned int requestedFrequency);
 
 public:
 	unsigned int runRate;
