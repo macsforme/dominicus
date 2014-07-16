@@ -333,6 +333,8 @@ GameSystem::GameSystem() {
 	setStandard("hudGaugeEMPChargedBarColor", Vector4(1.0f, 0.0f, 0.0f, 1.0f), "Color of EMP gauge when charged.");
 	setStandard("hudGrayOutColor", Vector4(0.0f, 0.0f, 0.05f, 0.75f), "Color of gray screen during pause.");
 	setStandard("hudStrikeEffectTime", 1.0f, "Time in seconds to display strike effect.");
+	setStandard("hudMissileIndicatorSize", 50.0f, "Size in pixels of missile indicator box.");
+	setStandard("hudMissileIndicatorColor", Vector4(1.0f, 0.0f, 0.0f, 1.0f), "Color of missile indicator box.");
 
 	// font standards
 	setStandard("fontFile", "TitilliumWeb-Bold.ttf", "Font file to load for use by HUD and menus.");

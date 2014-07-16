@@ -17,6 +17,7 @@
 #include "graphics/2dgraphics/DrawGrayOut.h"
 #include "graphics/2dgraphics/DrawRadar.h"
 #include "graphics/2dgraphics/DrawLabel.h"
+#include "graphics/2dgraphics/DrawMissileIndicators.h"
 #include "graphics/2dgraphics/DrawStrikeEffect.h"
 #include "graphics/2dgraphics/DrawTexture.h"
 #include "graphics/3dgraphics/ShipRenderer.h"
@@ -108,6 +109,7 @@ KeyAbsoluteListener* cameraAheadKeyListener;
 	MouseButtonListener* secondaryFireClickListener;
 	DrawStackEntry controlSpotEntry;
 	DrawStackEntry cursorEntry;
+	DrawStackEntry missileIndicators;
 	DrawStackEntry clockLabel;
 	DrawStackEntry scoreLabel;
 	DrawStackEntry playingTipEntry;

@@ -400,6 +400,9 @@ GameLogic::GameLogic() :
 	cursorEntry.second["borderColor"] = (void*) new Vector4;
 	cursorEntry.second["outsideColor"] = (void*) new Vector4;
 
+	missileIndicators.first = "missileIndicators";
+	missileIndicators.second = ((DrawMissileIndicators*) drawingMaster->drawers["missileIndicators"])->instantiateArgList();
+
 	clockLabel.first = "label";
 	clockLabel.second["metrics"] = (void*) new UIMetrics;
 	clockLabel.second["fontSize"] = (void*) new float;

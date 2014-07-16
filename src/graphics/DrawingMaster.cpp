@@ -12,6 +12,7 @@
 #include "graphics/2dgraphics/DrawGaugePanel.h"
 #include "graphics/2dgraphics/DrawGrayOut.h"
 #include "graphics/2dgraphics/DrawLabel.h"
+#include "graphics/2dgraphics/DrawMissileIndicators.h"
 #include "graphics/2dgraphics/DrawProgressBar.h"
 #include "graphics/2dgraphics/DrawRadar.h"
 #include "graphics/2dgraphics/DrawSplash.h"
@@ -48,6 +49,7 @@ void DrawingMaster::buildDrawers() {
 	drawers["container"] = new DrawContainer();
 	drawers["grayOut"] = new DrawGrayOut();
 	drawers["label"] = new DrawLabel();
+	drawers["missileIndicators"] = new DrawMissileIndicators();
 	drawers["progressBar"] = new DrawProgressBar();
 	drawers["splash"] = new DrawSplash();
 	drawers["texture"] = new DrawTexture();
@@ -78,6 +80,7 @@ void DrawingMaster::destroyDrawers() {
 	delete (DrawGaugePanel*) drawers["gaugePanel"];
 	delete (DrawGrayOut*) drawers["grayOut"];
 	delete (DrawLabel*) drawers["label"];
+	delete (DrawLabel*) drawers["missileIndicators"];
 	delete (DrawProgressBar*) drawers["progressBar"];
 	delete (DrawRadar*) drawers["radar"];
 	delete (DrawSplash*) drawers["splash"];

@@ -867,6 +867,14 @@ void Schemes::playingScheme() {
 	// shells
 	drawingMaster->drawStack.push_back(gameLogic->shellEntry);
 
+	// missile indicators
+	*((Vector4*) gameLogic->missileIndicators.second["color"]) = gameSystem->getColor("hudMissileIndicatorColor");
+	*((Vector2*) gameLogic->missileIndicators.second["size"]) = Vector2(
+			gameSystem->getFloat("hudMissileIndicatorSize") / (float) gameGraphics->resolutionX * 2.0f,
+			gameSystem->getFloat("hudMissileIndicatorSize") / (float) gameGraphics->resolutionY * 2.0f
+		);
+	drawingMaster->drawStack.push_back(gameLogic->missileIndicators);
+
 	// clock
 /*
 	*((float*) gameLogic->clockLabel.second["fontSize"]) = gameSystem->getFloat("fontSizeLarge");

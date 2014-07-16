@@ -6,7 +6,6 @@
 #include <vector>
 
 #include "graphics/GameGraphics.h"
-#include "graphics/UILayoutAuthority.h"
 #include "platform/OpenGLHeaders.h"
 
 extern GameGraphics* gameGraphics;
