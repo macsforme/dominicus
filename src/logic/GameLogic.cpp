@@ -403,12 +403,6 @@ GameLogic::GameLogic() :
 	missileIndicators.first = "missileIndicators";
 	missileIndicators.second = ((DrawMissileIndicators*) drawingMaster->drawers["missileIndicators"])->instantiateArgList();
 
-	clockLabel.first = "label";
-	clockLabel.second["metrics"] = (void*) new UIMetrics;
-	clockLabel.second["fontSize"] = (void*) new float;
-	clockLabel.second["fontColor"] = (void*) new Vector4;
-	clockLabel.second["text"] = (void*) new std::string;
-
 	scoreLabel.first = "label";
 	scoreLabel.second["metrics"] = (void*) new UIMetrics;
 	scoreLabel.second["fontSize"] = (void*) new float;
@@ -1015,21 +1009,6 @@ lastFPSUpdate = platform->getExecMills();
 			gameAudio->setBackgroundMusic("menuSong");
 			SDL_UnlockAudio();
 		}
-
-		// check clock
-/*
-		time_t rawTime;
-		struct tm* timeInfo;
-		time(&rawTime);
-		timeInfo = localtime(&rawTime);
-		char timeString[6];
-		strftime(timeString, 6, "%H:%M", timeInfo);
-
-		if(*((std::string*) clockLabel.second["text"]) != timeString) {
-			reScheme();
-			needRedraw = true;
-		}
-*/
 
 		// check score
 		if(atoi(((std::string*) scoreLabel.second["text"])->c_str()) != gameState->score)

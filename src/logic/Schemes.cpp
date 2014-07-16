@@ -875,24 +875,6 @@ void Schemes::playingScheme() {
 		);
 	drawingMaster->drawStack.push_back(gameLogic->missileIndicators);
 
-	// clock
-/*
-	*((float*) gameLogic->clockLabel.second["fontSize"]) = gameSystem->getFloat("fontSizeLarge");
-	*((Vector4*) gameLogic->clockLabel.second["fontColor"]) = gameSystem->getColor("fontColorLight");
-	time_t rawTime;
-	struct tm* timeInfo;
-	time(&rawTime);
-	timeInfo = localtime(&rawTime);
-	char timeString[6];
-	strftime(timeString, 6, "%H:%M", timeInfo);
-	*((std::string*) gameLogic->clockLabel.second["text"]) = timeString;
-	((UIMetrics*) gameLogic->clockLabel.second["metrics"])->bearing1 = UIMetrics::BEARING_LEFT;
-	((UIMetrics*) gameLogic->clockLabel.second["metrics"])->bearing2 = UIMetrics::BEARING_TOP;
-	((UIMetrics*) gameLogic->clockLabel.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(gameLogic->clockLabel.second);
-	drawingMaster->drawStack.push_back(gameLogic->clockLabel);
-	drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->clockLabel.second["metrics"]);
-*/
-
 	// score
 	*((float*) gameLogic->scoreLabel.second["fontSize"]) = gameSystem->getFloat("fontSizeLarge");
 	*((Vector4*) gameLogic->scoreLabel.second["fontColor"]) = gameSystem->getColor("fontColorLight");

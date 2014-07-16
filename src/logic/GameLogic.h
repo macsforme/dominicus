@@ -110,7 +110,6 @@ KeyAbsoluteListener* cameraAheadKeyListener;
 	DrawStackEntry controlSpotEntry;
 	DrawStackEntry cursorEntry;
 	DrawStackEntry missileIndicators;
-	DrawStackEntry clockLabel;
 	DrawStackEntry scoreLabel;
 	DrawStackEntry playingTipEntry;
 	DrawStackEntry gaugePanelEntry;
