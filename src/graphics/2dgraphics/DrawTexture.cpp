@@ -64,6 +64,7 @@ DrawStackArgList DrawTexture::instantiateArgList() {
 	DrawStackArgList argList;
 
 	argList["metrics"] = (void*) new UIMetrics;		// UI element metrics
+	argList["size"] = (void*) new Vector2;			// manually-specified width/height of texture in screen dimensions (optional)
 	argList["texture"] = (void*) new std::string;	// name of texture to draw
 
 	return argList;
@@ -71,11 +72,14 @@ DrawStackArgList DrawTexture::instantiateArgList() {
 
 void DrawTexture::deleteArgList(DrawStackArgList argList) {
 	if(argList.find("metrics") != argList.end()) delete (UIMetrics*) argList["metrics"];
+	if(argList.find("size") != argList.end()) delete (Vector2*) argList["size"];
 	if(argList.find("texture") != argList.end()) delete (std::string*) argList["texture"];
 }
 
 Vector2 DrawTexture::getSize(DrawStackArgList argList) {
-	// collect arguments
+	if(argList.find("size") != argList.end())
+		return *((Vector2*) argList["size"]);
+
 	std::string texture = *((std::string*) argList["texture"]);
 
 	return Vector2(
@@ -87,7 +91,7 @@ Vector2 DrawTexture::getSize(DrawStackArgList argList) {
 void DrawTexture::execute(DrawStackArgList argList) {
 	// collect arguments
 	UIMetrics metrics = *((UIMetrics*) argList["metrics"]);
-	metrics.size = getSize(argList);
+	Vector2 size = getSize(argList);
 	std::string texture = *((std::string*) argList["texture"]);
 	GLuint textureID = gameGraphics->getTextureID(texture);
 
@@ -96,8 +100,8 @@ void DrawTexture::execute(DrawStackArgList argList) {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexBuffers["elements"]);
 
 	GLfloat vertexBufferArray[] = {
-			metrics.position.x - metrics.size.x / 2.0f,
-			metrics.position.y - metrics.size.y / 2.0f,
+			metrics.position.x - size.x / 2.0f,
+			metrics.position.y - size.y / 2.0f,
 			0.0f,
 			0.0f,
 			0.0f,
@@ -106,8 +110,8 @@ void DrawTexture::execute(DrawStackArgList argList) {
 			1.0f,
 			1.0f,
 
-			metrics.position.x - metrics.size.x / 2.0f,
-			metrics.position.y + metrics.size.y / 2.0f,
+			metrics.position.x - size.x / 2.0f,
+			metrics.position.y + size.y / 2.0f,
 			0.0f,
 			0.0f,
 			1.0f,
@@ -116,8 +120,8 @@ void DrawTexture::execute(DrawStackArgList argList) {
 			1.0f,
 			1.0f,
 
-			metrics.position.x + metrics.size.x / 2.0f,
-			metrics.position.y + metrics.size.y / 2.0f,
+			metrics.position.x + size.x / 2.0f,
+			metrics.position.y + size.y / 2.0f,
 			0.0f,
 			1.0f,
 			1.0f,
@@ -126,8 +130,8 @@ void DrawTexture::execute(DrawStackArgList argList) {
 			1.0f,
 			1.0f,
 
-			metrics.position.x + metrics.size.x / 2.0f,
-			metrics.position.y - metrics.size.y / 2.0f,
+			metrics.position.x + size.x / 2.0f,
+			metrics.position.y - size.y / 2.0f,
 			0.0f,
 			1.0f,
 			0.0f,
@@ -155,8 +159,8 @@ void DrawTexture::execute(DrawStackArgList argList) {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, textureID);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	// draw the data stored in GPU memory
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);

@@ -36,7 +36,7 @@ DrawStackArgList DrawGaugePanel::instantiateArgList() {
 	argList["progressions"] = (void*) new std::vector<float>;				// progress bar completion ratios
 	argList["softEdge"] = (void*) new float;								// thickness of antialiasing of border in pixels
 	argList["textureNames"] = (void*) new std::vector<std::string>;			// texture names
-
+	argList["textureSizes"] = (void*) new std::vector<Vector2>;				// manually-specified width/height of gauge textures in screen dimensions (optional)
 	return argList;
 }
 
@@ -57,7 +57,8 @@ void DrawGaugePanel::deleteArgList(DrawStackArgList argList) {
 	if(argList.find("progressBarSize") != argList.end()) delete (Vector2*) argList["progressBarSize"];
 	if(argList.find("progressions") != argList.end()) delete (std::vector<float>*) argList["progressions"];
 	if(argList.find("softEdge") != argList.end()) delete (float*) argList["softEdge"];
-	if(argList.find("text") != argList.end()) delete (std::string*) argList["text"];
+	if(argList.find("textureNames") != argList.end()) delete (std::vector<std::string>*) argList["textureNames"];
+	if(argList.find("textureSizes") != argList.end()) delete (std::vector<Vector2>*) argList["textureSizes"];
 }
 
 Vector2 DrawGaugePanel::getSize(DrawStackArgList argList) {
@@ -66,10 +67,16 @@ Vector2 DrawGaugePanel::getSize(DrawStackArgList argList) {
 
 	Vector2 maxTextureSize(0.0f, 0.0f);
 	for(size_t i = 0; i < *((size_t*) argList["elements"]); ++i) {
-		std::string texture = (*((std::vector<std::string>*) argList["textureNames"]))[i];
-		testArguments["texture"] = (void*) &texture;
+		Vector2 textureSize;
 
-		Vector2 textureSize = textureDrawer->getSize(testArguments);
+		if(argList.find("textureSizes") != argList.end()) {
+			textureSize = ((std::vector<Vector2>*) argList["textureSizes"])->at(i);
+		} else {
+			std::string texture = ((std::vector<std::string>*) argList["textureNames"])->at(i);
+			testArguments["texture"] = (void*) &texture;
+
+			textureSize = textureDrawer->getSize(testArguments);
+		}
 
 		if(textureSize.x > maxTextureSize.x) maxTextureSize.x = textureSize.x;
 		if(textureSize.y > maxTextureSize.y) maxTextureSize.y = textureSize.y;
@@ -105,10 +112,16 @@ void DrawGaugePanel::execute(DrawStackArgList argList) {
 
 	Vector2 maxTextureSize(0.0f, 0.0f);
 	for(size_t i = 0; i < *((size_t*) argList["elements"]); ++i) {
-		std::string texture = (*((std::vector<std::string>*) argList["textureNames"]))[i];
-		testArguments["texture"] = (void*) &texture;
+		Vector2 textureSize;
 
-		Vector2 textureSize = textureDrawer->getSize(testArguments);
+		if(argList.find("textureSizes") != argList.end()) {
+			textureSize = ((std::vector<Vector2>*) argList["textureSizes"])->at(i);
+		} else {
+			std::string texture = ((std::vector<std::string>*) argList["textureNames"])->at(i);
+			testArguments["texture"] = (void*) &texture;
+
+			textureSize = textureDrawer->getSize(testArguments);
+		}
 
 		if(textureSize.x > maxTextureSize.x) maxTextureSize.x = textureSize.x;
 		if(textureSize.y > maxTextureSize.y) maxTextureSize.y = textureSize.y;
@@ -149,10 +162,15 @@ void DrawGaugePanel::execute(DrawStackArgList argList) {
 	for(size_t i = 0; i < *((size_t*) argList["elements"]); ++i) {
 		UIMetrics textureMetrics;
 		std::string texture = (*((std::vector<std::string>*) argList["textureNames"]))[i];
+		Vector2 textureSize;
+		if(argList.find("textureSizes") != argList.end())
+			textureSize = ((std::vector<Vector2>*) argList["textureSizes"])->at(i);
 
 		std::map<std::string, void*> textureArguments;
 		textureArguments["metrics"] = (void*) &textureMetrics;
 		textureArguments["texture"] = (void*) &texture;
+		if(argList.find("textureSizes") != argList.end())
+			textureArguments["size"] = (void*) &textureSize;
 
 		textureMetrics.position = Vector2(
 				position.x - size.x / 2.0f + padding.x + maxTextureSize.x / 2.0f,

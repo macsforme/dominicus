@@ -70,6 +70,10 @@ void Schemes::mainMenuScheme() {
 
 	// game logo
 	*((std::string*) gameLogic->logoEntry.second["texture"]) = "branding/logo";
+	*((Vector2*) gameLogic->logoEntry.second["size"]) = Vector2(
+			gameSystem->getFloat("logoHeight") * gameGraphics->getTexture("branding/logo")->width / gameGraphics->getTexture("branding/logo")->height / (float) gameGraphics->resolutionX * 2.0f,
+			gameSystem->getFloat("logoHeight") / (float) gameGraphics->resolutionY * 2.0f
+		);
 	((UIMetrics*) gameLogic->logoEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
 	((UIMetrics*) gameLogic->logoEntry.second["metrics"])->size = ((DrawTexture*) drawingMaster->drawers["texture"])->getSize(gameLogic->logoEntry.second);
 	drawingMaster->drawStack.push_back(gameLogic->logoEntry);
@@ -314,7 +318,7 @@ void Schemes::helpScheme() {
 	// controls label
 	*((float*) gameLogic->controlsEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
 	*((Vector4*) gameLogic->controlsEntry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
-	*((std::string*) gameLogic->controlsEntry.second["text"]) = "Move Turret:\tArrow Keys / Mouse Movement\nFire Cannon:\tSpace / Left Mouse Button\nCharge / Fire EMP:\tTab / Right Mouse Button\nPause / Resume:\tesc\nToggle Fullscreen:\tF1\nFast Quit:\tF12";
+	*((std::string*) gameLogic->controlsEntry.second["text"]) = gameSystem->getString("textControls");
 	((UIMetrics*) gameLogic->controlsEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
 	((UIMetrics*) gameLogic->controlsEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(gameLogic->controlsEntry.second);
 	drawingMaster->drawStack.push_back(gameLogic->controlsEntry);
@@ -333,7 +337,7 @@ void Schemes::helpScheme() {
 	*((float*) gameLogic->instructionsEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
 	*((Vector4*) gameLogic->instructionsEntry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
 	*((float*) gameLogic->instructionsEntry.second["wrap"]) = 2.0f * (gameSystem->getFloat("helpTextScreenPortion")) - (gameSystem->getFloat("hudElementMargin") * 2.0f / (float) gameGraphics->resolutionX);
-	*((std::string*) gameLogic->instructionsEntry.second["text"]) = "Welcome to Crucible Island. You occupy a tower atop an island mountain range. Enemy ships circle the island firing missiles at you. You must shoot down these missiles using your cannon or by firing electromagnetic pulses. Firing cannon shells depletes your ammunition reservoir, and firing electromagnetic pulses requires a charging period and depletes both your ammunition and health reservoirs. A missile impact will deplete your health reservoir. Your ammunition and health reservoirs will constantly recharge. As the game goes on, additional enemy ships will join the others, causing the rate of fire to increase. Your health level, ammunition level, and electromagnetic pulse charging indicators are shown on gauges on your screen. Your radar and heads-up display show enemy ship and incoming missile positions. You gain one point for every enemy missile you destroy. When your health level reaches zero, the game is over. Good luck!";
+	*((std::string*) gameLogic->instructionsEntry.second["text"]) = gameSystem->getString("textInstructions");
 	((UIMetrics*) gameLogic->instructionsEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
 	((UIMetrics*) gameLogic->instructionsEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(gameLogic->instructionsEntry.second);
 	drawingMaster->drawStack.push_back(gameLogic->instructionsEntry);
@@ -471,7 +475,7 @@ void Schemes::aboutScheme() {
 	*((float*) gameLogic->creditsEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
 	*((Vector4*) gameLogic->creditsEntry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
 	*((float*) gameLogic->creditsEntry.second["wrap"]) = 2.0f * (gameGraphics->resolutionX > 1024 ? 1024.0f / (float) gameGraphics->resolutionX : 1.0f) - (gameSystem->getFloat("hudElementMargin") * 2.0f / (float) gameGraphics->resolutionX);
-	*((std::string*) gameLogic->creditsEntry.second["text"]) = "Dedicated to Sergeant Sean Drenth #6894 of the Phoenix Police Department, EOW October 18, 2010.\n\nCreated by Joshua Bodine.\n\nMusic and sound effects by Michael Birch.\n\nThis software uses the Titillium Web font by Accademia di Belle Arti di Urbino and students of MA course of Visual design.\n\nThis software uses the Simple DirectMedia Layer library (http://www.libsdl.org/).\n\nPortions of this software are copyright (c) 2014 The FreeType Project (www.freetype.org). All rights reserved.";
+	*((std::string*) gameLogic->creditsEntry.second["text"]) = gameSystem->getString("textCredits");
 	((UIMetrics*) gameLogic->creditsEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
 	((UIMetrics*) gameLogic->creditsEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(gameLogic->creditsEntry.second);
 	drawingMaster->drawStack.push_back(gameLogic->creditsEntry);
@@ -951,6 +955,18 @@ void Schemes::playingScheme() {
 	(*((std::vector<std::string>*) gameLogic->gaugePanelEntry.second["textureNames"]))[0] = "gauge/heart";
 	(*((std::vector<std::string>*) gameLogic->gaugePanelEntry.second["textureNames"]))[1] = "gauge/shell";
 	(*((std::vector<std::string>*) gameLogic->gaugePanelEntry.second["textureNames"]))[2] = "gauge/bolt";
+	((std::vector<Vector2>*) gameLogic->gaugePanelEntry.second["textureSizes"])->at(0) = Vector2(
+			gameSystem->getFloat("gaugeImagesHeight") * gameGraphics->getTexture("gauge/heart")->width / gameGraphics->getTexture("gauge/heart")->height / (float) gameGraphics->resolutionX * 2.0f,
+			gameSystem->getFloat("gaugeImagesHeight") / (float) gameGraphics->resolutionY * 2.0f
+		);
+	((std::vector<Vector2>*) gameLogic->gaugePanelEntry.second["textureSizes"])->at(1) = Vector2(
+			gameSystem->getFloat("gaugeImagesHeight") * gameGraphics->getTexture("gauge/shell")->width / gameGraphics->getTexture("gauge/shell")->height / (float) gameGraphics->resolutionX * 2.0f,
+			gameSystem->getFloat("gaugeImagesHeight") / (float) gameGraphics->resolutionY * 2.0f
+		);
+	((std::vector<Vector2>*) gameLogic->gaugePanelEntry.second["textureSizes"])->at(2) = Vector2(
+			gameSystem->getFloat("gaugeImagesHeight") * gameGraphics->getTexture("gauge/bolt")->width / gameGraphics->getTexture("gauge/bolt")->height / (float) gameGraphics->resolutionX * 2.0f,
+			gameSystem->getFloat("gaugeImagesHeight") / (float) gameGraphics->resolutionY * 2.0f
+		);
 	*((Vector2*) gameLogic->gaugePanelEntry.second["progressBarSize"]) = Vector2(gameSystem->getFloat("hudGaugeWidth"), gameSystem->getFloat("hudGaugeHeight"));
 	(*((std::vector<float>*) gameLogic->gaugePanelEntry.second["progressions"]))[0] = gameState->fortress.health;
 	(*((std::vector<float>*) gameLogic->gaugePanelEntry.second["progressions"]))[1] = gameState->fortress.ammunition;
@@ -1126,7 +1142,7 @@ void Schemes::pausedScheme() {
 	// controls label
 	*((float*) gameLogic->controlsEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
 	*((Vector4*) gameLogic->controlsEntry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
-	*((std::string*) gameLogic->controlsEntry.second["text"]) = "Move Turret:\tArrow Keys / Mouse Movement\nFire Cannon:\tSpace / Left Mouse Button\nCharge / Fire EMP:\tTab / Right Mouse Button\nPause / Resume:\tesc\nToggle Fullscreen:\tF1\nFast Quit:\tF12";
+	*((std::string*) gameLogic->controlsEntry.second["text"]) = gameSystem->getString("textControls");
 	((UIMetrics*) gameLogic->controlsEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
 	((UIMetrics*) gameLogic->controlsEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(gameLogic->controlsEntry.second);
 	drawingMaster->drawStack.push_back(gameLogic->controlsEntry);

@@ -54,8 +54,11 @@ GameLogic::GameLogic() :
 	titleEntry.second["text"] = (void*) new std::string;
 
 	logoEntry.first = "texture";
+	logoEntry.second = ((DrawTexture*) drawingMaster->drawers["texture"])->instantiateArgList();
+/*
 	logoEntry.second["metrics"] = (void*) new UIMetrics;
 	logoEntry.second["texture"] = (void*) new std::string;
+*/
 
 	mainMenuSpacerMetrics = new UIMetrics;
 
@@ -424,6 +427,23 @@ GameLogic::GameLogic() :
 	playingTipEntry.second["text"] = (void*) new std::string;
 
 	gaugePanelEntry.first = "gaugePanel";
+	gaugePanelEntry.second = ((DrawGaugePanel*) drawingMaster->drawers["gaugePanel"])->instantiateArgList();
+	((std::vector<std::string>*) gaugePanelEntry.second["textureNames"])->push_back("");
+	((std::vector<std::string>*) gaugePanelEntry.second["textureNames"])->push_back("");
+	((std::vector<std::string>*) gaugePanelEntry.second["textureNames"])->push_back("");
+	((std::vector<Vector2>*) gaugePanelEntry.second["textureSizes"])->push_back(Vector2());
+	((std::vector<Vector2>*) gaugePanelEntry.second["textureSizes"])->push_back(Vector2());
+	((std::vector<Vector2>*) gaugePanelEntry.second["textureSizes"])->push_back(Vector2());
+	((std::vector<float>*) gaugePanelEntry.second["progressions"])->push_back(0.0f);
+	((std::vector<float>*) gaugePanelEntry.second["progressions"])->push_back(0.0f);
+	((std::vector<float>*) gaugePanelEntry.second["progressions"])->push_back(0.0f);
+	((std::vector<Vector4>*) gaugePanelEntry.second["progressBarColorsTop"])->push_back(Vector4());
+	((std::vector<Vector4>*) gaugePanelEntry.second["progressBarColorsTop"])->push_back(Vector4());
+	((std::vector<Vector4>*) gaugePanelEntry.second["progressBarColorsTop"])->push_back(Vector4());
+	((std::vector<Vector4>*) gaugePanelEntry.second["progressBarColorsBottom"])->push_back(Vector4());
+	((std::vector<Vector4>*) gaugePanelEntry.second["progressBarColorsBottom"])->push_back(Vector4());
+	((std::vector<Vector4>*) gaugePanelEntry.second["progressBarColorsBottom"])->push_back(Vector4());
+/*
 	gaugePanelEntry.second["metrics"] = (void*) new UIMetrics;
 	gaugePanelEntry.second["padding"] = (void*) new Vector2;
 	gaugePanelEntry.second["border"] = (void*) new float;
@@ -451,7 +471,7 @@ GameLogic::GameLogic() :
 	((std::vector<Vector4>*) gaugePanelEntry.second["progressBarColorsBottom"])->push_back(Vector4());
 	((std::vector<Vector4>*) gaugePanelEntry.second["progressBarColorsBottom"])->push_back(Vector4());
 	((std::vector<Vector4>*) gaugePanelEntry.second["progressBarColorsBottom"])->push_back(Vector4());
-
+*/
 	radarEntry.first = "radar";
 	radarEntry.second["metrics"] = (void*) new UIMetrics;
 	radarEntry.second["padding"] = (void*) new Vector2;
