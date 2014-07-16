@@ -93,7 +93,7 @@ void DrawMissileIndicators::execute(DrawStackArgList argList) {
 				1.0f
 			);
 
-		thisMissilePosition = thisMissilePosition * gameGraphics->currentCamera->mvMatrix * gameGraphics->ppMatrix;
+		thisMissilePosition = thisMissilePosition * gameGraphics->currentCamera->mvMatrix * (gameState->binoculars ? gameGraphics->ppBinoMatrix : gameGraphics->ppMatrix);
 
 		if(
 				absolute(thisMissilePosition.x / thisMissilePosition.w) <= 1.0f &&

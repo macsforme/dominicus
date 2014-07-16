@@ -260,7 +260,7 @@ void FortressRenderer::execute(std::map<std::string, void*> arguments) {
 		else
 			glUniformMatrix4fv(uniforms["mvMatrix"], 1, GL_FALSE, mvMatrixArray);
 
-		glUniformMatrix4fv(uniforms["pMatrix"], 1, GL_FALSE, gameGraphics->ppMatrixArray);
+		glUniformMatrix4fv(uniforms["pMatrix"], 1, GL_FALSE, (gameState->binoculars ? gameGraphics->ppBinoMatrixArray : gameGraphics->ppMatrixArray));
 
 		// draw the geometry
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexBuffers[std::string("elements_" + itr->first).c_str()]);

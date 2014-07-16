@@ -225,6 +225,7 @@ GameState::GameState() : MainLoopMember((unsigned int) gameSystem->getFloat("sta
 	score = 0;
 
 	// initialize other stuff
+	binoculars = false;
 	empIsCharging = false;
 	recoil = 0.0f;
 	lastStrikeTime = 0;

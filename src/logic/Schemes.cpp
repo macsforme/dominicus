@@ -837,6 +837,7 @@ void Schemes::playingScheme() {
 	inputHandler->mouse->addListener(gameLogic->mouseMotionListener);
 	inputHandler->mouse->addListener(gameLogic->primaryFireClickListener);
 	inputHandler->mouse->addListener(gameLogic->secondaryFireClickListener);
+	inputHandler->mouse->addListener(gameLogic->binocularsClickListener);
 	inputHandler->keyboard->addListener(gameLogic->quitKeyListener);
 	inputHandler->keyboard->addListener(gameLogic->fullScreenKeyListener);
 	inputHandler->keyboard->addListener(gameLogic->playingKeyListener);
@@ -870,8 +871,8 @@ void Schemes::playingScheme() {
 	// missile indicators
 	*((Vector4*) gameLogic->missileIndicators.second["color"]) = gameSystem->getColor("hudMissileIndicatorColor");
 	*((Vector2*) gameLogic->missileIndicators.second["size"]) = Vector2(
-			gameSystem->getFloat("hudMissileIndicatorSize") / (float) gameGraphics->resolutionX * 2.0f,
-			gameSystem->getFloat("hudMissileIndicatorSize") / (float) gameGraphics->resolutionY * 2.0f
+			gameSystem->getFloat("hudMissileIndicatorSize") * (gameState->binoculars ? gameSystem->getFloat("hudMissileIndicatorBinocularsFactor") : 1.0f) / (float) gameGraphics->resolutionX * 2.0f,
+			gameSystem->getFloat("hudMissileIndicatorSize") * (gameState->binoculars ? gameSystem->getFloat("hudMissileIndicatorBinocularsFactor") : 1.0f) / (float) gameGraphics->resolutionY * 2.0f
 		);
 	drawingMaster->drawStack.push_back(gameLogic->missileIndicators);
 

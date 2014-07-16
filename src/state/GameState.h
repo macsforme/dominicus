@@ -100,6 +100,7 @@ public:
 	float missileLength;
 	float missileRadius;
 
+	bool binoculars;
 	float recoil; // > 1 = recoiling, > 0 = recovering, 0 = at rest
 	bool empIsCharging;
 	unsigned int lastStrikeTime;

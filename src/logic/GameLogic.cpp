@@ -371,6 +371,8 @@ GameLogic::GameLogic() :
 	playingKeys.push_back(SDLK_TAB);
 	playingKeys.push_back(SDLK_BACKQUOTE);
 	playingKeys.push_back(SDLK_BACKSLASH);
+	playingKeys.push_back(SDLK_LSHIFT);
+	playingKeys.push_back(SDLK_RSHIFT);
 	playingKeyListener = new KeyListener(playingKeys);
 
 	turretUpKeyListener = new KeyAbsoluteListener(SDLK_UP);
@@ -381,6 +383,7 @@ GameLogic::GameLogic() :
 
 	primaryFireClickListener = new MouseButtonListener();
 	secondaryFireClickListener = new MouseButtonListener(SDL_BUTTON_RIGHT);
+	binocularsClickListener = new MouseButtonListener(SDL_BUTTON_MIDDLE);
 
 	controlSpotEntry.first = "circle";
 	controlSpotEntry.second["size"] = (void*) new Vector2;
@@ -1080,6 +1083,11 @@ lastFPSUpdate = platform->getExecMills();
 			gameState->empIsCharging = ! gameState->empIsCharging;
 		}
 
+		if(binocularsClickListener->wasClicked()) {
+			gameState->binoculars = ! gameState->binoculars;
+			reScheme();
+		}
+
 		// key hits
 		for(SDLKey key = playingKeyListener->popKey(); key != SDLK_UNKNOWN; key = playingKeyListener->popKey()) {
 			if(key == SDLK_SPACE) {
@@ -1119,6 +1127,9 @@ lastFPSUpdate = platform->getExecMills();
 					gameState->resume();
 				else
 					gameState->pause();
+			} else if(key == SDLK_LSHIFT || key == SDLK_RSHIFT) {
+				gameState->binoculars = ! gameState->binoculars;
+				reScheme();
 			}
 		}
 

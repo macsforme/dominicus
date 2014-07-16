@@ -107,6 +107,7 @@ public:
 KeyAbsoluteListener* cameraAheadKeyListener;
 	MouseButtonListener* primaryFireClickListener;
 	MouseButtonListener* secondaryFireClickListener;
+	MouseButtonListener* binocularsClickListener;
 	DrawStackEntry controlSpotEntry;
 	DrawStackEntry cursorEntry;
 	DrawStackEntry missileIndicators;

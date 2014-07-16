@@ -119,7 +119,7 @@ void ShellRenderer::execute(std::map<std::string, void*> arguments) {
 	glUseProgram(shaderProgram);
 
 	// set uniforms
-	glUniformMatrix4fv(uniforms["pMatrix"], 1, GL_FALSE, gameGraphics->ppMatrixArray);
+	glUniformMatrix4fv(uniforms["pMatrix"], 1, GL_FALSE, (gameState->binoculars ? gameGraphics->ppBinoMatrixArray : gameGraphics->ppMatrixArray));
 	glUniform3f(uniforms["ambientColor"], 0.15f, 0.15f, 0.15f);
 	glUniform3f(uniforms["diffuseColor"], 0.5f, 0.5f, 0.5f);
 	glUniform3f(uniforms["specularColor"], 0.5f, 0.5f, 0.5f);

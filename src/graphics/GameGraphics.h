@@ -27,8 +27,8 @@ public:
 	float aspectRatio;	// X over Y
 	bool fullScreen;
 
-	Matrix4 idMatrix, opMatrix, ppMatrix, ppMatrixInverse;
-	float idMatrixArray[16], opMatrixArray[16], ppMatrixArray[16], ppMatrixInverseArray[16];
+	Matrix4 idMatrix, opMatrix, ppMatrix, ppBinoMatrix/*, ppMatrixInverse*/;
+	float idMatrixArray[16], opMatrixArray[16], ppMatrixArray[16], ppBinoMatrixArray[16]/*, ppMatrixInverseArray[16]*/;
 
 	FontManager* fontManager;
 	Texture* noiseTexture;

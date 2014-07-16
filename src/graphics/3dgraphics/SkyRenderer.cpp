@@ -80,8 +80,8 @@ void SkyRenderer::execute(std::map<std::string, void*> arguments) {
 	// prepare variables
 	Matrix4 mvpMatrix; mvpMatrix.identity();
 	scaleMatrix(
-			tan(radians(gameSystem->getFloat("renderingPerspectiveFOV"))),
-			1.0f / (gameGraphics->aspectRatio / tan(radians(gameSystem->getFloat("renderingPerspectiveFOV")))),
+			tan(radians(gameState->binoculars ? gameSystem->getFloat("renderingPerspectiveBinocularsFOV") : gameSystem->getFloat("renderingPerspectiveFOV"))),
+			1.0f / (gameGraphics->aspectRatio / tan(radians(gameState->binoculars ? gameSystem->getFloat("renderingPerspectiveBinocularsFOV") : gameSystem->getFloat("renderingPerspectiveFOV")))),
 			1.0f,
 			mvpMatrix
 		);

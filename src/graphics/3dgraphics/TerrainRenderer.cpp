@@ -166,14 +166,6 @@ void TerrainRenderer::execute(std::map<std::string, void*> arguments) {
 			mvMatrix.m41, mvMatrix.m42, mvMatrix.m43, mvMatrix.m44
 		};
 
-	Matrix4 pMatrix = gameGraphics->ppMatrix;
-	float pMatrixArray[] = {
-			pMatrix.m11, pMatrix.m12, pMatrix.m13, pMatrix.m14,
-			pMatrix.m21, pMatrix.m22, pMatrix.m23, pMatrix.m24,
-			pMatrix.m31, pMatrix.m32, pMatrix.m33, pMatrix.m34,
-			pMatrix.m41, pMatrix.m42, pMatrix.m43, pMatrix.m44
-		};
-
 	Matrix4 fortressTransformMatrix; fortressTransformMatrix.identity();
 	translateMatrix(-gameState->fortress.position.x, -gameState->fortress.position.y, -gameState->fortress.position.z, fortressTransformMatrix);
 	float fortressTransformMatrixArray[] = {
@@ -197,7 +189,7 @@ void TerrainRenderer::execute(std::map<std::string, void*> arguments) {
 
 	// set uniforms
 	glUniformMatrix4fv(uniforms["mvMatrix"], 1, GL_FALSE, mvMatrixArray);
-	glUniformMatrix4fv(uniforms["pMatrix"], 1, GL_FALSE, pMatrixArray);
+	glUniformMatrix4fv(uniforms["pMatrix"], 1, GL_FALSE, (gameState->binoculars ? gameGraphics->ppBinoMatrixArray : gameGraphics->ppMatrixArray));
 	glUniformMatrix4fv(uniforms["fortressTransformMatrix"], 1, GL_FALSE, fortressTransformMatrixArray);
 	glUniform4f(uniforms["insideColorMultiplier"], 1.0f, 1.0f, 1.0f, 1.0f);
 	float empColorMultiplier = (

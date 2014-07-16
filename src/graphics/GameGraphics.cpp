@@ -187,6 +187,7 @@ SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 0);
 	memcpy((void*) opMatrixArray, (void*) opMatrixArrayVals, 16 * sizeof(float));
 
 	const float fov = gameSystem->getFloat("renderingPerspectiveFOV");
+	const float binoFOV = gameSystem->getFloat("renderingPerspectiveBinocularsFOV");
 	const float nClip = gameSystem->getFloat("renderingPerspectiveNearClip");
 	const float fClip = gameSystem->getFloat("renderingPerspectiveFarClip");
 
@@ -205,6 +206,21 @@ SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 0);
 		};
 	memcpy((void*) ppMatrixArray, (void*) ppMatrixArrayVals, 16 * sizeof(float));
 
+	ppBinoMatrix = Matrix4(
+			1.0f / tan(radians(binoFOV)), 0.0f, 0.0f, 0.0f,
+			0.0f, aspectRatio / tan(radians(binoFOV)), 0.0f, 0.0f,
+			0.0f, 0.0f, (fClip + nClip) / (fClip - nClip), 1.0f,
+			0.0f, 0.0f, -2.0f * fClip * nClip / (fClip - nClip), 0.0f
+		);
+
+	float ppBinoMatrixArrayVals[] = {
+			ppBinoMatrix.m11, ppBinoMatrix.m12, ppBinoMatrix.m13, ppBinoMatrix.m14,
+			ppBinoMatrix.m21, ppBinoMatrix.m22, ppBinoMatrix.m23, ppBinoMatrix.m24,
+			ppBinoMatrix.m31, ppBinoMatrix.m32, ppBinoMatrix.m33, ppBinoMatrix.m34,
+			ppBinoMatrix.m41, ppBinoMatrix.m42, ppBinoMatrix.m43, ppBinoMatrix.m44
+		};
+	memcpy((void*) ppBinoMatrixArray, (void*) ppBinoMatrixArrayVals, 16 * sizeof(float));
+/*
 	ppMatrixInverse = Matrix4(
 			tan(radians(fov)) / 1.0f, 0.0f, 0.0f, 0.0f,
 			0.0f, tan(radians(fov)) / aspectRatio, 0.0f, 0.0f,
@@ -219,6 +235,7 @@ SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 0);
 			ppMatrixInverse.m41, ppMatrixInverse.m42, ppMatrixInverse.m43, ppMatrixInverse.m44
 		};
 	memcpy((void*) ppMatrixInverseArray, (void*) ppMatrixInverseArrayVals, 16 * sizeof(float));
+*/
 
 	// set up fonts
 	fontManager = new FontManager();

@@ -94,7 +94,7 @@ WaterRenderer::~WaterRenderer() {
 void WaterRenderer::execute(std::map<std::string, void*> arguments) {
 	// prepare variables
 	Matrix4 mvpMatrix = gameGraphics->currentCamera->mvMatrix;
-	mvpMatrix *= gameGraphics->ppMatrix;
+	mvpMatrix *= (gameState->binoculars ? gameGraphics->ppBinoMatrix : gameGraphics->ppMatrix);
 	float mvpMatrixArray[] = {
 			mvpMatrix.m11, mvpMatrix.m12, mvpMatrix.m13, mvpMatrix.m14,
 			mvpMatrix.m21, mvpMatrix.m22, mvpMatrix.m23, mvpMatrix.m24,

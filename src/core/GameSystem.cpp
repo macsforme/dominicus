@@ -230,7 +230,7 @@ GameSystem::GameSystem() {
 	setStandard("hudBaseButtonPadding", 10.0f, "Base value for space between HUD buttons' external border and content in pixels.");
 	setStandard("hudBaseBigButtonPadding", 12.0f, "Base value for space between large HUD buttons' external border and content in pixels.");
 	setStandard("hudBaseGaugePadding", 20.0f, "Base value for gauge panel padding in pixels.");
-	setStandard("fontBaseSizeSmall", 14.0f, "Font size for small display in points (1/72 inch).");
+	setStandard("fontBaseSizeSmall", 12.0f, "Font size for small display in points (1/72 inch).");
 	setStandard("fontBaseSizeMedium", 18.0f, "Font size for standard display in points (1/72 inch).");
 	setStandard("fontBaseSizeLarge", 26.0f, "Font size for enlarged display in points (1/72 inch).");
 	setStandard("fontBaseSizeSuper", 36.0f, "Font size for title display in points (1/72 inch).");
@@ -286,6 +286,7 @@ GameSystem::GameSystem() {
 
 	// scene rendering standards
 	setStandard("renderingPerspectiveFOV", 30.0f, "Field-of-view angle for perspective projection.");
+	setStandard("renderingPerspectiveBinocularsFOV", 10.0f, "Field-of-view angle for perspective projection while binoculars enabled.");
 	setStandard("renderingPerspectiveNearClip", 0.5f, "Near clip distance for perspective projection.");
 	setStandard("renderingPerspectiveFarClip", 9000.0f, "Far clip distance for perspective projection.");
 	setStandard("waterColor", Vector4(0.025f, 0.05f, 0.15f, 1.0f), "Water color.");
@@ -335,6 +336,7 @@ GameSystem::GameSystem() {
 	setStandard("hudGrayOutColor", Vector4(0.0f, 0.0f, 0.05f, 0.75f), "Color of gray screen during pause.");
 	setStandard("hudStrikeEffectTime", 1.0f, "Time in seconds to display strike effect.");
 	setStandard("hudMissileIndicatorSize", 50.0f, "Size in pixels of missile indicator box.");
+	setStandard("hudMissileIndicatorBinocularsFactor", 3.0f, "Factor to multiply missile indicator size by when in binoculars mode.");
 	setStandard("hudMissileIndicatorColor", Vector4(1.0f, 0.0f, 0.0f, 1.0f), "Color of missile indicator box.");
 
 	// font standards
@@ -360,7 +362,7 @@ GameSystem::GameSystem() {
 	setStandard("islandTerrainSink", 0.5f, "Island terrain generation sink to sea level factor.");
 
 	// text strings
-	setStandard("textControls", "Move Turret:\tArrow Keys / Mouse Movement\nFire Cannon:\tSpace / Left Mouse Button\nCharge / Fire EMP:\tTab / Right Mouse Button\nPause / Resume:\tesc\nToggle Fullscreen:\tF1\nFast Quit:\tF12", "Controls help text.");
+	setStandard("textControls", "Move Turret:\tArrow Keys / Mouse Movement\nFire Cannon:\tSpace / Left Mouse Button\nCharge / Fire EMP:\tTab / Right Mouse Button\nToggle Binoculars:\tShift / Middle Mouse Button\nPause / Resume:\tesc\nToggle Fullscreen:\tF1\nFast Quit:\tF12", "Controls help text.");
 	setStandard("textInstructions", "Welcome to Crucible Island. You occupy a tower atop an island mountain range. Enemy ships circle the island firing missiles at you. You must shoot down these missiles using your cannon or by firing electromagnetic pulses. Firing cannon shells depletes your ammunition reservoir, and firing electromagnetic pulses requires a charging period and depletes both your ammunition and health reservoirs. A missile impact will deplete your health reservoir. Your ammunition and health reservoirs will constantly recharge. As the game goes on, additional enemy ships will join the others, causing the rate of fire to increase. Your health level, ammunition level, and electromagnetic pulse charging indicators are shown on gauges on your screen. Your radar and heads-up display show enemy ship and incoming missile positions. You gain one point for every enemy missile you destroy. When your health level reaches zero, the game is over. Good luck!", "Instruction text.");
 	setStandard("textCredits", "Dedicated to Sergeant Sean Drenth #6894 of the Phoenix Police Department, EOW October 18, 2010.\n\nCreated by Joshua Bodine.\n\nMusic and sound effects by Michael Birch.\n\nThis software uses the Titillium Web font by Accademia di Belle Arti di Urbino and students of MA course of Visual design.\n\nThis software uses the Simple DirectMedia Layer library (http://www.libsdl.org/).\n\nPortions of this software are copyright (c) 2014 The FreeType Project (www.freetype.org). All rights reserved.", "Credits text.");
 
