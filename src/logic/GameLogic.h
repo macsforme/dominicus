@@ -66,11 +66,10 @@ public:
 	MouseMotionListener* mouseMotionListener;
 	DrawStackEntry* activeMenuSelection;
 	DrawStackEntry splashEntry;
-	DrawStackEntry brandEntry;
-	DrawStackEntry presentsEntry;
+	UIMetrics* mainMenuSpacer1Metrics;
 	DrawStackEntry titleEntry;
 	DrawStackEntry logoEntry;
-	UIMetrics* mainMenuSpacerMetrics;
+	UIMetrics* mainMenuSpacer2Metrics;
 	DrawStackEntry playButtonEntry;
 	MouseZoneListener* playButtonZoneListener;
 	MouseButtonListener* playButtonClickListener;

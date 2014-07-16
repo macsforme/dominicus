@@ -37,15 +37,7 @@ GameLogic::GameLogic() :
 
 	splashEntry.first = "splash";
 
-	brandEntry.first = "texture";
-	brandEntry.second["metrics"] = (void*) new UIMetrics;
-	brandEntry.second["texture"] = (void*) new std::string;
-
-	presentsEntry.first = "label";
-	presentsEntry.second["metrics"] = (void*) new UIMetrics;
-	presentsEntry.second["fontSize"] = (void*) new float;
-	presentsEntry.second["fontColor"] = (void*) new Vector4;
-	presentsEntry.second["text"] = (void*) new std::string;
+	mainMenuSpacer1Metrics = new UIMetrics;
 
 	titleEntry.first = "label";
 	titleEntry.second["metrics"] = (void*) new UIMetrics;
@@ -60,7 +52,7 @@ GameLogic::GameLogic() :
 	logoEntry.second["texture"] = (void*) new std::string;
 */
 
-	mainMenuSpacerMetrics = new UIMetrics;
+	mainMenuSpacer2Metrics = new UIMetrics;
 
 	playButtonEntry.first = "button";
 	playButtonEntry.second = ((DrawButton*) drawingMaster->drawers["button"])->instantiateArgList();

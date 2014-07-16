@@ -43,21 +43,9 @@ void Schemes::mainMenuScheme() {
 	// splash background
 	drawingMaster->drawStack.push_back(gameLogic->splashEntry);
 
-	// brand logo
-	*((std::string*) gameLogic->brandEntry.second["texture"]) = "branding/brand";
-	((UIMetrics*) gameLogic->brandEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
-	((UIMetrics*) gameLogic->brandEntry.second["metrics"])->size = ((DrawTexture*) drawingMaster->drawers["texture"])->getSize(gameLogic->brandEntry.second);
-	drawingMaster->drawStack.push_back(gameLogic->brandEntry);
-	drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->brandEntry.second["metrics"]);
-
-	// presents label
-	*((float*) gameLogic->presentsEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-	*((Vector4*) gameLogic->presentsEntry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
-	*((std::string*) gameLogic->presentsEntry.second["text"]) = "PRESENTS";
-	((UIMetrics*) gameLogic->presentsEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
-	((UIMetrics*) gameLogic->presentsEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(gameLogic->presentsEntry.second);
-	drawingMaster->drawStack.push_back(gameLogic->presentsEntry);
-	drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->presentsEntry.second["metrics"]);
+	// spacer
+	gameLogic->mainMenuSpacer1Metrics->bearing1 = UIMetrics::BEARING_TOP;
+	drawingMaster->uiLayoutAuthority->metrics.push_back(gameLogic->mainMenuSpacer1Metrics);
 
 	// title label
 	*((float*) gameLogic->titleEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSuper");
@@ -80,8 +68,8 @@ void Schemes::mainMenuScheme() {
 	drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->logoEntry.second["metrics"]);
 
 	// spacer
-	gameLogic->mainMenuSpacerMetrics->bearing1 = UIMetrics::BEARING_TOP;
-	drawingMaster->uiLayoutAuthority->metrics.push_back(gameLogic->mainMenuSpacerMetrics);
+	gameLogic->mainMenuSpacer2Metrics->bearing1 = UIMetrics::BEARING_TOP;
+	drawingMaster->uiLayoutAuthority->metrics.push_back(gameLogic->mainMenuSpacer2Metrics);
 
 	// play button
 	((UIMetrics*) gameLogic->playButtonEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
