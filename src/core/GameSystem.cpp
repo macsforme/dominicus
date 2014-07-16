@@ -289,9 +289,9 @@ GameSystem::GameSystem() {
 	setStandard("renderingPerspectiveNearClip", 0.5f, "Near clip distance for perspective projection.");
 	setStandard("renderingPerspectiveFarClip", 9000.0f, "Far clip distance for perspective projection.");
 	setStandard("waterColor", Vector4(0.025f, 0.05f, 0.15f, 1.0f), "Water color.");
-	setStandard("horizonColor", Vector4(1.0f, 0.88f, 0.64f, 1.0f), "Horizon color.");
+	setStandard("horizonColor", Vector4(0.88f, 0.88f, 0.88f, 1.0f), "Horizon color.");
 	setStandard("baseSkyColor", Vector4(0.76f, 0.88f, 1.0f, 1.0f), "Sky color at approximately halfway up.");
-	setStandard("apexColor", Vector4(0.12f, 0.36f, 0.60f, 1.0f), "Sky color at apex.");
+	setStandard("apexColor", Vector4(0.08f, 0.24f, 0.4f, 1.0f), "Sky color at apex.");
 	setStandard("empColorMultiplier", 4.0f, "Values to multiply colors by while under EMP.");
 	setStandard("terrainDepth", 10.0f, "How far below the water the ground extends.");
 	setStandard("terrainTextureRepeat", 50.0f, "Number of times to repeat the ground texture over the maximum surface area.");
@@ -307,7 +307,8 @@ GameSystem::GameSystem() {
 	setStandard("hudControlSpotColor", Vector4(0.3f, 0.3f, 0.3f, 0.6f), "Color of control spot.");
 	setStandard("hudCursorSize", 40.0f, "Width and height of cursor in pixels.");
 	setStandard("hudCursorColor", Vector4(0.0f, 0.0f, 0.0f, 0.5f), "Color of cursor.");
-	setStandard("hudCursorRange", 0.5f, "Portion of screen height which is radius of cursor range.");
+	setStandard("hudCursorRange", 0.75f, "Portion of screen height which is radius of cursor range.");
+	setStandard("hudCursorPositionExponent", 1.5f, "Raise the cursor fractional position to this exponent for more precision toward middle.");
 	setStandard("radarSize", 35.0f, "Size of radar panel in percentage of screen height.");
 	setStandard("radarRefreshSpeed", 1.0f, "Time in seconds for a full radar turn.");
 	setStandard("radarSpotSize", 6.0f, "Size in pixels of radar missile spots.");

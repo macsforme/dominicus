@@ -1059,10 +1059,13 @@ lastFPSUpdate = platform->getExecMills();
 			float effectiveDeadAreaRadius = gameSystem->getFloat("hudControlSpotSize") / (float) gameGraphics->resolutionY;
 
 			if(mag(correctAspectMousePosition) > effectiveDeadAreaRadius) {
+				// also raise fraction to exponent for more precise movement near center
 				Vector2 movementVector =
-						correctAspectMousePosition * (mag(correctAspectMousePosition) - effectiveDeadAreaRadius) /
-						(gameSystem->getFloat("hudCursorRange") - effectiveDeadAreaRadius) /
-						gameSystem->getFloat("hudCursorRange");
+						correctAspectMousePosition * pow(
+								(mag(correctAspectMousePosition) - effectiveDeadAreaRadius) /
+								(gameSystem->getFloat("hudCursorRange") - effectiveDeadAreaRadius),
+								gameSystem->getFloat("hudCursorPositionExponent")
+							) / gameSystem->getFloat("hudCursorRange");
 
 				gameState->fortress.addRotation(gameSystem->getFloat("stateTurretTurnSpeed") * deltaTime * movementVector.x);
 				gameState->fortress.addTilt(gameSystem->getFloat("stateTurretTurnSpeed") * deltaTime * movementVector.y);
