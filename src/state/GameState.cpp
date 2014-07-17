@@ -5,7 +5,8 @@
 
 GameState::GameState() : MainLoopMember((unsigned int) gameSystem->getFloat("stateUpdateFrequency")) {
 	// randomly generate the island
-	size_t density = (size_t) gameSystem->getFloat("islandTerrainDensity");
+	size_t density = (size_t) gameSystem->getFloat("islandTerrainBaseDensity");
+	density *= (size_t) pow(2.0f, gameSystem->getFloat("islandTerrainDetail") - 1.0f);
 	const float rough = gameSystem->getFloat("islandTerrainRoughness");
 	const float gradDist = gameSystem->getFloat("islandTerrainGradDist");
 	const int blends = (int) gameSystem->getFloat("islandTerrainBlends");

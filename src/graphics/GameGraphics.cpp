@@ -40,11 +40,14 @@ GameGraphics::GameGraphics(bool fullScreen, bool testSystem) :
 		))
 		gameSystem->log(GameSystem::LOG_FATAL,
 				"SDL cannot initialize a window with the specified settings.");
-//FIXME do something better with this
-SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 0);
 
-	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
-	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
+	SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, (int) gameSystem->getFloat("displayFramerateLimiting") == GameSystem::LIMIT_VSYNC ? 1 : 0);
+	if(gameSystem->getFloat("displayMultisamplingLevel") == 0.0f) {
+		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 0);
+	} else {
+		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, gameSystem->getFloat("displayMultisamplingLevel") == 2.0f ? 2 : 4);
+	}
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, (int) gameSystem->getFloat("displayColorDepth"));
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 

@@ -29,7 +29,7 @@
 extern GameSystem* gameSystem;
 extern GameGraphics* gameGraphics;
 
-DrawingMaster::DrawingMaster() : MainLoopMember((unsigned int) gameSystem->getFloat("displayFPS")) {
+DrawingMaster::DrawingMaster() : MainLoopMember(0) {
 	uiLayoutAuthority = new UILayoutAuthority(
 			Vector2(gameSystem->getFloat("hudElementMargin") / gameGraphics->resolutionX,
 					gameSystem->getFloat("hudElementMargin") / gameGraphics->resolutionY)
@@ -106,6 +106,24 @@ void DrawingMaster::newGraphics() {
 }
 
 unsigned int DrawingMaster::execute(bool unScheduled) {
+	// check that our framerate limiting is on the correct schedule (can't set this in the constructor because it may change)
+	if(
+			(int) gameSystem->getFloat("displayFramerateLimiting") == GameSystem::LIMIT_VSYNC ||
+			(int) gameSystem->getFloat("displayFramerateLimiting") == GameSystem::LIMIT_OFF
+		)
+		targetSleepMills = 0;
+	if(
+			(int) gameSystem->getFloat("displayFramerateLimiting") != GameSystem::LIMIT_VSYNC &&
+			(int) gameSystem->getFloat("displayFramerateLimiting") != GameSystem::LIMIT_OFF
+		) {
+		if((int) gameSystem->getFloat("displayFramerateLimiting") == GameSystem::LIMIT_30)
+			targetSleepMills = 1000 / 30;
+		else if((int) gameSystem->getFloat("displayFramerateLimiting") == GameSystem::LIMIT_60)
+			targetSleepMills = 1000 / 60;
+		else if((int) gameSystem->getFloat("displayFramerateLimiting") == GameSystem::LIMIT_120)
+			targetSleepMills = 1000 / 120;
+	}
+
 	// draw everything
 	gameGraphics->startFrame();
 
@@ -122,7 +140,11 @@ unsigned int DrawingMaster::execute(bool unScheduled) {
 	trackRunCount();
 
 	// calculate and return sleep time from superclass unless we aren't capping it
-	if(unScheduled || ! gameSystem->getBool("displayFPSCap"))
+	if(
+			unScheduled ||
+			(int) gameSystem->getFloat("displayFramerateLimiting") == GameSystem::LIMIT_VSYNC ||
+			(int) gameSystem->getFloat("displayFramerateLimiting") == GameSystem::LIMIT_OFF
+		)
 		return 0;
 	else
 		return getSleepTime();

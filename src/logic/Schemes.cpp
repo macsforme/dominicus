@@ -607,6 +607,47 @@ void Schemes::settingsScheme() {
 	drawingMaster->drawStack.push_back(gameLogic->windowedScreenResolutionEntry);
 	drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->windowedScreenResolutionEntry.second["metrics"]);
 
+	// framerate limiting control label
+	*((float*) gameLogic->framerateLimitingEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
+	*((Vector4*) gameLogic->framerateLimitingEntry.second["fontColor"]) = (gameLogic->activeMenuSelection == &gameLogic->framerateLimitingEntry ? gameSystem->getColor("fontColorLight") : gameSystem->getColor("fontColorDark"));
+	*((std::string*) gameLogic->framerateLimitingEntry.second["text"]) = (
+			(int) gameSystem->getFloat("displayFramerateLimiting") == GameSystem::LIMIT_VSYNC ? "Framerate Limiting: Vsync" :
+			(int) gameSystem->getFloat("displayFramerateLimiting") == GameSystem::LIMIT_30 ? "Framerate Limiting: 30 FPS" :
+			(int) gameSystem->getFloat("displayFramerateLimiting") == GameSystem::LIMIT_60 ? "Framerate Limiting: 60 FPS" :
+			(int) gameSystem->getFloat("displayFramerateLimiting") == GameSystem::LIMIT_120 ? "Framerate Limiting: 120 FPS" :
+			"Framerate Limiting: Off"
+		);
+	((UIMetrics*) gameLogic->framerateLimitingEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
+	((UIMetrics*) gameLogic->framerateLimitingEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(gameLogic->framerateLimitingEntry.second);
+	drawingMaster->drawStack.push_back(gameLogic->framerateLimitingEntry);
+	drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->framerateLimitingEntry.second["metrics"]);
+
+	// multisampling level control label
+	*((float*) gameLogic->multisamplingLevelEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
+	*((Vector4*) gameLogic->multisamplingLevelEntry.second["fontColor"]) = (gameLogic->activeMenuSelection == &gameLogic->multisamplingLevelEntry ? gameSystem->getColor("fontColorLight") : gameSystem->getColor("fontColorDark"));
+	*((std::string*) gameLogic->multisamplingLevelEntry.second["text"]) = (
+			gameSystem->getFloat("displayMultisamplingLevel") == 2.0f ? "Multisampling Level: Low" :
+			gameSystem->getFloat("displayMultisamplingLevel") == 4.0f ? "Multisampling Level: High" :
+			"Multisampling Level: Off"
+		);
+	((UIMetrics*) gameLogic->multisamplingLevelEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
+	((UIMetrics*) gameLogic->multisamplingLevelEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(gameLogic->multisamplingLevelEntry.second);
+	drawingMaster->drawStack.push_back(gameLogic->multisamplingLevelEntry);
+	drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->multisamplingLevelEntry.second["metrics"]);
+
+	// island terrain detail control label
+	*((float*) gameLogic->terrainDetailEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
+	*((Vector4*) gameLogic->terrainDetailEntry.second["fontColor"]) = (gameLogic->activeMenuSelection == &gameLogic->terrainDetailEntry ? gameSystem->getColor("fontColorLight") : gameSystem->getColor("fontColorDark"));
+	*((std::string*) gameLogic->terrainDetailEntry.second["text"]) = (
+			gameSystem->getFloat("islandTerrainDetail") == 2.0f ? "Terrain Detail: Medium" :
+			gameSystem->getFloat("islandTerrainDetail") == 3.0f ? "Terrain Detail: High" :
+			"Terrain Detail: Low"
+		);
+	((UIMetrics*) gameLogic->terrainDetailEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
+	((UIMetrics*) gameLogic->terrainDetailEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(gameLogic->terrainDetailEntry.second);
+	drawingMaster->drawStack.push_back(gameLogic->terrainDetailEntry);
+	drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->terrainDetailEntry.second["metrics"]);
+
 	// high scores reset button
 	((UIMetrics*) gameLogic->resetHighScoresEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
 	*((float*) gameLogic->resetHighScoresEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
@@ -708,6 +749,27 @@ void Schemes::settingsScheme() {
 	gameLogic->windowedScreenResolutionButtonClickListener->ll = gameLogic->windowedScreenResolutionButtonZoneListener->ll;
 	gameLogic->windowedScreenResolutionButtonClickListener->ur = gameLogic->windowedScreenResolutionButtonZoneListener->ur;
 	inputHandler->mouse->addListener(gameLogic->windowedScreenResolutionButtonClickListener);
+
+	gameLogic->framerateLimitingButtonZoneListener->ll = ((UIMetrics*) gameLogic->framerateLimitingEntry.second["metrics"])->position - ((UIMetrics*) gameLogic->framerateLimitingEntry.second["metrics"])->size / 2.0f;
+	gameLogic->framerateLimitingButtonZoneListener->ur = ((UIMetrics*) gameLogic->framerateLimitingEntry.second["metrics"])->position + ((UIMetrics*) gameLogic->framerateLimitingEntry.second["metrics"])->size / 2.0f;
+	inputHandler->mouse->addListener(gameLogic->framerateLimitingButtonZoneListener);
+	gameLogic->framerateLimitingButtonClickListener->ll = gameLogic->framerateLimitingButtonZoneListener->ll;
+	gameLogic->framerateLimitingButtonClickListener->ur = gameLogic->framerateLimitingButtonZoneListener->ur;
+	inputHandler->mouse->addListener(gameLogic->framerateLimitingButtonClickListener);
+
+	gameLogic->multisamplingButtonZoneListener->ll = ((UIMetrics*) gameLogic->multisamplingLevelEntry.second["metrics"])->position - ((UIMetrics*) gameLogic->multisamplingLevelEntry.second["metrics"])->size / 2.0f;
+	gameLogic->multisamplingButtonZoneListener->ur = ((UIMetrics*) gameLogic->multisamplingLevelEntry.second["metrics"])->position + ((UIMetrics*) gameLogic->multisamplingLevelEntry.second["metrics"])->size / 2.0f;
+	inputHandler->mouse->addListener(gameLogic->multisamplingButtonZoneListener);
+	gameLogic->multisamplingButtonClickListener->ll = gameLogic->multisamplingButtonZoneListener->ll;
+	gameLogic->multisamplingButtonClickListener->ur = gameLogic->multisamplingButtonZoneListener->ur;
+	inputHandler->mouse->addListener(gameLogic->multisamplingButtonClickListener);
+
+	gameLogic->terrainDetailButtonZoneListener->ll = ((UIMetrics*) gameLogic->terrainDetailEntry.second["metrics"])->position - ((UIMetrics*) gameLogic->terrainDetailEntry.second["metrics"])->size / 2.0f;
+	gameLogic->terrainDetailButtonZoneListener->ur = ((UIMetrics*) gameLogic->terrainDetailEntry.second["metrics"])->position + ((UIMetrics*) gameLogic->terrainDetailEntry.second["metrics"])->size / 2.0f;
+	inputHandler->mouse->addListener(gameLogic->terrainDetailButtonZoneListener);
+	gameLogic->terrainDetailButtonClickListener->ll = gameLogic->terrainDetailButtonZoneListener->ll;
+	gameLogic->terrainDetailButtonClickListener->ur = gameLogic->terrainDetailButtonZoneListener->ur;
+	inputHandler->mouse->addListener(gameLogic->terrainDetailButtonClickListener);
 
 	gameLogic->backButtonZoneListener->ll = ((UIMetrics*) gameLogic->backButtonEntry.second["metrics"])->position - ((UIMetrics*) gameLogic->backButtonEntry.second["metrics"])->size / 2.0f;
 	gameLogic->backButtonZoneListener->ur = ((UIMetrics*) gameLogic->backButtonEntry.second["metrics"])->position + ((UIMetrics*) gameLogic->backButtonEntry.second["metrics"])->size / 2.0f;

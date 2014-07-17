@@ -123,7 +123,9 @@ DrawRadar::~DrawRadar() {
 
 void DrawRadar::reloadGraphics() {
 	// create a texture with the terrain heightmap for radar
-	size_t resolution = (size_t) gameSystem->getFloat("islandTerrainDensity");
+	size_t resolution = (size_t) gameSystem->getFloat("islandTerrainBaseDensity");
+	resolution *= (size_t) pow(2.0f, gameSystem->getFloat("islandTerrainDetail") - 1.0f);
+
 	Texture* radarTexture = new Texture(
 			resolution,
 			resolution,
@@ -151,8 +153,8 @@ void DrawRadar::reloadGraphics() {
 		}
 
 		radarTexture->setColorAt(
-				(uint8_t) ((gameState->island.vertices[itr->vertices[0]].x / (gameSystem->getFloat("islandMaximumWidth") / 2.0f) / 2.0f + 0.5f) * (float) resolution),
-				(uint8_t) ((gameState->island.vertices[itr->vertices[0]].z / (gameSystem->getFloat("islandMaximumWidth") / 2.0f) / 2.0f + 0.5f) * (float) resolution),
+				(unsigned int) ((gameState->island.vertices[itr->vertices[0]].x / (gameSystem->getFloat("islandMaximumWidth") / 2.0f) / 2.0f + 0.5f) * (float) resolution),
+				(unsigned int) ((gameState->island.vertices[itr->vertices[0]].z / (gameSystem->getFloat("islandMaximumWidth") / 2.0f) / 2.0f + 0.5f) * (float) resolution),
 				colorValue,
 				colorValue,
 				colorValue,

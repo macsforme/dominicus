@@ -98,6 +98,15 @@ public:
 	std::vector< std::pair<unsigned int, unsigned int> > getAllowedWindowResolutions();
 	void applyScreenResolution(std::string resolution);
 
+	// fps limiting enumeration
+	enum FRAMERATE_LIMITING {
+		LIMIT_VSYNC,
+		LIMIT_30,
+		LIMIT_60,
+		LIMIT_120,
+		LIMIT_OFF
+	};
+
 	// object management
 	GameSystem();
 };

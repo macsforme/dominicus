@@ -85,12 +85,15 @@ void GameSystem::setStandard(const char* key, bool value,
 }
 
 void GameSystem::flushPreferences() {
-	platform->setPreference("preferencesVersion", 2.0f);
+	platform->setPreference("preferencesVersion", 3.0f);
 	platform->setPreference("displayWindowedResolution", getString("displayWindowedResolution").c_str());
 	platform->setPreference("displayStartFullscreen", (getBool("displayStartFullscreen") == true ? 1.0f : 0.0f));
+	platform->setPreference("displayFramerateLimiting", getFloat("displayFramerateLimiting"));
+	platform->setPreference("displayMultisamplingLevel", getFloat("displayMultisamplingLevel"));
 	platform->setPreference("audioMusicVolume", getFloat("audioMusicVolume"));
 	platform->setPreference("audioEffectsVolume", getFloat("audioEffectsVolume"));
 	platform->setPreference("gameStartingLevel", getString("gameStartingLevel").c_str());
+	platform->setPreference("islandTerrainDetail", getFloat("islandTerrainDetail"));
 	if(highScores.size() == 0) {
 		platform->setPreference("highScores", "");
 	} else {
@@ -278,10 +281,10 @@ GameSystem::GameSystem() {
 	setStandard("logicUpdateFrequency", 120.0f, "Number of times per second to update game logic.");
 
 	// display and drawing standards
-	setStandard("displayFPSCap", false /* true */, "Whether or not to cap the frames per second to a certain number.");
-	setStandard("displayFPS", 60.0f, "Number of frames per second to draw.");
+	setStandard("displayFramerateLimiting", (float) LIMIT_VSYNC, "How to limit framerate (vsync, fps count, or off).");
 	setStandard("displayStartFullscreen", false, "Whether or not to start the program in full screen mode.");
 	setStandard("displayColorDepth", 32.0f, "Color depth of display (may only affect full screen mode).");
+	setStandard("displayMultisamplingLevel", 4.0f, "Multisampling level (0, 2, or 4).");
 	setStandard("colorClear", Vector4(174.0f / 255.0f, 187.0f / 255.0f, 224.0f / 255.0f, 1.0f), "Color of empty space.");
 
 	// scene rendering standards
@@ -355,7 +358,8 @@ GameSystem::GameSystem() {
 	setStandard("gameMaximumHighScores", 10.0f, "Maximum number of high scores to track.");
 	setStandard("islandMaximumWidth", 1000.0f, "Maximum island width.");
 	setStandard("islandMaximumHeight", 100.0f, "Maximum island height.");
-	setStandard("islandTerrainDensity", 256.0f, "Density of island terrain tessellation.");
+	setStandard("islandTerrainBaseDensity", 128.0f, "Density of island terrain tessellation.");
+	setStandard("islandTerrainDetail", 2.0f, "Island detail level (1, 2, or 3) beyond base density, to be specified by user.");
 	setStandard("islandTerrainRoughness", 0.5f, "Roughness of island terrain randomization.");
 	setStandard("islandTerrainGradDist", 0.5f, "Island terrain generation gradual distance factor.");
 	setStandard("islandTerrainBlends", 4.0f, "Island terrain generation blending factor.");
@@ -367,13 +371,16 @@ GameSystem::GameSystem() {
 	setStandard("textCredits", "Dedicated to Sergeant Sean Drenth #6894 of the Phoenix Police Department, EOW October 18, 2010.\n\nCreated by Joshua Bodine.\n\nMusic and sound effects by Michael Birch.\n\nThis software uses the Titillium Web font by Accademia di Belle Arti di Urbino and students of MA course of Visual design.\n\nThis software uses the Simple DirectMedia Layer library (http://www.libsdl.org/).\n\nPortions of this software are copyright (c) 2014 The FreeType Project (www.freetype.org). All rights reserved.", "Credits text.");
 
 	// load standards from preferences (or save standard preferences if no file)
-	if(platform->getPreferenceFloat("preferencesVersion") == 2.0f) {
+	if(platform->getPreferenceFloat("preferencesVersion") == 3.0f) {
 		if(getString("displayWindowedResolutions").find(platform->getPreferenceString("displayWindowedResolution")) != std::string::npos)
 			setStandard("displayWindowedResolution", platform->getPreferenceString("displayWindowedResolution").c_str());
+		setStandard("displayFramerateLimiting", platform->getPreferenceFloat("displayFramerateLimiting"));
+		setStandard("displayMultisamplingLevel", platform->getPreferenceFloat("displayMultisamplingLevel"));
 		setStandard("displayStartFullscreen", (platform->getPreferenceFloat("displayStartFullscreen") == 1.0f ? true : false));
 		setStandard("audioMusicVolume", platform->getPreferenceFloat("audioMusicVolume"));
 		setStandard("audioEffectsVolume", platform->getPreferenceFloat("audioEffectsVolume"));
 		setStandard("gameStartingLevel", platform->getPreferenceString("gameStartingLevel").c_str());
+		setStandard("islandTerrainDetail", platform->getPreferenceFloat("islandTerrainDetail"));
 		std::string highScoresString = platform->getPreferenceString("highScores");
 		size_t i = highScoresString.find('\t');
 		while(i != std::string::npos) {

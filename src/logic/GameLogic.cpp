@@ -323,6 +323,33 @@ GameLogic::GameLogic() :
 	windowedScreenResolutionButtonZoneListener = new MouseZoneListener();
 	windowedScreenResolutionButtonClickListener = new MouseButtonListener();
 
+	framerateLimitingEntry.first = "label";
+	framerateLimitingEntry.second["metrics"] = (void*) new UIMetrics;
+	framerateLimitingEntry.second["fontSize"] = (void*) new float;
+	framerateLimitingEntry.second["fontColor"] = (void*) new Vector4;
+	framerateLimitingEntry.second["wrap"] = (void*) new float;
+	framerateLimitingEntry.second["text"] = (void*) new std::string;
+	framerateLimitingButtonZoneListener = new MouseZoneListener();
+	framerateLimitingButtonClickListener = new MouseButtonListener();
+
+	multisamplingLevelEntry.first = "label";
+	multisamplingLevelEntry.second["metrics"] = (void*) new UIMetrics;
+	multisamplingLevelEntry.second["fontSize"] = (void*) new float;
+	multisamplingLevelEntry.second["fontColor"] = (void*) new Vector4;
+	multisamplingLevelEntry.second["wrap"] = (void*) new float;
+	multisamplingLevelEntry.second["text"] = (void*) new std::string;
+	multisamplingButtonZoneListener = new MouseZoneListener();
+	multisamplingButtonClickListener = new MouseButtonListener();
+
+	terrainDetailEntry.first = "label";
+	terrainDetailEntry.second["metrics"] = (void*) new UIMetrics;
+	terrainDetailEntry.second["fontSize"] = (void*) new float;
+	terrainDetailEntry.second["fontColor"] = (void*) new Vector4;
+	terrainDetailEntry.second["wrap"] = (void*) new float;
+	terrainDetailEntry.second["text"] = (void*) new std::string;
+	terrainDetailButtonZoneListener = new MouseZoneListener();
+	terrainDetailButtonClickListener = new MouseButtonListener();
+
 	resetHighScoresEntry.first = "button";
 	resetHighScoresEntry.second["metrics"] = (void*) new UIMetrics;
 	resetHighScoresEntry.second["fontSize"] = (void*) new float;
@@ -1502,6 +1529,24 @@ lastFPSUpdate = platform->getExecMills();
 					reScheme();
 					needRedraw = true;
 				}
+			} else if(framerateLimitingButtonZoneListener->isEntered) {
+				if(activeMenuSelection != &framerateLimitingEntry) {
+					activeMenuSelection = &framerateLimitingEntry;
+					reScheme();
+					needRedraw = true;
+				}
+			} else if(multisamplingButtonZoneListener->isEntered) {
+				if(activeMenuSelection != &multisamplingLevelEntry) {
+					activeMenuSelection = &multisamplingLevelEntry;
+					reScheme();
+					needRedraw = true;
+				}
+			} else if(terrainDetailButtonZoneListener->isEntered) {
+				if(activeMenuSelection != &terrainDetailEntry) {
+					activeMenuSelection = &terrainDetailEntry;
+					reScheme();
+					needRedraw = true;
+				}
 			} else if(backButtonZoneListener->isEntered) {
 				if(activeMenuSelection != &backButtonEntry) {
 					activeMenuSelection = &backButtonEntry;
@@ -1601,6 +1646,63 @@ lastFPSUpdate = platform->getExecMills();
 				reScheme();
 				needRedraw = true;
 			}
+		} else if(framerateLimitingButtonClickListener->wasClicked()) {
+			if((int) gameSystem->getFloat("displayFramerateLimiting") == GameSystem::LIMIT_VSYNC) {
+				gameSystem->setStandard("displayFramerateLimiting", (float) GameSystem::LIMIT_30);
+			} else if((int) gameSystem->getFloat("displayFramerateLimiting") == GameSystem::LIMIT_30) {
+				gameSystem->setStandard("displayFramerateLimiting", (float) GameSystem::LIMIT_60);
+			} else if((int) gameSystem->getFloat("displayFramerateLimiting") == GameSystem::LIMIT_60) {
+				gameSystem->setStandard("displayFramerateLimiting", (float) GameSystem::LIMIT_120);
+			} else if((int) gameSystem->getFloat("displayFramerateLimiting") == GameSystem::LIMIT_120) {
+				gameSystem->setStandard("displayFramerateLimiting", (float) GameSystem::LIMIT_OFF);
+			} else {
+				gameSystem->setStandard("displayFramerateLimiting", (float) GameSystem::LIMIT_VSYNC);
+			}
+
+			gameSystem->flushPreferences();
+
+			bool fullScreen = gameGraphics->fullScreen;
+			delete gameGraphics;
+			gameGraphics = new GameGraphics(fullScreen);
+			drawingMaster->newGraphics();
+			inputHandler->execute();
+			mouseMotionListener->wasMoved();
+
+			reScheme();
+			needRedraw = true;
+		} else if(multisamplingButtonClickListener->wasClicked()) {
+			if(gameSystem->getFloat("displayMultisamplingLevel") == 0.0f) {
+				gameSystem->setStandard("displayMultisamplingLevel", 2.0f);
+			} else if(gameSystem->getFloat("displayMultisamplingLevel") == 2.0f) {
+				gameSystem->setStandard("displayMultisamplingLevel", 4.0f);
+			} else {
+				gameSystem->setStandard("displayMultisamplingLevel", 0.0f);
+			}
+
+			gameSystem->flushPreferences();
+
+			bool fullScreen = gameGraphics->fullScreen;
+			delete gameGraphics;
+			gameGraphics = new GameGraphics(fullScreen);
+			drawingMaster->newGraphics();
+			inputHandler->execute();
+			mouseMotionListener->wasMoved();
+
+			reScheme();
+			needRedraw = true;
+		} else if(terrainDetailButtonClickListener->wasClicked()) {
+			if(gameSystem->getFloat("islandTerrainDetail") == 1.0f) {
+				gameSystem->setStandard("islandTerrainDetail", 2.0f);
+			} else if(gameSystem->getFloat("islandTerrainDetail") == 2.0f) {
+				gameSystem->setStandard("islandTerrainDetail", 3.0f);
+			} else {
+				gameSystem->setStandard("islandTerrainDetail", 1.0f);
+			}
+
+			gameSystem->flushPreferences();
+
+			reScheme();
+			needRedraw = true;
 		} else if(backButtonClickListener->wasClicked()) {
 			currentScheme = SCHEME_MAINMENU;
 			activeMenuSelection = NULL;
@@ -1623,6 +1725,18 @@ lastFPSUpdate = platform->getExecMills();
 					reScheme();
 					needRedraw = true;
 				} else if(activeMenuSelection == &resetHighScoresEntry) {
+					activeMenuSelection = &terrainDetailEntry;
+					reScheme();
+					needRedraw = true;
+				} else if(activeMenuSelection == &terrainDetailEntry) {
+					activeMenuSelection = &multisamplingLevelEntry;
+					reScheme();
+					needRedraw = true;
+				} else if(activeMenuSelection == &multisamplingLevelEntry) {
+					activeMenuSelection = &framerateLimitingEntry;
+					reScheme();
+					needRedraw = true;
+				} else if(activeMenuSelection == &framerateLimitingEntry) {
 					activeMenuSelection = &windowedScreenResolutionEntry;
 					reScheme();
 					needRedraw = true;
@@ -1665,6 +1779,18 @@ lastFPSUpdate = platform->getExecMills();
 					reScheme();
 					needRedraw = true;
 				} else if(activeMenuSelection == &windowedScreenResolutionEntry) {
+					activeMenuSelection = &framerateLimitingEntry;
+					reScheme();
+					needRedraw = true;
+				} else if(activeMenuSelection == &framerateLimitingEntry) {
+					activeMenuSelection = &multisamplingLevelEntry;
+					reScheme();
+					needRedraw = true;
+				} else if(activeMenuSelection == &multisamplingLevelEntry) {
+					activeMenuSelection = &terrainDetailEntry;
+					reScheme();
+					needRedraw = true;
+				} else if(activeMenuSelection == &terrainDetailEntry) {
 					activeMenuSelection = &resetHighScoresEntry;
 					reScheme();
 					needRedraw = true;
@@ -1761,6 +1887,96 @@ lastFPSUpdate = platform->getExecMills();
 						reScheme();
 						needRedraw = true;
 					}
+				} else if(activeMenuSelection == &framerateLimitingEntry) {
+					if((int) gameSystem->getFloat("displayFramerateLimiting") == GameSystem::LIMIT_VSYNC) {
+						if(key == SDLK_LEFT)
+							gameSystem->setStandard("displayFramerateLimiting", (float) GameSystem::LIMIT_OFF);
+						else
+							gameSystem->setStandard("displayFramerateLimiting", (float) GameSystem::LIMIT_30);
+					} else if((int) gameSystem->getFloat("displayFramerateLimiting") == GameSystem::LIMIT_30) {
+						if(key == SDLK_LEFT)
+							gameSystem->setStandard("displayFramerateLimiting", (float) GameSystem::LIMIT_VSYNC);
+						else
+							gameSystem->setStandard("displayFramerateLimiting", (float) GameSystem::LIMIT_60);
+					} else if((int) gameSystem->getFloat("displayFramerateLimiting") == GameSystem::LIMIT_60) {
+						if(key == SDLK_LEFT)
+							gameSystem->setStandard("displayFramerateLimiting", (float) GameSystem::LIMIT_30);
+						else
+							gameSystem->setStandard("displayFramerateLimiting", (float) GameSystem::LIMIT_120);
+					} else if((int) gameSystem->getFloat("displayFramerateLimiting") == GameSystem::LIMIT_120) {
+						if(key == SDLK_LEFT)
+							gameSystem->setStandard("displayFramerateLimiting", (float) GameSystem::LIMIT_60);
+						else
+							gameSystem->setStandard("displayFramerateLimiting", (float) GameSystem::LIMIT_OFF);
+					} else {
+						if(key == SDLK_LEFT)
+							gameSystem->setStandard("displayFramerateLimiting", (float) GameSystem::LIMIT_120);
+						else
+							gameSystem->setStandard("displayFramerateLimiting", (float) GameSystem::LIMIT_VSYNC);
+					}
+
+					gameSystem->flushPreferences();
+
+					bool fullScreen = gameGraphics->fullScreen;
+					delete gameGraphics;
+					gameGraphics = new GameGraphics(fullScreen);
+					drawingMaster->newGraphics();
+					inputHandler->execute();
+					mouseMotionListener->wasMoved();
+
+					reScheme();
+					needRedraw = true;
+				} else if(activeMenuSelection == &multisamplingLevelEntry) {
+					if(gameSystem->getFloat("displayMultisamplingLevel") == 0.0f) {
+						if(key == SDLK_LEFT)
+							gameSystem->setStandard("displayMultisamplingLevel", 4.0f);
+						else
+							gameSystem->setStandard("displayMultisamplingLevel", 2.0f);
+					} else if(gameSystem->getFloat("displayMultisamplingLevel") == 2.0f) {
+						if(key == SDLK_LEFT)
+							gameSystem->setStandard("displayMultisamplingLevel", 0.0f);
+						else
+							gameSystem->setStandard("displayMultisamplingLevel", 4.0f);
+					} else {
+						if(key == SDLK_LEFT)
+							gameSystem->setStandard("displayMultisamplingLevel", 2.0f);
+						else
+							gameSystem->setStandard("displayMultisamplingLevel", 0.0f);
+					}
+
+					gameSystem->flushPreferences();
+
+					bool fullScreen = gameGraphics->fullScreen;
+					delete gameGraphics;
+					gameGraphics = new GameGraphics(fullScreen);
+					drawingMaster->newGraphics();
+					inputHandler->execute();
+					mouseMotionListener->wasMoved();
+
+					reScheme();
+					needRedraw = true;
+				} else if(activeMenuSelection == &terrainDetailEntry) {
+					if(gameSystem->getFloat("islandTerrainDetail") == 1.0f) {
+						if(key == SDLK_LEFT)
+							gameSystem->setStandard("islandTerrainDetail", 3.0f);
+						else
+							gameSystem->setStandard("islandTerrainDetail", 2.0f);
+					} else if(gameSystem->getFloat("islandTerrainDetail") == 2.0f) {
+						if(key == SDLK_LEFT)
+							gameSystem->setStandard("islandTerrainDetail", 1.0f);
+						else
+							gameSystem->setStandard("islandTerrainDetail", 3.0f);
+					} else {
+						if(key == SDLK_LEFT)
+							gameSystem->setStandard("islandTerrainDetail", 2.0f);
+						else
+							gameSystem->setStandard("islandTerrainDetail", 1.0f);
+					}
+
+					gameSystem->flushPreferences();
+
+					reScheme();
+					needRedraw = true;
 				}
 			} else if(key == SDLK_RETURN) {
 				if(activeMenuSelection == &resetHighScoresEntry) {
