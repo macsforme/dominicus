@@ -218,12 +218,12 @@ void FortressRenderer::execute(std::map<std::string, void*> arguments) {
 	// set the overall drawing state
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);
 
-	glVertexAttribPointer(attributes["position"], 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GL_FLOAT), (GLvoid*) 0);
-	glVertexAttribPointer(attributes["normal"], 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GL_FLOAT),
+	glVertexAttribPointer(attributes["position"], 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), (GLvoid*) 0);
+	glVertexAttribPointer(attributes["normal"], 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat),
 			(GLvoid*) (3 * sizeof(GLfloat)));
-	glVertexAttribPointer(attributes["texCoord"], 2, GL_FLOAT, GL_FALSE, 12 * sizeof(GL_FLOAT),
+	glVertexAttribPointer(attributes["texCoord"], 2, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat),
 			(GLvoid*) (6 * sizeof(GLfloat)));
-	glVertexAttribPointer(attributes["color"], 4, GL_FLOAT, GL_FALSE, 12 * sizeof(GL_FLOAT),
+	glVertexAttribPointer(attributes["color"], 4, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat),
 			(GLvoid*) (8 * sizeof(GLfloat)));
 
 	glEnableVertexAttribArray(attributes["position"]);

@@ -118,15 +118,15 @@ void DrawCircle::execute(DrawStackArgList argList) {
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexBuffers["elements"]);
 
-	glVertexAttribPointer(attributes["position"], 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GL_FLOAT),
+	glVertexAttribPointer(attributes["position"], 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat),
 			(GLvoid*) 0);
-	glVertexAttribPointer(attributes["primCoord"], 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GL_FLOAT),
+	glVertexAttribPointer(attributes["primCoord"], 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat),
 			(GLvoid*) (2 * sizeof(GLfloat)));
-	glVertexAttribPointer(attributes["curveOriginCoord"], 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GL_FLOAT),
+	glVertexAttribPointer(attributes["curveOriginCoord"], 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat),
 			(GLvoid*) (4 * sizeof(GLfloat)));
-	glVertexAttribPointer(attributes["border1Dist"], 1, GL_FLOAT, GL_FALSE, 8 * sizeof(GL_FLOAT),
+	glVertexAttribPointer(attributes["border1Dist"], 1, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat),
 			(GLvoid*) (6 * sizeof(GLfloat)));
-	glVertexAttribPointer(attributes["border2Dist"], 1, GL_FLOAT, GL_FALSE, 8 * sizeof(GL_FLOAT),
+	glVertexAttribPointer(attributes["border2Dist"], 1, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat),
 			(GLvoid*) (7 * sizeof(GLfloat)));
 
 	glEnableVertexAttribArray(attributes["position"]);

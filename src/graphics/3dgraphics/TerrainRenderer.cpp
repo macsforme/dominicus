@@ -236,10 +236,10 @@ void TerrainRenderer::execute(std::map<std::string, void*> arguments) {
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexBuffers["elements"]);
 
-	glVertexAttribPointer(attributes["position"], 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GL_FLOAT), (void*) 0);
-	glVertexAttribPointer(attributes["normal"], 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GL_FLOAT),
+	glVertexAttribPointer(attributes["position"], 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*) 0);
+	glVertexAttribPointer(attributes["normal"], 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat),
 			(GLvoid*) (3 * sizeof(GLfloat)));
-	glVertexAttribPointer(attributes["texCoord"], 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GL_FLOAT),
+	glVertexAttribPointer(attributes["texCoord"], 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat),
 			(GLvoid*) (6 * sizeof(GLfloat)));
 
 	glEnableVertexAttribArray(attributes["position"]);

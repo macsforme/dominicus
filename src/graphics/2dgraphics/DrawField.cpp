@@ -148,7 +148,7 @@ void DrawField::execute(DrawStackArgList argList) {
 			boxColor->w
 		};
 
-	glBufferData(GL_ARRAY_BUFFER, 28 * sizeof(GL_FLOAT), vertexBufferArray, GL_STREAM_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 28 * sizeof(GLfloat), vertexBufferArray, GL_STREAM_DRAW);
 
 	// state
 	glEnable(GL_BLEND);
@@ -164,8 +164,8 @@ void DrawField::execute(DrawStackArgList argList) {
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexBuffers["elements"]);
 
-	glVertexAttribPointer(attributes["position"], 3, GL_FLOAT, GL_FALSE, 7 * sizeof(GL_FLOAT), (void*) 0);
-	glVertexAttribPointer(attributes["color"], 4, GL_FLOAT, GL_FALSE, 7 * sizeof(GL_FLOAT),
+	glVertexAttribPointer(attributes["position"], 3, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (void*) 0);
+	glVertexAttribPointer(attributes["color"], 4, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat),
 			(GLvoid*) (3 * sizeof(GLfloat)));
 
 	glEnableVertexAttribArray(attributes["position"]);

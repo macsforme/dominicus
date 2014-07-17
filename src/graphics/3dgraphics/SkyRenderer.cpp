@@ -129,7 +129,7 @@ void SkyRenderer::execute(std::map<std::string, void*> arguments) {
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexBuffers["elements"]);
 
-	glVertexAttribPointer(attributes["position"], 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GL_FLOAT), (GLvoid*) 0);
+	glVertexAttribPointer(attributes["position"], 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*) 0);
 
 	glEnableVertexAttribArray(attributes["position"]);
 
