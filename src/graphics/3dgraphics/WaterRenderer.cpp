@@ -15,14 +15,6 @@
 #include "platform/Platform.h"
 #include "state/GameState.h"
 
-#ifndef GL_TEXTURE_MAX_ANISOTROPY_EXT
-#define GL_TEXTURE_MAX_ANISOTROPY_EXT 0x84FE
-#endif
-
-#ifndef GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT
-#define GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT 0x84FF
-#endif
-
 extern GameGraphics* gameGraphics;
 extern GameState* gameState;
 extern Platform* platform;

@@ -134,12 +134,14 @@ SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 0);
 		}
 
 		// test and log the presence of the anisotropic filtering extension
+/*
 		if(strstr((const char*) glGetString(GL_EXTENSIONS),
 				"GL_EXT_texture_filter_anisotropic") == NULL)
 			gameSystem->log(GameSystem::LOG_FATAL,
 					"OpenGL extension not supported: GL_EXT_texture_filter_anisotropic");
 		else
 			gameSystem->log(GameSystem::LOG_VERBOSE, "OpenGL Extension Found: GL_EXT_texture_filter_anisotropic");
+*/
 
 		// test and log the presence of the framebuffer object extension (needed for glBuildMipmaps)
 		if(strstr((const char*) glGetString(GL_EXTENSIONS),
@@ -148,6 +150,7 @@ SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 0);
 					"OpenGL extension not supported: GL_EXT_framebuffer_object");
 		else
 			gameSystem->log(GameSystem::LOG_VERBOSE, "OpenGL Extension Found: GL_EXT_framebuffer_object");
+
 		// test and log the presence of the multisample extension
 		if(strstr((const char*) glGetString(GL_EXTENSIONS),
 				"GL_ARB_multisample") == NULL)
