@@ -20,6 +20,7 @@
 #include "graphics/2dgraphics/DrawTexture.h"
 #include "graphics/3dgraphics/FortressRenderer.h"
 #include "graphics/3dgraphics/MissileRenderer.h"
+#include "graphics/3dgraphics/MissileTrailRenderer.h"
 #include "graphics/3dgraphics/ShellRenderer.h"
 #include "graphics/3dgraphics/ShipRenderer.h"
 #include "graphics/3dgraphics/SkyRenderer.h"
@@ -65,6 +66,7 @@ void DrawingMaster::buildDrawers() {
 
 	drawers["fortressRenderer"] = new FortressRenderer();
 	drawers["missileRenderer"] = new MissileRenderer();
+	drawers["missileTrailRenderer"] = new MissileTrailRenderer();
 	drawers["shellRenderer"] = new ShellRenderer();
 	drawers["shipRenderer"] = new ShipRenderer();
 	drawers["skyRenderer"] = new SkyRenderer();
@@ -89,6 +91,7 @@ void DrawingMaster::destroyDrawers() {
 
 	delete (FortressRenderer*) drawers["fortressRenderer"];
 	delete (MissileRenderer*) drawers["missileRenderer"];
+	delete (MissileTrailRenderer*) drawers["missileTrailRenderer"];
 	delete (ShellRenderer*) drawers["shellRenderer"];
 	delete (ShipRenderer*) drawers["shipRenderer"];
 	delete (TerrainRenderer*) drawers["terrainRenderer"];

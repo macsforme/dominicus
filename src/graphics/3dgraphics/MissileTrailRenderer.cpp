@@ -1,7 +1,7 @@
-// MissileRenderer.cpp
+// MissileTrailRenderer.cpp
 // Crucible Island
 
-#include "graphics/3dgraphics/MissileRenderer.h"
+#include "graphics/3dgraphics/MissileTrailRenderer.h"
 
 #include <vector>
 
@@ -17,26 +17,34 @@ extern GameGraphics* gameGraphics;
 extern GameState* gameState;
 extern GameSystem* gameSystem;
 
-MissileRenderer::MissileRenderer() {
-	missileMesh = Mesh("missile");
+MissileTrailRenderer::MissileTrailRenderer() {
+	// initialize geometry with appropriate length
+	missileMesh = Mesh("trail");
+
+	for(size_t i = 0; i < missileMesh.vertices.size(); ++i) {
+		missileMesh.vertices[i].x *= gameSystem->getFloat("missileTrailLength");
+	}
+
+	for(size_t i = 0; i < missileMesh.texCoords.size(); ++i) {
+		missileMesh.texCoords[i].x -= 0.5f;
+		missileMesh.texCoords[i].y -= 0.5f;
+	}
+
+	missileMesh.autoNormal();
 
 	// set up shader
 	GLuint shaderID = 0;
 	std::vector<GLuint> shaderIDs;
 
-	shaderID = gameGraphics->getShaderID(GL_VERTEX_SHADER, "colorTextureLighting"); shaderIDs.push_back(shaderID);
-	shaderID = gameGraphics->getShaderID(GL_FRAGMENT_SHADER, "colorTextureLighting"); shaderIDs.push_back(shaderID);
+	shaderID = gameGraphics->getShaderID(GL_VERTEX_SHADER, "missileTrail"); shaderIDs.push_back(shaderID);
+	shaderID = gameGraphics->getShaderID(GL_FRAGMENT_SHADER, "missileTrail"); shaderIDs.push_back(shaderID);
 	shaderProgram = gameGraphics->makeProgram(shaderIDs);
 
 	// set up uniforms and attributes
 	uniforms["mvMatrix"] = glGetUniformLocation(shaderProgram, "mvMatrix");
 	uniforms["pMatrix"] = glGetUniformLocation(shaderProgram, "pMatrix");
 	uniforms["texture"] = glGetUniformLocation(shaderProgram, "texture");
-	uniforms["ambientColor"] = glGetUniformLocation(shaderProgram, "ambientColor");
-	uniforms["diffuseColor"] = glGetUniformLocation(shaderProgram, "diffuseColor");
-	uniforms["specularColor"] = glGetUniformLocation(shaderProgram, "specularColor");
-	uniforms["lightPosition"] = glGetUniformLocation(shaderProgram, "lightPosition");
-	uniforms["shininess"] = glGetUniformLocation(shaderProgram, "shininess");
+	uniforms["timer"] = glGetUniformLocation(shaderProgram, "timer");
 
 	attributes["position"] = glGetAttribLocation(shaderProgram, "position");
 	attributes["normal"] = glGetAttribLocation(shaderProgram, "normal");
@@ -84,7 +92,7 @@ MissileRenderer::MissileRenderer() {
 				vertDataBufferArray[bufferIndex * 36 + p * 12 + 8] = 1.0f;
 				vertDataBufferArray[bufferIndex * 36 + p * 12 + 9] = 1.0f;
 				vertDataBufferArray[bufferIndex * 36 + p * 12 + 10] = 1.0f;
-				vertDataBufferArray[bufferIndex * 36 + p * 12 + 11] = 1.0f;
+				vertDataBufferArray[bufferIndex * 36 + p * 12 + 11] = (1.0f + missileMesh.vertices[itr->second[i].vertices[p]].x / gameSystem->getFloat("missileTrailLength"));
 			}
 
 			++bufferIndex;
@@ -109,9 +117,31 @@ MissileRenderer::MissileRenderer() {
 	glBufferData(GL_ARRAY_BUFFER, totalFaces * 36 * sizeof(GLfloat), vertDataBufferArray, GL_STATIC_DRAW);
 
 	delete[] vertDataBufferArray;
+
+	// send the noise texture
+	glEnable(GL_TEXTURE_2D);
+
+	glGenTextures(1, &noiseTextureID);
+	glBindTexture(GL_TEXTURE_2D, noiseTextureID);
+
+	glTexImage2D(
+			GL_TEXTURE_2D,
+			0,
+			(gameGraphics->noiseTexture->format == Texture::FORMAT_RGBA ? GL_RGBA : GL_RGB),
+			gameGraphics->noiseTexture->width,
+			gameGraphics->noiseTexture->height,
+			0,
+			(gameGraphics->noiseTexture->format == Texture::FORMAT_RGBA ? GL_RGBA : GL_RGB),
+			GL_UNSIGNED_BYTE,
+			gameGraphics->noiseTexture->getDataPointer()
+	);
+
+	glGenerateMipmap(GL_TEXTURE_2D);
+
+	glDisable(GL_TEXTURE_2D);
 }
 
-MissileRenderer::~MissileRenderer() {
+MissileTrailRenderer::~MissileTrailRenderer() {
 	// undo shader setup
 	GLsizei shaderCount;
 	GLuint* shaders = new GLuint[2];
@@ -130,7 +160,7 @@ MissileRenderer::~MissileRenderer() {
 	glDeleteBuffers(1, &(vertexBuffers["elements"]));
 }
 
-void MissileRenderer::execute(std::map<std::string, void*> arguments) {
+void MissileTrailRenderer::execute(std::map<std::string, void*> arguments) {
 	// prepare variables
 	Vector4 lightPosition(1.0f, 1.0f, -1.0f, 0.0f);
 	lightPosition = lightPosition * gameGraphics->currentCamera->lightMatrix;
@@ -140,6 +170,8 @@ void MissileRenderer::execute(std::map<std::string, void*> arguments) {
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CW);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_MULTISAMPLE);
 
 	// enable shader
@@ -147,11 +179,7 @@ void MissileRenderer::execute(std::map<std::string, void*> arguments) {
 
 	// set uniforms
 	glUniform1i(uniforms["texture"], 0);
-	glUniform3f(uniforms["ambientColor"], 0.15f, 0.15f, 0.15f);
-	glUniform3f(uniforms["diffuseColor"], 0.5f, 0.5f, 0.5f);
-	glUniform3f(uniforms["specularColor"], 0.8f, 0.8f, 0.8f);
-	glUniform3f(uniforms["lightPosition"], lightPosition.x, lightPosition.y, lightPosition.z);
-	glUniform1f(uniforms["shininess"], 10.0f);
+	glUniform1f(uniforms["timer"], gameState->getGameMills() / 1000.0f);
 
 	// set the overall drawing state
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);
@@ -173,13 +201,13 @@ void MissileRenderer::execute(std::map<std::string, void*> arguments) {
 		if(! gameState->missiles[i].alive)
 			continue;
 
-		// calculate the matrix for this missile position
+		// calculate the matrix for this missile trail position
 		Matrix4 mvMatrix; mvMatrix.identity();
 		rotateMatrix(Vector3(0.0f, 0.0f, 1.0f), radians(gameState->missiles[i].tilt), mvMatrix);
 		rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(gameState->missiles[i].rotation), mvMatrix);
 		translateMatrix(gameState->missiles[i].position.x, gameState->missiles[i].position.y, gameState->missiles[i].position.z, mvMatrix);
-
 		mvMatrix = mvMatrix * gameGraphics->currentCamera->mvMatrix;
+
 		float mvMatrixArray[] = {
 				mvMatrix.m11, mvMatrix.m12, mvMatrix.m13, mvMatrix.m14,
 				mvMatrix.m21, mvMatrix.m22, mvMatrix.m23, mvMatrix.m24,
@@ -187,28 +215,22 @@ void MissileRenderer::execute(std::map<std::string, void*> arguments) {
 				mvMatrix.m41, mvMatrix.m42, mvMatrix.m43, mvMatrix.m44
 			};
 
-		// draw the missile
-		for(
-				std::map<std::string, std::vector<Mesh::Face> >::iterator itr =
-					missileMesh.faceGroups.begin();
-				itr != missileMesh.faceGroups.end();
-				++itr
-			) {
-			// set the texture
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, gameGraphics->getTextureID(std::string("structure/" + itr->first).c_str()));
+		// set the texture
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, noiseTextureID);
 
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-			glUniformMatrix4fv(uniforms["mvMatrix"], 1, GL_FALSE, mvMatrixArray);
-			glUniformMatrix4fv(uniforms["pMatrix"], 1, GL_FALSE, (gameState->binoculars ? gameGraphics->ppBinoMatrixArray : gameGraphics->ppMatrixArray));
+		glUniformMatrix4fv(uniforms["mvMatrix"], 1, GL_FALSE, mvMatrixArray);
+		glUniformMatrix4fv(uniforms["pMatrix"], 1, GL_FALSE, (gameState->binoculars ? gameGraphics->ppBinoMatrixArray : gameGraphics->ppMatrixArray));
 
-			// draw the geometry
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexBuffers[std::string("elements_" + itr->first).c_str()]);
+		// draw the geometry
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexBuffers["elements_trail"]);
 
-			glDrawElements(GL_TRIANGLES, itr->second.size() * 3, GL_UNSIGNED_INT, NULL);
-		}
+		glDrawElements(GL_TRIANGLES, missileMesh.faceGroups["trail"].size() * 3, GL_UNSIGNED_INT, NULL);
 	}
 
 	glDisableVertexAttribArray(attributes["position"]);
@@ -220,5 +242,6 @@ void MissileRenderer::execute(std::map<std::string, void*> arguments) {
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
+	glDisable(GL_BLEND);
 	glDisable(GL_MULTISAMPLE);
 }

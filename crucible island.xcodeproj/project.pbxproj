@@ -48,6 +48,7 @@
 		03BB9B9B131F3F50009DFC8B /* GameGraphics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03BB9B7E131F3F50009DFC8B /* GameGraphics.cpp */; };
 		03BB9D26131F5D39009DFC8B /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03BB9B88131F3F50009DFC8B /* Texture.cpp */; };
 		03BC5B001339F19900DD3F04 /* FontManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03BB9B81131F3F50009DFC8B /* FontManager.cpp */; };
+		03C38F19197F5221007725F1 /* MissileTrailRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03C38F17197F5221007725F1 /* MissileTrailRenderer.cpp */; };
 		03C806CC130E500D0037D309 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		03C806CD130E50140037D309 /* crucible island.icns in Resources */ = {isa = PBXBuildFile; fileRef = 03D47B7D1263E27F001755A6 /* crucible island.icns */; };
 		03C806CE130E50340037D309 /* shaders in Resources */ = {isa = PBXBuildFile; fileRef = 030F8DEC1264C00100190225 /* shaders */; };
@@ -176,6 +177,8 @@
 		03BB9B84131F3F50009DFC8B /* TextBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextBlock.h; sourceTree = "<group>"; };
 		03BB9B88131F3F50009DFC8B /* Texture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Texture.cpp; sourceTree = "<group>"; };
 		03BB9B89131F3F50009DFC8B /* Texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Texture.h; sourceTree = "<group>"; };
+		03C38F17197F5221007725F1 /* MissileTrailRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MissileTrailRenderer.cpp; sourceTree = "<group>"; };
+		03C38F18197F5221007725F1 /* MissileTrailRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MissileTrailRenderer.h; sourceTree = "<group>"; };
 		03C806C7130E4FED0037D309 /* Crucible Island.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Crucible Island.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		03C9206A13693A51000C4373 /* GameState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameState.h; path = src/state/GameState.h; sourceTree = "<group>"; };
 		03C9206B13693A51000C4373 /* GameState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameState.cpp; path = src/state/GameState.cpp; sourceTree = "<group>"; };
@@ -384,6 +387,8 @@
 				03E508F818FE1B340056ECE6 /* FortressRenderer.cpp */,
 				03F4FD671921DC2F00B5A322 /* MissileRenderer.h */,
 				03F4FD661921DC2F00B5A322 /* MissileRenderer.cpp */,
+				03C38F18197F5221007725F1 /* MissileTrailRenderer.h */,
+				03C38F17197F5221007725F1 /* MissileTrailRenderer.cpp */,
 				034AF1221936D67F00272390 /* ShellRenderer.h */,
 				034AF1211936D67F00272390 /* ShellRenderer.cpp */,
 				03ACFE4218FCD8C200A6B447 /* ShipRenderer.h */,
@@ -539,6 +544,7 @@
 				036CFFE118EB5D4800C1B797 /* Camera.cpp in Sources */,
 				035466631912C17200F4953E /* DrawField.cpp in Sources */,
 				03BB9D26131F5D39009DFC8B /* Texture.cpp in Sources */,
+				03C38F19197F5221007725F1 /* MissileTrailRenderer.cpp in Sources */,
 				0303173213204F1F009B9AFD /* GameLogic.cpp in Sources */,
 				03BC5B001339F19900DD3F04 /* FontManager.cpp in Sources */,
 				0330C498133A2AB6006199BE /* TextBlock.cpp in Sources */,

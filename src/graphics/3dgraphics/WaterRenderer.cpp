@@ -104,6 +104,7 @@ void WaterRenderer::execute(std::map<std::string, void*> arguments) {
 		};
 
 	// state
+	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -146,5 +147,6 @@ void WaterRenderer::execute(std::map<std::string, void*> arguments) {
 	glDisableVertexAttribArray(attributes["position"]);
 
 	// undo state
+	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
 }

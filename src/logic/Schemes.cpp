@@ -924,6 +924,9 @@ void Schemes::playingScheme() {
 	// fortress
 	drawingMaster->drawStack.push_back(gameLogic->fortressEntry);
 
+	// missile trails
+	drawingMaster->drawStack.push_back(gameLogic->missileTrailEntry);
+
 	// missiles
 	drawingMaster->drawStack.push_back(gameLogic->missileEntry);
 

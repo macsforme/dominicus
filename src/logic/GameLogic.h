@@ -23,6 +23,7 @@
 #include "graphics/3dgraphics/ShipRenderer.h"
 #include "graphics/3dgraphics/SkyRenderer.h"
 #include "graphics/3dgraphics/MissileRenderer.h"
+#include "graphics/3dgraphics/MissileTrailRenderer.h"
 #include "graphics/3dgraphics/ShellRenderer.h"
 #include "graphics/3dgraphics/TerrainRenderer.h"
 #include "graphics/3dgraphics/FortressRenderer.h"
@@ -120,6 +121,7 @@ KeyAbsoluteListener* cameraAheadKeyListener;
 	DrawStackEntry terrainEntry;
 	DrawStackEntry shipEntry;
 	DrawStackEntry fortressEntry;
+	DrawStackEntry missileTrailEntry;
 	DrawStackEntry missileEntry;
 	DrawStackEntry shellEntry;
 	DrawStackEntry strikeEffectEntry;

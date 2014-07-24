@@ -510,6 +510,8 @@ GameLogic::GameLogic() :
 
 	fortressEntry.first = "fortressRenderer";
 
+	missileTrailEntry.first = "missileTrailRenderer";
+
 	missileEntry.first = "missileRenderer";
 
 	shellEntry.first = "shellRenderer";
