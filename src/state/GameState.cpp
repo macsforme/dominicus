@@ -327,6 +327,8 @@ unsigned int GameState::execute(bool unScheduled) {
 			missile.tilt = 90.0f;
 
 			missiles.push_back(missile);
+
+			playEffectAtDistance("missileEffect", distance(fortress.position, ships[i].position));
 		}
 	}
 
@@ -407,6 +409,8 @@ unsigned int GameState::execute(bool unScheduled) {
 				fortress.missileStrike();
 
 				lastStrikeTime = lastUpdateGameTime;
+
+				gameAudio->playSound("explosionEffect");
 			}
 		}
 	}
@@ -459,6 +463,11 @@ unsigned int GameState::execute(bool unScheduled) {
 				shells.erase(shells.begin() + p);
 				++score;
 
+				playEffectAtDistance(
+						"explosionEffect",
+						distance(fortress.position, shellStartPos + shellTravelVec * cpaProgression)
+					);
+
 				break;
 			}
 
@@ -504,9 +513,13 @@ unsigned int GameState::execute(bool unScheduled) {
 			fortress.ammunition += gameSystem->getFloat("stateEMPFiringCost");
 		}
 	} else if(fortress.emp > 0.0f) {
-		if(! empIsCharging || fortress.emp < 1.0f)
+		if(! empIsCharging || fortress.emp < 1.0f) {
 			// fire or contine discharging
+			if(fortress.emp == 1.0f)
+				gameAudio->playSound("empEffect");
+
 			fortress.emp -= deltaTime / gameSystem->getFloat("stateEMPDuration");
+		}
 	} else {
 		// at rest
 		fortress.emp = 0.0f;
@@ -548,6 +561,8 @@ unsigned int GameState::execute(bool unScheduled) {
 			if(distance(fortress.position, missiles[i].position) < (1.0f - fortress.emp) * gameSystem->getFloat("stateEMPRange")) {
 				missiles[i].alive = false;
 				++score;
+
+				playEffectAtDistance("explosionEffect", distance(fortress.position, missiles[i].position));
 			}
 		}
 	}
@@ -638,4 +653,18 @@ void GameState::fireShell() {
 	} else {
 		recoil = 2.0f;
 	}
+
+	gameAudio->playSound("shellEffect");
+}
+
+void GameState::playEffectAtDistance(std::string effect, float distance) {
+	float maxDistance = gameSystem->getFloat("audioVolumeDropOffDistance");
+
+	if(distance > maxDistance)
+		return;
+
+	gameAudio->playSound(
+			effect,
+			(maxDistance - distance) / maxDistance
+		);
 }

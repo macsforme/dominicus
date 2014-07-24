@@ -353,6 +353,7 @@ GameSystem::GameSystem() {
 	setStandard("audioTickRate", 50.0f, "Audio manager tick rate.");
 	setStandard("audioMusicVolume", 0.5f, "Music volume.");
 	setStandard("audioEffectsVolume", 0.5f, "Audio effects volume.");
+	setStandard("audioVolumeDropOffDistance", 1500.0f, "Distance it takes for an object's effect volume to fade to zero.");
 
 	// general game standards
 	setStandard("gameStartingLevel", "Easy", "Starting difficulty level.");

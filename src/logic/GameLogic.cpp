@@ -678,9 +678,7 @@ fpsEntry.second["text"] = (void*) new std::string;
 //	reScheme();
 
 	// start audio
-	SDL_LockAudio();
 	gameAudio->setBackgroundMusic("menuSong");
-	SDL_UnlockAudio();
 
 	// draw the initial frame
 //	drawingMaster->execute(true);
@@ -809,30 +807,35 @@ lastFPSUpdate = platform->getExecMills();
 					activeMenuSelection = &playButtonEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				}
 			} else if(settingsButtonZoneListener->isEntered) {
 				if(activeMenuSelection != &settingsButtonEntry) {
 					activeMenuSelection = &settingsButtonEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				}
 			} else if(helpButtonZoneListener->isEntered) {
 				if(activeMenuSelection != &helpButtonEntry) {
 					activeMenuSelection = &helpButtonEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				}
 			} else if(highScoresButtonZoneListener->isEntered) {
 				if(activeMenuSelection != &highScoresButtonEntry) {
 					activeMenuSelection = &highScoresButtonEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				}
 			} else if(quitButtonZoneListener->isEntered) {
 				if(activeMenuSelection != &quitButtonEntry) {
 					activeMenuSelection = &quitButtonEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				}
 			} else if(activeMenuSelection != NULL) {
 				activeMenuSelection = NULL;
@@ -847,6 +850,8 @@ lastFPSUpdate = platform->getExecMills();
 			reScheme();
 			drawingMaster->execute(true);
 
+			gameAudio->playSound("selectEffect");
+
 			gameState = new GameState();
 			mainLoopModules[gameState] = 0;
 
@@ -858,24 +863,25 @@ lastFPSUpdate = platform->getExecMills();
 			currentScheme = SCHEME_INTRO;
 			activeMenuSelection = NULL;
 			reScheme();
-			SDL_LockAudio();
 			gameAudio->setBackgroundMusic("playingSong");
-			SDL_UnlockAudio();
 		} else if(settingsButtonClickListener->wasClicked()) {
 			currentScheme = SCHEME_SETTINGS;
 			activeMenuSelection = &levelSettingEntry;
 			reScheme();
 			needRedraw = true;
+			gameAudio->playSound("selectEffect");
 		} else if(helpButtonClickListener->wasClicked()) {
 			currentScheme = SCHEME_HELP;
 			activeMenuSelection = &backButtonEntry;
 			reScheme();
 			needRedraw = true;
+			gameAudio->playSound("selectEffect");
 		} else if(highScoresButtonClickListener->wasClicked()) {
 			currentScheme = SCHEME_HIGHSCORES;
 			activeMenuSelection = &backButtonEntry;
 			reScheme();
 			needRedraw = true;
+			gameAudio->playSound("selectEffect");
 		} else if(quitButtonClickListener->wasClicked()) {
 			keepProgramAlive = false;
 		}
@@ -887,50 +893,62 @@ lastFPSUpdate = platform->getExecMills();
 					activeMenuSelection = &quitButtonEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				} else if(activeMenuSelection == &settingsButtonEntry) {
 					activeMenuSelection = &playButtonEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				} else if(activeMenuSelection == &highScoresButtonEntry) {
 					activeMenuSelection = &settingsButtonEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				} else if(activeMenuSelection == &helpButtonEntry) {
 					activeMenuSelection = &highScoresButtonEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				} else if(activeMenuSelection == &quitButtonEntry) {
 					activeMenuSelection = &helpButtonEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				}
 			} else if(key == SDLK_DOWN) {
 				if(activeMenuSelection == NULL || activeMenuSelection == &quitButtonEntry) {
 					activeMenuSelection = &playButtonEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				} else if(activeMenuSelection == &playButtonEntry) {
 					activeMenuSelection = &settingsButtonEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				} else if(activeMenuSelection == &settingsButtonEntry) {
 					activeMenuSelection = &highScoresButtonEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				} else if(activeMenuSelection == &highScoresButtonEntry) {
 					activeMenuSelection = &helpButtonEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				} else if(activeMenuSelection == &helpButtonEntry) {
 					activeMenuSelection = &quitButtonEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				}
 			} else if(key == SDLK_RETURN) {
 				if(activeMenuSelection == &playButtonEntry) {
 					currentScheme = SCHEME_LOADING;
 					reScheme();
 					drawingMaster->execute(true);
+
+					gameAudio->playSound("selectEffect");
 
 					gameState = new GameState();
 					mainLoopModules[gameState] = 0;
@@ -944,24 +962,25 @@ lastFPSUpdate = platform->getExecMills();
 					activeMenuSelection = NULL;
 					reScheme();
 
-					SDL_LockAudio();
 					gameAudio->setBackgroundMusic("playingSong");
-					SDL_UnlockAudio();
 				} else if(activeMenuSelection == &settingsButtonEntry) {
 					currentScheme = SCHEME_SETTINGS;
 					activeMenuSelection = &levelSettingEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("selectEffect");
 				} else if(activeMenuSelection == &helpButtonEntry) {
 					currentScheme = SCHEME_HELP;
 					activeMenuSelection = &backButtonEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("selectEffect");
 				} else if(activeMenuSelection == &highScoresButtonEntry) {
 					currentScheme = SCHEME_HIGHSCORES;
 					activeMenuSelection = &backButtonEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("selectEffect");
 				} else if(activeMenuSelection == &quitButtonEntry) {
 					keepProgramAlive = false;
 				}
@@ -1002,6 +1021,8 @@ lastFPSUpdate = platform->getExecMills();
 				SDL_ShowCursor(1);
 
 				needRedraw = true;
+
+				gameAudio->playSound("backEffect");
 			}
 		}
 
@@ -1037,9 +1058,7 @@ lastFPSUpdate = platform->getExecMills();
 
 			needRedraw = true;
 
-			SDL_LockAudio();
 			gameAudio->setBackgroundMusic("menuSong");
-			SDL_UnlockAudio();
 		}
 
 		// check score
@@ -1151,6 +1170,8 @@ lastFPSUpdate = platform->getExecMills();
 				SDL_ShowCursor(1);
 
 				needRedraw = true;
+
+				gameAudio->playSound("backEffect");
 			} else if(key == SDLK_BACKQUOTE) {
 				if(gameState->isPaused)
 					gameState->resume();
@@ -1264,12 +1285,14 @@ lastFPSUpdate = platform->getExecMills();
 					activeMenuSelection = &resumeButtonEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				}
 			} else if(endGameButtonZoneListener->isEntered) {
 				if(activeMenuSelection != &endGameButtonEntry) {
 					activeMenuSelection = &endGameButtonEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				}
 			} else if(activeMenuSelection != NULL) {
 				activeMenuSelection = NULL;
@@ -1297,6 +1320,8 @@ lastFPSUpdate = platform->getExecMills();
 			mainLoopModules[drawingMaster] = 0;
 
 			gameState->resume();
+
+			gameAudio->playSound("selectEffect");
 		} else if(endGameButtonClickListener->wasClicked()) {
 				inputHandler->keyboard->listenUnicode = true;
 				inputHandler->keyboard->unicodeChars = "";
@@ -1311,9 +1336,9 @@ lastFPSUpdate = platform->getExecMills();
 				reScheme();
 				needRedraw = true;
 
-				SDL_LockAudio();
+				gameAudio->playSound("selectEffect");
+
 				gameAudio->setBackgroundMusic("menuSong");
-				SDL_UnlockAudio();
 		}
 
 		// key hits
@@ -1323,20 +1348,24 @@ lastFPSUpdate = platform->getExecMills();
 					activeMenuSelection = &endGameButtonEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				} else if(activeMenuSelection == &endGameButtonEntry) {
 					activeMenuSelection = &resumeButtonEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				}
 			} else if(key == SDLK_DOWN) {
 				if(activeMenuSelection == NULL || activeMenuSelection == &endGameButtonEntry) {
 					activeMenuSelection = &resumeButtonEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				} else if(activeMenuSelection == &resumeButtonEntry) {
 					activeMenuSelection = &endGameButtonEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				}
 			} else if(key == SDLK_RETURN || key == SDLK_ESCAPE) {
 				if(activeMenuSelection == &resumeButtonEntry || key == SDLK_ESCAPE) {
@@ -1357,6 +1386,11 @@ lastFPSUpdate = platform->getExecMills();
 					mainLoopModules[drawingMaster] = 0;
 
 					gameState->resume();
+
+					if(key == SDLK_RETURN)
+						gameAudio->playSound("selectEffect");
+					else
+						gameAudio->playSound("backEffect");
 				} else if(activeMenuSelection == &endGameButtonEntry) {
 					inputHandler->keyboard->listenUnicode = true;
 					inputHandler->keyboard->unicodeChars = "";
@@ -1371,15 +1405,10 @@ lastFPSUpdate = platform->getExecMills();
 					reScheme();
 					needRedraw = true;
 
-					SDL_LockAudio();
+					gameAudio->playSound("selectEffect");
+
 					gameAudio->setBackgroundMusic("menuSong");
-					SDL_UnlockAudio();
 				}
-			} else if(key == SDLK_ESCAPE) {
-				currentScheme = SCHEME_MAINMENU;
-				activeMenuSelection = &playButtonEntry;
-				reScheme();
-				needRedraw = true;
 			}
 		}
 	} else if(currentScheme == SCHEME_GAMEOVER) {
@@ -1430,6 +1459,7 @@ lastFPSUpdate = platform->getExecMills();
 					activeMenuSelection = &gameOverContinueButton;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				}
 			} else if(activeMenuSelection != NULL) {
 				activeMenuSelection = NULL;
@@ -1458,14 +1488,19 @@ lastFPSUpdate = platform->getExecMills();
 			activeMenuSelection = &playButtonEntry;
 			reScheme();
 			needRedraw = true;
+
+			gameAudio->playSound("selectEffect");
 		}
 
 		// key hits
 		for(SDLKey key = gameOverKeyListener->popKey(); key != SDLK_UNKNOWN; key = gameOverKeyListener->popKey()) {
 			if(key == SDLK_UP || key == SDLK_DOWN) {
-				activeMenuSelection = &gameOverContinueButton;
-				reScheme();
-				needRedraw = true;
+				if(activeMenuSelection != &gameOverContinueButton) {
+					activeMenuSelection = &gameOverContinueButton;
+					reScheme();
+					needRedraw = true;
+					gameAudio->playSound("alterEffect");
+				}
 			} else if(key == SDLK_RETURN) {
 				if(activeMenuSelection == &gameOverContinueButton) {
 					if(gameSystem->highScores.size() == 0 || gameState->score > gameSystem->highScores[0].first) {
@@ -1486,6 +1521,8 @@ lastFPSUpdate = platform->getExecMills();
 					activeMenuSelection = &playButtonEntry;
 					reScheme();
 					needRedraw = true;
+
+					gameAudio->playSound("selectEffect");
 				}
 			} else if(key == SDLK_ESCAPE) {
 				mainLoopModules.erase(mainLoopModules.find(gameState));
@@ -1496,6 +1533,8 @@ lastFPSUpdate = platform->getExecMills();
 				activeMenuSelection = &playButtonEntry;
 				reScheme();
 				needRedraw = true;
+
+				gameAudio->playSound("backEffect");
 			}
 		}
 	} else if(currentScheme == SCHEME_SETTINGS) {
@@ -1506,60 +1545,70 @@ lastFPSUpdate = platform->getExecMills();
 					activeMenuSelection = &levelSettingEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				}
 			} else if(musicButtonZoneListener->isEntered) {
 				if(activeMenuSelection != &musicSettingEntry) {
 					activeMenuSelection = &musicSettingEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				}
 			} else if(audioEffectsButtonZoneListener->isEntered) {
 				if(activeMenuSelection != &audioEffectsSettingEntry) {
 					activeMenuSelection = &audioEffectsSettingEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				}
 			} else if(fullscreenButtonZoneListener->isEntered) {
 				if(activeMenuSelection != &fullscreenSettingEntry) {
 					activeMenuSelection = &fullscreenSettingEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				}
 			} else if(windowedScreenResolutionButtonZoneListener->isEntered) {
 				if(activeMenuSelection != &windowedScreenResolutionEntry) {
 					activeMenuSelection = &windowedScreenResolutionEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				}
 			} else if(framerateLimitingButtonZoneListener->isEntered) {
 				if(activeMenuSelection != &framerateLimitingEntry) {
 					activeMenuSelection = &framerateLimitingEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				}
 			} else if(multisamplingButtonZoneListener->isEntered) {
 				if(activeMenuSelection != &multisamplingLevelEntry) {
 					activeMenuSelection = &multisamplingLevelEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				}
 			} else if(terrainDetailButtonZoneListener->isEntered) {
 				if(activeMenuSelection != &terrainDetailEntry) {
 					activeMenuSelection = &terrainDetailEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				}
 			} else if(backButtonZoneListener->isEntered) {
 				if(activeMenuSelection != &backButtonEntry) {
 					activeMenuSelection = &backButtonEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				}
 			} else if(resetHighScoresButtonZoneListener->isEntered) {
 				if(activeMenuSelection != &resetHighScoresEntry) {
 					activeMenuSelection = &resetHighScoresEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				}
 			} else if(activeMenuSelection != NULL) {
 				activeMenuSelection = NULL;
@@ -1581,6 +1630,8 @@ lastFPSUpdate = platform->getExecMills();
 			
 			reScheme();
 			needRedraw = true;
+
+			gameAudio->playSound("alterEffect");
 		} else if(musicButtonClickListener->wasClicked()) {
 			float value = gameSystem->getFloat("audioMusicVolume");
 			value += 0.1f;
@@ -1588,10 +1639,13 @@ lastFPSUpdate = platform->getExecMills();
 			SDL_LockAudio();
 			gameSystem->setStandard("audioMusicVolume", value, "");
 			SDL_UnlockAudio();
+
 			gameSystem->flushPreferences();
 
 			reScheme();
 			needRedraw = true;
+
+			gameAudio->playSound("alterEffect");
 		} else if(audioEffectsButtonClickListener->wasClicked()) {
 			float value = gameSystem->getFloat("audioEffectsVolume");
 			value += 0.1f;
@@ -1601,12 +1655,16 @@ lastFPSUpdate = platform->getExecMills();
 
 			reScheme();
 			needRedraw = true;
+
+			gameAudio->playSound("alterEffect");
 		} else if(fullscreenButtonClickListener->wasClicked()) {
 			gameSystem->setStandard("displayStartFullscreen", ! gameSystem->getBool("displayStartFullscreen"), "");
 			gameSystem->flushPreferences();
 
 			reScheme();
 			needRedraw = true;
+
+			gameAudio->playSound("alterEffect");
 		} else if(windowedScreenResolutionButtonClickListener->wasClicked()) {
 			std::vector< std::pair<unsigned int, unsigned int> > allowedResolutions = gameSystem->getAllowedWindowResolutions();
 
@@ -1648,6 +1706,8 @@ lastFPSUpdate = platform->getExecMills();
 				reScheme();
 				needRedraw = true;
 			}
+
+			gameAudio->playSound("alterEffect");
 		} else if(framerateLimitingButtonClickListener->wasClicked()) {
 			if((int) gameSystem->getFloat("displayFramerateLimiting") == GameSystem::LIMIT_VSYNC) {
 				gameSystem->setStandard("displayFramerateLimiting", (float) GameSystem::LIMIT_30);
@@ -1672,6 +1732,8 @@ lastFPSUpdate = platform->getExecMills();
 
 			reScheme();
 			needRedraw = true;
+
+			gameAudio->playSound("alterEffect");
 		} else if(multisamplingButtonClickListener->wasClicked()) {
 			if(gameSystem->getFloat("displayMultisamplingLevel") == 0.0f) {
 				gameSystem->setStandard("displayMultisamplingLevel", 2.0f);
@@ -1692,6 +1754,8 @@ lastFPSUpdate = platform->getExecMills();
 
 			reScheme();
 			needRedraw = true;
+
+			gameAudio->playSound("alterEffect");
 		} else if(terrainDetailButtonClickListener->wasClicked()) {
 			if(gameSystem->getFloat("islandTerrainDetail") == 1.0f) {
 				gameSystem->setStandard("islandTerrainDetail", 2.0f);
@@ -1705,14 +1769,20 @@ lastFPSUpdate = platform->getExecMills();
 
 			reScheme();
 			needRedraw = true;
+
+			gameAudio->playSound("selectEffect");
 		} else if(backButtonClickListener->wasClicked()) {
 			currentScheme = SCHEME_MAINMENU;
 			activeMenuSelection = NULL;
 			reScheme();
 			needRedraw = true;
+
+			gameAudio->playSound("selectEffect");
 		} else if(resetHighScoresButtonClickListener->wasClicked()) {
 			gameSystem->highScores.clear();
 			gameSystem->flushPreferences();
+
+			gameAudio->playSound("selectEffect");
 		}
 
 		// key hits
@@ -1722,84 +1792,104 @@ lastFPSUpdate = platform->getExecMills();
 					activeMenuSelection = &backButtonEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				} else if(activeMenuSelection == &backButtonEntry) {
 					activeMenuSelection = &resetHighScoresEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				} else if(activeMenuSelection == &resetHighScoresEntry) {
 					activeMenuSelection = &terrainDetailEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				} else if(activeMenuSelection == &terrainDetailEntry) {
 					activeMenuSelection = &multisamplingLevelEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				} else if(activeMenuSelection == &multisamplingLevelEntry) {
 					activeMenuSelection = &framerateLimitingEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				} else if(activeMenuSelection == &framerateLimitingEntry) {
 					activeMenuSelection = &windowedScreenResolutionEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				} else if(activeMenuSelection == &windowedScreenResolutionEntry) {
 					activeMenuSelection = &fullscreenSettingEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				} else if(activeMenuSelection == &fullscreenSettingEntry) {
 					activeMenuSelection = &audioEffectsSettingEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				} else if(activeMenuSelection == &audioEffectsSettingEntry) {
 					activeMenuSelection = &musicSettingEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				} else if(activeMenuSelection == &musicSettingEntry) {
 					activeMenuSelection = &levelSettingEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				}
 			} else if(key == SDLK_DOWN) {
 				if(activeMenuSelection == NULL || activeMenuSelection == &backButtonEntry) {
 					activeMenuSelection = &levelSettingEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				} else if(activeMenuSelection == &levelSettingEntry) {
 					activeMenuSelection = &musicSettingEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				} else if(activeMenuSelection == &musicSettingEntry) {
 					activeMenuSelection = &audioEffectsSettingEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				} else if(activeMenuSelection == &audioEffectsSettingEntry) {
 					activeMenuSelection = &fullscreenSettingEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				} else if(activeMenuSelection == &fullscreenSettingEntry) {
 					activeMenuSelection = &windowedScreenResolutionEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				} else if(activeMenuSelection == &windowedScreenResolutionEntry) {
 					activeMenuSelection = &framerateLimitingEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				} else if(activeMenuSelection == &framerateLimitingEntry) {
 					activeMenuSelection = &multisamplingLevelEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				} else if(activeMenuSelection == &multisamplingLevelEntry) {
 					activeMenuSelection = &terrainDetailEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				} else if(activeMenuSelection == &terrainDetailEntry) {
 					activeMenuSelection = &resetHighScoresEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				} else if(activeMenuSelection == &resetHighScoresEntry) {
 					activeMenuSelection = &backButtonEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				}
 			} else if(key == SDLK_LEFT || key == SDLK_RIGHT) {
 				if(activeMenuSelection == &levelSettingEntry) {
@@ -1814,6 +1904,8 @@ lastFPSUpdate = platform->getExecMills();
 			
 					reScheme();
 					needRedraw = true;
+
+					gameAudio->playSound("alterEffect");
 				} else if(activeMenuSelection == &musicSettingEntry) {
 					float value = gameSystem->getFloat("audioMusicVolume");
 					value += (key == SDLK_RIGHT ? 0.1f : -0.1f);
@@ -1826,6 +1918,8 @@ lastFPSUpdate = platform->getExecMills();
 
 					reScheme();
 					needRedraw = true;
+
+					gameAudio->playSound("alterEffect");
 				} else if(activeMenuSelection == &audioEffectsSettingEntry) {
 					float value = gameSystem->getFloat("audioEffectsVolume");
 					value += (key == SDLK_RIGHT ? 0.1f : -0.1f);
@@ -1836,12 +1930,16 @@ lastFPSUpdate = platform->getExecMills();
 
 					reScheme();
 					needRedraw = true;
+
+					gameAudio->playSound("alterEffect");
 				} else if(activeMenuSelection == &fullscreenSettingEntry) {
 					gameSystem->setStandard("displayStartFullscreen", ! gameSystem->getBool("displayStartFullscreen"), "");
 					gameSystem->flushPreferences();
 
 					reScheme();
 					needRedraw = true;
+
+					gameAudio->playSound("alterEffect");
 				} else if(activeMenuSelection == &windowedScreenResolutionEntry) {
 					std::vector< std::pair<unsigned int, unsigned int> > allowedResolutions = gameSystem->getAllowedWindowResolutions();
 
@@ -1889,6 +1987,8 @@ lastFPSUpdate = platform->getExecMills();
 						reScheme();
 						needRedraw = true;
 					}
+
+					gameAudio->playSound("alterEffect");
 				} else if(activeMenuSelection == &framerateLimitingEntry) {
 					if((int) gameSystem->getFloat("displayFramerateLimiting") == GameSystem::LIMIT_VSYNC) {
 						if(key == SDLK_LEFT)
@@ -1928,6 +2028,8 @@ lastFPSUpdate = platform->getExecMills();
 
 					reScheme();
 					needRedraw = true;
+
+					gameAudio->playSound("alterEffect");
 				} else if(activeMenuSelection == &multisamplingLevelEntry) {
 					if(gameSystem->getFloat("displayMultisamplingLevel") == 0.0f) {
 						if(key == SDLK_LEFT)
@@ -1957,6 +2059,8 @@ lastFPSUpdate = platform->getExecMills();
 
 					reScheme();
 					needRedraw = true;
+
+					gameAudio->playSound("alterEffect");
 				} else if(activeMenuSelection == &terrainDetailEntry) {
 					if(gameSystem->getFloat("islandTerrainDetail") == 1.0f) {
 						if(key == SDLK_LEFT)
@@ -1979,22 +2083,27 @@ lastFPSUpdate = platform->getExecMills();
 
 					reScheme();
 					needRedraw = true;
+
+					gameAudio->playSound("alterEffect");
 				}
 			} else if(key == SDLK_RETURN) {
 				if(activeMenuSelection == &resetHighScoresEntry) {
 					gameSystem->highScores.clear();
 					gameSystem->flushPreferences();
+					gameAudio->playSound("selectEffect");
 				} else if(activeMenuSelection == &backButtonEntry) {
 					currentScheme = SCHEME_MAINMENU;
 					activeMenuSelection = &playButtonEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("selectEffect");
 				}
 			} else if(key == SDLK_ESCAPE) {
 				currentScheme = SCHEME_MAINMENU;
 				activeMenuSelection = &playButtonEntry;
 				reScheme();
 				needRedraw = true;
+				gameAudio->playSound("backEffect");
 			}
 		}
 	} else if(currentScheme == SCHEME_HIGHSCORES) {
@@ -2005,6 +2114,7 @@ lastFPSUpdate = platform->getExecMills();
 					activeMenuSelection = &backButtonEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				}
 			} else if(activeMenuSelection != NULL) {
 				activeMenuSelection = NULL;
@@ -2019,6 +2129,7 @@ lastFPSUpdate = platform->getExecMills();
 			activeMenuSelection = &playButtonEntry;
 			reScheme();
 			needRedraw = true;
+			gameAudio->playSound("selectEffect");
 		}
 
 		// key hits
@@ -2027,11 +2138,17 @@ lastFPSUpdate = platform->getExecMills();
 				activeMenuSelection = &backButtonEntry;
 				reScheme();
 				needRedraw = true;
+				gameAudio->playSound("alterEffect");
 			} else if((key == SDLK_RETURN && activeMenuSelection == &backButtonEntry) || key == SDLK_ESCAPE) {
 				currentScheme = SCHEME_MAINMENU;
 				activeMenuSelection = &playButtonEntry;
 				reScheme();
 				needRedraw = true;
+
+				if(key == SDLK_RETURN)
+					gameAudio->playSound("selectEffect");
+				else
+					gameAudio->playSound("backEffect");
 			}
 		}
 	} else if(currentScheme == SCHEME_HELP) {
@@ -2042,12 +2159,14 @@ lastFPSUpdate = platform->getExecMills();
 					activeMenuSelection = &aboutButtonEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				}
 			} else if(backButtonZoneListener->isEntered) {
 				if(activeMenuSelection != &backButtonEntry) {
 					activeMenuSelection = &backButtonEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				}
 			} else if(activeMenuSelection != NULL) {
 				activeMenuSelection = NULL;
@@ -2062,11 +2181,13 @@ lastFPSUpdate = platform->getExecMills();
 			activeMenuSelection = &backButtonEntry;
 			reScheme();
 			needRedraw = true;
+			gameAudio->playSound("selectEffect");
 		} else if(backButtonClickListener->wasClicked()) {
 			currentScheme = SCHEME_MAINMENU;
 			activeMenuSelection = &playButtonEntry;
 			reScheme();
 			needRedraw = true;
+			gameAudio->playSound("selectEffect");
 		}
 
 		// key hits
@@ -2076,20 +2197,24 @@ lastFPSUpdate = platform->getExecMills();
 					activeMenuSelection = &backButtonEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				} else if(activeMenuSelection == &backButtonEntry) {
 					activeMenuSelection = &aboutButtonEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				}
 			} else if(key == SDLK_DOWN) {
 				if(activeMenuSelection == NULL || activeMenuSelection == &backButtonEntry) {
 					activeMenuSelection = &aboutButtonEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				} else if(activeMenuSelection == &aboutButtonEntry) {
 					activeMenuSelection = &backButtonEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				}
 			} else if(key == SDLK_RETURN) {
 				if(activeMenuSelection == &aboutButtonEntry) {
@@ -2097,17 +2222,20 @@ lastFPSUpdate = platform->getExecMills();
 					activeMenuSelection = &backButtonEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("selectEffect");
 				} else if(activeMenuSelection == &backButtonEntry) {
 					currentScheme = SCHEME_MAINMENU;
 					activeMenuSelection = &playButtonEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("selectEffect");
 				}
 			} else if(key == SDLK_ESCAPE) {
 				currentScheme = SCHEME_MAINMENU;
 				activeMenuSelection = &playButtonEntry;
 				reScheme();
 				needRedraw = true;
+				gameAudio->playSound("backEffect");
 			}
 		}
 	} else if(currentScheme == SCHEME_ABOUT) {
@@ -2118,6 +2246,7 @@ lastFPSUpdate = platform->getExecMills();
 					activeMenuSelection = &backButtonEntry;
 					reScheme();
 					needRedraw = true;
+					gameAudio->playSound("alterEffect");
 				}
 			} else if(activeMenuSelection != NULL) {
 				activeMenuSelection = NULL;
@@ -2132,6 +2261,7 @@ lastFPSUpdate = platform->getExecMills();
 			activeMenuSelection = &backButtonEntry;
 			reScheme();
 			needRedraw = true;
+			gameAudio->playSound("selectEffect");
 		}
 
 		// key hits
@@ -2140,11 +2270,16 @@ lastFPSUpdate = platform->getExecMills();
 				activeMenuSelection = &backButtonEntry;
 				reScheme();
 				needRedraw = true;
+				gameAudio->playSound("alterEffect");
 			} else if((key == SDLK_RETURN && activeMenuSelection == &backButtonEntry) || key == SDLK_ESCAPE) {
 				currentScheme = SCHEME_HELP;
 				activeMenuSelection = &backButtonEntry;
 				reScheme();
 				needRedraw = true;
+				if(key == SDLK_RETURN)
+					gameAudio->playSound("selectEffect");
+				else
+					gameAudio->playSound("backEffect");
 			}
 		}
 	}

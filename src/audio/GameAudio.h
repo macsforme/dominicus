@@ -22,13 +22,19 @@ class GameAudio {
 public:
 	struct GameSound {
 		Uint8* buffer;
-		Uint32 position;
 		Uint32 length;
 	};
 
 	std::map<std::string,GameSound> sounds;
 
-	std::string backgroundMusic;
+	struct GameSoundPlaying {
+		GameSound* sound;
+		float volume;
+		Uint32 position;
+	};
+
+	GameSoundPlaying musicPlaying;
+	std::vector<GameSoundPlaying> effectsPlaying;
 
 private:
 	void loadSound(std::string file, SDL_AudioSpec audioDeviceSpec);
@@ -38,6 +44,7 @@ public:
 	~GameAudio();
 
 	void setBackgroundMusic(std::string choice);
+	void playSound(std::string choice, float volume = 1.0f);
 };
 
 #endif // GAMEAUDIO_H

@@ -6,26 +6,50 @@
 extern GameAudio* gameAudio;
 
 void mixAudio(void* userData, Uint8* stream, int length) {
-	GameAudio::GameSound* sound = NULL;
-	if(gameAudio->sounds.find(gameAudio->backgroundMusic) != gameAudio->sounds.end())
-		sound = &gameAudio->sounds[gameAudio->backgroundMusic];
-
-	if(sound == NULL)
+	// play the background music
+	if(gameAudio->musicPlaying.sound == NULL)
 		return;
 
-	if(sound->position == sound->length)
-		sound->position = 0;
+	if(gameAudio->musicPlaying.position == gameAudio->musicPlaying.sound->length)
+		gameAudio->musicPlaying.position = 0;
 
-	Uint32 amount = sound->length - sound->position;
-	if(amount > length) amount = length;
+	Uint32 amount = gameAudio->musicPlaying.sound->length - gameAudio->musicPlaying.position;
+	if(amount > length)
+		amount = length;
 
 	SDL_MixAudio(
 			stream,
-			&sound->buffer[sound->position],
+			&gameAudio->musicPlaying.sound->buffer[gameAudio->musicPlaying.position],
 			amount,
-			(int) (gameSystem->getFloat("audioMusicVolume") * (float) SDL_MIX_MAXVOLUME)
+			(int) (gameSystem->getFloat("audioMusicVolume") * gameAudio->musicPlaying.volume * (float) SDL_MIX_MAXVOLUME)
 		);
-	sound->position += amount;
+
+	gameAudio->musicPlaying.position += amount;
+
+	// play audio effects in queue
+	size_t i = 0;
+	while(i < gameAudio->effectsPlaying.size()) {
+		if(gameAudio->effectsPlaying[i].position == gameAudio->effectsPlaying[i].sound->length) {
+			gameAudio->effectsPlaying.erase(gameAudio->effectsPlaying.begin() + i);
+
+			continue;
+		}
+
+		amount = gameAudio->effectsPlaying[i].sound->length - gameAudio->effectsPlaying[i].position;
+		if(amount > length)
+			amount = length;
+
+		SDL_MixAudio(
+				stream,
+				&gameAudio->effectsPlaying[i].sound->buffer[gameAudio->effectsPlaying[i].position],
+				amount,
+				(int) (gameSystem->getFloat("audioEffectsVolume") * gameAudio->effectsPlaying[i].volume * (float) SDL_MIX_MAXVOLUME)
+			);
+
+		gameAudio->effectsPlaying[i].position += amount;
+
+		++i;
+	}
 }
 
 GameAudio::GameAudio() {
@@ -42,10 +66,17 @@ GameAudio::GameAudio() {
 		gameSystem->log(GameSystem::LOG_FATAL, "Unable to open the audio device.");
 
 	// load sound files
+	loadSound("alterEffect", audioDeviceSpec);
+	loadSound("backEffect", audioDeviceSpec);
+	loadSound("empEffect", audioDeviceSpec);
+	loadSound("explosionEffect", audioDeviceSpec);
 	loadSound("menuSong", audioDeviceSpec);
+	loadSound("missileEffect", audioDeviceSpec);
 	loadSound("playingSong", audioDeviceSpec);
+	loadSound("selectEffect", audioDeviceSpec);
+	loadSound("shellEffect", audioDeviceSpec);
 
-	backgroundMusic = "";
+	musicPlaying.sound = NULL;
 
 	SDL_PauseAudio(0);
 }
@@ -90,15 +121,32 @@ void GameAudio::loadSound(std::string file, SDL_AudioSpec audioDeviceSpec) {
 
 	GameSound sound;
 	sound.buffer = conversionInfo.buf;
-	sound.position = 0;
 	sound.length = conversionInfo.len_cvt;
 
 	sounds[file] = sound;
 }
 
 void GameAudio::setBackgroundMusic(std::string choice) {
+	if(sounds.find(choice) == sounds.end())
+		gameSystem->log(GameSystem::LOG_FATAL, std::string("Non-existent sound " + choice + " requested."));
+
 	SDL_LockAudio();
-	backgroundMusic = choice;
-	sounds[choice].position = 0;
+	musicPlaying.sound = &sounds[choice];
+	musicPlaying.volume = 1.0f;
+	musicPlaying.position = 0;
+	SDL_UnlockAudio();
+}
+
+void GameAudio::playSound(std::string choice, float volume) {
+	if(sounds.find(choice) == sounds.end())
+		gameSystem->log(GameSystem::LOG_FATAL, std::string("Non-existent sound " + choice + " requested."));
+
+	GameSoundPlaying playingSound;
+	playingSound.sound = &sounds[choice];
+	playingSound.volume = volume;
+	playingSound.position = 0;
+
+	SDL_LockAudio();
+	effectsPlaying.push_back(playingSound);
 	SDL_UnlockAudio();
 }

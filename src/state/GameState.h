@@ -5,6 +5,7 @@
 #define GAMESTATE_H
 
 // program headers
+#include "audio/GameAudio.h"
 #include "core/GameSystem.h"
 #include "core/MainLoopMember.h"
 #include "math/VectorMath.h"
@@ -17,6 +18,7 @@
 #include <vector>
 
 // global variables
+extern GameAudio* gameAudio;
 extern GameSystem* gameSystem;
 
 // class definitions
@@ -119,6 +121,8 @@ public:
 	void bumpStart();
 
 	void fireShell();
+
+	void playEffectAtDistance(std::string effect, float distance = 0.0f);
 };
 
 #endif // GAMESTATE_H
