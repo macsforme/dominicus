@@ -18,6 +18,7 @@
 #include "graphics/2dgraphics/DrawSplash.h"
 #include "graphics/2dgraphics/DrawStrikeEffect.h"
 #include "graphics/2dgraphics/DrawTexture.h"
+#include "graphics/3dgraphics/ExplosionRenderer.h"
 #include "graphics/3dgraphics/FortressRenderer.h"
 #include "graphics/3dgraphics/MissileRenderer.h"
 #include "graphics/3dgraphics/MissileTrailRenderer.h"
@@ -64,6 +65,7 @@ void DrawingMaster::buildDrawers() {
 	drawers["radar"] = new DrawRadar((DrawContainer*) drawers["container"], (DrawCircle*) drawers["circle"]);
 	drawers["strikeEffect"] = new DrawStrikeEffect();
 
+	drawers["explosionRenderer"] = new ExplosionRenderer();
 	drawers["fortressRenderer"] = new FortressRenderer();
 	drawers["missileRenderer"] = new MissileRenderer();
 	drawers["missileTrailRenderer"] = new MissileTrailRenderer();
@@ -89,6 +91,7 @@ void DrawingMaster::destroyDrawers() {
 	delete (DrawStrikeEffect*) drawers["strikeEffect"];
 	delete (DrawTexture*) drawers["texture"];
 
+	delete (ExplosionRenderer*) drawers["explosionRenderer"];
 	delete (FortressRenderer*) drawers["fortressRenderer"];
 	delete (MissileRenderer*) drawers["missileRenderer"];
 	delete (MissileTrailRenderer*) drawers["missileTrailRenderer"];

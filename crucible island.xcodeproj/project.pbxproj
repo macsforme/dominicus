@@ -64,6 +64,7 @@
 		03C8075E130E52030037D309 /* SDLMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 030F8E151264C0FF00190225 /* SDLMain.m */; };
 		03C9206C13693A51000C4373 /* GameState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03C9206B13693A51000C4373 /* GameState.cpp */; };
 		03E508FA18FE1B340056ECE6 /* FortressRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03E508F818FE1B340056ECE6 /* FortressRenderer.cpp */; };
+		03EA67A819832D7E0067196A /* ExplosionRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03EA67A619832D7E0067196A /* ExplosionRenderer.cpp */; };
 		03F4FD681921DC2F00B5A322 /* MissileRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03F4FD661921DC2F00B5A322 /* MissileRenderer.cpp */; };
 /* End PBXBuildFile section */
 
@@ -185,6 +186,8 @@
 		03D47B7D1263E27F001755A6 /* crucible island.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = "crucible island.icns"; sourceTree = "<group>"; };
 		03E508F818FE1B340056ECE6 /* FortressRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FortressRenderer.cpp; sourceTree = "<group>"; };
 		03E508F918FE1B340056ECE6 /* FortressRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FortressRenderer.h; sourceTree = "<group>"; };
+		03EA67A619832D7E0067196A /* ExplosionRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExplosionRenderer.cpp; sourceTree = "<group>"; };
+		03EA67A719832D7E0067196A /* ExplosionRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExplosionRenderer.h; sourceTree = "<group>"; };
 		03F4FD661921DC2F00B5A322 /* MissileRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MissileRenderer.cpp; sourceTree = "<group>"; };
 		03F4FD671921DC2F00B5A322 /* MissileRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MissileRenderer.h; sourceTree = "<group>"; };
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -383,6 +386,8 @@
 		03BB9B6A131F3F50009DFC8B /* 3dgraphics */ = {
 			isa = PBXGroup;
 			children = (
+				03EA67A719832D7E0067196A /* ExplosionRenderer.h */,
+				03EA67A619832D7E0067196A /* ExplosionRenderer.cpp */,
 				03E508F918FE1B340056ECE6 /* FortressRenderer.h */,
 				03E508F818FE1B340056ECE6 /* FortressRenderer.cpp */,
 				03F4FD671921DC2F00B5A322 /* MissileRenderer.h */,
@@ -537,6 +542,7 @@
 				03C8075E130E52030037D309 /* SDLMain.m in Sources */,
 				035466651912C17200F4953E /* DrawLabel.cpp in Sources */,
 				03590F84131E446000EDF7A7 /* GameSystem.cpp in Sources */,
+				03EA67A819832D7E0067196A /* ExplosionRenderer.cpp in Sources */,
 				035466681912C17200F4953E /* DrawSplash.cpp in Sources */,
 				03BB9B9B131F3F50009DFC8B /* GameGraphics.cpp in Sources */,
 				0336578A195C9B1200ED33DF /* DrawStrikeEffect.cpp in Sources */,

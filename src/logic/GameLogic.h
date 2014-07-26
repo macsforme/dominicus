@@ -20,6 +20,7 @@
 #include "graphics/2dgraphics/DrawMissileIndicators.h"
 #include "graphics/2dgraphics/DrawStrikeEffect.h"
 #include "graphics/2dgraphics/DrawTexture.h"
+#include "graphics/3dgraphics/ExplosionRenderer.h"
 #include "graphics/3dgraphics/ShipRenderer.h"
 #include "graphics/3dgraphics/SkyRenderer.h"
 #include "graphics/3dgraphics/MissileRenderer.h"
@@ -123,6 +124,7 @@ KeyAbsoluteListener* cameraAheadKeyListener;
 	DrawStackEntry fortressEntry;
 	DrawStackEntry missileTrailEntry;
 	DrawStackEntry missileEntry;
+	DrawStackEntry explosionEntry;
 	DrawStackEntry shellEntry;
 	DrawStackEntry strikeEffectEntry;
 

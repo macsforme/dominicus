@@ -921,9 +921,6 @@ void Schemes::playingScheme() {
 	// ships
 	drawingMaster->drawStack.push_back(gameLogic->shipEntry);
 
-	// fortress
-	drawingMaster->drawStack.push_back(gameLogic->fortressEntry);
-
 	// missile trails
 	drawingMaster->drawStack.push_back(gameLogic->missileTrailEntry);
 
@@ -932,6 +929,12 @@ void Schemes::playingScheme() {
 
 	// shells
 	drawingMaster->drawStack.push_back(gameLogic->shellEntry);
+
+	// explosions
+	drawingMaster->drawStack.push_back(gameLogic->explosionEntry);
+
+	// fortress
+	drawingMaster->drawStack.push_back(gameLogic->fortressEntry);
 
 	// missile indicators
 	*((Vector4*) gameLogic->missileIndicators.second["color"]) = gameSystem->getColor("hudMissileIndicatorColor");

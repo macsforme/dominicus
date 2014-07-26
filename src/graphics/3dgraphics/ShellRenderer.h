@@ -22,4 +22,4 @@ public:
 	void execute(std::map<std::string, void*> arguments);
 };
 
-#endif
+#endif // SHELLRENDERER_H

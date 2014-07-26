@@ -514,6 +514,8 @@ GameLogic::GameLogic() :
 
 	missileEntry.first = "missileRenderer";
 
+	explosionEntry.first = "explosionRenderer";
+
 	shellEntry.first = "shellRenderer";
 
 	strikeEffectEntry.first = "strikeEffect";

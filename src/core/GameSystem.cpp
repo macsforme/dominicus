@@ -304,6 +304,9 @@ GameSystem::GameSystem() {
 	setStandard("terrainNoiseTextureDepth", 4.0f, "Terrain mixing noise texture color depth.");
 	setStandard("shellDensity", 32.0f, "Number of segments for shell sphere.");
 	setStandard("missileTrailLength", 100.0f, "Length of missile trail.");
+	setStandard("explosionRadius", 25.0f, "Radius of missile explosion.");
+	setStandard("explosionDuration", 2.0f, "Duration in seconds of missile explosion.");
+	setStandard("explosionSphereDensity", 64.0f, "Density of explosion sphere.");
 
 	// HUD standards
 	setStandard("hudFPSTestFrequency", 1.0f, "Frequency per second of the FPS test.");
