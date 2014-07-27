@@ -85,7 +85,7 @@ void GameSystem::setStandard(const char* key, bool value,
 }
 
 void GameSystem::flushPreferences() {
-	platform->setPreference("preferencesVersion", 3.0f);
+	platform->setPreference("preferencesVersion", getFloat("preferencesVersion"));
 	platform->setPreference("displayWindowedResolution", getString("displayWindowedResolution").c_str());
 	platform->setPreference("displayStartFullscreen", (getBool("displayStartFullscreen") == true ? 1.0f : 0.0f));
 	platform->setPreference("displayFramerateLimiting", getFloat("displayFramerateLimiting"));
@@ -359,6 +359,7 @@ GameSystem::GameSystem() {
 	setStandard("audioVolumeDropOffDistance", 1500.0f, "Distance it takes for an object's effect volume to fade to zero.");
 
 	// general game standards
+	setStandard("preferencesVersion", 3.0f, "Version of preferences file format.");
 	setStandard("gameStartingLevel", "Easy", "Starting difficulty level.");
 	setStandard("gameMaximumHighScores", 10.0f, "Maximum number of high scores to track.");
 	setStandard("islandMaximumWidth", 1000.0f, "Maximum island width.");
@@ -376,7 +377,7 @@ GameSystem::GameSystem() {
 	setStandard("textCredits", "Dedicated to Sergeant Sean Drenth #6894 of the Phoenix Police Department, EOW October 18, 2010.\n\nCreated by Joshua Bodine.\n\nMusic and sound effects by Michael Birch (http://flexstylemusic.com).\n\nThis software uses the Titillium Web font by Accademia di Belle Arti di Urbino and students of MA course of Visual design.\n\nThis software uses the Simple DirectMedia Layer library (http://www.libsdl.org/).\n\nPortions of this software are copyright (c) 2014 The FreeType Project (www.freetype.org). All rights reserved.", "Credits text.");
 
 	// load standards from preferences (or save standard preferences if no file)
-	if(platform->getPreferenceFloat("preferencesVersion") == 3.0f) {
+	if(platform->getPreferenceFloat("preferencesVersion") == getFloat("preferencesVersion")) {
 		if(getString("displayWindowedResolutions").find(platform->getPreferenceString("displayWindowedResolution")) != std::string::npos)
 			setStandard("displayWindowedResolution", platform->getPreferenceString("displayWindowedResolution").c_str());
 		setStandard("displayFramerateLimiting", platform->getPreferenceFloat("displayFramerateLimiting"));
