@@ -59,7 +59,7 @@ Vector2 DrawButton::getSize(DrawStackArgList argList) {
 	Vector2 newSize = labelDrawer->getSize(argList);
 
 	newSize.x += padding.x * 2.0f;
-	newSize.y += padding.y * 2.0f;
+	newSize.y += padding.y; // only half due to automatic padding in font rendering
 
 	return newSize;
 }

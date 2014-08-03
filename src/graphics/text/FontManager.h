@@ -43,6 +43,8 @@ public:
 
 	// map of [character][size] font data
 	std::map< char, std::map<unsigned int, FontData> > fontData;
+	std::map<unsigned int, unsigned int> ascenders;
+	std::map<unsigned int, unsigned int> descenders;
 	std::map<unsigned int, unsigned int> lineHeights;
 
 	// OpenGL texture IDs for font caches of each size

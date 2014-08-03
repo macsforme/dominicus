@@ -228,10 +228,10 @@ GameSystem::GameSystem() {
 			allowedResolutions[allowedResolutions.size() - 1].second;
 	setStandard("displayWindowedResolution", maximumResolutionText.str().c_str());
 
-	setStandard("hudBaseElementMargin", 28.0f, "Base value for space between HUD elements in pixels (must be even number).");
+	setStandard("hudBaseElementMargin", 20.0f, "Base value for space between HUD elements in pixels (must be even number).");
 	setStandard("hudBaseContainerPadding", 10.0f, "Base value for space between HUD elements' external border and content in pixels.");
-	setStandard("hudBaseButtonPadding", 10.0f, "Base value for space between HUD buttons' external border and content in pixels.");
-	setStandard("hudBaseBigButtonPadding", 12.0f, "Base value for space between large HUD buttons' external border and content in pixels.");
+	setStandard("hudBaseButtonPadding", 10.0f, "Base value for space between HUD buttons' external border and content in pixels (vertical padding is 1/2 of this due to automatic padding in font rendering).");
+	setStandard("hudBaseBigButtonPadding", 12.0f, "Base value for space between large HUD buttons' external border and content in pixels (vertical padding is 1/2 of this due to automatic padding in font rendering).");
 	setStandard("hudBaseGaugePadding", 20.0f, "Base value for gauge panel padding in pixels.");
 	setStandard("fontBaseSizeSmall", 12.0f, "Font size for small display in points (1/72 inch).");
 	setStandard("fontBaseSizeMedium", 18.0f, "Font size for standard display in points (1/72 inch).");

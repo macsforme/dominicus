@@ -72,147 +72,20 @@ TextBlock::TextBlock(const char* dataString, unsigned int wrapX, unsigned int wr
 		}
 	}
 
-	// determine the inverse of the largest negative adjustment of the last line
-	int largestNegAdj = 0;
-
-	if(lines.size() > 0 && lines.back().length() > 0) {
-		for(size_t i = 0; i < lines.back().size(); ++i) {
-			// if we're skipping chars for a color code... well, skip them
-			bool useChar = true;
-			if(skipChars-- > 0)
-				useChar = false;
-
-			// if it's the start of a color code, skip these characters
-			if(*(lines.back().c_str() + i) == '\\' && i + 8 < strlen(lines.back().c_str())) {
-				bool isColor = true;
-
-				for(int p = 1; p < 9; ++p) {
-					if(
-							(*(lines.back().c_str() + i + p) < '0' || *(lines.back().c_str() + i + p) > '9') &&
-							(*(lines.back().c_str() + i + p) < 'a' || *(lines.back().c_str() + i + p) > 'f')
-						) {
-						isColor = false;
-
-						break;
-					}
-				}
-
-				if(isColor) {
-					skipChars = 8;
-
-					useChar = false;
-				}
-			}
-
-			if(useChar)
-				if(fontManager->fontData[*(lines.back().c_str() + i)][size].adjustY < largestNegAdj)
-					largestNegAdj = fontManager->fontData[*(lines.back().c_str() + i)][size].adjustY;
-		}
-	}
-
 	// determine which lines will be printed and the dimensions of the box
 	std::vector<std::string> printLines;
 	width = 0;
-	height = -largestNegAdj;
+	height = 0;
 
 	for(int i = (int) lines.size() - 1; i >= 0; --i) {
-//printf("line \"%s\"\n", lines[i].c_str());
-		// determine the largest positive adjustment for this line to see if it fits
-		int largestPosAdj = 0;
-		for(size_t p = 0; p < lines[i].length(); ++p) {
-			// if we're skipping chars for a color code... well, skip them
-			bool useChar = true;
-			if(skipChars-- > 0)
-				useChar = false;
-
-			// if it's the start of a color code, skip these characters
-			if(*(lines[i].c_str() + p) == '\\' && (unsigned int) p + 8 < strlen(lines[i].c_str())) {
-				bool isColor = true;
-
-				for(int q = 1; q < 9; ++q) {
-					if(
-							(*(lines[i].c_str() + p + q) < '0' ||
-									*(lines[i].c_str() + p + q) > '9') &&
-							(*(lines[i].c_str() + p + q) < 'a' ||
-									*(lines[i].c_str() + p + q) > 'f')
-						) {
-						isColor = false;
-
-						break;
-					}
-				}
-
-				if(isColor) {
-					skipChars = 8;
-
-					useChar = false;
-				}
-			}
-
-			if(useChar) {
-				FontManager::FontData* charData = &(fontManager->fontData[*(lines[i].c_str() + p)][size]);
-				int posAdj = charData->adjustY + charData->height;
-
-				if(posAdj > largestPosAdj)
-					largestPosAdj = posAdj;
-			}
-		}
-
 		// if we don't have room for this line, we are done
-		if(height + largestPosAdj >= (int) wrapY) {
-			// subtract difference between lineHeight and previous largestPosAdj from height
-			// if this is not the very first iteration
-			if(i < (int) lines.size() - 1) {
-				unsigned int prevLargestPosAdj = 0;
-				for(size_t p = 0; p < lines[i + 1].length(); ++p) {
-					// if we're skipping chars for a color code... well, skip them
-					bool useChar = true;
-					if(skipChars-- > 0)
-						useChar = false;
-
-					// if it's the start of a color code, skip these characters
-					if(*(lines[i + 1].c_str() + p) == '\\' && (unsigned int) p + 8 < strlen(lines[i + 1].c_str())) {
-						bool isColor = true;
-
-						for(int q = 1; q < 9; ++q) {
-							if(
-									(*(lines[i + 1].c_str() + p + q) < '0' ||
-											*(lines[i + 1].c_str() + p + q) > '9') &&
-									(*(lines[i + 1].c_str() + p + q) < 'a' ||
-											*(lines[i + 1].c_str() + p + q) > 'f')
-								) {
-								isColor = false;
-
-								break;
-							}
-						}
-
-						if(isColor) {
-							skipChars = 8;
-
-							useChar = false;
-						}
-					}
-
-					if(useChar) {
-						FontManager::FontData* charData = &(fontManager->fontData[*(lines[i + 1].c_str() + p)][size]);
-						unsigned int posAdj = charData->adjustY + charData->height;
-
-						if(posAdj > prevLargestPosAdj)
-							prevLargestPosAdj = posAdj;
-					}
-				}
-
-				height -= (int) fontManager->lineHeights[size] - prevLargestPosAdj;
-			}
-
+		if(height + fontManager->lineHeights[size] > (int) wrapY)
 			break;
-		}
 
-		// we have room, so add the line
 		printLines.insert(printLines.begin(), lines[i]);
 
-		// update the width if necessary
+		height += fontManager->lineHeights[size];
+
 		unsigned int pixelsWide = 0;
 		for(size_t p = 0; p < printLines[0].length(); ++p) {
 			// if we're skipping chars for a color code... well, skip them
@@ -250,91 +123,10 @@ TextBlock::TextBlock(const char* dataString, unsigned int wrapX, unsigned int wr
 
 		if(pixelsWide > width)
 			width = pixelsWide;
-
-		// if the next line will put us over, or if this is the last existing line,
-		// we are done and this line's height is final addition
-		unsigned int lineHeight = fontManager->lineHeights[size];
-
-		if(i == 0 || height + lineHeight >= wrapY) {
-			if(largestPosAdj == 0 && lines[i] == "") {
-				// add the largest positive adjustment of the last non-zero line
-				for(size_t p = 0; p < printLines.size(); ++p) {
-					for(size_t j = 0; j < printLines[p].length(); ++j) {
-						FontManager::FontData* charData = &(fontManager->fontData[*(printLines[p].c_str() + j)][size]);
-						int posAdj = charData->adjustY + charData->height;
-
-						if(posAdj > largestPosAdj)
-							largestPosAdj = posAdj;
-					}
-
-					if(largestPosAdj > 0)
-						break;
-				}
-//printf("breaking off early... height %u, largestPosAdj %u\n", height + largestPosAdj, largestPosAdj);
-			}
-
-			height += largestPosAdj;
-
-			break;
-		}
-//printf("height prior to adding: %u, after %u\n", height, height + lineHeight);
-		height += lineHeight;
 	}
-
-	// text origin
-	originX = 0;
-	originY = 0;
-
-	size_t skipLines = 0;
-
-	if(lines.size() > 0) {
-		for(size_t i = 0; i < lines.size(); ++i)
-			if(lines[i].length() == 0)
-				++skipLines;
-
-		for(size_t i = 0; skipLines != lines.size() && i < lines[skipLines].length(); ++i) {
-			// if we're skipping chars for a color code... well, skip them
-			bool useChar = true;
-			if(skipChars-- > 0)
-				useChar = false;
-
-			// if it's the start of a color code, skip these characters
-			if(*(lines[skipLines].c_str() + i) == '\\' && (unsigned int) i + 8 < strlen(lines[skipLines].c_str())) {
-				bool isColor = true;
-
-				for(int q = 1; q < 9; ++q) {
-					if(
-							(*(lines[skipLines].c_str() + i + q) < '0' ||
-									*(lines[skipLines].c_str() + i + q) > '9') &&
-							(*(lines[skipLines].c_str() + i + q) < 'a' ||
-									*(lines[skipLines].c_str() + i + q) > 'f')
-						) {
-						isColor = false;
-
-						break;
-					}
-				}
-
-				if(isColor) {
-					skipChars = 8;
-
-					useChar = false;
-				}
-			}
-
-			if(useChar) {
-				FontManager::FontData* charData = &(fontManager->fontData[*(lines[skipLines].c_str() + i)][size]);
-				int posAdj = charData->adjustY + charData->height;
-
-				if(posAdj > 0 && (unsigned int) posAdj > originY)
-					originY = (unsigned int) posAdj;
-			}
-		}
-	}
-//	originY += (float) skipLines * fontManager->lineHeights[size];
 
 	// create the character entries
-	float penX = -1.0f, penY = -1.0f - ((float)largestNegAdj * 2.0f / height);
+	float penX = -1.0f, penY = -1.0f + ((float) fontManager->descenders[size] * 2.0f / height);
 	Vector4 currentColor(0.0f, 0.0f, 0.0f, 0.0f);
 
 	for(int i = (int) printLines.size() - 1; i >= 0; --i) {
@@ -402,20 +194,4 @@ TextBlock::TextBlock(const char* dataString, unsigned int wrapX, unsigned int wr
 		penX = -1.0f;
 		penY += (float) fontManager->lineHeights[size] * 2.0f / height;
 	}
-
-
-// field height adjustment code
-/*
-	((UIMetrics*) labelArguments["metrics"])->position.x =
-			((UIMetrics*) arguments["metrics"])->position.x -
-			((UIMetrics*) arguments["metrics"])->size.x / 2.0f +
-			spaceWidth +
-			(float) textBlock->width / (float) gameGraphics->resolutionX;
-	((UIMetrics*) labelArguments["metrics"])->position.y =
-			((UIMetrics*) arguments["metrics"])->position.y +
-			((UIMetrics*) arguments["metrics"])->size.y / 2.0f -
-			((UIMetrics*) arguments["metrics"])->size.y * 2.0f / 3.0f +
-			((float) textBlock->¥ / (float) textBlock->height - 0.5f) *
-			(float) textBlock->height / gameGraphics->resolutionY * 2.0f;
-*/
 }

@@ -44,8 +44,8 @@ void Schemes::mainMenuScheme() {
 	drawingMaster->drawStack.push_back(gameLogic->splashEntry);
 
 	// spacer
-	gameLogic->mainMenuSpacer1Metrics->bearing1 = UIMetrics::BEARING_TOP;
-	drawingMaster->uiLayoutAuthority->metrics.push_back(gameLogic->mainMenuSpacer1Metrics);
+//	gameLogic->mainMenuSpacer1Metrics->bearing1 = UIMetrics::BEARING_TOP;
+//	drawingMaster->uiLayoutAuthority->metrics.push_back(gameLogic->mainMenuSpacer1Metrics);
 
 	// title label
 	*((float*) gameLogic->titleEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSuper");
@@ -1365,9 +1365,8 @@ void Schemes::gameOverScheme() {
 		// name prompt label
 		*((float*) gameLogic->newHighScoreNameLabel.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
 		*((Vector4*) gameLogic->newHighScoreNameLabel.second["fontColor"]) = gameSystem->getColor("fontColorLight");
-		*((std::string*) gameLogic->newHighScoreNameLabel.second["text"]) = "Player Name:";
+		*((std::string*) gameLogic->newHighScoreNameLabel.second["text"]) = "Name:";
 		((UIMetrics*) gameLogic->newHighScoreNameLabel.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(gameLogic->newHighScoreNameLabel.second);
-//FIXME FIIIIIIIIXXXXX MEEEEEEEE text doesn't line up if one but not the other goes below the baseline!
 
 		// name prompt field
 		*((float*) gameLogic->newHighScoreNameField.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
@@ -1380,9 +1379,9 @@ void Schemes::gameOverScheme() {
 		*((std::string*) gameLogic->newHighScoreNameField.second["text"]) = "\\";
 		*((std::string*) gameLogic->newHighScoreNameField.second["text"]) += gameSystem->getString("fontColorLight");
 		*((std::string*) gameLogic->newHighScoreNameField.second["text"]) += gameLogic->playerName;
-		*((std::string*) gameLogic->newHighScoreNameField.second["text"]) += "\\";
-		*((std::string*) gameLogic->newHighScoreNameField.second["text"]) += gameSystem->getString("fontColorDark");
-		*((std::string*) gameLogic->newHighScoreNameField.second["text"]) += "|";
+//		*((std::string*) gameLogic->newHighScoreNameField.second["text"]) += "\\";
+//		*((std::string*) gameLogic->newHighScoreNameField.second["text"]) += gameSystem->getString("fontColorDark");
+//		*((std::string*) gameLogic->newHighScoreNameField.second["text"]) += "|";
 
 		// name prompt container
 		*((float*) gameLogic->newHighScoreContainer.second["padding"]) = gameSystem->getFloat("hudContainerPadding");

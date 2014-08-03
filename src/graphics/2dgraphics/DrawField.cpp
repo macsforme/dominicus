@@ -230,11 +230,7 @@ void DrawField::execute(DrawStackArgList argList) {
 			spaceWidth +
 			(float) textBlock->width / (float) gameGraphics->resolutionX;
 	((UIMetrics*) labelArguments["metrics"])->position.y =
-			((UIMetrics*) argList["metrics"])->position.y +
-			((UIMetrics*) argList["metrics"])->size.y / 2.0f -
-			((UIMetrics*) argList["metrics"])->size.y * 2.0f / 3.0f +
-			((float) textBlock->originY / (float) textBlock->height - 0.5f) *
-			(float) textBlock->height / gameGraphics->resolutionY * 2.0f;
+			((UIMetrics*) argList["metrics"])->position.y;
 
 	labelDrawer->execute(labelArguments);
 

@@ -197,7 +197,9 @@ void FontManager::buildChar(const char character, unsigned int size, bool rebuil
 		gameSystem->log(GameSystem::LOG_FATAL, err.str().c_str());
 	}
 
-	// store the line height for this size
+	// store some metric information for this size
+	ascenders[size] = (unsigned int) fontFace->size->metrics.ascender / 64;
+	descenders[size] = (unsigned int) (-fontFace->size->metrics.descender / 64);
 	lineHeights[size] = (unsigned int) fontFace->size->metrics.height / 64;
 
 	// load the glyph
