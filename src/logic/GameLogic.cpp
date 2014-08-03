@@ -1045,10 +1045,7 @@ lastFPSUpdate = platform->getExecMills();
 
 			mainLoopModules.erase(mainLoopModules.find(drawingMaster));
 
-			if(gameSystem->highScores.size() > 0)
-				playerName = gameSystem->highScores[0].second;
-			else
-				playerName = "";
+			playerName = "";
 
 			currentScheme = SCHEME_GAMEOVER;
 			activeMenuSelection = &gameOverContinueButton;
@@ -1328,10 +1325,7 @@ lastFPSUpdate = platform->getExecMills();
 				inputHandler->keyboard->listenUnicode = true;
 				inputHandler->keyboard->unicodeChars = "";
 
-				if(gameSystem->highScores.size() > 0)
-					playerName = gameSystem->highScores[0].second;
-				else
-					playerName = "";
+				playerName = "";
 
 				currentScheme = SCHEME_GAMEOVER;
 				activeMenuSelection = &gameOverContinueButton;
@@ -1397,10 +1391,7 @@ lastFPSUpdate = platform->getExecMills();
 					inputHandler->keyboard->listenUnicode = true;
 					inputHandler->keyboard->unicodeChars = "";
 
-					if(gameSystem->highScores.size() > 0)
-						playerName = gameSystem->highScores[0].second;
-					else
-						playerName = "";
+					playerName = "";
 
 					currentScheme = SCHEME_GAMEOVER;
 					activeMenuSelection = &gameOverContinueButton;
@@ -1472,9 +1463,16 @@ lastFPSUpdate = platform->getExecMills();
 
 		// button clicks
 		if(gameOverContinueButtonClickListener->wasClicked()) {
-			if(gameState->score > 0 && (gameSystem->highScores.size() == 0 || gameState->score > gameSystem->highScores[0].first)) {
+			if(gameState->score > 0 && (gameSystem->highScores.size() == 0 || gameState->score > gameSystem->highScores.back().first)) {
 				if(playerName != "") {
-					gameSystem->highScores.insert(gameSystem->highScores.begin(), std::make_pair(gameState->score, playerName));
+					size_t position = 0;
+					while(position < gameSystem->highScores.size() && gameSystem->highScores[position].first >= gameState->score)
+						++position;
+
+					if(position == gameSystem->highScores.size())
+						gameSystem->highScores.push_back(std::make_pair(gameState->score, playerName));
+					else
+						gameSystem->highScores.insert(gameSystem->highScores.begin() + position, std::make_pair(gameState->score, playerName));
 					while(gameSystem->highScores.size() > (size_t) gameSystem->getFloat("gameMaximumHighScores"))
 						gameSystem->highScores.erase(gameSystem->highScores.end());
 
@@ -1505,9 +1503,16 @@ lastFPSUpdate = platform->getExecMills();
 				}
 			} else if(key == SDLK_RETURN) {
 				if(activeMenuSelection == &gameOverContinueButton) {
-					if(gameSystem->highScores.size() == 0 || gameState->score > gameSystem->highScores[0].first) {
+					if(gameState->score > 0 && (gameSystem->highScores.size() == 0 || gameState->score > gameSystem->highScores.back().first)) {
 						if(playerName != "") {
-							gameSystem->highScores.insert(gameSystem->highScores.begin(), std::make_pair(gameState->score, playerName));
+							size_t position = 0;
+							while(position < gameSystem->highScores.size() && gameSystem->highScores[position].first >= gameState->score)
+								++position;
+
+							if(position == gameSystem->highScores.size())
+								gameSystem->highScores.push_back(std::make_pair(gameState->score, playerName));
+							else
+								gameSystem->highScores.insert(gameSystem->highScores.begin() + position, std::make_pair(gameState->score, playerName));
 							while(gameSystem->highScores.size() > (size_t) gameSystem->getFloat("gameMaximumHighScores"))
 								gameSystem->highScores.erase(gameSystem->highScores.end());
 

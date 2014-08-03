@@ -1352,7 +1352,7 @@ void Schemes::gameOverScheme() {
 	drawingMaster->drawStack.push_back(gameLogic->highScoresLabelEntry);
 	drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->highScoresLabelEntry.second["metrics"]);
 
-	if(gameState->score > 0 && (gameSystem->highScores.size() == 0 || gameState->score > gameSystem->highScores[0].first)) {
+	if(gameState->score > 0 && (gameSystem->highScores.size() == 0 || gameState->score > gameSystem->highScores.back().first)) {
 		// high scores label
 		*((float*) gameLogic->newHighScoreLabel.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
 		*((Vector4*) gameLogic->newHighScoreLabel.second["fontColor"]) = gameSystem->getColor("fontColorLight");
@@ -1429,7 +1429,7 @@ void Schemes::gameOverScheme() {
 	// re-arrange the UI
 	drawingMaster->uiLayoutAuthority->rearrange();
 
-	if(gameState->score > 0 && (gameSystem->highScores.size() == 0 || gameState->score > gameSystem->highScores[0].first)) {
+	if(gameState->score > 0 && (gameSystem->highScores.size() == 0 || gameState->score > gameSystem->highScores.back().first)) {
 		// assemble prompt container contents
 		((UIMetrics*) gameLogic->newHighScoreNameLabel.second["metrics"])->position = Vector2(
 				((UIMetrics*) gameLogic->newHighScoreContainer.second["metrics"])->position.x -
