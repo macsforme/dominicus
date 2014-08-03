@@ -86,8 +86,8 @@ void FontManager::rebuildFontTextureCache(unsigned int size) {
 
 	std::vector<char> charList = getCachedCharsList(size);
 	for(unsigned int i = 0; i < charList.size(); ++i) {
-		unsigned int thisX = fontData[charList[i]][size].width;
-		unsigned int thisY = fontData[charList[i]][size].height;
+		unsigned int thisX = fontData[charList[i]][size].width + 1; // one pixel border between glyphs since our crappy drawer is inaccurate
+		unsigned int thisY = fontData[charList[i]][size].height + 1;
 
 		maxX = (maxX < thisX ? thisX : maxX);
 		maxY = (maxY < thisY ? thisY : maxY);
