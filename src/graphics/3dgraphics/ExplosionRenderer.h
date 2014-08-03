@@ -30,13 +30,13 @@ private:
 	};
 	std::vector<ExplodingMissile> explodingMissiles;
 
-	GameState* gameStateCache;
-
 public:
 	ExplosionRenderer();
 	~ExplosionRenderer();
 
 	void execute(std::map<std::string, void*> arguments);
+
+	void reloadState();
 };
 
 #endif // EXPLOSIONRENDERER_H

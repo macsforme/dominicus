@@ -18,7 +18,7 @@ public:
 	TerrainRenderer();
 	~TerrainRenderer();
 
-	void reloadGraphics();
+	void reloadState();
 
 	void execute(std::map<std::string, void*> arguments);
 };

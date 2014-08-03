@@ -17,7 +17,7 @@ extern GameGraphics* gameGraphics;
 extern GameState* gameState;
 extern GameSystem* gameSystem;
 
-ExplosionRenderer::ExplosionRenderer() : sphere(makeSphere((size_t) gameSystem->getFloat("explosionSphereDensity"))), gameStateCache(gameState) {
+ExplosionRenderer::ExplosionRenderer() : sphere(makeSphere((size_t) gameSystem->getFloat("explosionSphereDensity"))) {
 	// set up shader
 	GLuint shaderID = 0;
 	std::vector<GLuint> shaderIDs;
@@ -93,13 +93,6 @@ ExplosionRenderer::~ExplosionRenderer() {
 
 void ExplosionRenderer::execute(std::map<std::string, void*> arguments) {
 	// update missile caches
-	if(gameStateCache != gameState) {
-		activeMissiles.clear();
-		explodingMissiles.clear();
-
-		gameStateCache = gameState;
-	}
-
 	size_t i = 0;
 	while(i < explodingMissiles.size()) {
 		bool isActive = false;
@@ -313,4 +306,10 @@ void ExplosionRenderer::execute(std::map<std::string, void*> arguments) {
 	// undo state
 	glDisable(GL_BLEND);
 	glDisable(GL_MULTISAMPLE);
+}
+
+void ExplosionRenderer::reloadState() {
+	// clear missile caches
+	activeMissiles.clear();
+	explodingMissiles.clear();
 }

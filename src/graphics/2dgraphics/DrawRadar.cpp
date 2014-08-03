@@ -121,7 +121,7 @@ DrawRadar::~DrawRadar() {
 	glDeleteTextures(1, &progressionTextureID);
 }
 
-void DrawRadar::reloadGraphics() {
+void DrawRadar::reloadState() {
 	// create a texture with the terrain heightmap for radar
 	size_t resolution = (size_t) gameSystem->getFloat("islandTerrainBaseDensity");
 	resolution *= (size_t) pow(2.0f, gameSystem->getFloat("islandTerrainDetail") - 1.0f);

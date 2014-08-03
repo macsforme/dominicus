@@ -64,12 +64,13 @@ public:
 	std::vector<SDL_Event> eventStack;
 
 	Vector2 position;
+	bool isInWindow;
 
 	std::vector<MouseButtonListener*> mouseButtonListeners;
 	std::vector<MouseMotionListener*> mouseMotionListeners;
 	std::vector<MouseZoneListener*> mouseZoneListeners;
 
-	Mouse() : position(Vector2(0.0f, 0.0f)) { };
+	Mouse() : position(Vector2(0.0f, 0.0f)), isInWindow(false) { };
 
 	void addListener(MouseButtonListener*);
 	void removeListener(MouseButtonListener*);

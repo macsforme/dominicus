@@ -36,6 +36,7 @@ unsigned int InputHandler::execute(bool unScheduled) {
 			break;
 		case SDL_MOUSEMOTION:
 		case SDL_MOUSEBUTTONDOWN:
+		case SDL_ACTIVEEVENT:
 			mouse->eventStack.push_back(event);
 
 			break;

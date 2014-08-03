@@ -792,8 +792,9 @@ lastFPSUpdate = platform->getExecMills();
 		mouseMotionListener->wasMoved();
 
 		if(currentScheme == SCHEME_PLAYING || currentScheme == SCHEME_INTRO || currentScheme == SCHEME_PAUSED) {
-			((TerrainRenderer*) drawingMaster->drawers["terrainRenderer"])->reloadGraphics();
-			((DrawRadar*) drawingMaster->drawers["radar"])->reloadGraphics();
+			((DrawRadar*) drawingMaster->drawers["radar"])->reloadState();
+			((ExplosionRenderer*) drawingMaster->drawers["explosionRenderer"])->reloadState();
+			((TerrainRenderer*) drawingMaster->drawers["terrainRenderer"])->reloadState();
 		}
 
 		reScheme();
@@ -858,8 +859,9 @@ lastFPSUpdate = platform->getExecMills();
 			mainLoopModules[gameState] = 0;
 
 			mainLoopModules[drawingMaster] = 0;
-			((TerrainRenderer*) drawingMaster->drawers["terrainRenderer"])->reloadGraphics();
-			((DrawRadar*) drawingMaster->drawers["radar"])->reloadGraphics();
+			((DrawRadar*) drawingMaster->drawers["radar"])->reloadState();
+			((ExplosionRenderer*) drawingMaster->drawers["explosionRenderer"])->reloadState();
+			((TerrainRenderer*) drawingMaster->drawers["terrainRenderer"])->reloadState();
 			gameGraphics->currentCamera = &introCamera;
 
 			currentScheme = SCHEME_INTRO;
@@ -956,8 +958,9 @@ lastFPSUpdate = platform->getExecMills();
 					mainLoopModules[gameState] = 0;
 
 					mainLoopModules[drawingMaster] = 0;
-					((TerrainRenderer*) drawingMaster->drawers["terrainRenderer"])->reloadGraphics();
-					((DrawRadar*) drawingMaster->drawers["radar"])->reloadGraphics();
+					((DrawRadar*) drawingMaster->drawers["radar"])->reloadState();
+					((ExplosionRenderer*) drawingMaster->drawers["explosionRenderer"])->reloadState();
+					((TerrainRenderer*) drawingMaster->drawers["terrainRenderer"])->reloadState();
 					gameGraphics->currentCamera = &introCamera;
 
 					currentScheme = SCHEME_INTRO;
@@ -994,8 +997,9 @@ lastFPSUpdate = platform->getExecMills();
 			gameState->bumpStart();
 			currentScheme = SCHEME_PLAYING;
 			reScheme();
-			SDL_ShowCursor(0);
+			SDL_WM_GrabInput(SDL_GRAB_ON);
 			SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
+			SDL_ShowCursor(0);
 			inputHandler->execute();
 			mouseMotionListener->wasMoved();
 			gameGraphics->currentCamera = &fortressCamera;
@@ -1007,8 +1011,9 @@ lastFPSUpdate = platform->getExecMills();
 				gameState->bumpStart();
 				currentScheme = SCHEME_PLAYING;
 				reScheme();
-				SDL_ShowCursor(0);
+				SDL_WM_GrabInput(SDL_GRAB_ON);
 				SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
+				SDL_ShowCursor(0);
 				inputHandler->execute();
 				mouseMotionListener->wasMoved();
 				gameGraphics->currentCamera = &fortressCamera;
@@ -1020,6 +1025,7 @@ lastFPSUpdate = platform->getExecMills();
 				currentScheme = SCHEME_PAUSED;
 				activeMenuSelection = &resumeButtonEntry;
 				reScheme();
+				SDL_WM_GrabInput(SDL_GRAB_OFF);
 				SDL_ShowCursor(1);
 
 				needRedraw = true;
@@ -1035,6 +1041,7 @@ lastFPSUpdate = platform->getExecMills();
 			SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
 			inputHandler->execute();
 			mouseMotionListener->wasMoved();
+			SDL_WM_GrabInput(SDL_GRAB_ON);
 			SDL_ShowCursor(0);
 			gameGraphics->currentCamera = &fortressCamera;
 		}
@@ -1053,6 +1060,7 @@ lastFPSUpdate = platform->getExecMills();
 			inputHandler->keyboard->unicodeChars = "";
 
 			reScheme();
+			SDL_WM_GrabInput(SDL_GRAB_OFF);
 			SDL_ShowCursor(1);
 
 			needRedraw = true;
@@ -1089,8 +1097,8 @@ lastFPSUpdate = platform->getExecMills();
 
 			// constrain to control radius
 			Vector2 correctAspectMousePosition(inputHandler->mouse->position.x * gameGraphics->aspectRatio, inputHandler->mouse->position.y);
-			if(mag(correctAspectMousePosition) > gameSystem->getFloat("hudCursorRange")) {
-				Vector2 mousePositionVector = correctAspectMousePosition * gameSystem->getFloat("hudCursorRange") / mag(correctAspectMousePosition);
+			if(mag(correctAspectMousePosition) > gameSystem->getFloat("hudControlAreaRadius") * 2.0f / gameGraphics->resolutionY) {
+				Vector2 mousePositionVector = correctAspectMousePosition * (gameSystem->getFloat("hudControlAreaRadius") * 2.0f / gameGraphics->resolutionY) / mag(correctAspectMousePosition);
 
 				SDL_WarpMouse(
 						gameGraphics->resolutionX / 2 + (unsigned short int) (mousePositionVector.x * (float) (gameGraphics->resolutionX / 2) / gameGraphics->aspectRatio),
@@ -1113,9 +1121,9 @@ lastFPSUpdate = platform->getExecMills();
 				Vector2 movementVector =
 						correctAspectMousePosition * pow(
 								(mag(correctAspectMousePosition) - effectiveDeadAreaRadius) /
-								(gameSystem->getFloat("hudCursorRange") - effectiveDeadAreaRadius),
+								(gameSystem->getFloat("hudControlAreaRadius") * 2.0f / gameGraphics->resolutionY - effectiveDeadAreaRadius),
 								gameSystem->getFloat("hudCursorPositionExponent")
-							) / gameSystem->getFloat("hudCursorRange");
+							) / (gameSystem->getFloat("hudControlAreaRadius") * 2.0f / gameGraphics->resolutionY);
 
 				gameState->fortress.addRotation(gameSystem->getFloat("stateTurretTurnSpeed") * deltaTime * movementVector.x);
 				gameState->fortress.addTilt(gameSystem->getFloat("stateTurretTurnSpeed") * deltaTime * movementVector.y);
@@ -1147,8 +1155,9 @@ lastFPSUpdate = platform->getExecMills();
 				gameState = new GameState();
 				mainLoopModules[gameState] = 0;
 
-				((TerrainRenderer*) drawingMaster->drawers["terrainRenderer"])->reloadGraphics();
-				((DrawRadar*) drawingMaster->drawers["radar"])->reloadGraphics();
+				((DrawRadar*) drawingMaster->drawers["radar"])->reloadState();
+				((ExplosionRenderer*) drawingMaster->drawers["explosionRenderer"])->reloadState();
+				((TerrainRenderer*) drawingMaster->drawers["terrainRenderer"])->reloadState();
 			} else if(key == SDLK_BACKSLASH) {
 				if(gameGraphics->currentCamera == &fortressCamera)
 					gameGraphics->currentCamera = &orbitCamera;
@@ -1166,6 +1175,7 @@ lastFPSUpdate = platform->getExecMills();
 				currentScheme = SCHEME_PAUSED;
 				activeMenuSelection = &resumeButtonEntry;
 				reScheme();
+				SDL_WM_GrabInput(SDL_GRAB_OFF);
 				SDL_ShowCursor(1);
 
 				needRedraw = true;
@@ -1306,6 +1316,7 @@ lastFPSUpdate = platform->getExecMills();
 				currentScheme = SCHEME_INTRO;
 			} else {
 				currentScheme = SCHEME_PLAYING;
+				SDL_WM_GrabInput(SDL_GRAB_ON);
 				SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
 				SDL_ShowCursor(0);
 
@@ -1369,6 +1380,7 @@ lastFPSUpdate = platform->getExecMills();
 						currentScheme = SCHEME_INTRO;
 					} else {
 						currentScheme = SCHEME_PLAYING;
+						SDL_WM_GrabInput(SDL_GRAB_ON);
 						SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
 						SDL_ShowCursor(0);
 

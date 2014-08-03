@@ -64,7 +64,7 @@ TerrainRenderer::~TerrainRenderer() {
 	glDeleteBuffers(1, &(vertexBuffers["elements"]));
 }
 
-void TerrainRenderer::reloadGraphics() {
+void TerrainRenderer::reloadState() {
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexBuffers["elements"]);
 

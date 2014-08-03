@@ -160,6 +160,13 @@ void Mouse::execute() {
 			}
 
 			break;
+		case SDL_ACTIVEEVENT:
+			if(event.active.state != SDL_APPMOUSEFOCUS)
+				break;
+
+			isInWindow = event.active.gain ? true : false;
+
+			break;
 		}
 
 		eventStack.erase(eventStack.begin());

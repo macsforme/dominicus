@@ -30,7 +30,7 @@ public:
 	DrawRadar(DrawContainer* newContainerDrawer, DrawCircle* newCircleDrawer);
 	~DrawRadar();
 
-	void reloadGraphics();
+	void reloadState();
 
 	DrawStackArgList instantiateArgList();
 	void deleteArgList(DrawStackArgList argList);
