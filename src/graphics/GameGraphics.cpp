@@ -518,6 +518,8 @@ GLuint GameGraphics::getTextureID(std::string filename) {
 
 	GLuint textureID = 0;
 	glGenTextures(1, &textureID);
+
+	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, textureID);
 
 	glTexImage2D(

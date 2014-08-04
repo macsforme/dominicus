@@ -151,8 +151,9 @@ void FontManager::rebuildFontTextureCache(unsigned int size) {
 
 	glGenTextures(1, &textureIDs[size]);
 
-	glActiveTexture(GL_TEXTURE0);
 	glEnable(GL_TEXTURE_2D);
+
+	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, textureIDs[size]);
 
 	glTexImage2D(

@@ -128,12 +128,12 @@ void DrawRadar::reloadState() {
 
 	glEnable(GL_TEXTURE_2D);
 
-	glActiveTexture(GL_TEXTURE0);
-
 	if(glIsTexture(radarTextureID))
 		glDeleteTextures(1, &radarTextureID);
 
 	glGenTextures(1, &radarTextureID);
+
+	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, radarTextureID);
 
 	glTexImage2D(
@@ -176,12 +176,12 @@ void DrawRadar::reloadState() {
 
 	glEnable(GL_TEXTURE_2D);
 
-	glActiveTexture(GL_TEXTURE0);
-
 	if(glIsTexture(progressionTextureID))
 		glDeleteTextures(1, &progressionTextureID);
 
 	glGenTextures(1, &progressionTextureID);
+
+	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, progressionTextureID);
 
 	glTexImage2D(
@@ -349,6 +349,7 @@ void DrawRadar::execute(DrawStackArgList argList) {
 	glDrawElements(GL_QUADS, 4, GL_UNSIGNED_SHORT, NULL);
 
 	// also draw the progression texture
+	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, progressionTextureID);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);

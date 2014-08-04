@@ -122,6 +122,8 @@ MissileTrailRenderer::MissileTrailRenderer() {
 	glEnable(GL_TEXTURE_2D);
 
 	glGenTextures(1, &noiseTextureID);
+
+	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, noiseTextureID);
 
 	glTexImage2D(
