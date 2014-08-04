@@ -408,7 +408,9 @@ GameLogic::GameLogic() :
 	turretRightKeyListener = new KeyAbsoluteListener(SDLK_RIGHT);
 	cameraAheadKeyListener = new KeyAbsoluteListener(SDLK_SPACE);
 
-	primaryFireClickListener = new MouseButtonListener();
+	primaryFireClickListener1 = new MouseButtonListener();
+	primaryFireClickListener2 = new MouseButtonListener(SDL_BUTTON_WHEELUP);
+	primaryFireClickListener3 = new MouseButtonListener(SDL_BUTTON_WHEELDOWN);
 	secondaryFireClickListener = new MouseButtonListener(SDL_BUTTON_RIGHT);
 	binocularsClickListener = new MouseButtonListener(SDL_BUTTON_MIDDLE);
 
@@ -1132,7 +1134,11 @@ lastFPSUpdate = platform->getExecMills();
 		}
 
 		// button clicks
-		if(primaryFireClickListener->wasClicked()) {
+		if(
+				primaryFireClickListener1->wasClicked() ||
+				primaryFireClickListener2->wasClicked() ||
+				primaryFireClickListener3->wasClicked()
+			) {
 			gameState->fireShell();
 		}
 		if(secondaryFireClickListener->wasClicked()) {

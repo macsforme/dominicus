@@ -107,7 +107,9 @@ public:
 	KeyAbsoluteListener* turretLeftKeyListener;
 	KeyAbsoluteListener* turretRightKeyListener;
 KeyAbsoluteListener* cameraAheadKeyListener;
-	MouseButtonListener* primaryFireClickListener;
+	MouseButtonListener* primaryFireClickListener1;
+	MouseButtonListener* primaryFireClickListener2;
+	MouseButtonListener* primaryFireClickListener3;
 	MouseButtonListener* secondaryFireClickListener;
 	MouseButtonListener* binocularsClickListener;
 	DrawStackEntry controlSpotEntry;

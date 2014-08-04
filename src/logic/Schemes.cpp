@@ -897,7 +897,9 @@ void Schemes::loadingScheme() {
 void Schemes::playingScheme() {
 	// input
 	inputHandler->mouse->addListener(gameLogic->mouseMotionListener);
-	inputHandler->mouse->addListener(gameLogic->primaryFireClickListener);
+	inputHandler->mouse->addListener(gameLogic->primaryFireClickListener1);
+	inputHandler->mouse->addListener(gameLogic->primaryFireClickListener2);
+	inputHandler->mouse->addListener(gameLogic->primaryFireClickListener3);
 	inputHandler->mouse->addListener(gameLogic->secondaryFireClickListener);
 	inputHandler->mouse->addListener(gameLogic->binocularsClickListener);
 	inputHandler->keyboard->addListener(gameLogic->quitKeyListener);
