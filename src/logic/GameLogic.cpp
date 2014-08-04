@@ -669,7 +669,7 @@ fpsEntry.second["metrics"] = (void*) new UIMetrics;
 fpsEntry.second["fontSize"] = (void*) new float;
 *((float*) fpsEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
 fpsEntry.second["fontColor"] = (void*) new Vector4;
-*((Vector4*) fpsEntry.second["fontColor"]) = Vector4(0.5f, 0.5f, 0.5f, 1.0f);
+*((Vector4*) fpsEntry.second["fontColor"]) = gameSystem->getColor("fontColorDark");
 fpsEntry.second["text"] = (void*) new std::string;
 *((std::string*) fpsEntry.second["text"]) = "FPS: 0";
 
@@ -749,10 +749,11 @@ void GameLogic::reScheme() {
 
 std::stringstream ss; ss << "FPS: " << drawingMaster->runRate;
 *((std::string*) fpsEntry.second["text"]) = ss.str().c_str();
+*((float*) fpsEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
 ((UIMetrics*) fpsEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(fpsEntry.second);
 drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) fpsEntry.second["metrics"]);
-drawingMaster->drawStack.push_back(fpsEntry);
 drawingMaster->uiLayoutAuthority->rearrange();
+drawingMaster->drawStack.push_back(fpsEntry);
 }
 
 unsigned int GameLogic::execute(bool unScheduled) {

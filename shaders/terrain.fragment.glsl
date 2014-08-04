@@ -21,8 +21,11 @@ void main() {
 	// initial color
 	vec4 calculatedColor = vec4(1.0, 1.0, 1.0, 1.0);
 
-	// fade the underground portion
-	if(yCoordInterpol < 0.0)
+	// fade the shore and the underground portion
+	float blurHeight = 1.0;
+	if(yCoordInterpol >= 0.0 && yCoordInterpol < blurHeight)
+		calculatedColor.a *= 0.75 + yCoordInterpol / blurHeight * 0.25;
+	else if(yCoordInterpol < 0.0)
 		calculatedColor.a *= 0.75 * (depth + yCoordInterpol) / depth;
 
 	// texture it
@@ -40,14 +43,12 @@ void main() {
 	calculatedColor *= vec4(min(vec3(lightFactor) * vec3(1.0, 1.0, 1.0), vec3(1.0)), 1.0);
 
 	// color change for EMP
-	if(yCoordInterpol >= 0.0) {
-		if(distance(vec3(0.0), fortressTransformedPosition) > colorChangeRadius)
-			calculatedColor *= outsideColorMultiplier;
-		else
-			calculatedColor *= insideColorMultiplier;
+	if(distance(vec3(0.0), fortressTransformedPosition) > colorChangeRadius)
+		calculatedColor *= outsideColorMultiplier;
+	else
+		calculatedColor *= insideColorMultiplier;
 
-		calculatedColor = min(vec4(1.0), calculatedColor);
-	}
+	calculatedColor = min(vec4(1.0), calculatedColor);
 
 	// final setting
 	gl_FragColor = calculatedColor;

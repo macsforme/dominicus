@@ -193,6 +193,16 @@ void DrawLabel::execute(DrawStackArgList argList) {
 	Vector4* fontColor = ((Vector4*) argList["fontColor"]);
 	std::string* text = ((std::string*) argList["text"]);
 
+	// verify font size is valid
+	if(gameGraphics->fontManager->textureIDs.find((unsigned int) *fontSize) == gameGraphics->fontManager->textureIDs.end()) {
+		std::stringstream sstream;
+		sstream <<
+				"Font size " <<
+				(unsigned int) *fontSize <<
+				" requested for drawing but is not in memory.";
+		gameSystem->log(GameSystem::LOG_FATAL, sstream.str().c_str());
+	}
+
 	// create the text block
 	unsigned int widthWrap = gameGraphics->resolutionX;
 	if(argList.find("wrap") != argList.end())

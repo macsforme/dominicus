@@ -145,14 +145,15 @@ void FontManager::rebuildFontTextureCache(unsigned int size) {
 	}
 
 	// send the texture to the GPU
-	if(textureIDs.find(size) == textureIDs.end() || ! glIsTexture(textureIDs[size]))
-		glGenTextures(1, &textureIDs[size]);
+	if(textureIDs.find(size) != textureIDs.end())
+		if(glIsTexture(textureIDs[size]))
+			glDeleteTextures(1, &textureIDs[size]);
 
+	glGenTextures(1, &textureIDs[size]);
+
+	glActiveTexture(GL_TEXTURE0);
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, textureIDs[size]);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	glTexImage2D(
 			GL_TEXTURE_2D,

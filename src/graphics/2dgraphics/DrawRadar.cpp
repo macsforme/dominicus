@@ -54,48 +54,9 @@ DrawRadar::DrawRadar(DrawContainer* newContainerDrawer, DrawCircle* newCircleDra
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elementBufferArray), elementBufferArray,
 			GL_STATIC_DRAW);
 
-	// create the progression texture (next power of 2)
-	size_t textureDimension = pow(2.0f, (float) ((int) log2(gameSystem->getFloat("radarSize") / 100.0f * (float) gameGraphics->resolutionY - gameSystem->getFloat("hudGaugePadding") * 2.0f) + 1));
-	Texture progressionTexture(textureDimension, textureDimension, Texture::FORMAT_RGBA);
-	for(size_t i = 0; i < textureDimension; ++i) {
-		for(size_t p = 0; p < textureDimension; ++p) {
-			float pixelDistance = distance(
-					Vector2(textureDimension / 2, textureDimension / 2),
-					Vector2((float) i, (float) p)
-				);
-			float alphaValue = 127.0f;
-
-			if(pixelDistance > textureDimension / 2)
-				alphaValue *= 0.0f;
-
-			else if(textureDimension / 2 - pixelDistance <= gameSystem->getFloat("hudContainerSoftEdge"))
-				alphaValue *= (textureDimension / 2 - pixelDistance) / gameSystem->getFloat("hudContainerSoftEdge");
-
-			alphaValue *= getAngle(Vector2((float) i, (float) p) - Vector2((float) textureDimension / 2.0f, (float) textureDimension / 2.0f)) / 360.0f;
-			progressionTexture.setColorAt(i, p, 0, 0, 0, (uint8_t) alphaValue);
-		}
-	}
-
-	glEnable(GL_TEXTURE_2D);
-
-	glGenTextures(1, &progressionTextureID);
-	glBindTexture(GL_TEXTURE_2D, progressionTextureID);
-
-	glTexImage2D(
-			GL_TEXTURE_2D,
-			0,
-			(progressionTexture.format == Texture::FORMAT_RGBA ? GL_RGBA : GL_RGB),
-			progressionTexture.width,
-			progressionTexture.height,
-			0,
-			(progressionTexture.format == Texture::FORMAT_RGBA ? GL_RGBA : GL_RGB),
-			GL_UNSIGNED_BYTE,
-			progressionTexture.getDataPointer()
-	);
-
-	glGenerateMipmap(GL_TEXTURE_2D);
-
-	glDisable(GL_TEXTURE_2D);
+	// zero out the texture IDs
+	radarTextureID = 0;
+	progressionTextureID = 0;
 }
 
 DrawRadar::~DrawRadar() {
@@ -117,7 +78,9 @@ DrawRadar::~DrawRadar() {
 	glDeleteBuffers(1, &(vertexBuffers["elements"]));
 
 	// delete textures
-	glDeleteTextures(1, &radarTextureID);
+	if(glIsTexture(radarTextureID))
+		glDeleteTextures(1, &radarTextureID);
+	if(glIsTexture(progressionTextureID))
 	glDeleteTextures(1, &progressionTextureID);
 }
 
@@ -165,6 +128,11 @@ void DrawRadar::reloadState() {
 
 	glEnable(GL_TEXTURE_2D);
 
+	glActiveTexture(GL_TEXTURE0);
+
+	if(glIsTexture(radarTextureID))
+		glDeleteTextures(1, &radarTextureID);
+
 	glGenTextures(1, &radarTextureID);
 	glBindTexture(GL_TEXTURE_2D, radarTextureID);
 
@@ -183,6 +151,54 @@ void DrawRadar::reloadState() {
 	glDisable(GL_TEXTURE_2D);
 
 	delete radarTexture;
+
+	// create the progression texture (next power of 2)
+	size_t textureDimension = pow(2.0f, (float) ((int) log2(gameSystem->getFloat("radarSize") / 100.0f * (float) gameGraphics->resolutionY - gameSystem->getFloat("hudGaugePadding") * 2.0f) + 1));
+	Texture progressionTexture(textureDimension, textureDimension, Texture::FORMAT_RGBA);
+	for(size_t i = 0; i < textureDimension; ++i) {
+		for(size_t p = 0; p < textureDimension; ++p) {
+			float pixelDistance = distance(
+					Vector2(textureDimension / 2, textureDimension / 2),
+					Vector2((float) i, (float) p)
+				);
+			float alphaValue = 127.0f;
+
+			if(pixelDistance > textureDimension / 2)
+				alphaValue *= 0.0f;
+
+			else if(textureDimension / 2 - pixelDistance <= gameSystem->getFloat("hudContainerSoftEdge"))
+				alphaValue *= (textureDimension / 2 - pixelDistance) / gameSystem->getFloat("hudContainerSoftEdge");
+
+			alphaValue *= getAngle(Vector2((float) i, (float) p) - Vector2((float) textureDimension / 2.0f, (float) textureDimension / 2.0f)) / 360.0f;
+			progressionTexture.setColorAt(i, p, 0, 0, 0, (uint8_t) alphaValue);
+		}
+	}
+
+	glEnable(GL_TEXTURE_2D);
+
+	glActiveTexture(GL_TEXTURE0);
+
+	if(glIsTexture(progressionTextureID))
+		glDeleteTextures(1, &progressionTextureID);
+
+	glGenTextures(1, &progressionTextureID);
+	glBindTexture(GL_TEXTURE_2D, progressionTextureID);
+
+	glTexImage2D(
+			GL_TEXTURE_2D,
+			0,
+			(progressionTexture.format == Texture::FORMAT_RGBA ? GL_RGBA : GL_RGB),
+			progressionTexture.width,
+			progressionTexture.height,
+			0,
+			(progressionTexture.format == Texture::FORMAT_RGBA ? GL_RGBA : GL_RGB),
+			GL_UNSIGNED_BYTE,
+			progressionTexture.getDataPointer()
+	);
+
+	glGenerateMipmap(GL_TEXTURE_2D);
+
+	glDisable(GL_TEXTURE_2D);
 
 	// clear the missile cache
 	missileCache.clear();
