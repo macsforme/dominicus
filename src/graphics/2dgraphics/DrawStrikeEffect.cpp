@@ -14,7 +14,7 @@ extern GameState* gameState;
 extern GameSystem* gameSystem;
 
 void DrawStrikeEffect::execute(DrawStackArgList argList) {
-	float effectProgression = (float) (gameState->getGameMills() - gameState->lastStrikeTime) / (gameSystem->getFloat("hudStrikeEffectTime") * 1000.0f);
+	float effectProgression = (float) (gameState->lastUpdateGameTime - gameState->lastStrikeTime) / (gameSystem->getFloat("hudStrikeEffectTime") * 1000.0f);
 
 	if(effectProgression >= 1.0f)
 		return;

@@ -115,7 +115,9 @@ public:
 	GameState();
 	~GameState();
 
+private:
 	unsigned int getGameMills();
+public:
 	void pause();
 	void resume();
 	void bumpStart();

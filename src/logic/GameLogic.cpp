@@ -769,7 +769,7 @@ lastFPSUpdate = platform->getExecMills();
 	// get a delta time for schemes that need it
 	float deltaTime = 0.0f;
 	if(gameState != NULL && ! gameState->isPaused && currentScheme == SCHEME_PLAYING) {
-		unsigned int currentGameTime = gameState->getGameMills();
+		unsigned int currentGameTime = gameState->lastUpdateGameTime;
 		deltaTime = (float) (currentGameTime - lastUpdate) / 1000.0f;
 		lastUpdate = currentGameTime;
 	}

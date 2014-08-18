@@ -184,7 +184,7 @@ void MissileTrailRenderer::execute(std::map<std::string, void*> arguments) {
 
 	// set uniforms
 	glUniform1i(uniforms["texture"], 0);
-	glUniform1f(uniforms["timer"], gameState->getGameMills() / 1000.0f);
+	glUniform1f(uniforms["timer"], gameState->lastUpdateGameTime / 1000.0f);
 
 	// set the overall drawing state
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);

@@ -114,7 +114,7 @@ void WaterRenderer::execute(std::map<std::string, void*> arguments) {
 	glUseProgram(shaderProgram);
 
 	// set uniforms
-	glUniform1f(uniforms["timer"], (float) (gameState->getGameMills() % 3000) / 3000.0f);
+	glUniform1f(uniforms["timer"], (float) (gameState->lastUpdateGameTime % 3000) / 3000.0f);
 	glUniformMatrix4fv(uniforms["mvpMatrix"], 1, GL_FALSE, mvpMatrixArray);
 	glUniformMatrix4fv(uniforms["fortressTransformMatrix"], 1, GL_FALSE, fortressTransformMatrixArray);
 	glUniform4f(uniforms["insideColorMultiplier"], 1.0f, 1.0f, 1.0f, 1.0f);
