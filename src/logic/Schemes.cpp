@@ -623,17 +623,19 @@ void Schemes::settingsScheme() {
 	drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->framerateLimitingEntry.second["metrics"]);
 
 	// multisampling level control label
-	*((float*) gameLogic->multisamplingLevelEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
-	*((Vector4*) gameLogic->multisamplingLevelEntry.second["fontColor"]) = (gameLogic->activeMenuSelection == &gameLogic->multisamplingLevelEntry ? gameSystem->getColor("fontColorLight") : gameSystem->getColor("fontColorDark"));
-	*((std::string*) gameLogic->multisamplingLevelEntry.second["text"]) = (
-			gameSystem->getFloat("displayMultisamplingLevel") == 2.0f ? "Multisampling Level: Low" :
-			gameSystem->getFloat("displayMultisamplingLevel") == 4.0f ? "Multisampling Level: High" :
-			"Multisampling Level: Off"
-		);
-	((UIMetrics*) gameLogic->multisamplingLevelEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
-	((UIMetrics*) gameLogic->multisamplingLevelEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(gameLogic->multisamplingLevelEntry.second);
-	drawingMaster->drawStack.push_back(gameLogic->multisamplingLevelEntry);
-	drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->multisamplingLevelEntry.second["metrics"]);
+	if(gameGraphics->supportsMultisampling) {
+		*((float*) gameLogic->multisamplingLevelEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
+		*((Vector4*) gameLogic->multisamplingLevelEntry.second["fontColor"]) = (gameLogic->activeMenuSelection == &gameLogic->multisamplingLevelEntry ? gameSystem->getColor("fontColorLight") : gameSystem->getColor("fontColorDark"));
+		*((std::string*) gameLogic->multisamplingLevelEntry.second["text"]) = (
+				gameSystem->getFloat("displayMultisamplingLevel") == 2.0f ? "Multisampling Level: Low" :
+				gameSystem->getFloat("displayMultisamplingLevel") == 4.0f ? "Multisampling Level: High" :
+				"Multisampling Level: Off"
+			);
+		((UIMetrics*) gameLogic->multisamplingLevelEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
+		((UIMetrics*) gameLogic->multisamplingLevelEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(gameLogic->multisamplingLevelEntry.second);
+		drawingMaster->drawStack.push_back(gameLogic->multisamplingLevelEntry);
+		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->multisamplingLevelEntry.second["metrics"]);
+	}
 
 	// island terrain detail control label
 	*((float*) gameLogic->terrainDetailEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
@@ -757,12 +759,14 @@ void Schemes::settingsScheme() {
 	gameLogic->framerateLimitingButtonClickListener->ur = gameLogic->framerateLimitingButtonZoneListener->ur;
 	inputHandler->mouse->addListener(gameLogic->framerateLimitingButtonClickListener);
 
-	gameLogic->multisamplingButtonZoneListener->ll = ((UIMetrics*) gameLogic->multisamplingLevelEntry.second["metrics"])->position - ((UIMetrics*) gameLogic->multisamplingLevelEntry.second["metrics"])->size / 2.0f;
-	gameLogic->multisamplingButtonZoneListener->ur = ((UIMetrics*) gameLogic->multisamplingLevelEntry.second["metrics"])->position + ((UIMetrics*) gameLogic->multisamplingLevelEntry.second["metrics"])->size / 2.0f;
-	inputHandler->mouse->addListener(gameLogic->multisamplingButtonZoneListener);
-	gameLogic->multisamplingButtonClickListener->ll = gameLogic->multisamplingButtonZoneListener->ll;
-	gameLogic->multisamplingButtonClickListener->ur = gameLogic->multisamplingButtonZoneListener->ur;
-	inputHandler->mouse->addListener(gameLogic->multisamplingButtonClickListener);
+	if(gameGraphics->supportsMultisampling) {
+		gameLogic->multisamplingButtonZoneListener->ll = ((UIMetrics*) gameLogic->multisamplingLevelEntry.second["metrics"])->position - ((UIMetrics*) gameLogic->multisamplingLevelEntry.second["metrics"])->size / 2.0f;
+		gameLogic->multisamplingButtonZoneListener->ur = ((UIMetrics*) gameLogic->multisamplingLevelEntry.second["metrics"])->position + ((UIMetrics*) gameLogic->multisamplingLevelEntry.second["metrics"])->size / 2.0f;
+		inputHandler->mouse->addListener(gameLogic->multisamplingButtonZoneListener);
+		gameLogic->multisamplingButtonClickListener->ll = gameLogic->multisamplingButtonZoneListener->ll;
+		gameLogic->multisamplingButtonClickListener->ur = gameLogic->multisamplingButtonZoneListener->ur;
+		inputHandler->mouse->addListener(gameLogic->multisamplingButtonClickListener);
+	}
 
 	gameLogic->terrainDetailButtonZoneListener->ll = ((UIMetrics*) gameLogic->terrainDetailEntry.second["metrics"])->position - ((UIMetrics*) gameLogic->terrainDetailEntry.second["metrics"])->size / 2.0f;
 	gameLogic->terrainDetailButtonZoneListener->ur = ((UIMetrics*) gameLogic->terrainDetailEntry.second["metrics"])->position + ((UIMetrics*) gameLogic->terrainDetailEntry.second["metrics"])->size / 2.0f;
