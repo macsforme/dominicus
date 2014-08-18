@@ -214,7 +214,7 @@ void ExplosionRenderer::execute(std::map<std::string, void*> arguments) {
 	// state
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glEnable(GL_MULTISAMPLE);
+	if(gameGraphics->supportsMultisampling) glEnable(GL_MULTISAMPLE);
 
 	// enable shader
 	glUseProgram(shaderProgram);
@@ -305,7 +305,7 @@ void ExplosionRenderer::execute(std::map<std::string, void*> arguments) {
 
 	// undo state
 	glDisable(GL_BLEND);
-	glDisable(GL_MULTISAMPLE);
+	if(gameGraphics->supportsMultisampling) glDisable(GL_MULTISAMPLE);
 }
 
 void ExplosionRenderer::reloadState() {

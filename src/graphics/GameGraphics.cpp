@@ -22,6 +22,7 @@ extern GameSystem* gameSystem;
 
 GameGraphics::GameGraphics(bool fullScreen, bool testSystem) :
 		fullScreen(fullScreen),
+		supportsMultisampling(false),
 		currentCamera(NULL) {
 	// initialize an SDL window
 	resolutionX = (fullScreen ? gameSystem->displayResolutionX :
@@ -138,29 +139,26 @@ GameGraphics::GameGraphics(bool fullScreen, bool testSystem) :
 
 		// test and log the presence of the anisotropic filtering extension
 /*
-		if(strstr((const char*) glGetString(GL_EXTENSIONS),
-				"GL_EXT_texture_filter_anisotropic") == NULL)
-			gameSystem->log(GameSystem::LOG_FATAL,
-					"OpenGL extension not supported: GL_EXT_texture_filter_anisotropic");
+		if(strstr((const char*) glGetString(GL_EXTENSIONS),	"GL_EXT_texture_filter_anisotropic") == NULL)
+			gameSystem->log(GameSystem::LOG_VERBOSE, "OpenGL extension not supported: GL_EXT_texture_filter_anisotropic");
 		else
 			gameSystem->log(GameSystem::LOG_VERBOSE, "OpenGL Extension Found: GL_EXT_texture_filter_anisotropic");
 */
 
 		// test and log the presence of the framebuffer object extension (needed for glBuildMipmaps)
-		if(strstr((const char*) glGetString(GL_EXTENSIONS),
-				"GL_EXT_framebuffer_object") == NULL)
-			gameSystem->log(GameSystem::LOG_FATAL,
-					"OpenGL extension not supported: GL_EXT_framebuffer_object");
+		if(strstr((const char*) glGetString(GL_EXTENSIONS), "GL_EXT_framebuffer_object") == NULL)
+			gameSystem->log(GameSystem::LOG_FATAL, "OpenGL extension not supported: GL_EXT_framebuffer_object");
 		else
 			gameSystem->log(GameSystem::LOG_VERBOSE, "OpenGL Extension Found: GL_EXT_framebuffer_object");
 
-		// test and log the presence of the multisample extension
-		if(strstr((const char*) glGetString(GL_EXTENSIONS),
-				"GL_ARB_multisample") == NULL)
-			gameSystem->log(GameSystem::LOG_FATAL,
-					"OpenGL extension not supported: GL_ARB_multisample");
-		else
+		// test and log the presence of the multisample extension, and set option flag
+		if(strstr((const char*) glGetString(GL_EXTENSIONS), "GL_ARB_multisample") == NULL) {
+			gameSystem->log(GameSystem::LOG_FATAL, "OpenGL extension not supported: GL_ARB_multisample");
+		} else {
+			supportsMultisampling = true;
+
 			gameSystem->log(GameSystem::LOG_VERBOSE, "OpenGL Extension Found: GL_ARB_multisample");
+		}
 	}
 
 	// set up matrices

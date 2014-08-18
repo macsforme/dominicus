@@ -136,7 +136,7 @@ void ShipRenderer::execute(std::map<std::string, void*> arguments) {
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CW);
-	glEnable(GL_MULTISAMPLE);
+	if(gameGraphics->supportsMultisampling) glEnable(GL_MULTISAMPLE);
 
 	// enable shader
 	glUseProgram(shaderProgram);
@@ -216,5 +216,5 @@ void ShipRenderer::execute(std::map<std::string, void*> arguments) {
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
-	glDisable(GL_MULTISAMPLE);
+	if(gameGraphics->supportsMultisampling) glDisable(GL_MULTISAMPLE);
 }

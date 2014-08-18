@@ -176,7 +176,7 @@ void TerrainRenderer::execute(std::map<std::string, void*> arguments) {
 	glFrontFace(GL_CW);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glEnable(GL_MULTISAMPLE);
+	if(gameGraphics->supportsMultisampling) glEnable(GL_MULTISAMPLE);
 
 	// enable shader
 	glUseProgram(shaderProgram);
@@ -258,5 +258,5 @@ void TerrainRenderer::execute(std::map<std::string, void*> arguments) {
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_BLEND);
-	glDisable(GL_MULTISAMPLE);
+	if(gameGraphics->supportsMultisampling) glDisable(GL_MULTISAMPLE);
 }

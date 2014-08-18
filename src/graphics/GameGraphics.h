@@ -26,6 +26,7 @@ public:
 	unsigned short int resolutionX, resolutionY;
 	float aspectRatio;	// X over Y
 	bool fullScreen;
+	bool supportsMultisampling;
 
 	Matrix4 idMatrix, opMatrix, ppMatrix, ppBinoMatrix/*, ppMatrixInverse*/;
 	float idMatrixArray[16], opMatrixArray[16], ppMatrixArray[16], ppBinoMatrixArray[16]/*, ppMatrixInverseArray[16]*/;
