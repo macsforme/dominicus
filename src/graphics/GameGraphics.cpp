@@ -71,6 +71,10 @@ GameGraphics::GameGraphics(bool fullScreen, bool testSystem) :
 	resolutionText << resolutionX << "x" << resolutionY;
 	gameSystem->applyScreenResolution(resolutionText.str().c_str());
 
+	// always check for multisampling support since we set a flag for it
+	if(strstr((const char*) glGetString(GL_EXTENSIONS), "GL_ARB_multisample") != NULL)
+		supportsMultisampling = true;
+
 	// if specified, do system test
 	if(testSystem) {
 		// test and log the OpenGL version for compatibility
@@ -152,13 +156,10 @@ GameGraphics::GameGraphics(bool fullScreen, bool testSystem) :
 			gameSystem->log(GameSystem::LOG_VERBOSE, "OpenGL Extension Found: GL_EXT_framebuffer_object");
 
 		// test and log the presence of the multisample extension, and set option flag
-		if(strstr((const char*) glGetString(GL_EXTENSIONS), "GL_ARB_multisample") == NULL) {
+		if(strstr((const char*) glGetString(GL_EXTENSIONS), "GL_ARB_multisample") == NULL)
 			gameSystem->log(GameSystem::LOG_VERBOSE, "OpenGL extension not supported: GL_ARB_multisample");
-		} else {
-			supportsMultisampling = true;
-
+		else
 			gameSystem->log(GameSystem::LOG_VERBOSE, "OpenGL Extension Found: GL_ARB_multisample");
-		}
 	}
 
 	// set up matrices

@@ -66,7 +66,8 @@ GameAudio::GameAudio() {
 		gameSystem->log(GameSystem::LOG_FATAL, "Unable to open the audio device.");
 
 	// load sound files
-	loadSound("alterEffect", audioDeviceSpec);
+	loadSound("alterDownEffect", audioDeviceSpec);
+	loadSound("alterUpEffect", audioDeviceSpec);
 	loadSound("backEffect", audioDeviceSpec);
 	loadSound("empEffect", audioDeviceSpec);
 	loadSound("explosionEffect", audioDeviceSpec);
@@ -96,7 +97,7 @@ void GameAudio::loadSound(std::string file, SDL_AudioSpec audioDeviceSpec) {
 	fullFilePath << platform->dataPath << "/data/audio/" << file << ".wav";
 
 	if(SDL_LoadWAV(fullFilePath.str().c_str(), &originalAudioSpec, &buffer, &length) == NULL)
-		gameSystem->log(GameSystem::LOG_FATAL, std::string("Unable to open audio file " + fullFilePath.str()));
+		gameSystem->log(GameSystem::LOG_FATAL, std::string("Unable to open audio file " + fullFilePath.str() + "; Error: " + SDL_GetError()));
 
 	SDL_AudioCVT conversionInfo;
 	if(
