@@ -153,7 +153,7 @@ GameGraphics::GameGraphics(bool fullScreen, bool testSystem) :
 
 		// test and log the presence of the multisample extension, and set option flag
 		if(strstr((const char*) glGetString(GL_EXTENSIONS), "GL_ARB_multisample") == NULL) {
-			gameSystem->log(GameSystem::LOG_FATAL, "OpenGL extension not supported: GL_ARB_multisample");
+			gameSystem->log(GameSystem::LOG_VERBOSE, "OpenGL extension not supported: GL_ARB_multisample");
 		} else {
 			supportsMultisampling = true;
 
