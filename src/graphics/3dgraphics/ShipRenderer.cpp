@@ -113,6 +113,12 @@ ShipRenderer::ShipRenderer() {
 
 ShipRenderer::~ShipRenderer() {
 	// undo shader setup
+	glDeleteBuffers(1, &(vertexBuffers["vertices"]));
+	glDeleteBuffers(1, &(vertexBuffers["elements"]));
+
+	if(! glIsShader(shaderProgram)) // sometimes duplicate shaders get optimized out so check for validity
+		return;
+
 	GLsizei shaderCount;
 	GLuint* shaders = new GLuint[2];
 	glGetAttachedShaders(shaderProgram, 2, &shaderCount, shaders);
@@ -125,9 +131,6 @@ ShipRenderer::~ShipRenderer() {
 	delete[] shaders;
 
 	glDeleteProgram(shaderProgram);
-
-	glDeleteBuffers(1, &(vertexBuffers["vertices"]));
-	glDeleteBuffers(1, &(vertexBuffers["elements"]));
 }
 
 void ShipRenderer::execute(std::map<std::string, void*> arguments) {
