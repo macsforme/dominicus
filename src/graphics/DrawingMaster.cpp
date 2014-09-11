@@ -15,6 +15,7 @@
 #include "graphics/2dgraphics/DrawMissileIndicators.h"
 #include "graphics/2dgraphics/DrawProgressBar.h"
 #include "graphics/2dgraphics/DrawRadar.h"
+#include "graphics/2dgraphics/DrawRoundedTriangle.h"
 #include "graphics/2dgraphics/DrawSplash.h"
 #include "graphics/2dgraphics/DrawStrikeEffect.h"
 #include "graphics/2dgraphics/DrawTexture.h"
@@ -51,9 +52,10 @@ void DrawingMaster::buildDrawers() {
 	drawers["container"] = new DrawContainer();
 	drawers["grayOut"] = new DrawGrayOut();
 	drawers["label"] = new DrawLabel();
-	drawers["missileIndicators"] = new DrawMissileIndicators();
 	drawers["progressBar"] = new DrawProgressBar();
+	drawers["roundedTriangle"] = new DrawRoundedTriangle();
 	drawers["splash"] = new DrawSplash();
+	drawers["strikeEffect"] = new DrawStrikeEffect();
 	drawers["texture"] = new DrawTexture();
 	drawers["button"] = new DrawButton((DrawContainer*) drawers["container"], (DrawLabel*) drawers["label"]);
 	drawers["field"] = new DrawField((DrawLabel*) drawers["label"]);
@@ -62,8 +64,12 @@ void DrawingMaster::buildDrawers() {
 			(DrawProgressBar*) drawers["progressBar"],
 			(DrawTexture*) drawers["texture"]
 		);
-	drawers["radar"] = new DrawRadar((DrawContainer*) drawers["container"], (DrawCircle*) drawers["circle"]);
-	drawers["strikeEffect"] = new DrawStrikeEffect();
+	drawers["missileIndicators"] = new DrawMissileIndicators((DrawRoundedTriangle*) drawers["roundedTriangle"]);
+	drawers["radar"] = new DrawRadar(
+			(DrawContainer*) drawers["container"],
+			(DrawCircle*) drawers["circle"],
+			(DrawRoundedTriangle*) drawers["roundedTriangle"]
+		);
 
 	drawers["explosionRenderer"] = new ExplosionRenderer();
 	drawers["fortressRenderer"] = new FortressRenderer();
@@ -87,6 +93,7 @@ void DrawingMaster::destroyDrawers() {
 	delete (DrawLabel*) drawers["missileIndicators"];
 	delete (DrawProgressBar*) drawers["progressBar"];
 	delete (DrawRadar*) drawers["radar"];
+	delete (DrawRoundedTriangle*) drawers["roundedTriangle"];
 	delete (DrawSplash*) drawers["splash"];
 	delete (DrawStrikeEffect*) drawers["strikeEffect"];
 	delete (DrawTexture*) drawers["texture"];

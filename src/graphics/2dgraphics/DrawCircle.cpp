@@ -79,7 +79,7 @@ void DrawCircle::execute(DrawStackArgList argList) {
 
 	delete[] elementBufferArray;
 
-	size_t vertexBufferArraySize = quadVertices.size() * 10;
+	size_t vertexBufferArraySize = quadVertices.size() * 8;
 	GLfloat* vertexBufferArray = new GLfloat[vertexBufferArraySize];
 
 	for(size_t i = 0; i < quadVertices.size(); ++i) {

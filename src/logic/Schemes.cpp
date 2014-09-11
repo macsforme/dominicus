@@ -948,6 +948,11 @@ void Schemes::playingScheme() {
 			gameSystem->getFloat("hudMissileIndicatorSize") * (gameState->binoculars ? gameSystem->getFloat("hudMissileIndicatorBinocularsFactor") : 1.0f) / (float) gameGraphics->resolutionX * 2.0f,
 			gameSystem->getFloat("hudMissileIndicatorSize") * (gameState->binoculars ? gameSystem->getFloat("hudMissileIndicatorBinocularsFactor") : 1.0f) / (float) gameGraphics->resolutionY * 2.0f
 		);
+	*((Vector4*) gameLogic->missileIndicators.second["arrowColor"]) = gameSystem->getColor("hudMissileArrowColor");
+	*((Vector2*) gameLogic->missileIndicators.second["arrowSize"]) = Vector2(
+			gameSystem->getFloat("hudMissileArrowWidth") / (float) gameGraphics->resolutionX * 2.0f,
+			gameSystem->getFloat("hudMissileArrowHeight") / (float) gameGraphics->resolutionY * 2.0f
+		);
 	drawingMaster->drawStack.push_back(gameLogic->missileIndicators);
 
 	// score

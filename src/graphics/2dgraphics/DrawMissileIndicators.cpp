@@ -8,13 +8,15 @@
 #include "graphics/GameGraphics.h"
 #include "graphics/UILayoutAuthority.h"
 #include "math/MatrixMath.h"
+#include "math/MiscMath.h"
 #include "platform/OpenGLHeaders.h"
 #include "state/GameState.h"
 
 extern GameGraphics* gameGraphics;
 extern GameState* gameState;
 
-DrawMissileIndicators::DrawMissileIndicators() {
+DrawMissileIndicators::DrawMissileIndicators(DrawRoundedTriangle* newRoundedTriangleDrawer) :
+		roundedTriangleDrawer(newRoundedTriangleDrawer) {
 	// set up shader
 	GLuint shaderID = 0;
 	std::vector<GLuint> shaderIDs;
@@ -59,23 +61,30 @@ DrawMissileIndicators::~DrawMissileIndicators() {
 DrawStackArgList DrawMissileIndicators::instantiateArgList() {
 	DrawStackArgList argList;
 
-	argList["color"] = (void*) new Vector4;		// color of indicators
-	argList["size"] = (void*) new Vector2;		// size of indicators in screen dimensions
+	argList["color"] = (void*) new Vector4;			// color of indicators
+	argList["size"] = (void*) new Vector2;			// size of indicators in screen dimensions
+	argList["arrowColor"] = (void*) new Vector4;	// color of arrows
+	argList["arrowSize"] = (void*) new Vector2;		// size of arrows in screen dimensions
 	return argList;
 }
 
 void DrawMissileIndicators::deleteArgList(DrawStackArgList argList) {
 	if(argList.find("color") != argList.end()) delete (Vector4*) argList["color"];
 	if(argList.find("size") != argList.end()) delete (Vector2*) argList["size"];
+	if(argList.find("arrowColor") != argList.end()) delete (Vector4*) argList["arrowColor"];
+	if(argList.find("arrowSize") != argList.end()) delete (Vector2*) argList["arrowSize"];
 }
 
 void DrawMissileIndicators::execute(DrawStackArgList argList) {
 	// collect arguments
 	Vector4 color = *((Vector4*) argList["color"]);
 	Vector2 size = *((Vector2*) argList["size"]);
+	Vector4 arrowInsideColor = *((Vector4*) argList["arrowColor"]);
+	Vector2 arrowSize = *((Vector2*) argList["arrowSize"]);
 
 	// determine active missile screen positions
-	std::vector<Vector2> missilePositions;
+	std::vector<Vector2> frontMissilePositions;
+	std::vector<Vector2> allMissilePositions;
 
 	for(size_t i = 0; i < gameState->missiles.size(); ++i) {
 		if(! gameState->missiles[i].alive)
@@ -103,40 +112,96 @@ void DrawMissileIndicators::execute(DrawStackArgList argList) {
 				absolute(thisMissilePosition.y / thisMissilePosition.w) <= 1.0f &&
 				thisMissilePosition.z >= 0.0f
 			)
-			missilePositions.push_back(Vector2(thisMissilePosition.x / thisMissilePosition.w, thisMissilePosition.y / thisMissilePosition.w));
+			frontMissilePositions.push_back(Vector2(thisMissilePosition.x / thisMissilePosition.w, thisMissilePosition.y / thisMissilePosition.w));
+
+		if(thisMissilePosition.z >= 0.0f) {
+			allMissilePositions.push_back(Vector2(thisMissilePosition.x / thisMissilePosition.w, thisMissilePosition.y / thisMissilePosition.w));
+		} else {
+			if(gameState->lastUpdateGameTime % (unsigned int) (gameSystem->getFloat("hudMissileArrowBlinkRate") * 1000.0f) > (unsigned int) (gameSystem->getFloat("hudMissileArrowBlinkRate") * 1000.0f) / 2)
+				continue;
+
+			if(thisMissilePosition.x / thisMissilePosition.w >= 0.0f)
+				allMissilePositions.push_back(Vector2(-2.0f - thisMissilePosition.x / thisMissilePosition.w, -thisMissilePosition.y / thisMissilePosition.w));
+			else
+				allMissilePositions.push_back(Vector2(2.0f - thisMissilePosition.x / thisMissilePosition.w, -thisMissilePosition.y / thisMissilePosition.w));
+		}
+	}
+
+	// draw locator arrows
+	Vector4 arrowOutsideColor = Vector4(
+			arrowInsideColor.x,
+			arrowInsideColor.y,
+			arrowInsideColor.z,
+			0.0f
+		);
+	Vector2 arrowPosition = Vector2(0.0f, 0.0f);
+	float arrowRotation = 0.0f;
+	float arrowSoftEdge = 2.0f;
+
+	DrawStackArgList drawerArguments;
+	drawerArguments["size"] = (void*) &arrowSize;
+	drawerArguments["position"] = (void*) &arrowPosition;
+	drawerArguments["rotation"] = (void*) &arrowRotation;
+	drawerArguments["softEdge"] = (void*) &arrowSoftEdge;
+	drawerArguments["insideColor"] = (void*) &arrowInsideColor;
+	drawerArguments["outsideColor"] = (void*) &arrowOutsideColor;
+
+	float arrowPositionRadius = gameSystem->getFloat("hudControlAreaRadius") * 2.0f / (float) gameGraphics->resolutionY;
+	for(size_t i = 0; i < allMissilePositions.size(); ++i) {
+		if(
+				mag(Vector2(allMissilePositions[i].x * gameGraphics->aspectRatio, allMissilePositions[i].y)) <
+				arrowPositionRadius + arrowSize.y
+			)
+			continue;
+
+		Vector4 thisArrowPosition(arrowPositionRadius, 0.0f, 0.0f, 0.0f);
+		Matrix4 rotationMatrix; rotationMatrix.identity();
+		float thisArrowRotation = getAngle(allMissilePositions[i]);
+		rotateMatrix(Vector3(0.0f, 0.0f, 1.0f), radians(-thisArrowRotation), rotationMatrix);
+		thisArrowPosition = thisArrowPosition * rotationMatrix;
+		float correctAspectRatioMagnitude = mag(Vector2(thisArrowPosition.x * gameGraphics->aspectRatio, thisArrowPosition.y));
+		if(correctAspectRatioMagnitude > arrowPositionRadius) {
+			thisArrowPosition.x *= arrowPositionRadius / correctAspectRatioMagnitude;
+			thisArrowPosition.y *= arrowPositionRadius / correctAspectRatioMagnitude;
+		}
+		arrowPosition = Vector2(thisArrowPosition.x, thisArrowPosition.y);
+
+		arrowRotation = -thisArrowRotation - 90.0f;
+
+		roundedTriangleDrawer->execute(drawerArguments);
 	}
 
 	// update vertex buffers
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);
-	GLfloat* vertexBufferArray = new GLfloat[missilePositions.size() * 28];
+	GLfloat* vertexBufferArray = new GLfloat[frontMissilePositions.size() * 28];
 
-	for(size_t i = 0; i < missilePositions.size(); ++i) {
-		vertexBufferArray[i * 28 + 0] = missilePositions[i].x - size.x / 2.0f;
-		vertexBufferArray[i * 28 + 1] = missilePositions[i].y - size.y / 2.0f;
+	for(size_t i = 0; i < frontMissilePositions.size(); ++i) {
+		vertexBufferArray[i * 28 + 0] = frontMissilePositions[i].x - size.x / 2.0f;
+		vertexBufferArray[i * 28 + 1] = frontMissilePositions[i].y - size.y / 2.0f;
 		vertexBufferArray[i * 28 + 2] = 0.0f;
 		vertexBufferArray[i * 28 + 3] = color.x;
 		vertexBufferArray[i * 28 + 4] = color.y;
 		vertexBufferArray[i * 28 + 5] = color.z;
 		vertexBufferArray[i * 28 + 6] = color.w;
 
-		vertexBufferArray[i * 28 + 7] = missilePositions[i].x - size.x / 2.0f;
-		vertexBufferArray[i * 28 + 8] = missilePositions[i].y + size.y / 2.0f;
+		vertexBufferArray[i * 28 + 7] = frontMissilePositions[i].x - size.x / 2.0f;
+		vertexBufferArray[i * 28 + 8] = frontMissilePositions[i].y + size.y / 2.0f;
 		vertexBufferArray[i * 28 + 9] = 0.0f;
 		vertexBufferArray[i * 28 + 10] = color.x;
 		vertexBufferArray[i * 28 + 11] = color.y;
 		vertexBufferArray[i * 28 + 12] = color.z;
 		vertexBufferArray[i * 28 + 13] = color.w;
 
-		vertexBufferArray[i * 28 + 14] = missilePositions[i].x + size.x / 2.0f;
-		vertexBufferArray[i * 28 + 15] = missilePositions[i].y + size.y / 2.0f;
+		vertexBufferArray[i * 28 + 14] = frontMissilePositions[i].x + size.x / 2.0f;
+		vertexBufferArray[i * 28 + 15] = frontMissilePositions[i].y + size.y / 2.0f;
 		vertexBufferArray[i * 28 + 16] = 0.0f;
 		vertexBufferArray[i * 28 + 17] = color.x;
 		vertexBufferArray[i * 28 + 18] = color.y;
 		vertexBufferArray[i * 28 + 19] = color.z;
 		vertexBufferArray[i * 28 + 20] = color.w;
 
-		vertexBufferArray[i * 28 + 21] = missilePositions[i].x + size.x / 2.0f;
-		vertexBufferArray[i * 28 + 22] = missilePositions[i].y - size.y / 2.0f;
+		vertexBufferArray[i * 28 + 21] = frontMissilePositions[i].x + size.x / 2.0f;
+		vertexBufferArray[i * 28 + 22] = frontMissilePositions[i].y - size.y / 2.0f;
 		vertexBufferArray[i * 28 + 23] = 0.0f;
 		vertexBufferArray[i * 28 + 24] = color.x;
 		vertexBufferArray[i * 28 + 25] = color.y;
@@ -144,16 +209,16 @@ void DrawMissileIndicators::execute(DrawStackArgList argList) {
 		vertexBufferArray[i * 28 + 27] = color.w;
 	}
 
-	glBufferData(GL_ARRAY_BUFFER, missilePositions.size() * 28 * sizeof(GLfloat), vertexBufferArray, GL_STREAM_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, frontMissilePositions.size() * 28 * sizeof(GLfloat), vertexBufferArray, GL_STREAM_DRAW);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexBuffers["elements"]);
 
-	GLushort* elementBufferArray = new GLushort[missilePositions.size() * 4];
+	GLushort* elementBufferArray = new GLushort[frontMissilePositions.size() * 4];
 
-	for(size_t i = 0; i < missilePositions.size() * 4; ++i)
+	for(size_t i = 0; i < frontMissilePositions.size() * 4; ++i)
 		elementBufferArray[i] = i;
 
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, missilePositions.size() * 4 * sizeof(GLushort), elementBufferArray,
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, frontMissilePositions.size() * 4 * sizeof(GLushort), elementBufferArray,
 			GL_STATIC_DRAW);
 
 	// state
@@ -170,7 +235,7 @@ void DrawMissileIndicators::execute(DrawStackArgList argList) {
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexBuffers["elements"]);
 
-	for(size_t i = 0; i < missilePositions.size(); ++i) {
+	for(size_t i = 0; i < frontMissilePositions.size(); ++i) {
 		glVertexAttribPointer(attributes["position"], 3, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (GLvoid*) (i * 28 * sizeof(GLfloat)));
 		glVertexAttribPointer(attributes["color"], 4, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (GLvoid*) (3 * sizeof(GLfloat) + i * 28 * sizeof(GLfloat)));
 

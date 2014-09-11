@@ -66,6 +66,7 @@
 		03E508FA18FE1B340056ECE6 /* FortressRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03E508F818FE1B340056ECE6 /* FortressRenderer.cpp */; };
 		03EA67A819832D7E0067196A /* ExplosionRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03EA67A619832D7E0067196A /* ExplosionRenderer.cpp */; };
 		03F4FD681921DC2F00B5A322 /* MissileRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03F4FD661921DC2F00B5A322 /* MissileRenderer.cpp */; };
+		03FEC83219C053CD00B4596B /* DrawRoundedTriangle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03FEC83019C053CD00B4596B /* DrawRoundedTriangle.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -190,6 +191,8 @@
 		03EA67A719832D7E0067196A /* ExplosionRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExplosionRenderer.h; sourceTree = "<group>"; };
 		03F4FD661921DC2F00B5A322 /* MissileRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MissileRenderer.cpp; sourceTree = "<group>"; };
 		03F4FD671921DC2F00B5A322 /* MissileRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MissileRenderer.h; sourceTree = "<group>"; };
+		03FEC83019C053CD00B4596B /* DrawRoundedTriangle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawRoundedTriangle.cpp; sourceTree = "<group>"; };
+		03FEC83119C053CD00B4596B /* DrawRoundedTriangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawRoundedTriangle.h; sourceTree = "<group>"; };
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* crucible island.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "crucible island.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -373,6 +376,8 @@
 				035466571912C17200F4953E /* DrawProgressBar.cpp */,
 				0354665A1912C17200F4953E /* DrawRadar.h */,
 				035466591912C17200F4953E /* DrawRadar.cpp */,
+				03FEC83119C053CD00B4596B /* DrawRoundedTriangle.h */,
+				03FEC83019C053CD00B4596B /* DrawRoundedTriangle.cpp */,
 				0354665C1912C17200F4953E /* DrawSplash.h */,
 				0354665B1912C17200F4953E /* DrawSplash.cpp */,
 				03365789195C9B1200ED33DF /* DrawStrikeEffect.h */,
@@ -534,6 +539,7 @@
 				03C806E3130E50AD0037D309 /* MainLoopMember.cpp in Sources */,
 				03C806E9130E50B30037D309 /* DiamondSquare.cpp in Sources */,
 				035466601912C17200F4953E /* DrawButton.cpp in Sources */,
+				03FEC83219C053CD00B4596B /* DrawRoundedTriangle.cpp in Sources */,
 				03C806F7130E50D00037D309 /* Mouse.cpp in Sources */,
 				03F4FD681921DC2F00B5A322 /* MissileRenderer.cpp in Sources */,
 				03C80701130E50D90037D309 /* main.cpp in Sources */,

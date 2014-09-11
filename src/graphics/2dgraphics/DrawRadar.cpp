@@ -3,6 +3,7 @@
 
 #include "graphics/2dgraphics/DrawRadar.h"
 
+#include "core/GameSystem.h"
 #include "graphics/GameGraphics.h"
 #include "graphics/texture/Texture.h"
 #include "graphics/UILayoutAuthority.h"
@@ -12,11 +13,13 @@
 
 extern GameGraphics* gameGraphics;
 extern GameState* gameState;
+extern GameSystem* gameSystem;
 
-DrawRadar::DrawRadar(DrawContainer* newContainerDrawer, DrawCircle* newCircleDrawer) :
+DrawRadar::DrawRadar(DrawContainer* newContainerDrawer, DrawCircle* newCircleDrawer, DrawRoundedTriangle* newRoundedTriangleDrawer) :
 		lastRotation(0),
 		containerDrawer(newContainerDrawer),
-		circleDrawer(newCircleDrawer) {
+		circleDrawer(newCircleDrawer),
+		roundedTriangleDrawer(newRoundedTriangleDrawer) {
 	// set up shader
 	GLuint shaderID = 0;
 	std::vector<GLuint> shaderIDs;
@@ -371,6 +374,35 @@ void DrawRadar::execute(DrawStackArgList argList) {
 	glDisable(GL_BLEND);
 	glDisable(GL_SCISSOR_TEST);
 
+	// draw view triangle
+	Vector2 triangleSize = Vector2(
+			(actualSize.y / 2.0f - padding.y / 2.0f) /
+					gameGraphics->aspectRatio *
+					tan(radians(gameSystem->getFloat(gameState->binoculars ? "renderingPerspectiveBinocularsFOV" : "renderingPerspectiveFOV"))) *
+					2.0f,
+			actualSize.y / 2.0f - padding.y / 2.0f
+		);
+	Vector2 trianglePosition = Vector2(metrics->position.x, metrics->position.y + triangleSize.y / 2.0f);
+	float triangleRotation = 180.0f;
+	float triangleEdge = gameSystem->getFloat("hudContainerSoftEdge");
+	Vector4 triangleInsideColor = gameSystem->getColor("radarViewConeColor");
+	Vector4 triangleOutsideColor = Vector4(
+			gameSystem->getColor("radarViewConeColor").x,
+			gameSystem->getColor("radarViewConeColor").y,
+			gameSystem->getColor("radarViewConeColor").z,
+			0.0f
+		);
+
+	DrawStackArgList drawerArguments;
+	drawerArguments["size"] = (void*) &triangleSize;
+	drawerArguments["position"] = (void*) &trianglePosition;
+	drawerArguments["rotation"] = (void*) &triangleRotation;
+	drawerArguments["softEdge"] = (void*) &triangleEdge;
+	drawerArguments["insideColor"] = (void*) &triangleInsideColor;
+	drawerArguments["outsideColor"] = (void*) &triangleOutsideColor;
+
+	roundedTriangleDrawer->execute(drawerArguments);
+
 	// draw missile locations
 	float currentRotation = gameState->lastUpdateGameTime % (unsigned int) (gameSystem->getFloat("radarRefreshSpeed") * 1000.0f) / (gameSystem->getFloat("radarRefreshSpeed") * 1000.0f) * 360.0f;
 
@@ -422,7 +454,7 @@ void DrawRadar::execute(DrawStackArgList argList) {
 		);
 	float border = 0.0f;
 
-	std::map<std::string,void*> drawerArguments;
+	drawerArguments.clear();
 	drawerArguments["size"] = (void*) &spotSize;
 	drawerArguments["position"] = (void*) &spotPosition;
 	drawerArguments["softEdge"] = (void*) &spotEdge;

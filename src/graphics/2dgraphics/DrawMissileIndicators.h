@@ -8,11 +8,15 @@
 #include <string>
 
 #include "graphics/DrawTypes.h"
+#include "graphics/2dgraphics/DrawRoundedTriangle.h"
 #include "math/VectorMath.h"
 
 class DrawMissileIndicators : public BaseUIElement {
+private:
+	DrawRoundedTriangle* roundedTriangleDrawer;
+
 public:
-	DrawMissileIndicators();
+	DrawMissileIndicators(DrawRoundedTriangle* newRoundedTriangleDrawer);
 	~DrawMissileIndicators();
 
 	DrawStackArgList instantiateArgList();

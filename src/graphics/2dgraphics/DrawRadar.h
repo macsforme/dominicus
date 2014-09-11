@@ -11,6 +11,7 @@
 #include "graphics/DrawTypes.h"
 #include "graphics/2dgraphics/DrawContainer.h"
 #include "graphics/2dgraphics/DrawCircle.h"
+#include "graphics/2dgraphics/DrawRoundedTriangle.h"
 #include "math/VectorMath.h"
 #include "platform/OpenGLHeaders.h"
 #include "state/GameState.h"
@@ -25,9 +26,10 @@ private:
 
 	DrawContainer* containerDrawer;
 	DrawCircle* circleDrawer;
+	DrawRoundedTriangle* roundedTriangleDrawer;
 
 public:
-	DrawRadar(DrawContainer* newContainerDrawer, DrawCircle* newCircleDrawer);
+	DrawRadar(DrawContainer* newContainerDrawer, DrawCircle* newCircleDrawer, DrawRoundedTriangle* newRoundedTriangleDrawer);
 	~DrawRadar();
 
 	void reloadState();
