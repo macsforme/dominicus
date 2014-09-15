@@ -117,8 +117,8 @@ void DrawMissileIndicators::execute(DrawStackArgList argList) {
 		if(thisMissilePosition.z >= 0.0f) {
 			allMissilePositions.push_back(Vector2(thisMissilePosition.x / thisMissilePosition.w, thisMissilePosition.y / thisMissilePosition.w));
 		} else {
-			if(gameState->lastUpdateGameTime % (unsigned int) (gameSystem->getFloat("hudMissileArrowBlinkRate") * 1000.0f) > (unsigned int) (gameSystem->getFloat("hudMissileArrowBlinkRate") * 1000.0f) / 2)
-				continue;
+//			if(gameState->lastUpdateGameTime % (unsigned int) (gameSystem->getFloat("hudMissileArrowBlinkRate") * 1000.0f) > (unsigned int) (gameSystem->getFloat("hudMissileArrowBlinkRate") * 1000.0f) / 2)
+//				continue;
 
 			if(thisMissilePosition.x / thisMissilePosition.w >= 0.0f)
 				allMissilePositions.push_back(Vector2(-2.0f - thisMissilePosition.x / thisMissilePosition.w, -thisMissilePosition.y / thisMissilePosition.w));

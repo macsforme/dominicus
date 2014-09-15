@@ -346,10 +346,10 @@ GameSystem::GameSystem() {
 	setStandard("hudMissileIndicatorSize", 50.0f, "Size in pixels of missile indicator box.");
 	setStandard("hudMissileIndicatorBinocularsFactor", 3.0f, "Factor to multiply missile indicator size by when in binoculars mode.");
 	setStandard("hudMissileIndicatorColor", Vector4(1.0f, 0.0f, 0.0f, 1.0f), "Color of missile indicator box.");
-	setStandard("hudMissileArrowColor", Vector4(1.0f, 0.0f, 0.0f, 1.0f), "Color of missile indicator arrows.");
+	setStandard("hudMissileArrowColor", Vector4(1.0f, 0.0f, 0.0f, 0.75f), "Color of missile indicator arrows.");
 	setStandard("hudMissileArrowWidth", 12.0f, "Width of missile indicator arrows in pixels.");
 	setStandard("hudMissileArrowHeight", 20.0f, "Height of missile indicator arrows in pixels.");
-	setStandard("hudMissileArrowBlinkRate", 0.5f, "Blink rate for missile indicator arrows behind player.");
+//	setStandard("hudMissileArrowBlinkRate", 0.5f, "Blink rate for missile indicator arrows behind player.");
 
 	// font standards
 	setStandard("fontFile", "TitilliumWeb-Bold.ttf", "Font file to load for use by HUD and menus.");
