@@ -197,8 +197,7 @@ void FortressRenderer::execute(std::map<std::string, void*> arguments) {
 			turretMvMatrix.m41, turretMvMatrix.m42, turretMvMatrix.m43, turretMvMatrix.m44
 		};
 
-	Vector4 lightPosition(1.0f, 1.0f, -1.0f, 0.0f);
-	lightPosition = lightPosition * gameGraphics->currentCamera->lightMatrix;
+	Vector4 lightPosition = Vector4(1.0f, 1.0f, -1.0f, 0.0f) * gameGraphics->currentCamera->lightMatrix;
 
 	// state
 	glEnable(GL_TEXTURE_2D);

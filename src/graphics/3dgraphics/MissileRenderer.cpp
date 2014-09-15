@@ -134,10 +134,6 @@ MissileRenderer::~MissileRenderer() {
 }
 
 void MissileRenderer::execute(std::map<std::string, void*> arguments) {
-	// prepare variables
-	Vector4 lightPosition(1.0f, 1.0f, -1.0f, 0.0f);
-	lightPosition = lightPosition * gameGraphics->currentCamera->lightMatrix;
-
 	// state
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_DEPTH_TEST);
@@ -153,6 +149,7 @@ void MissileRenderer::execute(std::map<std::string, void*> arguments) {
 	glUniform3f(uniforms["ambientColor"], 0.15f, 0.15f, 0.15f);
 	glUniform3f(uniforms["diffuseColor"], 0.5f, 0.5f, 0.5f);
 	glUniform3f(uniforms["specularColor"], 0.8f, 0.8f, 0.8f);
+	Vector4 lightPosition = Vector4(1.0f, 1.0f, -1.0f, 0.0f) * gameGraphics->currentCamera->lightMatrix;
 	glUniform3f(uniforms["lightPosition"], lightPosition.x, lightPosition.y, lightPosition.z);
 	glUniform1f(uniforms["shininess"], 10.0f);
 

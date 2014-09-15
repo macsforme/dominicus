@@ -149,7 +149,8 @@ void ShipRenderer::execute(std::map<std::string, void*> arguments) {
 	glUniform3f(uniforms["ambientColor"], 0.15f, 0.15f, 0.15f);
 	glUniform3f(uniforms["diffuseColor"], 0.5f, 0.5f, 0.5f);
 	glUniform3f(uniforms["specularColor"], 0.8f, 0.8f, 0.8f);
-	glUniform3f(uniforms["lightPosition"], 1.0f, 1.0f, -1.0f);
+	Vector4 lightPosition = Vector4(1.0f, 1.0f, -1.0f, 0.0f) * gameGraphics->currentCamera->lightMatrix;
+	glUniform3f(uniforms["lightPosition"], lightPosition.x, lightPosition.y, lightPosition.z);
 	glUniform1f(uniforms["shininess"], 10.0f);
 
 	// set the overall drawing state
