@@ -20,29 +20,6 @@ extern GameSystem* gameSystem;
 MissileRenderer::MissileRenderer() {
 	missileMesh = Mesh("missile");
 
-	// set up shader
-	GLuint shaderID = 0;
-	std::vector<GLuint> shaderIDs;
-
-	shaderID = gameGraphics->getShaderID(GL_VERTEX_SHADER, "colorTextureLighting"); shaderIDs.push_back(shaderID);
-	shaderID = gameGraphics->getShaderID(GL_FRAGMENT_SHADER, "colorTextureLighting"); shaderIDs.push_back(shaderID);
-	shaderProgram = gameGraphics->makeProgram(shaderIDs);
-
-	// set up uniforms and attributes
-	uniforms["mvMatrix"] = glGetUniformLocation(shaderProgram, "mvMatrix");
-	uniforms["pMatrix"] = glGetUniformLocation(shaderProgram, "pMatrix");
-	uniforms["texture"] = glGetUniformLocation(shaderProgram, "texture");
-	uniforms["ambientColor"] = glGetUniformLocation(shaderProgram, "ambientColor");
-	uniforms["diffuseColor"] = glGetUniformLocation(shaderProgram, "diffuseColor");
-	uniforms["specularColor"] = glGetUniformLocation(shaderProgram, "specularColor");
-	uniforms["lightPosition"] = glGetUniformLocation(shaderProgram, "lightPosition");
-	uniforms["shininess"] = glGetUniformLocation(shaderProgram, "shininess");
-
-	attributes["position"] = glGetAttribLocation(shaderProgram, "position");
-	attributes["normal"] = glGetAttribLocation(shaderProgram, "normal");
-	attributes["texCoord"] = glGetAttribLocation(shaderProgram, "texCoord");
-	attributes["color"] = glGetAttribLocation(shaderProgram, "color");
-
 	// set up vertex buffers
 	glGenBuffers(1, &(vertexBuffers["vertices"]));
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);
@@ -105,32 +82,15 @@ MissileRenderer::MissileRenderer() {
 		delete[] vertElementBufferArray;
 	}
 
-	// send the buffer data
 	glBufferData(GL_ARRAY_BUFFER, totalFaces * 36 * sizeof(GLfloat), vertDataBufferArray, GL_STATIC_DRAW);
 
 	delete[] vertDataBufferArray;
 }
 
 MissileRenderer::~MissileRenderer() {
-	// undo shader setup
+	// undo vertex buffer setup
 	glDeleteBuffers(1, &(vertexBuffers["vertices"]));
 	glDeleteBuffers(1, &(vertexBuffers["elements"]));
-
-	if(! glIsShader(shaderProgram)) // sometimes duplicate shaders get optimized out so check for validity
-		return;
-
-	GLsizei shaderCount;
-	GLuint* shaders = new GLuint[2];
-	glGetAttachedShaders(shaderProgram, 2, &shaderCount, shaders);
-
-	for(size_t i = 0; i < shaderCount; ++i) {
-		glDetachShader(shaderProgram, shaders[i]);
-		glDeleteShader(shaders[i]);
-	}
-
-	delete[] shaders;
-
-	glDeleteProgram(shaderProgram);
 }
 
 void MissileRenderer::execute(std::map<std::string, void*> arguments) {
@@ -142,32 +102,29 @@ void MissileRenderer::execute(std::map<std::string, void*> arguments) {
 	if(gameGraphics->supportsMultisampling) glEnable(GL_MULTISAMPLE);
 
 	// enable shader
-	glUseProgram(shaderProgram);
+	glUseProgram(gameGraphics->getProgramID("colorTextureLighting"));
 
 	// set uniforms
-	glUniform1i(uniforms["texture"], 0);
-	glUniform3f(uniforms["ambientColor"], 0.15f, 0.15f, 0.15f);
-	glUniform3f(uniforms["diffuseColor"], 0.5f, 0.5f, 0.5f);
-	glUniform3f(uniforms["specularColor"], 0.8f, 0.8f, 0.8f);
+	glUniform1i(glGetUniformLocation(gameGraphics->getProgramID("colorTextureLighting"), "texture"), 0);
+	glUniform3f(glGetUniformLocation(gameGraphics->getProgramID("colorTextureLighting"), "ambientColor"), 0.15f, 0.15f, 0.15f);
+	glUniform3f(glGetUniformLocation(gameGraphics->getProgramID("colorTextureLighting"), "diffuseColor"), 0.5f, 0.5f, 0.5f);
+	glUniform3f(glGetUniformLocation(gameGraphics->getProgramID("colorTextureLighting"), "specularColor"), 0.8f, 0.8f, 0.8f);
 	Vector4 lightPosition = Vector4(1.0f, 1.0f, -1.0f, 0.0f) * gameGraphics->currentCamera->lightMatrix;
-	glUniform3f(uniforms["lightPosition"], lightPosition.x, lightPosition.y, lightPosition.z);
-	glUniform1f(uniforms["shininess"], 10.0f);
+	glUniform3f(glGetUniformLocation(gameGraphics->getProgramID("colorTextureLighting"), "lightPosition"), lightPosition.x, lightPosition.y, lightPosition.z);
+	glUniform1f(glGetUniformLocation(gameGraphics->getProgramID("colorTextureLighting"), "shininess"), 10.0f);
 
 	// set the overall drawing state
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);
 
-	glVertexAttribPointer(attributes["position"], 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), (GLvoid*) 0);
-	glVertexAttribPointer(attributes["normal"], 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat),
-			(GLvoid*) (3 * sizeof(GLfloat)));
-	glVertexAttribPointer(attributes["texCoord"], 2, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat),
-			(GLvoid*) (6 * sizeof(GLfloat)));
-	glVertexAttribPointer(attributes["color"], 4, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat),
-			(GLvoid*) (8 * sizeof(GLfloat)));
+	glVertexAttribPointer(glGetAttribLocation(gameGraphics->getProgramID("colorTextureLighting"), "position"), 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), (GLvoid*) 0);
+	glVertexAttribPointer(glGetAttribLocation(gameGraphics->getProgramID("colorTextureLighting"), "normal"), 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), (GLvoid*) (3 * sizeof(GLfloat)));
+	glVertexAttribPointer(glGetAttribLocation(gameGraphics->getProgramID("colorTextureLighting"), "texCoord"), 2, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), (GLvoid*) (6 * sizeof(GLfloat)));
+	glVertexAttribPointer(glGetAttribLocation(gameGraphics->getProgramID("colorTextureLighting"), "color"), 4, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), (GLvoid*) (8 * sizeof(GLfloat)));
 
-	glEnableVertexAttribArray(attributes["position"]);
-	glEnableVertexAttribArray(attributes["normal"]);
-	glEnableVertexAttribArray(attributes["texCoord"]);
-	glEnableVertexAttribArray(attributes["color"]);
+	glEnableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("colorTextureLighting"), "position"));
+	glEnableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("colorTextureLighting"), "normal"));
+	glEnableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("colorTextureLighting"), "texCoord"));
+	glEnableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("colorTextureLighting"), "color"));
 
 	for(size_t i = 0; i < gameState->missiles.size(); ++i) {
 		if(! gameState->missiles[i].alive)
@@ -201,8 +158,8 @@ void MissileRenderer::execute(std::map<std::string, void*> arguments) {
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-			glUniformMatrix4fv(uniforms["mvMatrix"], 1, GL_FALSE, mvMatrixArray);
-			glUniformMatrix4fv(uniforms["pMatrix"], 1, GL_FALSE, (gameState->binoculars ? gameGraphics->ppBinoMatrixArray : gameGraphics->ppMatrixArray));
+			glUniformMatrix4fv(glGetUniformLocation(gameGraphics->getProgramID("colorTextureLighting"), "mvMatrix"), 1, GL_FALSE, mvMatrixArray);
+			glUniformMatrix4fv(glGetUniformLocation(gameGraphics->getProgramID("colorTextureLighting"), "pMatrix"), 1, GL_FALSE, (gameState->binoculars ? gameGraphics->ppBinoMatrixArray : gameGraphics->ppMatrixArray));
 
 			// draw the geometry
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexBuffers[std::string("elements_" + itr->first).c_str()]);
@@ -211,10 +168,10 @@ void MissileRenderer::execute(std::map<std::string, void*> arguments) {
 		}
 	}
 
-	glDisableVertexAttribArray(attributes["position"]);
-	glDisableVertexAttribArray(attributes["normal"]);
-	glDisableVertexAttribArray(attributes["texCoord"]);
-	glDisableVertexAttribArray(attributes["color"]);
+	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("colorTextureLighting"), "position"));
+	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("colorTextureLighting"), "normal"));
+	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("colorTextureLighting"), "texCoord"));
+	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("colorTextureLighting"), "color"));
 
 	// undo state
 	glDisable(GL_TEXTURE_2D);

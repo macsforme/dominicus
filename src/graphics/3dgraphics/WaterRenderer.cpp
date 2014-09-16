@@ -20,24 +20,6 @@ extern GameState* gameState;
 extern Platform* platform;
 
 WaterRenderer::WaterRenderer() {
-	// set up shader
-	GLuint shaderID = 0;
-	std::vector<GLuint> shaderIDs;
-
-	shaderID = gameGraphics->getShaderID(GL_VERTEX_SHADER, "water"); shaderIDs.push_back(shaderID);
-	shaderID = gameGraphics->getShaderID(GL_FRAGMENT_SHADER, "water"); shaderIDs.push_back(shaderID);
-	shaderProgram = gameGraphics->makeProgram(shaderIDs);
-
-	// set up uniforms and attributes
-	uniforms["timer"] = glGetUniformLocation(shaderProgram, "timer");
-	uniforms["mvpMatrix"] = glGetUniformLocation(shaderProgram, "mvpMatrix");
-	uniforms["fortressTransformMatrix"] = glGetUniformLocation(shaderProgram, "fortressTransformMatrix");
-	uniforms["insideColorMultiplier"] = glGetUniformLocation(shaderProgram, "insideColorMultiplier");
-	uniforms["outsideColorMultiplier"] = glGetUniformLocation(shaderProgram, "outsideColorMultiplier");
-	uniforms["colorChangeRadius"] = glGetUniformLocation(shaderProgram, "colorChangeRadius");
-
-	attributes["position"] = glGetAttribLocation(shaderProgram, "position");
-
 	// set up vertex buffers
 	glGenBuffers(1, &(vertexBuffers["vertices"]));
 	glGenBuffers(1, &(vertexBuffers["elements"]));
@@ -58,32 +40,15 @@ WaterRenderer::WaterRenderer() {
 			0, 1, 2, 3
 		};
 
-	// send the buffer data
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertDataBufferArray), vertDataBufferArray, GL_STATIC_DRAW);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(vertElementBufferArray), vertElementBufferArray,
 			GL_STATIC_DRAW);
 }
 
 WaterRenderer::~WaterRenderer() {
-	// undo shader setup
+	// undo vertex buffer setup
 	glDeleteBuffers(1, &(vertexBuffers["vertices"]));
 	glDeleteBuffers(1, &(vertexBuffers["elements"]));
-
-	if(! glIsShader(shaderProgram)) // sometimes duplicate shaders get optimized out so check for validity
-		return;
-
-	GLsizei shaderCount;
-	GLuint* shaders = new GLuint[2];
-	glGetAttachedShaders(shaderProgram, 2, &shaderCount, shaders);
-
-	for(size_t i = 0; i < shaderCount; ++i) {
-		glDetachShader(shaderProgram, shaders[i]);
-		glDeleteShader(shaders[i]);
-	}
-
-	delete[] shaders;
-
-	glDeleteProgram(shaderProgram);
 }
 
 void WaterRenderer::execute(std::map<std::string, void*> arguments) {
@@ -111,26 +76,26 @@ void WaterRenderer::execute(std::map<std::string, void*> arguments) {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// enable shader
-	glUseProgram(shaderProgram);
+	glUseProgram(gameGraphics->getProgramID("water"));
 
 	// set uniforms
-	glUniform1f(uniforms["timer"], (float) (gameState->lastUpdateGameTime % 3000) / 3000.0f);
-	glUniformMatrix4fv(uniforms["mvpMatrix"], 1, GL_FALSE, mvpMatrixArray);
-	glUniformMatrix4fv(uniforms["fortressTransformMatrix"], 1, GL_FALSE, fortressTransformMatrixArray);
-	glUniform4f(uniforms["insideColorMultiplier"], 1.0f, 1.0f, 1.0f, 1.0f);
+	glUniform1f(glGetUniformLocation(gameGraphics->getProgramID("water"), "timer"), (float) (gameState->lastUpdateGameTime % 3000) / 3000.0f);
+	glUniformMatrix4fv(glGetUniformLocation(gameGraphics->getProgramID("water"), "mvpMatrix"), 1, GL_FALSE, mvpMatrixArray);
+	glUniformMatrix4fv(glGetUniformLocation(gameGraphics->getProgramID("water"), "fortressTransformMatrix"), 1, GL_FALSE, fortressTransformMatrixArray);
+	glUniform4f(glGetUniformLocation(gameGraphics->getProgramID("water"), "insideColorMultiplier"), 1.0f, 1.0f, 1.0f, 1.0f);
 	float empColorMultiplier = (
 			gameState->fortress.emp <= 0.0f || gameState->fortress.emp >= 1.0f ?
 			1.0f :
 			1.0f - gameState->fortress.emp + gameState->fortress.emp * gameSystem->getFloat("empColorMultiplier")
 		);
 	glUniform4f(
-			uniforms["outsideColorMultiplier"],
+			glGetUniformLocation(gameGraphics->getProgramID("water"), "outsideColorMultiplier"),
 			empColorMultiplier,
 			empColorMultiplier,
 			empColorMultiplier,
 			1.0f
 		);
-	glUniform1f(uniforms["colorChangeRadius"],
+	glUniform1f(glGetUniformLocation(gameGraphics->getProgramID("water"), "colorChangeRadius"),
 			gameState->fortress.emp <= 0.0f || gameState->fortress.emp >= 1.0f ?
 			0.0f :
 			(1.0f - gameState->fortress.emp) * gameSystem->getFloat("stateEMPRange")
@@ -140,13 +105,13 @@ void WaterRenderer::execute(std::map<std::string, void*> arguments) {
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexBuffers["elements"]);
 
-	glVertexAttribPointer(attributes["position"], 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*) 0);
+	glVertexAttribPointer(glGetAttribLocation(gameGraphics->getProgramID("water"), "position"), 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*) 0);
 
-	glEnableVertexAttribArray(attributes["position"]);
+	glEnableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("water"), "position"));
 
 	glDrawElements(GL_QUADS, 4, GL_UNSIGNED_SHORT, (GLvoid*) 0);
 
-	glDisableVertexAttribArray(attributes["position"]);
+	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("water"), "position"));
 
 	// undo state
 	glDisable(GL_BLEND);

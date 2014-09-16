@@ -16,9 +16,6 @@ typedef std::vector<DrawStackEntry> DrawStack;
 
 class BaseDrawNode {
 protected:
-	GLuint shaderProgram;
-	std::map<std::string, GLint> uniforms;
-	std::map<std::string, GLint> attributes;
 	std::map<std::string, GLuint> vertexBuffers;
 
 public:

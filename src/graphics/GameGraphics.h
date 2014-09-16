@@ -19,8 +19,13 @@ private:
 	std::map<std::string, GLuint> vertexShaderIDs;
 	std::map<std::string, GLuint> fragmentShaderIDs;
 
+	std::map<std::string, GLuint> programIDs;
+
 	std::map<std::string, Texture*> textures;
 	std::map<std::string, GLuint> textureIDs;
+
+	GLuint getShaderID(GLenum shaderType, std::string shaderName);
+	GLuint makeProgram(std::vector<GLuint> shaders);
 
 public:
 	unsigned short int resolutionX, resolutionY;
@@ -40,8 +45,7 @@ public:
 	GameGraphics(bool fullScreen, bool testSystem = false);
 	~GameGraphics();
 
-	GLuint getShaderID(GLenum shaderType, std::string shaderName);
-	GLuint makeProgram(std::vector<GLuint> shaders);
+	GLuint getProgramID(std::string name);
 
 	Texture* getTexture(std::string fileName);
 	GLuint getTextureID(std::string fileName);

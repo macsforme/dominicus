@@ -167,51 +167,15 @@ void DrawContainer::drawFiller(
 }
 
 DrawContainer::DrawContainer() {
-	// set up shader
-	GLuint shaderID = 0;
-	std::vector<GLuint> shaderIDs;
-
-	shaderID = gameGraphics->getShaderID(GL_VERTEX_SHADER, "hudContainer"); shaderIDs.push_back(shaderID);
-	shaderID = gameGraphics->getShaderID(GL_FRAGMENT_SHADER, "hudContainer"); shaderIDs.push_back(shaderID);
-	shaderProgram = gameGraphics->makeProgram(shaderIDs);
-
-	// set up uniforms and attributes
-	uniforms["insideColor"] = glGetUniformLocation(shaderProgram, "insideColor");
-	uniforms["borderColor"] = glGetUniformLocation(shaderProgram, "borderColor");
-	uniforms["outsideColor"] = glGetUniformLocation(shaderProgram, "outsideColor");
-	uniforms["softEdge"] = glGetUniformLocation(shaderProgram, "softEdge");
-
-	attributes["position"] = glGetAttribLocation(shaderProgram, "position");
-	attributes["primCoord"] = glGetAttribLocation(shaderProgram, "primCoord");
-	attributes["curveOriginCoord"] = glGetAttribLocation(shaderProgram, "curveOriginCoord");
-	attributes["border1Dist"] = glGetAttribLocation(shaderProgram, "border1Dist");
-	attributes["border2Dist"] = glGetAttribLocation(shaderProgram, "border2Dist");
-
 	// set up vertex buffers
 	glGenBuffers(1, &(vertexBuffers["vertices"]));
 	glGenBuffers(1, &(vertexBuffers["elements"]));
 }
 
 DrawContainer::~DrawContainer() {
-	// undo shader setup
+	// undo vertex buffer setup
 	glDeleteBuffers(1, &(vertexBuffers["vertices"]));
 	glDeleteBuffers(1, &(vertexBuffers["elements"]));
-
-	if(! glIsShader(shaderProgram)) // sometimes duplicate shaders get optimized out so check for validity
-		return;
-
-	GLsizei shaderCount;
-	GLuint* shaders = new GLuint[2];
-	glGetAttachedShaders(shaderProgram, 2, &shaderCount, shaders);
-
-	for(size_t i = 0; i < shaderCount; ++i) {
-		glDetachShader(shaderProgram, shaders[i]);
-		glDeleteShader(shaders[i]);
-	}
-
-	delete[] shaders;
-
-	glDeleteProgram(shaderProgram);
 }
 
 DrawStackArgList DrawContainer::instantiateArgList() {
@@ -346,45 +310,40 @@ void DrawContainer::execute(DrawStackArgList argList) {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// enable shader
-	glUseProgram(shaderProgram);
+	glUseProgram(gameGraphics->getProgramID("hudContainer"));
 
 	// set uniforms
 	Vector4 insideColor = *((Vector4*) argList["insideColor"]);
 	Vector4 borderColor = *((Vector4*) argList["borderColor"]);
 	Vector4 outsideColor = *((Vector4*) argList["outsideColor"]);
-	glUniform4f(uniforms["insideColor"], insideColor.x, insideColor.y, insideColor.z, insideColor.w);
-	glUniform4f(uniforms["borderColor"], borderColor.x, borderColor.y, borderColor.z, borderColor.w);
-	glUniform4f(uniforms["outsideColor"], outsideColor.x, outsideColor.y, outsideColor.z, outsideColor.w);
-	glUniform1f(uniforms["softEdge"], *((float*) argList["softEdge"]) * 2.0f / *((float*) argList["padding"]));
+	glUniform4f(glGetUniformLocation(gameGraphics->getProgramID("hudContainer"), "insideColor"), insideColor.x, insideColor.y, insideColor.z, insideColor.w);
+	glUniform4f(glGetUniformLocation(gameGraphics->getProgramID("hudContainer"), "borderColor"), borderColor.x, borderColor.y, borderColor.z, borderColor.w);
+	glUniform4f(glGetUniformLocation(gameGraphics->getProgramID("hudContainer"), "outsideColor"), outsideColor.x, outsideColor.y, outsideColor.z, outsideColor.w);
+	glUniform1f(glGetUniformLocation(gameGraphics->getProgramID("hudContainer"), "softEdge"), *((float*) argList["softEdge"]) * 2.0f / *((float*) argList["padding"]));
 
 	// draw the data stored in GPU memory
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexBuffers["elements"]);
 
-	glVertexAttribPointer(attributes["position"], 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat),
-			(GLvoid*) 0);
-	glVertexAttribPointer(attributes["primCoord"], 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat),
-			(GLvoid*) (2 * sizeof(GLfloat)));
-	glVertexAttribPointer(attributes["curveOriginCoord"], 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat),
-			(GLvoid*) (4 * sizeof(GLfloat)));
-	glVertexAttribPointer(attributes["border1Dist"], 1, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat),
-			(GLvoid*) (6 * sizeof(GLfloat)));
-	glVertexAttribPointer(attributes["border2Dist"], 1, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat),
-			(GLvoid*) (7 * sizeof(GLfloat)));
+	glVertexAttribPointer(glGetAttribLocation(gameGraphics->getProgramID("hudContainer"), "position"), 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*) 0);
+	glVertexAttribPointer(glGetAttribLocation(gameGraphics->getProgramID("hudContainer"), "primCoord"), 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*) (2 * sizeof(GLfloat)));
+	glVertexAttribPointer(glGetAttribLocation(gameGraphics->getProgramID("hudContainer"), "curveOriginCoord"), 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*) (4 * sizeof(GLfloat)));
+	glVertexAttribPointer(glGetAttribLocation(gameGraphics->getProgramID("hudContainer"), "border1Dist"), 1, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*) (6 * sizeof(GLfloat)));
+	glVertexAttribPointer(glGetAttribLocation(gameGraphics->getProgramID("hudContainer"), "border2Dist"), 1, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*) (7 * sizeof(GLfloat)));
 
-	glEnableVertexAttribArray(attributes["position"]);
-	glEnableVertexAttribArray(attributes["primCoord"]);
-	glEnableVertexAttribArray(attributes["curveOriginCoord"]);
-	glEnableVertexAttribArray(attributes["border1Dist"]);
-	glEnableVertexAttribArray(attributes["border2Dist"]);
+	glEnableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("hudContainer"), "position"));
+	glEnableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("hudContainer"), "primCoord"));
+	glEnableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("hudContainer"), "curveOriginCoord"));
+	glEnableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("hudContainer"), "border1Dist"));
+	glEnableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("hudContainer"), "border2Dist"));
 
 	glDrawElements(GL_QUADS, quadVertices.size(), GL_UNSIGNED_INT, NULL);
 
-	glDisableVertexAttribArray(attributes["position"]);
-	glDisableVertexAttribArray(attributes["primiCoord"]);
-	glDisableVertexAttribArray(attributes["curveOriginCoord"]);
-	glDisableVertexAttribArray(attributes["border1Dist"]);
-	glDisableVertexAttribArray(attributes["border2Dist"]);
+	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("hudContainer"), "position"));
+	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("hudContainer"), "primCoord"));
+	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("hudContainer"), "curveOriginCoord"));
+	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("hudContainer"), "border1Dist"));
+	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("hudContainer"), "border2Dist"));
 
 	// undo state
 	glDisable(GL_BLEND);

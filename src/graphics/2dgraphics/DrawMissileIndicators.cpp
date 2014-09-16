@@ -17,45 +17,15 @@ extern GameState* gameState;
 
 DrawMissileIndicators::DrawMissileIndicators(DrawRoundedTriangle* newRoundedTriangleDrawer) :
 		roundedTriangleDrawer(newRoundedTriangleDrawer) {
-	// set up shader
-	GLuint shaderID = 0;
-	std::vector<GLuint> shaderIDs;
-
-	shaderID = gameGraphics->getShaderID(GL_VERTEX_SHADER, "color"); shaderIDs.push_back(shaderID);
-	shaderID = gameGraphics->getShaderID(GL_FRAGMENT_SHADER, "color"); shaderIDs.push_back(shaderID);
-	shaderProgram = gameGraphics->makeProgram(shaderIDs);
-
-	// set up uniforms and attributes
-	uniforms["mvpMatrix"] = glGetUniformLocation(shaderProgram, "mvpMatrix");
-
-	attributes["position"] = glGetAttribLocation(shaderProgram, "position");
-	attributes["color"] = glGetAttribLocation(shaderProgram, "color");
-
 	// set up vertex buffers
 	glGenBuffers(1, &(vertexBuffers["vertices"]));
 	glGenBuffers(1, &(vertexBuffers["elements"]));
 }
 
 DrawMissileIndicators::~DrawMissileIndicators() {
-	// undo shader setup
+	// undo vertex buffer setup
 	glDeleteBuffers(1, &(vertexBuffers["vertices"]));
 	glDeleteBuffers(1, &(vertexBuffers["elements"]));
-
-	if(! glIsShader(shaderProgram)) // sometimes duplicate shaders get optimized out so check for validity
-		return;
-
-	GLsizei shaderCount;
-	GLuint* shaders = new GLuint[2];
-	glGetAttachedShaders(shaderProgram, 2, &shaderCount, shaders);
-
-	for(size_t i = 0; i < shaderCount; ++i) {
-		glDetachShader(shaderProgram, shaders[i]);
-		glDeleteShader(shaders[i]);
-	}
-
-	delete[] shaders;
-
-	glDeleteProgram(shaderProgram);
 }
 
 DrawStackArgList DrawMissileIndicators::instantiateArgList() {
@@ -226,26 +196,26 @@ void DrawMissileIndicators::execute(DrawStackArgList argList) {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// enable shader
-	glUseProgram(shaderProgram);
+	glUseProgram(gameGraphics->getProgramID("color"));
 
 	// set uniforms
-	glUniformMatrix4fv(uniforms["mvpMatrix"], 1, GL_FALSE, gameGraphics->idMatrixArray);
+	glUniformMatrix4fv(glGetUniformLocation(gameGraphics->getProgramID("color"), "mvpMatrix"), 1, GL_FALSE, gameGraphics->idMatrixArray);
 
 	// draw the data stored in GPU memory
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexBuffers["elements"]);
 
 	for(size_t i = 0; i < frontMissilePositions.size(); ++i) {
-		glVertexAttribPointer(attributes["position"], 3, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (GLvoid*) (i * 28 * sizeof(GLfloat)));
-		glVertexAttribPointer(attributes["color"], 4, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (GLvoid*) (3 * sizeof(GLfloat) + i * 28 * sizeof(GLfloat)));
+		glVertexAttribPointer(glGetAttribLocation(gameGraphics->getProgramID("color"), "position"), 3, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (GLvoid*) (i * 28 * sizeof(GLfloat)));
+		glVertexAttribPointer(glGetAttribLocation(gameGraphics->getProgramID("color"), "color"), 4, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (GLvoid*) (3 * sizeof(GLfloat) + i * 28 * sizeof(GLfloat)));
 
-		glEnableVertexAttribArray(attributes["position"]);
-		glEnableVertexAttribArray(attributes["color"]);
+		glEnableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("color"), "position"));
+		glEnableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("color"), "color"));
 
 		glDrawElements(GL_LINE_LOOP, 4, GL_UNSIGNED_SHORT, NULL);
 
-		glDisableVertexAttribArray(attributes["position"]);
-		glDisableVertexAttribArray(attributes["color"]);
+		glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("color"), "position"));
+		glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("color"), "color"));
 	}
 
 	// undo state

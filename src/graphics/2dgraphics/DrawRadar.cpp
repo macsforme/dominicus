@@ -20,22 +20,6 @@ DrawRadar::DrawRadar(DrawContainer* newContainerDrawer, DrawCircle* newCircleDra
 		containerDrawer(newContainerDrawer),
 		circleDrawer(newCircleDrawer),
 		roundedTriangleDrawer(newRoundedTriangleDrawer) {
-	// set up shader
-	GLuint shaderID = 0;
-	std::vector<GLuint> shaderIDs;
-
-	shaderID = gameGraphics->getShaderID(GL_VERTEX_SHADER, "colorTexture"); shaderIDs.push_back(shaderID);
-	shaderID = gameGraphics->getShaderID(GL_FRAGMENT_SHADER, "colorTexture"); shaderIDs.push_back(shaderID);
-	shaderProgram = gameGraphics->makeProgram(shaderIDs);
-
-	// set up uniforms and attributes
-	uniforms["mvpMatrix"] = glGetUniformLocation(shaderProgram, "mvpMatrix");
-	uniforms["texture"] = glGetUniformLocation(shaderProgram, "texture");
-
-	attributes["position"] = glGetAttribLocation(shaderProgram, "position");
-	attributes["texCoord"] = glGetAttribLocation(shaderProgram, "texCoord");
-	attributes["color"] = glGetAttribLocation(shaderProgram, "color");
-
 	// set up vertex buffers
 	glGenBuffers(1, &(vertexBuffers["vertices"]));
 	glGenBuffers(1, &(vertexBuffers["elements"]));
@@ -69,25 +53,9 @@ DrawRadar::~DrawRadar() {
 	if(glIsTexture(progressionTextureID))
 	glDeleteTextures(1, &progressionTextureID);
 
-	// undo shader setup
+	// undo vertex buffer setup
 	glDeleteBuffers(1, &(vertexBuffers["vertices"]));
 	glDeleteBuffers(1, &(vertexBuffers["elements"]));
-
-	if(! glIsShader(shaderProgram)) // sometimes duplicate shaders get optimized out so check for validity
-		return;
-
-	GLsizei shaderCount;
-	GLuint* shaders = new GLuint[2];
-	glGetAttachedShaders(shaderProgram, 2, &shaderCount, shaders);
-
-	for(size_t i = 0; i < shaderCount; ++i) {
-		glDetachShader(shaderProgram, shaders[i]);
-		glDeleteShader(shaders[i]);
-	}
-
-	delete[] shaders;
-
-	glDeleteProgram(shaderProgram);
 }
 
 void DrawRadar::reloadState() {
@@ -325,11 +293,11 @@ void DrawRadar::execute(DrawStackArgList argList) {
 		);
 
 	// enable shader
-	glUseProgram(shaderProgram);
+	glUseProgram(gameGraphics->getProgramID("colorTexture"));
 
 	// set uniforms
-	glUniformMatrix4fv(uniforms["mvpMatrix"], 1, GL_FALSE, heightMapMatrixArray);
-	glUniform1i(uniforms["texture"], 0);
+	glUniformMatrix4fv(glGetUniformLocation(gameGraphics->getProgramID("colorTexture"), "mvpMatrix"), 1, GL_FALSE, heightMapMatrixArray);
+	glUniform1i(glGetUniformLocation(gameGraphics->getProgramID("colorTexture"), "texture"), 0);
 
 	// activate the texture
 	glActiveTexture(GL_TEXTURE0);
@@ -342,15 +310,13 @@ void DrawRadar::execute(DrawStackArgList argList) {
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexBuffers["elements"]);
 
-	glVertexAttribPointer(attributes["position"], 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (void*) 0);
-	glVertexAttribPointer(attributes["texCoord"], 2, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat),
-			(GLvoid*) (3 * sizeof(GLfloat)));
-	glVertexAttribPointer(attributes["color"], 4, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat),
-			(GLvoid*) (5 * sizeof(GLfloat)));
+	glVertexAttribPointer(glGetAttribLocation(gameGraphics->getProgramID("colorTexture"), "position"), 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (void*) 0);
+	glVertexAttribPointer(glGetAttribLocation(gameGraphics->getProgramID("colorTexture"), "texCoord"), 2, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (GLvoid*) (3 * sizeof(GLfloat)));
+	glVertexAttribPointer(glGetAttribLocation(gameGraphics->getProgramID("colorTexture"), "color"), 4, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (GLvoid*) (5 * sizeof(GLfloat)));
 
-	glEnableVertexAttribArray(attributes["position"]);
-	glEnableVertexAttribArray(attributes["texCoord"]);
-	glEnableVertexAttribArray(attributes["color"]);
+	glEnableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("colorTexture"), "position"));
+	glEnableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("colorTexture"), "texCoord"));
+	glEnableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("colorTexture"), "color"));
 
 	glDrawElements(GL_QUADS, 4, GL_UNSIGNED_SHORT, NULL);
 
@@ -361,13 +327,13 @@ void DrawRadar::execute(DrawStackArgList argList) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	glUniformMatrix4fv(uniforms["mvpMatrix"], 1, GL_FALSE, progressionMatrixArray);
+	glUniformMatrix4fv(glGetUniformLocation(gameGraphics->getProgramID("colorTexture"), "mvpMatrix"), 1, GL_FALSE, progressionMatrixArray);
 
 	glDrawElements(GL_QUADS, 4, GL_UNSIGNED_SHORT, NULL);
 
-	glDisableVertexAttribArray(attributes["position"]);
-	glDisableVertexAttribArray(attributes["texCoord"]);
-	glDisableVertexAttribArray(attributes["color"]);
+	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("colorTexture"), "position"));
+	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("colorTexture"), "texCoord"));
+	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("colorTexture"), "color"));
 
 	// undo state
 	glDisable(GL_TEXTURE_2D);

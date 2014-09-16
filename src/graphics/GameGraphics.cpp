@@ -20,6 +20,164 @@ extern std::map<MainLoopMember*,unsigned int> mainLoopModules;
 extern Platform* platform;
 extern GameSystem* gameSystem;
 
+GLuint GameGraphics::getShaderID(GLenum shaderType, std::string shaderName) {
+	// return the compiled shader ID
+	std::map<std::string, GLuint>::iterator itr;
+	std::string extension;
+	if(shaderType == GL_VERTEX_SHADER) {
+		itr = vertexShaderIDs.find(shaderName);
+
+		if(itr != vertexShaderIDs.end())
+			return itr->second;
+
+		extension = ".vertex.glsl";
+	} else if(shaderType == GL_FRAGMENT_SHADER) {
+		itr = fragmentShaderIDs.find(shaderName);
+
+		if(itr != fragmentShaderIDs.end())
+			return itr->second;
+
+		extension = ".fragment.glsl";
+	}
+
+	std::stringstream filename;
+	filename <<
+			platform->dataPath <<
+			"/shaders/" <<
+			shaderName <<
+			extension;
+
+	std::ifstream fileStream;
+	std::vector<std::string> fileLines;
+
+	fileStream.open(filename.str().c_str());
+	while(fileStream.good()) {
+		std::string thisChar = "";
+		thisChar += fileStream.get();
+
+		if(fileLines.size() == 0)
+			fileLines.push_back("");
+
+		fileLines.back() += thisChar;
+
+		if(thisChar == "\n") {
+			fileLines.push_back("");
+		}
+	}
+	fileStream.close();
+
+	if(fileLines.size() > 0)
+		fileLines.pop_back();
+	else
+		gameSystem->log(GameSystem::LOG_FATAL,
+				std::string("The GLSL shader " +
+						filename.str() +
+						" could not be opened for reading.").c_str()
+			);
+
+	GLsizei count = fileLines.size();
+	uint8_t bytes = 0;
+	GLchar** shaderSource;
+
+	for(size_t i = 0; i < fileLines.size(); ++i)
+		bytes += fileLines[i].size() + 1;
+
+	shaderSource = (GLchar**) malloc(fileLines.size() * sizeof(GLchar*));
+
+	for(size_t i = 0; i < fileLines.size(); ++i) {
+		shaderSource[i] = (GLchar*) malloc(fileLines[i].size() + 1);
+		memcpy(
+				shaderSource[i],
+				fileLines[i].c_str(),
+				fileLines[i].size() + 1
+			);
+		shaderSource[i][fileLines[i].size()] = '\0';
+	}
+
+	GLuint shader;
+	shader = glCreateShader(shaderType);
+	glShaderSource(shader, count, (const GLchar**) shaderSource, NULL);
+
+	for(int i = 0; i < count; ++i)
+		free(shaderSource[i]);
+	free(shaderSource);
+
+	glCompileShader(shader);
+
+	GLint result;
+	glGetShaderiv(shader, GL_COMPILE_STATUS, &result);
+
+	if(result == GL_FALSE) {
+		std::stringstream err;
+		err << "The GLSL shader "
+				<< filename
+				<< " did not compile successfully."
+				<< std::endl << std::endl;
+
+		GLint sourceLength;
+		glGetShaderiv(shader, GL_SHADER_SOURCE_LENGTH, &sourceLength);
+		GLchar* sourceLines = (GLchar*) malloc(sourceLength);
+		glGetShaderSource(shader, sourceLength, NULL, sourceLines);
+
+		err << "SHADER SOURCE ON GPU" << std::endl
+				<< "--------------------" << std::endl
+				<< sourceLines
+				<< "--------------------" << std::endl << std::endl;
+		free(sourceLines);
+
+		GLint logLength;
+		glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logLength);
+		GLchar* logLines = (GLchar*) malloc(logLength);
+		glGetShaderInfoLog(shader, logLength, NULL, logLines);
+
+		err << "ERROR LOG" << std::endl
+				<< "---------" << std::endl
+				<< logLines
+				<< "---------";
+
+		free(logLines);
+
+		gameSystem->log(GameSystem::LOG_FATAL, err.str().c_str());
+	}
+
+	return shader;
+}
+
+GLuint GameGraphics::makeProgram(std::vector<GLuint> shaders) {
+	GLuint program;
+
+	program = glCreateProgram();
+
+	for(size_t i = 0; i < shaders.size(); ++i)
+		glAttachShader(program, shaders[i]);
+
+	glLinkProgram(program);
+
+	GLint result;
+	glGetProgramiv(program, GL_LINK_STATUS, &result);
+
+	if(result == GL_FALSE) {
+		std::stringstream err;
+		err << "The GLSL shader program did not link successfully." << std::endl << std::endl;
+
+		GLint logLength;
+		glGetProgramiv(program, GL_INFO_LOG_LENGTH, &logLength);
+		GLchar* logLines = (GLchar*) malloc(logLength);
+		glGetProgramInfoLog(program, logLength, NULL, logLines);
+
+		err << "ERROR LOG" << std::endl
+				<< "---------" << std::endl
+				<< logLines
+				<< "---------";
+
+		free(logLines);
+
+		gameSystem->log(GameSystem::LOG_FATAL, err.str().c_str());
+	}
+
+	return program;
+}
+
 GameGraphics::GameGraphics(bool fullScreen, bool testSystem) :
 		fullScreen(fullScreen),
 		supportsMultisampling(false),
@@ -301,16 +459,22 @@ GameGraphics::~GameGraphics() {
 	delete noiseTexture;
 	delete fourDepthNoiseTexture;
 
-	// delete shaders
-	std::map<std::string, GLuint>::iterator shaderItr;
+	// delete shaders and programs
+	std::map<std::string, GLuint>::iterator programItr = programIDs.begin();
+	while(programItr != programIDs.end()) {
+		glDetachShader(programItr->second, vertexShaderIDs[programItr->first]);
+		glDeleteShader(vertexShaderIDs[programItr->first]);
+		vertexShaderIDs.erase(vertexShaderIDs.find(programItr->first));
 
-	for(shaderItr = vertexShaderIDs.begin(); shaderItr != vertexShaderIDs.end(); ++shaderItr)
-		if(glIsShader(shaderItr->second))
-			glDeleteShader(shaderItr->second);
+		glDetachShader(programItr->second, fragmentShaderIDs[programItr->first]);
+		glDeleteShader(fragmentShaderIDs[programItr->first]);
+		fragmentShaderIDs.erase(fragmentShaderIDs.find(programItr->first));
 
-	for(shaderItr = fragmentShaderIDs.begin(); shaderItr != fragmentShaderIDs.end(); ++shaderItr)
-		if(glIsShader(shaderItr->second))
-			glDeleteShader(shaderItr->second);
+		glDeleteProgram(programItr->second);
+		programIDs.erase(programItr);
+
+		programItr = programIDs.begin();
+	}
 
 	// delete textures
 	std::map<std::string, Texture*>::iterator textureItr;
@@ -325,162 +489,21 @@ GameGraphics::~GameGraphics() {
 			glDeleteTextures(1, &(textureIDItr->second));
 }
 
-GLuint GameGraphics::getShaderID(GLenum shaderType, std::string shaderName) {
-	// return the compiled shader ID
-	std::map<std::string, GLuint>::iterator itr;
-	std::string extension;
-	if(shaderType == GL_VERTEX_SHADER) {
-		itr = vertexShaderIDs.find(shaderName);
+GLuint GameGraphics::getProgramID(std::string name) {
+	// return the program ID
+	std::map<std::string, GLuint>::iterator itr = programIDs.find(name);
 
-		if(itr != vertexShaderIDs.end())
-			return itr->second;
+	if(itr != programIDs.end())
+		return itr->second;
 
-		extension = ".vertex.glsl";
-	} else if(shaderType == GL_FRAGMENT_SHADER) {
-		itr = fragmentShaderIDs.find(shaderName);
+	std::vector<GLuint> shaders;
+	shaders.push_back(getShaderID(GL_VERTEX_SHADER, name));
+	shaders.push_back(getShaderID(GL_FRAGMENT_SHADER, name));
+	GLuint programID = makeProgram(shaders);
 
-		if(itr != fragmentShaderIDs.end())
-			return itr->second;
+	programIDs[name] = programID;
 
-		extension = ".fragment.glsl";
-	}
-
-	std::stringstream filename;
-	filename <<
-			platform->dataPath <<
-			"/shaders/" <<
-			shaderName <<
-			extension;
-
-	std::ifstream fileStream;
-	std::vector<std::string> fileLines;
-
-	fileStream.open(filename.str().c_str());
-	while(fileStream.good()) {
-		std::string thisChar = "";
-		thisChar += fileStream.get();
-
-		if(fileLines.size() == 0)
-			fileLines.push_back("");
-
-		fileLines.back() += thisChar;
-
-		if(thisChar == "\n") {
-			fileLines.push_back("");
-		}
-	}
-	fileStream.close();
-
-	if(fileLines.size() > 0)
-		fileLines.pop_back();
-	else
-		gameSystem->log(GameSystem::LOG_FATAL,
-				std::string("The GLSL shader " +
-						filename.str() +
-						" could not be opened for reading.").c_str()
-			);
-
-	GLsizei count = fileLines.size();
-	uint8_t bytes = 0;
-	GLchar** shaderSource;
-
-	for(size_t i = 0; i < fileLines.size(); ++i)
-		bytes += fileLines[i].size() + 1;
-
-	shaderSource = (GLchar**) malloc(fileLines.size() * sizeof(GLchar*));
-
-	for(size_t i = 0; i < fileLines.size(); ++i) {
-		shaderSource[i] = (GLchar*) malloc(fileLines[i].size() + 1);
-		memcpy(
-				shaderSource[i],
-				fileLines[i].c_str(),
-				fileLines[i].size() + 1
-			);
-		shaderSource[i][fileLines[i].size()] = '\0';
-	}
-
-	GLuint shader;
-	shader = glCreateShader(shaderType);
-	glShaderSource(shader, count, (const GLchar**) shaderSource, NULL);
-
-	for(int i = 0; i < count; ++i)
-		free(shaderSource[i]);
-	free(shaderSource);
-
-	glCompileShader(shader);
-
-	GLint result;
-	glGetShaderiv(shader, GL_COMPILE_STATUS, &result);
-
-	if(result == GL_FALSE) {
-		std::stringstream err;
-		err << "The GLSL shader "
-				<< filename
-				<< " did not compile successfully."
-				<< std::endl << std::endl;
-
-		GLint sourceLength;
-		glGetShaderiv(shader, GL_SHADER_SOURCE_LENGTH, &sourceLength);
-		GLchar* sourceLines = (GLchar*) malloc(sourceLength);
-		glGetShaderSource(shader, sourceLength, NULL, sourceLines);
-
-		err << "SHADER SOURCE ON GPU" << std::endl
-				<< "--------------------" << std::endl
-				<< sourceLines
-				<< "--------------------" << std::endl << std::endl;
-		free(sourceLines);
-
-		GLint logLength;
-		glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logLength);
-		GLchar* logLines = (GLchar*) malloc(logLength);
-		glGetShaderInfoLog(shader, logLength, NULL, logLines);
-
-		err << "ERROR LOG" << std::endl
-				<< "---------" << std::endl
-				<< logLines
-				<< "---------";
-
-		free(logLines);
-
-		gameSystem->log(GameSystem::LOG_FATAL, err.str().c_str());
-	}
-
-	return shader;
-}
-
-GLuint GameGraphics::makeProgram(std::vector<GLuint> shaders) {
-	GLuint program;
-
-	program = glCreateProgram();
-
-	for(size_t i = 0; i < shaders.size(); ++i)
-		glAttachShader(program, shaders[i]);
-
-	glLinkProgram(program);
-
-	GLint result;
-	glGetProgramiv(program, GL_LINK_STATUS, &result);
-
-	if(result == GL_FALSE) {
-		std::stringstream err;
-		err << "The GLSL shader program did not link successfully." << std::endl << std::endl;
-
-		GLint logLength;
-		glGetProgramiv(program, GL_INFO_LOG_LENGTH, &logLength);
-		GLchar* logLines = (GLchar*) malloc(logLength);
-		glGetProgramInfoLog(program, logLength, NULL, logLines);
-
-		err << "ERROR LOG" << std::endl
-				<< "---------" << std::endl
-				<< logLines
-				<< "---------";
-
-		free(logLines);
-
-		gameSystem->log(GameSystem::LOG_FATAL, err.str().c_str());
-	}
-
-	return program;
+	return programID;
 }
 
 Texture* GameGraphics::getTexture(std::string filename) {

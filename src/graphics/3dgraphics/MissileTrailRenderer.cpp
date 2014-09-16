@@ -32,25 +32,6 @@ MissileTrailRenderer::MissileTrailRenderer() {
 
 	missileMesh.autoNormal();
 
-	// set up shader
-	GLuint shaderID = 0;
-	std::vector<GLuint> shaderIDs;
-
-	shaderID = gameGraphics->getShaderID(GL_VERTEX_SHADER, "missileTrail"); shaderIDs.push_back(shaderID);
-	shaderID = gameGraphics->getShaderID(GL_FRAGMENT_SHADER, "missileTrail"); shaderIDs.push_back(shaderID);
-	shaderProgram = gameGraphics->makeProgram(shaderIDs);
-
-	// set up uniforms and attributes
-	uniforms["mvMatrix"] = glGetUniformLocation(shaderProgram, "mvMatrix");
-	uniforms["pMatrix"] = glGetUniformLocation(shaderProgram, "pMatrix");
-	uniforms["texture"] = glGetUniformLocation(shaderProgram, "texture");
-	uniforms["timer"] = glGetUniformLocation(shaderProgram, "timer");
-
-	attributes["position"] = glGetAttribLocation(shaderProgram, "position");
-	attributes["normal"] = glGetAttribLocation(shaderProgram, "normal");
-	attributes["texCoord"] = glGetAttribLocation(shaderProgram, "texCoord");
-	attributes["color"] = glGetAttribLocation(shaderProgram, "color");
-
 	// set up vertex buffers
 	glGenBuffers(1, &(vertexBuffers["vertices"]));
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);
@@ -113,7 +94,6 @@ MissileTrailRenderer::MissileTrailRenderer() {
 		delete[] vertElementBufferArray;
 	}
 
-	// send the buffer data
 	glBufferData(GL_ARRAY_BUFFER, totalFaces * 36 * sizeof(GLfloat), vertDataBufferArray, GL_STATIC_DRAW);
 
 	delete[] vertDataBufferArray;
@@ -144,32 +124,12 @@ MissileTrailRenderer::MissileTrailRenderer() {
 }
 
 MissileTrailRenderer::~MissileTrailRenderer() {
-	// undo shader setup
+	// undo vertex buffer setup
 	glDeleteBuffers(1, &(vertexBuffers["vertices"]));
 	glDeleteBuffers(1, &(vertexBuffers["elements"]));
-
-	if(! glIsShader(shaderProgram)) // sometimes duplicate shaders get optimized out so check for validity
-		return;
-
-	GLsizei shaderCount;
-	GLuint* shaders = new GLuint[2];
-	glGetAttachedShaders(shaderProgram, 2, &shaderCount, shaders);
-
-	for(size_t i = 0; i < shaderCount; ++i) {
-		glDetachShader(shaderProgram, shaders[i]);
-		glDeleteShader(shaders[i]);
-	}
-
-	delete[] shaders;
-
-	glDeleteProgram(shaderProgram);
 }
 
 void MissileTrailRenderer::execute(std::map<std::string, void*> arguments) {
-	// prepare variables
-	Vector4 lightPosition(1.0f, 1.0f, -1.0f, 0.0f);
-	lightPosition = lightPosition * gameGraphics->currentCamera->lightMatrix;
-
 	// state
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_DEPTH_TEST);
@@ -180,27 +140,24 @@ void MissileTrailRenderer::execute(std::map<std::string, void*> arguments) {
 	if(gameGraphics->supportsMultisampling) glEnable(GL_MULTISAMPLE);
 
 	// enable shader
-	glUseProgram(shaderProgram);
+	glUseProgram(gameGraphics->getProgramID("missileTrail"));
 
 	// set uniforms
-	glUniform1i(uniforms["texture"], 0);
-	glUniform1f(uniforms["timer"], gameState->lastUpdateGameTime / 1000.0f);
+	glUniform1i(glGetUniformLocation(gameGraphics->getProgramID("missileTrail"), "texture"), 0);
+	glUniform1f(glGetUniformLocation(gameGraphics->getProgramID("missileTrail"), "timer"), gameState->lastUpdateGameTime / 1000.0f);
 
 	// set the overall drawing state
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);
 
-	glVertexAttribPointer(attributes["position"], 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), (GLvoid*) 0);
-	glVertexAttribPointer(attributes["normal"], 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat),
-			(GLvoid*) (3 * sizeof(GLfloat)));
-	glVertexAttribPointer(attributes["texCoord"], 2, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat),
-			(GLvoid*) (6 * sizeof(GLfloat)));
-	glVertexAttribPointer(attributes["color"], 4, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat),
-			(GLvoid*) (8 * sizeof(GLfloat)));
+	glVertexAttribPointer(glGetAttribLocation(gameGraphics->getProgramID("missileTrail"), "position"), 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), (GLvoid*) 0);
+	glVertexAttribPointer(glGetAttribLocation(gameGraphics->getProgramID("missileTrail"), "normal"), 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), (GLvoid*) (3 * sizeof(GLfloat)));
+	glVertexAttribPointer(glGetAttribLocation(gameGraphics->getProgramID("missileTrail"), "texCoord"), 2, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), (GLvoid*) (6 * sizeof(GLfloat)));
+	glVertexAttribPointer(glGetAttribLocation(gameGraphics->getProgramID("missileTrail"), "color"), 4, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), (GLvoid*) (8 * sizeof(GLfloat)));
 
-	glEnableVertexAttribArray(attributes["position"]);
-	glEnableVertexAttribArray(attributes["normal"]);
-	glEnableVertexAttribArray(attributes["texCoord"]);
-	glEnableVertexAttribArray(attributes["color"]);
+	glEnableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("missileTrail"), "position"));
+	glEnableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("missileTrail"), "normal"));
+	glEnableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("missileTrail"), "texCoord"));
+	glEnableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("missileTrail"), "color"));
 
 	for(size_t i = 0; i < gameState->missiles.size(); ++i) {
 		if(! gameState->missiles[i].alive)
@@ -229,8 +186,8 @@ void MissileTrailRenderer::execute(std::map<std::string, void*> arguments) {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-		glUniformMatrix4fv(uniforms["mvMatrix"], 1, GL_FALSE, mvMatrixArray);
-		glUniformMatrix4fv(uniforms["pMatrix"], 1, GL_FALSE, (gameState->binoculars ? gameGraphics->ppBinoMatrixArray : gameGraphics->ppMatrixArray));
+			glUniformMatrix4fv(glGetUniformLocation(gameGraphics->getProgramID("missileTrail"), "mvMatrix"), 1, GL_FALSE, mvMatrixArray);
+			glUniformMatrix4fv(glGetUniformLocation(gameGraphics->getProgramID("missileTrail"), "pMatrix"), 1, GL_FALSE, (gameState->binoculars ? gameGraphics->ppBinoMatrixArray : gameGraphics->ppMatrixArray));
 
 		// draw the geometry
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexBuffers["elements_trail"]);
@@ -238,10 +195,10 @@ void MissileTrailRenderer::execute(std::map<std::string, void*> arguments) {
 		glDrawElements(GL_TRIANGLES, missileMesh.faceGroups["trail"].size() * 3, GL_UNSIGNED_INT, NULL);
 	}
 
-	glDisableVertexAttribArray(attributes["position"]);
-	glDisableVertexAttribArray(attributes["normal"]);
-	glDisableVertexAttribArray(attributes["texCoord"]);
-	glDisableVertexAttribArray(attributes["color"]);
+	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("missileTrail"), "position"));
+	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("missileTrail"), "normal"));
+	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("missileTrail"), "texCoord"));
+	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("missileTrail"), "color"));
 
 	// undo state
 	glDisable(GL_TEXTURE_2D);

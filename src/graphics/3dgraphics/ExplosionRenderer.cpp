@@ -18,23 +18,6 @@ extern GameState* gameState;
 extern GameSystem* gameSystem;
 
 ExplosionRenderer::ExplosionRenderer() : sphere(makeSphere((size_t) gameSystem->getFloat("explosionSphereDensity"))) {
-	// set up shader
-	GLuint shaderID = 0;
-	std::vector<GLuint> shaderIDs;
-
-	shaderID = gameGraphics->getShaderID(GL_VERTEX_SHADER, "explosion"); shaderIDs.push_back(shaderID);
-	shaderID = gameGraphics->getShaderID(GL_FRAGMENT_SHADER, "explosion"); shaderIDs.push_back(shaderID);
-	shaderProgram = gameGraphics->makeProgram(shaderIDs);
-
-	// set up uniforms and attributes
-	uniforms["mvMatrix"] = glGetUniformLocation(shaderProgram, "mvMatrix");
-	uniforms["pMatrix"] = glGetUniformLocation(shaderProgram, "pMatrix");
-	uniforms["fortressVector"] = glGetUniformLocation(shaderProgram, "fortressVector");
-	uniforms["progression"] = glGetUniformLocation(shaderProgram, "progression");
-
-	attributes["position"] = glGetAttribLocation(shaderProgram, "position");
-	attributes["normal"] = glGetAttribLocation(shaderProgram, "normal");
-
 	// set up vertex buffers
 	glGenBuffers(1, &(vertexBuffers["vertices"]));
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);
@@ -73,25 +56,9 @@ ExplosionRenderer::ExplosionRenderer() : sphere(makeSphere((size_t) gameSystem->
 }
 
 ExplosionRenderer::~ExplosionRenderer() {
-	// undo shader setup
+	// undo vertex buffer setup
 	glDeleteBuffers(1, &(vertexBuffers["vertices"]));
 	glDeleteBuffers(1, &(vertexBuffers["elements"]));
-
-	if(! glIsShader(shaderProgram)) // sometimes duplicate shaders get optimized out so check for validity
-		return;
-
-	GLsizei shaderCount;
-	GLuint* shaders = new GLuint[2];
-	glGetAttachedShaders(shaderProgram, 2, &shaderCount, shaders);
-
-	for(size_t i = 0; i < shaderCount; ++i) {
-		glDetachShader(shaderProgram, shaders[i]);
-		glDeleteShader(shaders[i]);
-	}
-
-	delete[] shaders;
-
-	glDeleteProgram(shaderProgram);
 }
 
 void ExplosionRenderer::execute(std::map<std::string, void*> arguments) {
@@ -220,19 +187,19 @@ void ExplosionRenderer::execute(std::map<std::string, void*> arguments) {
 	if(gameGraphics->supportsMultisampling) glEnable(GL_MULTISAMPLE);
 
 	// enable shader
-	glUseProgram(shaderProgram);
+	glUseProgram(gameGraphics->getProgramID("explosion"));
 
 	// set uniforms
-	glUniformMatrix4fv(uniforms["pMatrix"], 1, GL_FALSE, (gameState->binoculars ? gameGraphics->ppBinoMatrixArray : gameGraphics->ppMatrixArray));
+	glUniformMatrix4fv(glGetUniformLocation(gameGraphics->getProgramID("explosion"), "pMatrix"), 1, GL_FALSE, (gameState->binoculars ? gameGraphics->ppBinoMatrixArray : gameGraphics->ppMatrixArray));
 
 	// set the overall drawing state
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);
 
-	glVertexAttribPointer(attributes["position"], 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*) 0);
-	glVertexAttribPointer(attributes["normal"], 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*) (3 * sizeof(GLfloat)));
+	glVertexAttribPointer(glGetAttribLocation(gameGraphics->getProgramID("explosion"), "position"), 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*) 0);
+	glVertexAttribPointer(glGetAttribLocation(gameGraphics->getProgramID("explosion"), "normal"), 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*) (3 * sizeof(GLfloat)));
 
-	glEnableVertexAttribArray(attributes["position"]);
-	glEnableVertexAttribArray(attributes["normal"]);
+	glEnableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("explosion"), "position"));
+	glEnableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("explosion"), "normal"));
 
 	// draw the geometry
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexBuffers["elements"]);
@@ -249,7 +216,7 @@ void ExplosionRenderer::execute(std::map<std::string, void*> arguments) {
 			float progression =
 					(float) (gameState->lastUpdateGameTime - explodingMissiles[i].explosions[p].beginTime) /
 					(float) explodingMissiles[i].explosions[p].duration;
-			glUniform1f(uniforms["progression"], progression);
+			glUniform1f(glGetUniformLocation(gameGraphics->getProgramID("explosion"), "progression"), progression);
 
 			Vector4 missilePosition(
 					explodingMissiles[i].explosions[p].position.x + explodingMissiles[i].explosions[p].movement.x * progression,
@@ -266,7 +233,7 @@ void ExplosionRenderer::execute(std::map<std::string, void*> arguments) {
 				);
 			fortressPosition = fortressPosition * gameGraphics->currentCamera->mvMatrix;
 			Vector4 fortressVector = fortressPosition - missilePosition;
-			glUniform3f(uniforms["fortressVector"], fortressVector.x, fortressVector.y, fortressVector.z);
+			glUniform3f(glGetUniformLocation(gameGraphics->getProgramID("explosion"), "fortressVector"), fortressVector.x, fortressVector.y, fortressVector.z);
 
 			Matrix4 mvMatrix; mvMatrix.identity();
 
@@ -297,14 +264,14 @@ void ExplosionRenderer::execute(std::map<std::string, void*> arguments) {
 					mvMatrix.m31, mvMatrix.m32, mvMatrix.m33, mvMatrix.m34,
 					mvMatrix.m41, mvMatrix.m42, mvMatrix.m43, mvMatrix.m44
 				};
-			glUniformMatrix4fv(uniforms["mvMatrix"], 1, GL_FALSE, mvMatrixArray);
+			glUniformMatrix4fv(glGetUniformLocation(gameGraphics->getProgramID("explosion"), "mvMatrix"), 1, GL_FALSE, mvMatrixArray);
 
 			glDrawElements(GL_TRIANGLES, sphere.faceGroups[""].size() * 3, GL_UNSIGNED_INT, NULL);
 		}
 	}
 
-	glDisableVertexAttribArray(attributes["position"]);
-	glDisableVertexAttribArray(attributes["normal"]);
+	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("explosion"), "position"));
+	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("explosion"), "normal"));
 
 	// undo state
 	glDisable(GL_BLEND);

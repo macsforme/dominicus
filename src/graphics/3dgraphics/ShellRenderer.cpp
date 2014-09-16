@@ -21,28 +21,6 @@ extern GameSystem* gameSystem;
 ShellRenderer::ShellRenderer() {
 	sphere = makeSphere((size_t) gameSystem->getFloat("shellDensity"));
 
-	// set up shader
-	GLuint shaderID = 0;
-	std::vector<GLuint> shaderIDs;
-
-	shaderID = gameGraphics->getShaderID(GL_VERTEX_SHADER, "colorLighting"); shaderIDs.push_back(shaderID);
-	shaderID = gameGraphics->getShaderID(GL_FRAGMENT_SHADER, "colorLighting"); shaderIDs.push_back(shaderID);
-	shaderProgram = gameGraphics->makeProgram(shaderIDs);
-
-	// set up uniforms and attributes
-	uniforms["mvMatrix"] = glGetUniformLocation(shaderProgram, "mvMatrix");
-	uniforms["pMatrix"] = glGetUniformLocation(shaderProgram, "pMatrix");
-	uniforms["texture"] = glGetUniformLocation(shaderProgram, "texture");
-	uniforms["ambientColor"] = glGetUniformLocation(shaderProgram, "ambientColor");
-	uniforms["diffuseColor"] = glGetUniformLocation(shaderProgram, "diffuseColor");
-	uniforms["specularColor"] = glGetUniformLocation(shaderProgram, "specularColor");
-	uniforms["lightPosition"] = glGetUniformLocation(shaderProgram, "lightPosition");
-	uniforms["shininess"] = glGetUniformLocation(shaderProgram, "shininess");
-
-	attributes["position"] = glGetAttribLocation(shaderProgram, "position");
-	attributes["normal"] = glGetAttribLocation(shaderProgram, "normal");
-	attributes["color"] = glGetAttribLocation(shaderProgram, "color");
-
 	// set up vertex buffers
 	glGenBuffers(1, &(vertexBuffers["vertices"]));
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);
@@ -86,32 +64,12 @@ ShellRenderer::ShellRenderer() {
 }
 
 ShellRenderer::~ShellRenderer() {
-	// undo shader setup
+	// undo vertex buffer setup
 	glDeleteBuffers(1, &(vertexBuffers["vertices"]));
 	glDeleteBuffers(1, &(vertexBuffers["elements"]));
-
-	if(! glIsShader(shaderProgram)) // sometimes duplicate shaders get optimized out so check for validity
-		return;
-
-	GLsizei shaderCount;
-	GLuint* shaders = new GLuint[2];
-	glGetAttachedShaders(shaderProgram, 2, &shaderCount, shaders);
-
-	for(size_t i = 0; i < shaderCount; ++i) {
-		glDetachShader(shaderProgram, shaders[i]);
-		glDeleteShader(shaders[i]);
-	}
-
-	delete[] shaders;
-
-	glDeleteProgram(shaderProgram);
 }
 
 void ShellRenderer::execute(std::map<std::string, void*> arguments) {
-	// prepare variables
-	Vector4 lightPosition(1.0f, 1.0f, -1.0f, 0.0f);
-	lightPosition = lightPosition * gameGraphics->currentCamera->lightMatrix;
-
 	// state
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
@@ -119,26 +77,27 @@ void ShellRenderer::execute(std::map<std::string, void*> arguments) {
 	if(gameGraphics->supportsMultisampling) glEnable(GL_MULTISAMPLE);
 
 	// enable shader
-	glUseProgram(shaderProgram);
+	glUseProgram(gameGraphics->getProgramID("colorLighting"));
 
 	// set uniforms
-	glUniformMatrix4fv(uniforms["pMatrix"], 1, GL_FALSE, (gameState->binoculars ? gameGraphics->ppBinoMatrixArray : gameGraphics->ppMatrixArray));
-	glUniform3f(uniforms["ambientColor"], 0.15f, 0.15f, 0.15f);
-	glUniform3f(uniforms["diffuseColor"], 0.5f, 0.5f, 0.5f);
-	glUniform3f(uniforms["specularColor"], 0.5f, 0.5f, 0.5f);
-	glUniform3f(uniforms["lightPosition"], lightPosition.x, lightPosition.y, lightPosition.z);
-	glUniform1f(uniforms["shininess"], 50.0f);
+	glUniformMatrix4fv(glGetUniformLocation(gameGraphics->getProgramID("colorLighting"), "pMatrix"), 1, GL_FALSE, (gameState->binoculars ? gameGraphics->ppBinoMatrixArray : gameGraphics->ppMatrixArray));
+	glUniform3f(glGetUniformLocation(gameGraphics->getProgramID("colorLighting"), "ambientColor"), 0.15f, 0.15f, 0.15f);
+	glUniform3f(glGetUniformLocation(gameGraphics->getProgramID("colorLighting"), "diffuseColor"), 0.5f, 0.5f, 0.5f);
+	glUniform3f(glGetUniformLocation(gameGraphics->getProgramID("colorLighting"), "specularColor"), 0.5f, 0.5f, 0.5f);
+	Vector4 lightPosition = Vector4(1.0f, 1.0f, -1.0f, 0.0f) * gameGraphics->currentCamera->lightMatrix;
+	glUniform3f(glGetUniformLocation(gameGraphics->getProgramID("colorLighting"), "lightPosition"), lightPosition.x, lightPosition.y, lightPosition.z);
+	glUniform1f(glGetUniformLocation(gameGraphics->getProgramID("colorLighting"), "shininess"), 50.0f);
 
 	// set the overall drawing state
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);
 
-	glVertexAttribPointer(attributes["position"], 3, GL_FLOAT, GL_FALSE, 10 * sizeof(GLfloat), (GLvoid*) 0);
-	glVertexAttribPointer(attributes["normal"], 3, GL_FLOAT, GL_FALSE, 10 * sizeof(GLfloat), (GLvoid*) (3 * sizeof(GLfloat)));
-	glVertexAttribPointer(attributes["color"], 4, GL_FLOAT, GL_FALSE, 10 * sizeof(GLfloat), (GLvoid*) (6 * sizeof(GLfloat)));
+	glVertexAttribPointer(glGetAttribLocation(gameGraphics->getProgramID("colorLighting"), "position"), 3, GL_FLOAT, GL_FALSE, 10 * sizeof(GLfloat), (GLvoid*) 0);
+	glVertexAttribPointer(glGetAttribLocation(gameGraphics->getProgramID("colorLighting"), "normal"), 3, GL_FLOAT, GL_FALSE, 10 * sizeof(GLfloat), (GLvoid*) (3 * sizeof(GLfloat)));
+	glVertexAttribPointer(glGetAttribLocation(gameGraphics->getProgramID("colorLighting"), "color"), 4, GL_FLOAT, GL_FALSE, 10 * sizeof(GLfloat), (GLvoid*) (6 * sizeof(GLfloat)));
 
-	glEnableVertexAttribArray(attributes["position"]);
-	glEnableVertexAttribArray(attributes["normal"]);
-	glEnableVertexAttribArray(attributes["color"]);
+	glEnableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("colorLighting"), "position"));
+	glEnableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("colorLighting"), "normal"));
+	glEnableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("colorLighting"), "color"));
 
 	// draw the geometry
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexBuffers["elements"]);
@@ -156,14 +115,14 @@ void ShellRenderer::execute(std::map<std::string, void*> arguments) {
 				mvMatrix.m41, mvMatrix.m42, mvMatrix.m43, mvMatrix.m44
 			};
 
-		glUniformMatrix4fv(uniforms["mvMatrix"], 1, GL_FALSE, mvMatrixArray);
+			glUniformMatrix4fv(glGetUniformLocation(gameGraphics->getProgramID("colorLighting"), "mvMatrix"), 1, GL_FALSE, mvMatrixArray);
 
 		glDrawElements(GL_TRIANGLES, sphere.faceGroups[""].size() * 3, GL_UNSIGNED_INT, NULL);
 	}
 
-	glDisableVertexAttribArray(attributes["position"]);
-	glDisableVertexAttribArray(attributes["normal"]);
-	glDisableVertexAttribArray(attributes["color"]);
+	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("colorLighting"), "position"));
+	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("colorLighting"), "normal"));
+	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("colorLighting"), "color"));
 
 	// undo state
 	glDisable(GL_DEPTH_TEST);

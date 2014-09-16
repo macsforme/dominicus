@@ -16,23 +16,6 @@ extern GameGraphics* gameGraphics;
 extern GameState* gameState;
 
 SkyRenderer::SkyRenderer() {
-	// set up shader
-	GLuint shaderID = 0;
-	std::vector<GLuint> shaderIDs;
-
-	shaderID = gameGraphics->getShaderID(GL_VERTEX_SHADER, "sky"); shaderIDs.push_back(shaderID);
-	shaderID = gameGraphics->getShaderID(GL_FRAGMENT_SHADER, "sky"); shaderIDs.push_back(shaderID);
-	shaderProgram = gameGraphics->makeProgram(shaderIDs);
-
-	// set up uniforms and attributes
-	uniforms["mvpMatrix"] = glGetUniformLocation(shaderProgram, "mvpMatrix");
-	uniforms["waterColor"] = glGetUniformLocation(shaderProgram, "waterColor");
-	uniforms["horizonColor"] = glGetUniformLocation(shaderProgram, "horizonColor");
-	uniforms["baseSkyColor"] = glGetUniformLocation(shaderProgram, "baseSkyColor");
-	uniforms["apexColor"] = glGetUniformLocation(shaderProgram, "apexColor");
-
-	attributes["position"] = glGetAttribLocation(shaderProgram, "position");
-
 	// set up vertex buffers
 	glGenBuffers(1, &(vertexBuffers["vertices"]));
 	glGenBuffers(1, &(vertexBuffers["elements"]));
@@ -51,32 +34,15 @@ SkyRenderer::SkyRenderer() {
 			0, 1, 2, 3
 		};
 
-	// send the buffer data
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertDataBufferArray), vertDataBufferArray, GL_STATIC_DRAW);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(vertElementBufferArray), vertElementBufferArray,
 			GL_STATIC_DRAW);
 }
 
 SkyRenderer::~SkyRenderer() {
-	// undo shader setup
+	// undo vertex buffer setup
 	glDeleteBuffers(1, &(vertexBuffers["vertices"]));
 	glDeleteBuffers(1, &(vertexBuffers["elements"]));
-
-	if(! glIsShader(shaderProgram)) // sometimes duplicate shaders get optimized out so check for validity
-		return;
-
-	GLsizei shaderCount;
-	GLuint* shaders = new GLuint[2];
-	glGetAttachedShaders(shaderProgram, 2, &shaderCount, shaders);
-
-	for(size_t i = 0; i < shaderCount; ++i) {
-		glDetachShader(shaderProgram, shaders[i]);
-		glDeleteShader(shaders[i]);
-	}
-
-	delete[] shaders;
-
-	glDeleteProgram(shaderProgram);
 }
 
 void SkyRenderer::execute(std::map<std::string, void*> arguments) {
@@ -109,10 +75,10 @@ void SkyRenderer::execute(std::map<std::string, void*> arguments) {
 	// no state changes
 
 	// enable shader
-	glUseProgram(shaderProgram);
+	glUseProgram(gameGraphics->getProgramID("sky"));
 
 	// set uniforms
-	glUniformMatrix4fv(uniforms["mvpMatrix"], 1, GL_FALSE, mvpMatrixArray);
+	glUniformMatrix4fv(glGetUniformLocation(gameGraphics->getProgramID("sky"), "mvpMatrix"), 1, GL_FALSE, mvpMatrixArray);
 	float empColorMultiplier = (
 			gameState->fortress.emp <= 0.0f || gameState->fortress.emp >= 1.0f ?
 			1.0f :
@@ -120,25 +86,25 @@ void SkyRenderer::execute(std::map<std::string, void*> arguments) {
 		);
 
 	Vector4 waterColor = gameSystem->getColor("waterColor") * empColorMultiplier;
-	glUniform4f(uniforms["waterColor"], waterColor.x, waterColor.y, waterColor.z, waterColor.w);
+	glUniform4f(glGetUniformLocation(gameGraphics->getProgramID("sky"), "waterColor"), waterColor.x, waterColor.y, waterColor.z, waterColor.w);
 	Vector4 horizonColor = gameSystem->getColor("horizonColor") * empColorMultiplier;
-	glUniform4f(uniforms["horizonColor"], horizonColor.x, horizonColor.y, horizonColor.z, waterColor.w);
+	glUniform4f(glGetUniformLocation(gameGraphics->getProgramID("sky"), "horizonColor"), horizonColor.x, horizonColor.y, horizonColor.z, waterColor.w);
 	Vector4 baseSkyColor = gameSystem->getColor("baseSkyColor") * empColorMultiplier;
-	glUniform4f(uniforms["baseSkyColor"], baseSkyColor.x, baseSkyColor.y, baseSkyColor.z, baseSkyColor.w);
+	glUniform4f(glGetUniformLocation(gameGraphics->getProgramID("sky"), "baseSkyColor"), baseSkyColor.x, baseSkyColor.y, baseSkyColor.z, baseSkyColor.w);
 	Vector4 apexColor = gameSystem->getColor("apexColor") * empColorMultiplier;;
-	glUniform4f(uniforms["apexColor"], apexColor.x, apexColor.y, apexColor.z, apexColor.w);
+	glUniform4f(glGetUniformLocation(gameGraphics->getProgramID("sky"), "apexColor"), apexColor.x, apexColor.y, apexColor.z, apexColor.w);
 
 	// draw the data stored in GPU memory
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexBuffers["elements"]);
 
-	glVertexAttribPointer(attributes["position"], 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*) 0);
+	glVertexAttribPointer(glGetAttribLocation(gameGraphics->getProgramID("sky"), "position"), 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*) 0);
 
-	glEnableVertexAttribArray(attributes["position"]);
+	glEnableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("sky"), "position"));
 
 	glDrawElements(GL_QUADS, 4, GL_UNSIGNED_SHORT, (GLvoid*) 0);
 
-	glDisableVertexAttribArray(attributes["position"]);
+	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("sky"), "position"));
 
 	// no state changes to undo
 }

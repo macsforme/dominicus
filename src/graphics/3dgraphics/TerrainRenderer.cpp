@@ -16,55 +16,15 @@ extern GameGraphics* gameGraphics;
 extern GameState* gameState;
 
 TerrainRenderer::TerrainRenderer() {
-	// set up shader
-	GLuint shaderID = 0;
-	std::vector<GLuint> shaderIDs;
-
-	shaderID = gameGraphics->getShaderID(GL_VERTEX_SHADER, "terrain"); shaderIDs.push_back(shaderID);
-	shaderID = gameGraphics->getShaderID(GL_FRAGMENT_SHADER, "terrain"); shaderIDs.push_back(shaderID);
-	shaderProgram = gameGraphics->makeProgram(shaderIDs);
-
-	// set up uniforms and attributes
-	uniforms["mvMatrix"] = glGetUniformLocation(shaderProgram, "mvMatrix");
-	uniforms["pMatrix"] = glGetUniformLocation(shaderProgram, "pMatrix");
-	uniforms["fortressTransformMatrix"] = glGetUniformLocation(shaderProgram, "fortressTransformMatrix");
-	uniforms["textures"] = glGetUniformLocation(shaderProgram, "textures");
-	uniforms["lightPosition"] = glGetUniformLocation(shaderProgram, "lightPosition");
-	uniforms["lightColor"] = glGetUniformLocation(shaderProgram, "lightColor");
-	uniforms["depth"] = glGetUniformLocation(shaderProgram, "depth");
-	uniforms["insideColorMultiplier"] = glGetUniformLocation(shaderProgram, "insideColorMultiplier");
-	uniforms["outsideColorMultiplier"] = glGetUniformLocation(shaderProgram, "outsideColorMultiplier");
-	uniforms["colorChangeRadius"] = glGetUniformLocation(shaderProgram, "colorChangeRadius");
-
-	attributes["position"] = glGetAttribLocation(shaderProgram, "position");
-	attributes["normal"] = glGetAttribLocation(shaderProgram, "normal");
-	attributes["texCoord"] = glGetAttribLocation(shaderProgram, "texCoord");
-
 	// set up vertex buffers
 	glGenBuffers(1, &(vertexBuffers["vertices"]));
 	glGenBuffers(1, &(vertexBuffers["elements"]));
 }
 
 TerrainRenderer::~TerrainRenderer() {
-	// undo shader setup
+	// undo vertex buffer setup
 	glDeleteBuffers(1, &(vertexBuffers["vertices"]));
 	glDeleteBuffers(1, &(vertexBuffers["elements"]));
-
-	if(! glIsShader(shaderProgram)) // sometimes duplicate shaders get optimized out so check for validity
-		return;
-
-	GLsizei shaderCount;
-	GLuint* shaders = new GLuint[2];
-	glGetAttachedShaders(shaderProgram, 2, &shaderCount, shaders);
-
-	for(size_t i = 0; i < shaderCount; ++i) {
-		glDetachShader(shaderProgram, shaders[i]);
-		glDeleteShader(shaders[i]);
-	}
-
-	delete[] shaders;
-
-	glDeleteProgram(shaderProgram);
 }
 
 void TerrainRenderer::reloadState() {
@@ -120,7 +80,6 @@ void TerrainRenderer::reloadState() {
 		vertElementBufferArray[i] = i;
 	}
 
-	// send the buffer data
 	glBufferData(GL_ARRAY_BUFFER, vertDataBufferArraySize, vertDataBufferArray, GL_STATIC_DRAW);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, vertElementBufferArraySize, vertElementBufferArray,
 			GL_STATIC_DRAW);
@@ -182,34 +141,34 @@ void TerrainRenderer::execute(std::map<std::string, void*> arguments) {
 	if(gameGraphics->supportsMultisampling) glEnable(GL_MULTISAMPLE);
 
 	// enable shader
-	glUseProgram(shaderProgram);
+	glUseProgram(gameGraphics->getProgramID("terrain"));
 
 	// set uniforms
-	glUniformMatrix4fv(uniforms["mvMatrix"], 1, GL_FALSE, mvMatrixArray);
-	glUniformMatrix4fv(uniforms["pMatrix"], 1, GL_FALSE, (gameState->binoculars ? gameGraphics->ppBinoMatrixArray : gameGraphics->ppMatrixArray));
-	glUniformMatrix4fv(uniforms["fortressTransformMatrix"], 1, GL_FALSE, fortressTransformMatrixArray);
-	glUniform4f(uniforms["insideColorMultiplier"], 1.0f, 1.0f, 1.0f, 1.0f);
+	glUniformMatrix4fv(glGetUniformLocation(gameGraphics->getProgramID("terrain"), "mvMatrix"), 1, GL_FALSE, mvMatrixArray);
+	glUniformMatrix4fv(glGetUniformLocation(gameGraphics->getProgramID("terrain"), "pMatrix"), 1, GL_FALSE, (gameState->binoculars ? gameGraphics->ppBinoMatrixArray : gameGraphics->ppMatrixArray));
+	glUniformMatrix4fv(glGetUniformLocation(gameGraphics->getProgramID("terrain"), "fortressTransformMatrix"), 1, GL_FALSE, fortressTransformMatrixArray);
+	glUniform4f(glGetUniformLocation(gameGraphics->getProgramID("terrain"), "insideColorMultiplier"), 1.0f, 1.0f, 1.0f, 1.0f);
 	float empColorMultiplier = (
 			gameState->fortress.emp <= 0.0f || gameState->fortress.emp >= 1.0f ?
 			1.0f :
 			1.0f - gameState->fortress.emp + gameState->fortress.emp * gameSystem->getFloat("empColorMultiplier")
 		);
 	glUniform4f(
-			uniforms["outsideColorMultiplier"],
+			glGetUniformLocation(gameGraphics->getProgramID("terrain"), "outsideColorMultiplier"),
 			empColorMultiplier,
 			empColorMultiplier,
 			empColorMultiplier,
 			1.0f
 		);
-	glUniform1f(uniforms["colorChangeRadius"],
+	glUniform1f(glGetUniformLocation(gameGraphics->getProgramID("terrain"), "colorChangeRadius"),
 			gameState->fortress.emp <= 0.0f || gameState->fortress.emp >= 1.0f ?
 			0.0f :
 			(1.0f - gameState->fortress.emp) * gameSystem->getFloat("stateEMPRange")
 		);
 
 	GLint textureUniforms[] = { 0, 1, 2, 3, 4 };
-	glUniform1iv(uniforms["textures"], 5, textureUniforms);
-	glUniform1f(uniforms["depth"], (GLfloat) gameSystem->getFloat("terrainDepth"));
+	glUniform1iv(glGetUniformLocation(gameGraphics->getProgramID("terrain"), "textures"), 5, textureUniforms);
+	glUniform1f(glGetUniformLocation(gameGraphics->getProgramID("terrain"), "depth"), (GLfloat) gameSystem->getFloat("terrainDepth"));
 
 	// activate the textures
 	for(int i = 0; i < 3; ++i) {
@@ -240,21 +199,19 @@ void TerrainRenderer::execute(std::map<std::string, void*> arguments) {
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexBuffers["elements"]);
 
-	glVertexAttribPointer(attributes["position"], 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*) 0);
-	glVertexAttribPointer(attributes["normal"], 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat),
-			(GLvoid*) (3 * sizeof(GLfloat)));
-	glVertexAttribPointer(attributes["texCoord"], 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat),
-			(GLvoid*) (6 * sizeof(GLfloat)));
+	glVertexAttribPointer(glGetAttribLocation(gameGraphics->getProgramID("terrain"), "position"), 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*) 0);
+	glVertexAttribPointer(glGetAttribLocation(gameGraphics->getProgramID("terrain"), "normal"), 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*) (3 * sizeof(GLfloat)));
+	glVertexAttribPointer(glGetAttribLocation(gameGraphics->getProgramID("terrain"), "texCoord"), 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*) (6 * sizeof(GLfloat)));
 
-	glEnableVertexAttribArray(attributes["position"]);
-	glEnableVertexAttribArray(attributes["normal"]);
-	glEnableVertexAttribArray(attributes["texCoord"]);
+	glEnableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("terrain"), "position"));
+	glEnableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("terrain"), "normal"));
+	glEnableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("terrain"), "texCoord"));
 
 	glDrawElements(GL_TRIANGLES, gameState->island.faceGroups.begin()->second.size() * 3, GL_UNSIGNED_INT, NULL);
 
-	glDisableVertexAttribArray(attributes["position"]);
-	glDisableVertexAttribArray(attributes["normal"]);
-	glDisableVertexAttribArray(attributes["texCoord"]);
+	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("terrain"), "position"));
+	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("terrain"), "normal"));
+	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("terrain"), "texCoord"));
 
 	// undo state
 	glDisable(GL_TEXTURE_2D);
