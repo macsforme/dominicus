@@ -1431,6 +1431,8 @@ lastFPSUpdate = platform->getExecMills();
 					if(gameSystem->getString("inputAllowedNameChars").find(inputHandler->keyboard->unicodeChars.substr(i, 1)) != std::string::npos) {
 						playerName += inputHandler->keyboard->unicodeChars.substr(i, 1);
 
+						activeMenuSelection = &gameOverContinueButton;
+
 						reScheme();
 						needRedraw = true;
 					}
@@ -1445,6 +1447,8 @@ lastFPSUpdate = platform->getExecMills();
 				playerName.erase(playerName.length() - 1);
 				deleteKeyPressTime = platform->getExecMills();
 
+				activeMenuSelection = &gameOverContinueButton;
+
 				reScheme();
 				needRedraw = true;
 			} else if(
@@ -1455,6 +1459,8 @@ lastFPSUpdate = platform->getExecMills();
 				) {
 				playerName.erase(playerName.length() - 1);
 				lastCharacterDeletionTime = platform->getExecMills();
+
+				activeMenuSelection = &gameOverContinueButton;
 
 				reScheme();
 				needRedraw = true;
