@@ -137,7 +137,7 @@ void DrawTexture::execute(DrawStackArgList argList) {
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexBuffers["elements"]);
 
-	glVertexAttribPointer(glGetAttribLocation(gameGraphics->getProgramID("colorTexture"), "position"), 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (void*) 0);
+	glVertexAttribPointer(glGetAttribLocation(gameGraphics->getProgramID("colorTexture"), "position"), 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (GLvoid*) 0);
 	glVertexAttribPointer(glGetAttribLocation(gameGraphics->getProgramID("colorTexture"), "texCoord"), 2, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (GLvoid*) (3 * sizeof(GLfloat)));
 	glVertexAttribPointer(glGetAttribLocation(gameGraphics->getProgramID("colorTexture"), "color"), 4, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (GLvoid*) (5 * sizeof(GLfloat)));
 

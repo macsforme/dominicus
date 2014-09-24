@@ -199,7 +199,7 @@ void TerrainRenderer::execute(std::map<std::string, void*> arguments) {
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexBuffers["elements"]);
 
-	glVertexAttribPointer(glGetAttribLocation(gameGraphics->getProgramID("terrain"), "position"), 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*) 0);
+	glVertexAttribPointer(glGetAttribLocation(gameGraphics->getProgramID("terrain"), "position"), 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*) 0);
 	glVertexAttribPointer(glGetAttribLocation(gameGraphics->getProgramID("terrain"), "normal"), 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*) (3 * sizeof(GLfloat)));
 	glVertexAttribPointer(glGetAttribLocation(gameGraphics->getProgramID("terrain"), "texCoord"), 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*) (6 * sizeof(GLfloat)));
 
