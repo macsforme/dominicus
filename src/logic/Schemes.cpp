@@ -878,11 +878,28 @@ void Schemes::highScoresScheme() {
 	drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->highScoresTitleEntry.second["metrics"]);
 
 	// high scores label
-	*((float*) gameLogic->highScoresLabelEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+	*((float*) gameLogic->highScoresLabelEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
 	*((Vector4*) gameLogic->highScoresLabelEntry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
+	// imperfect without a fixed-width font, but pad shorter numbers with invisible zeros so it lines up better
 	std::stringstream stringStream;
-	for(size_t i = 0; i < gameSystem->highScores.size(); ++i)
-		stringStream << (i > 0 ? "\n" : "") << gameSystem->highScores[i].second << "\t" << gameSystem->highScores[i].first;
+	size_t scoreLength = 0;
+	if(gameSystem->highScores.size() > 0) {
+		stringStream << gameSystem->highScores[0].first;
+		scoreLength = stringStream.str().length();
+		stringStream.str("");
+	}
+	for(size_t i = 0; i < gameSystem->highScores.size(); ++i) {
+		std::stringstream originalNumber;
+		originalNumber << gameSystem->highScores[i].first;
+
+		stringStream << (i > 0 ? "\n" : "") << gameSystem->highScores[i].second << "\t";
+
+		for(size_t p = originalNumber.str().length(); p < scoreLength; ++p)
+			stringStream << "\\ffffff000"; // zero-alpha '0' character
+
+		stringStream << "\\" << gameSystem->getString("fontColorLight");
+		stringStream << gameSystem->highScores[i].first;
+	}
 	if(stringStream.str().length() == 0) stringStream.str("No high scores have been recorded yet.");
 	*((std::string*) gameLogic->highScoresLabelEntry.second["text"]) = stringStream.str();
 	((UIMetrics*) gameLogic->highScoresLabelEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
@@ -1503,9 +1520,26 @@ void Schemes::gameOverScheme() {
 	// high scores label
 	*((float*) gameLogic->highScoresLabelEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
 	*((Vector4*) gameLogic->highScoresLabelEntry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
+	// imperfect without a fixed-width font, but pad shorter numbers with invisible zeros so it lines up better
 	std::stringstream stringStream;
-	for(size_t i = 0; i < gameSystem->highScores.size(); ++i)
-		stringStream << (i > 0 ? "\n" : "") << gameSystem->highScores[i].second << "\t" << gameSystem->highScores[i].first;
+	size_t scoreLength = 0;
+	if(gameSystem->highScores.size() > 0) {
+		stringStream << gameSystem->highScores[0].first;
+		scoreLength = stringStream.str().length();
+		stringStream.str("");
+	}
+	for(size_t i = 0; i < gameSystem->highScores.size(); ++i) {
+		std::stringstream originalNumber;
+		originalNumber << gameSystem->highScores[i].first;
+
+		stringStream << (i > 0 ? "\n" : "") << gameSystem->highScores[i].second << "\t";
+
+		for(size_t p = originalNumber.str().length(); p < scoreLength; ++p)
+			stringStream << "\\ffffff000"; // zero-alpha '0' character
+
+		stringStream << "\\" << gameSystem->getString("fontColorLight");
+		stringStream << gameSystem->highScores[i].first;
+	}
 	if(stringStream.str().length() == 0) stringStream.str("No high scores have been recorded yet.");
 	*((std::string*) gameLogic->highScoresLabelEntry.second["text"]) = stringStream.str();
 	((UIMetrics*) gameLogic->highScoresLabelEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;

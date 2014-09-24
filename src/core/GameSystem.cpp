@@ -368,7 +368,7 @@ GameSystem::GameSystem() {
 	setStandard("preferencesVersion", 3.0f, "Version of preferences file format.");
 	setStandard("developmentMode", false, "Whether to enable extra development features.");
 	setStandard("gameStartingLevel", "Easy", "Starting difficulty level.");
-	setStandard("gameMaximumHighScores", 10.0f, "Maximum number of high scores to track.");
+	setStandard("gameMaximumHighScores", 5.0f, "Maximum number of high scores to track.");
 	setStandard("islandMaximumWidth", 1000.0f, "Maximum island width.");
 	setStandard("islandMaximumHeight", 100.0f, "Maximum island height.");
 	setStandard("islandTerrainBaseDensity", 128.0f, "Density of island terrain tessellation.");

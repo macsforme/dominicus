@@ -160,7 +160,6 @@ TextBlock::TextBlock(const char* dataString, unsigned int wrapX, unsigned int wr
 					int colors[4];
 					sscanf(colorString.c_str(), "%2x%2x%2x%2x", &colors[0], &colors[1], &colors[2], &colors[3]);
 
-
 					currentColor.x = (float) colors[0] / 255.0f;
 					currentColor.y = (float) colors[1] / 255.0f;
 					currentColor.z = (float) colors[2] / 255.0f;
