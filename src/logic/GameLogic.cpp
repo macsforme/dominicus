@@ -14,7 +14,8 @@ GameLogic::GameLogic() :
 		rightArrowPressTime(0),
 		upArrowPressTime(0),
 		downArrowPressTime(0),
-		lastFPSUpdate(0) {
+		lastDevelInfoUpdate(0),
+		lastGameTimeUpdate(0) {
 	// independent key listeners
 	std::vector<SDLKey> keysVector;
 
@@ -47,95 +48,31 @@ GameLogic::GameLogic() :
 
 	logoEntry.first = "texture";
 	logoEntry.second = ((DrawTexture*) drawingMaster->drawers["texture"])->instantiateArgList();
-/*
-	logoEntry.second["metrics"] = (void*) new UIMetrics;
-	logoEntry.second["texture"] = (void*) new std::string;
-*/
 
 	mainMenuSpacer2Metrics = new UIMetrics;
 
 	playButtonEntry.first = "button";
 	playButtonEntry.second = ((DrawButton*) drawingMaster->drawers["button"])->instantiateArgList();
-/*
-	playButtonEntry.second["metrics"] = (void*) new UIMetrics;
-	playButtonEntry.second["fontSize"] = (void*) new float;
-	playButtonEntry.second["fontColor"] = (void*) new Vector4;
-	playButtonEntry.second["text"] = (void*) new std::string;
-	playButtonEntry.second["padding"] = (void*) new float;
-	playButtonEntry.second["border"] = (void*) new float;
-	playButtonEntry.second["softEdge"] = (void*) new float;
-	playButtonEntry.second["insideColor"] = (void*) new Vector4;
-	playButtonEntry.second["borderColor"] = (void*) new Vector4;
-	playButtonEntry.second["outsideColor"] = (void*) new Vector4;
-*/
 	playButtonZoneListener = new MouseZoneListener();
 	playButtonClickListener = new MouseButtonListener();
 
 	settingsButtonEntry.first = "button";
 	settingsButtonEntry.second = ((DrawButton*) drawingMaster->drawers["button"])->instantiateArgList();
-/*
-	settingsButtonEntry.second["metrics"] = (void*) new UIMetrics;
-	settingsButtonEntry.second["fontSize"] = (void*) new float;
-	settingsButtonEntry.second["fontColor"] = (void*) new Vector4;
-	settingsButtonEntry.second["text"] = (void*) new std::string;
-	settingsButtonEntry.second["padding"] = (void*) new float;
-	settingsButtonEntry.second["border"] = (void*) new float;
-	settingsButtonEntry.second["softEdge"] = (void*) new float;
-	settingsButtonEntry.second["insideColor"] = (void*) new Vector4;
-	settingsButtonEntry.second["borderColor"] = (void*) new Vector4;
-	settingsButtonEntry.second["outsideColor"] = (void*) new Vector4;
-*/
 	settingsButtonZoneListener = new MouseZoneListener();
 	settingsButtonClickListener = new MouseButtonListener();
 
 	helpButtonEntry.first = "button";
 	helpButtonEntry.second = ((DrawButton*) drawingMaster->drawers["button"])->instantiateArgList();
-/*
-	helpButtonEntry.second["metrics"] = (void*) new UIMetrics;
-	helpButtonEntry.second["fontSize"] = (void*) new float;
-	helpButtonEntry.second["fontColor"] = (void*) new Vector4;
-	helpButtonEntry.second["text"] = (void*) new std::string;
-	helpButtonEntry.second["padding"] = (void*) new float;
-	helpButtonEntry.second["border"] = (void*) new float;
-	helpButtonEntry.second["softEdge"] = (void*) new float;
-	helpButtonEntry.second["insideColor"] = (void*) new Vector4;
-	helpButtonEntry.second["borderColor"] = (void*) new Vector4;
-	helpButtonEntry.second["outsideColor"] = (void*) new Vector4;
-*/
 	helpButtonZoneListener = new MouseZoneListener();
 	helpButtonClickListener = new MouseButtonListener();
 
 	highScoresButtonEntry.first = "button";
 	highScoresButtonEntry.second = ((DrawButton*) drawingMaster->drawers["button"])->instantiateArgList();
-/*
-	highScoresButtonEntry.second["metrics"] = (void*) new UIMetrics;
-	highScoresButtonEntry.second["fontSize"] = (void*) new float;
-	highScoresButtonEntry.second["fontColor"] = (void*) new Vector4;
-	highScoresButtonEntry.second["text"] = (void*) new std::string;
-	highScoresButtonEntry.second["padding"] = (void*) new float;
-	highScoresButtonEntry.second["border"] = (void*) new float;
-	highScoresButtonEntry.second["softEdge"] = (void*) new float;
-	highScoresButtonEntry.second["insideColor"] = (void*) new Vector4;
-	highScoresButtonEntry.second["borderColor"] = (void*) new Vector4;
-	highScoresButtonEntry.second["outsideColor"] = (void*) new Vector4;
-*/
 	highScoresButtonZoneListener = new MouseZoneListener();
 	highScoresButtonClickListener = new MouseButtonListener();
 
 	quitButtonEntry.first = "button";
 	quitButtonEntry.second = ((DrawButton*) drawingMaster->drawers["button"])->instantiateArgList();
-/*
-	quitButtonEntry.second["metrics"] = (void*) new UIMetrics;
-	quitButtonEntry.second["fontSize"] = (void*) new float;
-	quitButtonEntry.second["fontColor"] = (void*) new Vector4;
-	quitButtonEntry.second["text"] = (void*) new std::string;
-	quitButtonEntry.second["padding"] = (void*) new float;
-	quitButtonEntry.second["border"] = (void*) new float;
-	quitButtonEntry.second["softEdge"] = (void*) new float;
-	quitButtonEntry.second["insideColor"] = (void*) new Vector4;
-	quitButtonEntry.second["borderColor"] = (void*) new Vector4;
-	quitButtonEntry.second["outsideColor"] = (void*) new Vector4;
-*/
 	quitButtonZoneListener = new MouseZoneListener();
 	quitButtonClickListener = new MouseButtonListener();
 
@@ -156,6 +93,19 @@ GameLogic::GameLogic() :
 	menuTip3Entry.second["fontSize"] = (void*) new float;
 	menuTip3Entry.second["fontColor"] = (void*) new Vector4;
 	menuTip3Entry.second["text"] = (void*) new std::string;
+
+	develStatsTitleEntry.first = "label";
+	develStatsTitleEntry.second = ((DrawLabel*) drawingMaster->drawers["label"])->instantiateArgList();
+	delete[] (float*) develStatsTitleEntry.second["wrap"];
+	develStatsTitleEntry.second.erase(develStatsTitleEntry.second.find("wrap"));
+
+	develStatsContentEntry.first = "label";
+	develStatsContentEntry.second = ((DrawLabel*) drawingMaster->drawers["label"])->instantiateArgList();
+	delete[] (float*) develStatsContentEntry.second["wrap"];
+	develStatsContentEntry.second.erase(develStatsContentEntry.second.find("wrap"));
+
+	develStatsContainerEntry.first = "container";
+	develStatsContainerEntry.second = ((DrawLabel*) drawingMaster->drawers["container"])->instantiateArgList();
 
 	std::vector<SDLKey> helpMenuKeys;
 	helpMenuKeys.push_back(SDLK_UP);
@@ -350,6 +300,13 @@ GameLogic::GameLogic() :
 	terrainDetailButtonZoneListener = new MouseZoneListener();
 	terrainDetailButtonClickListener = new MouseButtonListener();
 
+	developmentModeEntry.first = "label";
+	developmentModeEntry.second = ((DrawLabel*) drawingMaster->drawers["label"])->instantiateArgList();
+	delete[] (float*) developmentModeEntry.second["wrap"];
+	developmentModeEntry.second.erase(developmentModeEntry.second.find("wrap"));
+	developmentModeButtonZoneListener = new MouseZoneListener();
+	developmentModeButtonClickListener = new MouseButtonListener();
+
 	resetHighScoresEntry.first = "button";
 	resetHighScoresEntry.second["metrics"] = (void*) new UIMetrics;
 	resetHighScoresEntry.second["fontSize"] = (void*) new float;
@@ -392,15 +349,17 @@ GameLogic::GameLogic() :
 	loadingEntry.second["text"] = (void*) new std::string;
 
 	std::vector<SDLKey> playingKeys;
-	playingKeys.push_back(SDLK_RETURN);
 	playingKeys.push_back(SDLK_ESCAPE);
 	playingKeys.push_back(SDLK_SPACE);
 	playingKeys.push_back(SDLK_TAB);
-	playingKeys.push_back(SDLK_BACKQUOTE);
-	playingKeys.push_back(SDLK_BACKSLASH);
 	playingKeys.push_back(SDLK_LSHIFT);
 	playingKeys.push_back(SDLK_RSHIFT);
 	playingKeyListener = new KeyListener(playingKeys);
+
+	playingKeys.push_back(SDLK_RETURN);
+	playingKeys.push_back(SDLK_BACKQUOTE);
+	playingKeys.push_back(SDLK_BACKSLASH);
+	playingDevelopmentModeKeyListener = new KeyListener(playingKeys);
 
 	turretUpKeyListener = new KeyAbsoluteListener(SDLK_UP);
 	turretDownKeyListener = new KeyAbsoluteListener(SDLK_DOWN);
@@ -522,6 +481,19 @@ GameLogic::GameLogic() :
 
 	strikeEffectEntry.first = "strikeEffect";
 
+	develControlsTitleEntry.first = "label";
+	develControlsTitleEntry.second = ((DrawLabel*) drawingMaster->drawers["label"])->instantiateArgList();
+	delete[] (float*) develControlsTitleEntry.second["wrap"];
+	develControlsTitleEntry.second.erase(develControlsTitleEntry.second.find("wrap"));
+
+	develControlsContentEntry.first = "label";
+	develControlsContentEntry.second = ((DrawLabel*) drawingMaster->drawers["label"])->instantiateArgList();
+	delete[] (float*) develControlsContentEntry.second["wrap"];
+	develControlsContentEntry.second.erase(develControlsContentEntry.second.find("wrap"));
+
+	develControlsContainerEntry.first = "container";
+	develControlsContainerEntry.second = ((DrawLabel*) drawingMaster->drawers["container"])->instantiateArgList();
+
 	std::vector<SDLKey> introKeys;
 	introKeys.push_back(SDLK_SPACE);
 	introKeys.push_back(SDLK_ESCAPE);
@@ -641,13 +613,7 @@ GameLogic::GameLogic() :
 
 	newHighScoreNameField.first = "field";
 	newHighScoreNameField.second = ((DrawField*) drawingMaster->drawers["field"])->instantiateArgList();
-/*
-	newHighScoreNameField.second["metrics"] = (void*) new UIMetrics;
-	newHighScoreNameField.second["fontSize"] = (void*) new float;
-	newHighScoreNameField.second["fontColor"] = (void*) new Vector4;
-	newHighScoreNameField.second["boxColor"] = (void*) new Vector4;
-	newHighScoreNameField.second["text"] = (void*) new std::string;
-*/
+
 	gameOverContinueButton.first = "button";
 	gameOverContinueButton.second["metrics"] = (void*) new UIMetrics;
 	gameOverContinueButton.second["fontSize"] = (void*) new float;
@@ -664,17 +630,6 @@ GameLogic::GameLogic() :
 
 //FIXME reorder all those according to header (well, reorder header too if necessary)
 
-fpsEntry.first = "label";
-fpsEntry.second["metrics"] = (void*) new UIMetrics;
-((UIMetrics*) fpsEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_BOTTOM;
-((UIMetrics*) fpsEntry.second["metrics"])->bearing2 = UIMetrics::BEARING_RIGHT;
-fpsEntry.second["fontSize"] = (void*) new float;
-*((float*) fpsEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-fpsEntry.second["fontColor"] = (void*) new Vector4;
-*((Vector4*) fpsEntry.second["fontColor"]) = gameSystem->getColor("fontColorDark");
-fpsEntry.second["text"] = (void*) new std::string;
-*((std::string*) fpsEntry.second["text"]) = "FPS: 0";
-
 	// build the initial draw stack
 	currentScheme = SCHEME_MAINMENU;
 	activeMenuSelection = &playButtonEntry;
@@ -685,6 +640,7 @@ fpsEntry.second["text"] = (void*) new std::string;
 	gameAudio->setBackgroundMusic("menuSong");
 
 	// draw the initial frame
+//FIXME re-implement this once schemes is gone
 //	drawingMaster->execute(true);
 
 	// clear the motion listener
@@ -749,23 +705,119 @@ void GameLogic::reScheme() {
 		break;
 	}
 
-std::stringstream ss; ss << "FPS: " << drawingMaster->runRate;
-*((std::string*) fpsEntry.second["text"]) = ss.str().c_str();
-*((float*) fpsEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-((UIMetrics*) fpsEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(fpsEntry.second);
-drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) fpsEntry.second["metrics"]);
-drawingMaster->uiLayoutAuthority->rearrange();
-drawingMaster->drawStack.push_back(fpsEntry);
+	// add development statistics to every scheme if enabled
+	if(gameSystem->getBool("developmentMode")) {
+		*((float*) develStatsTitleEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+		*((Vector4*) develStatsTitleEntry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
+		*((std::string*) develStatsTitleEntry.second["text"]) = "DEVELOPMENT MODE INFO";
+		((UIMetrics*) develStatsTitleEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(develStatsTitleEntry.second);
+
+		*((float*) develStatsContentEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+		*((Vector4*) develStatsContentEntry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
+		std::stringstream stringStream;
+		stringStream << "Uptime:\t";
+		stringStream << (platform->getExecMills() / 216000000);
+		stringStream << ":";
+		char minuteSecondString[8];
+		sprintf(
+				minuteSecondString,
+				"%.2u:%.2u.%u",
+				(platform->getExecMills() % 3600000) / 60000,
+				(platform->getExecMills() % 60000) / 1000,
+				(platform->getExecMills() % 1000) / 100
+			);
+		stringStream << minuteSecondString;
+		stringStream << "\n";
+		stringStream << "Game Time:\t";
+		if(gameState == NULL) {
+			stringStream << "NULL\n";
+		} else {
+			stringStream << (gameState->lastUpdateGameTime / 216000000);
+			stringStream << ":";
+			sprintf(
+					minuteSecondString,
+					"%.2u:%.2u.%u",
+					(gameState->lastUpdateGameTime % 3600000) / 60000,
+					(gameState->lastUpdateGameTime % 60000) / 1000,
+					(gameState->lastUpdateGameTime % 1000) / 100
+				);
+			stringStream << minuteSecondString;
+			stringStream << "\n";
+		}
+		stringStream << "FPS:\t";
+		stringStream << drawingMaster->runRate;
+		*((std::string*) develStatsContentEntry.second["text"]) = stringStream.str().c_str();
+		((UIMetrics*) develStatsContentEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(develStatsContentEntry.second);
+
+		*((float*) develStatsContainerEntry.second["padding"]) = gameSystem->getFloat("hudContainerPadding");
+		*((float*) develStatsContainerEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
+		*((float*) develStatsContainerEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
+		*((Vector4*) develStatsContainerEntry.second["insideColor"]) = gameSystem->getColor("hudContainerInsideColor");
+		*((Vector4*) develStatsContainerEntry.second["borderColor"]) = gameSystem->getColor("hudContainerInsideColor");
+		*((Vector4*) develStatsContainerEntry.second["outsideColor"]) = Vector4(
+				gameSystem->getColor("hudContainerInsideColor").x,
+				gameSystem->getColor("hudContainerInsideColor").y,
+				gameSystem->getColor("hudContainerInsideColor").z,
+				0.0f
+			);
+		((UIMetrics*) develStatsContainerEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_BOTTOM;
+		((UIMetrics*) develStatsContainerEntry.second["metrics"])->bearing2 = UIMetrics::BEARING_RIGHT;
+		((UIMetrics*) develStatsContainerEntry.second["metrics"])->size = Vector2(
+				(((DrawLabel*) drawingMaster->drawers["label"])->getSize(develStatsTitleEntry.second).x >
+						((DrawLabel*) drawingMaster->drawers["label"])->getSize(develStatsContentEntry.second).x ?
+						((DrawLabel*) drawingMaster->drawers["label"])->getSize(develStatsTitleEntry.second).x :
+						((DrawLabel*) drawingMaster->drawers["label"])->getSize(develStatsContentEntry.second).x) +
+						gameSystem->getFloat("hudContainerPadding") / (float) gameGraphics->resolutionX * 4.0f,
+				((DrawLabel*) drawingMaster->drawers["label"])->getSize(develStatsTitleEntry.second).y +
+						(float) gameGraphics->fontManager->lineHeights[gameSystem->getFloat("fontSizeSmall")] / gameGraphics->resolutionY * 2.0f +
+						((DrawLabel*) drawingMaster->drawers["label"])->getSize(develStatsContentEntry.second).y +
+						gameSystem->getFloat("hudContainerPadding") / (float) gameGraphics->resolutionY * 2.0f // half of container padding in y when rendering text
+			);
+		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) develStatsContainerEntry.second["metrics"]);
+		drawingMaster->drawStack.push_back(develStatsContainerEntry);
+		drawingMaster->drawStack.push_back(develStatsTitleEntry);
+		drawingMaster->drawStack.push_back(develStatsContentEntry);
+
+		drawingMaster->uiLayoutAuthority->rearrange();
+
+		((UIMetrics*) develStatsTitleEntry.second["metrics"])->position = Vector2(
+				((UIMetrics*) develStatsContainerEntry.second["metrics"])->position.x,
+				((UIMetrics*) develStatsContainerEntry.second["metrics"])->position.y +
+						((UIMetrics*) develStatsContainerEntry.second["metrics"])->size.y / 2.0f -
+						gameSystem->getFloat("hudContainerPadding") / (float) gameGraphics->resolutionY - // half of container padding in y when rendering text
+						((UIMetrics*) develStatsTitleEntry.second["metrics"])->size.y / 2.0f
+			);
+
+		((UIMetrics*) develStatsContentEntry.second["metrics"])->position = Vector2(
+				((UIMetrics*) develStatsContainerEntry.second["metrics"])->position.x -
+						((UIMetrics*) develStatsContainerEntry.second["metrics"])->size.x / 2.0f +
+						gameSystem->getFloat("hudContainerPadding") / (float) gameGraphics->resolutionX * 2.0f +
+						((UIMetrics*) develStatsContentEntry.second["metrics"])->size.x / 2.0f,
+				((UIMetrics*) develStatsContainerEntry.second["metrics"])->position.y -
+						((UIMetrics*) develStatsContainerEntry.second["metrics"])->size.y / 2.0f +
+						gameSystem->getFloat("hudContainerPadding") / (float) gameGraphics->resolutionY + // half of container padding in y when rendering text
+						((UIMetrics*) develStatsContentEntry.second["metrics"])->size.y / 2.0f
+			);
+	}
 }
 
 unsigned int GameLogic::execute(bool unScheduled) {
 	bool needRedraw = false;
 
-if(lastFPSUpdate + 1000 < platform->getExecMills()) {
-reScheme();
-needRedraw = true;
-lastFPSUpdate = platform->getExecMills();
-}
+	// see if we need to update the development mode info panel
+	if(
+			gameSystem->getBool("developmentMode") &&
+			(lastDevelInfoUpdate / 100 != platform->getExecMills() / 100 ||
+					(gameState != NULL && lastGameTimeUpdate / 100 != gameState->lastUpdateGameTime / 100) ||
+					lastDevelInfoUpdate + 1000 < platform->getExecMills())
+		) {
+		reScheme();
+		needRedraw = true;
+
+		lastDevelInfoUpdate = platform->getExecMills();
+		if(gameState != NULL) lastGameTimeUpdate = gameState->lastUpdateGameTime;
+	}
+
 	// get a delta time for schemes that need it
 	float deltaTime = 0.0f;
 	if(gameState != NULL && ! gameState->isPaused && currentScheme == SCHEME_PLAYING) {
@@ -998,6 +1050,7 @@ lastFPSUpdate = platform->getExecMills();
 		// button clicks
 		if(introMouseButtonListener->wasClicked()) {
 			gameState->bumpStart();
+			gameGraphics->currentCamera = &fortressCamera;
 			currentScheme = SCHEME_PLAYING;
 			reScheme();
 			SDL_WM_GrabInput(SDL_GRAB_ON);
@@ -1005,13 +1058,13 @@ lastFPSUpdate = platform->getExecMills();
 			SDL_ShowCursor(0);
 			inputHandler->execute();
 			mouseMotionListener->wasMoved();
-			gameGraphics->currentCamera = &fortressCamera;
 		}
 
 		// key hits
 		for(SDLKey key = introKeyListener->popKey(); key != SDLK_UNKNOWN; key = introKeyListener->popKey()) {
 			if(key == SDLK_SPACE) {
 				gameState->bumpStart();
+				gameGraphics->currentCamera = &fortressCamera;
 				currentScheme = SCHEME_PLAYING;
 				reScheme();
 				SDL_WM_GrabInput(SDL_GRAB_ON);
@@ -1019,7 +1072,6 @@ lastFPSUpdate = platform->getExecMills();
 				SDL_ShowCursor(0);
 				inputHandler->execute();
 				mouseMotionListener->wasMoved();
-				gameGraphics->currentCamera = &fortressCamera;
 			} else if(key == SDLK_ESCAPE) {
 				gameState->pause();
 
@@ -1039,6 +1091,7 @@ lastFPSUpdate = platform->getExecMills();
 
 		// expiration of intro time
 		if((float) gameState->lastUpdateGameTime / 1000.0f > gameSystem->getFloat("stateShipEntryTime")) {
+			gameGraphics->currentCamera = &fortressCamera;
 			currentScheme = SCHEME_PLAYING;
 			reScheme();
 			SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
@@ -1046,7 +1099,6 @@ lastFPSUpdate = platform->getExecMills();
 			mouseMotionListener->wasMoved();
 			SDL_WM_GrabInput(SDL_GRAB_ON);
 			SDL_ShowCursor(0);
-			gameGraphics->currentCamera = &fortressCamera;
 		}
 	} else if(currentScheme == SCHEME_PLAYING) {
 		// see if we're dead
@@ -1151,8 +1203,9 @@ lastFPSUpdate = platform->getExecMills();
 		}
 
 		// key hits
-		for(SDLKey key = playingKeyListener->popKey(); key != SDLK_UNKNOWN; key = playingKeyListener->popKey()) {
-			if(key == SDLK_SPACE) {
+		KeyListener* activeKeyListener = gameSystem->getBool("developmentMode") ? playingDevelopmentModeKeyListener : playingKeyListener;
+		for(SDLKey key = activeKeyListener->popKey(); key != SDLK_UNKNOWN; key = activeKeyListener->popKey()) {
+			if(key == SDLK_SPACE && gameGraphics->currentCamera == &fortressCamera) {
 				gameState->fireShell();
 			} else if(key == SDLK_TAB) {
 				gameState->empIsCharging = ! gameState->empIsCharging;
@@ -1166,14 +1219,19 @@ lastFPSUpdate = platform->getExecMills();
 				((ExplosionRenderer*) drawingMaster->drawers["explosionRenderer"])->reloadState();
 				((TerrainRenderer*) drawingMaster->drawers["terrainRenderer"])->reloadState();
 			} else if(key == SDLK_BACKSLASH) {
-				if(gameGraphics->currentCamera == &fortressCamera)
+				if(gameGraphics->currentCamera == &fortressCamera) {
 					gameGraphics->currentCamera = &orbitCamera;
-				else if(gameGraphics->currentCamera == &orbitCamera)
+					reScheme();
+				} else if(gameGraphics->currentCamera == &orbitCamera) {
 					gameGraphics->currentCamera = &presentationCamera;
-				else if(gameGraphics->currentCamera == &presentationCamera)
+					reScheme();
+				} else if(gameGraphics->currentCamera == &presentationCamera) {
 					gameGraphics->currentCamera = &roamingCamera;
-				else if(gameGraphics->currentCamera == &roamingCamera)
+					reScheme();
+				} else if(gameGraphics->currentCamera == &roamingCamera) {
 					gameGraphics->currentCamera = &fortressCamera;
+					reScheme();
+				}
 			} else if(key == SDLK_ESCAPE) {
 				gameState->pause();
 
@@ -1193,7 +1251,7 @@ lastFPSUpdate = platform->getExecMills();
 					gameState->resume();
 				else
 					gameState->pause();
-			} else if(key == SDLK_LSHIFT || key == SDLK_RSHIFT) {
+			} else if((key == SDLK_LSHIFT || key == SDLK_RSHIFT) && gameGraphics->currentCamera == &fortressCamera) {
 				gameState->binoculars = ! gameState->binoculars;
 				reScheme();
 			}
@@ -1220,10 +1278,10 @@ lastFPSUpdate = platform->getExecMills();
 				rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(roamingCamera.rotationX), directionMatrix);
 				rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(roamingCamera.rotationY), directionMatrix);
 				directionMatrix.transpose();
-				Vector3 movement(0.0f, 0.0f, 200.0f * deltaTime);
+				Vector3 movement(0.0f, 0.0f, gameSystem->getFloat("cameraMovementSpeed") * deltaTime);
 				roamingCamera.position = roamingCamera.position + movement * directionMatrix;
 			}
-		} else {
+		} else if(gameGraphics->currentCamera == &fortressCamera) {
 			if(turretLeftKeyListener->isDown) {
 				float dampeningFactor = gameSystem->getFloat("stateKeyDampeningBasePortion") +
 						(1.0f - gameSystem->getFloat("stateKeyDampeningBasePortion")) *
@@ -1631,6 +1689,13 @@ lastFPSUpdate = platform->getExecMills();
 					needRedraw = true;
 					gameAudio->playSound("alterDownEffect");
 				}
+			} else if(developmentModeButtonZoneListener->isEntered) {
+				if(activeMenuSelection != &developmentModeEntry) {
+					activeMenuSelection = &developmentModeEntry;
+					reScheme();
+					needRedraw = true;
+					gameAudio->playSound("alterDownEffect");
+				}
 			} else if(backButtonZoneListener->isEntered) {
 				if(activeMenuSelection != &backButtonEntry) {
 					activeMenuSelection = &backButtonEntry;
@@ -1693,7 +1758,7 @@ lastFPSUpdate = platform->getExecMills();
 
 			gameAudio->playSound("alterDownEffect");
 		} else if(fullscreenButtonClickListener->wasClicked()) {
-			gameSystem->setStandard("displayStartFullscreen", ! gameSystem->getBool("displayStartFullscreen"), "");
+			gameSystem->setStandard("displayStartFullscreen", ! gameSystem->getBool("displayStartFullscreen"));
 			gameSystem->flushPreferences();
 
 			reScheme();
@@ -1806,6 +1871,14 @@ lastFPSUpdate = platform->getExecMills();
 			needRedraw = true;
 
 			gameAudio->playSound("selectEffect");
+		} else if(developmentModeButtonClickListener->wasClicked()) {
+			gameSystem->setStandard("developmentMode", ! gameSystem->getBool("developmentMode"));
+			gameSystem->flushPreferences();
+
+			reScheme();
+			needRedraw = true;
+
+			gameAudio->playSound("alterDownEffect");
 		} else if(backButtonClickListener->wasClicked()) {
 			currentScheme = SCHEME_MAINMENU;
 			activeMenuSelection = NULL;
@@ -1834,6 +1907,11 @@ lastFPSUpdate = platform->getExecMills();
 					needRedraw = true;
 					gameAudio->playSound("alterUpEffect");
 				} else if(activeMenuSelection == &resetHighScoresEntry) {
+					activeMenuSelection = &developmentModeEntry;
+					reScheme();
+					needRedraw = true;
+					gameAudio->playSound("alterUpEffect");
+				} else if(activeMenuSelection == &developmentModeEntry) {
 					activeMenuSelection = &terrainDetailEntry;
 					reScheme();
 					needRedraw = true;
@@ -1922,6 +2000,11 @@ lastFPSUpdate = platform->getExecMills();
 					needRedraw = true;
 					gameAudio->playSound("alterDownEffect");
 				} else if(activeMenuSelection == &terrainDetailEntry) {
+					activeMenuSelection = &developmentModeEntry;
+					reScheme();
+					needRedraw = true;
+					gameAudio->playSound("alterDownEffect");
+				} else if(activeMenuSelection == &developmentModeEntry) {
 					activeMenuSelection = &resetHighScoresEntry;
 					reScheme();
 					needRedraw = true;
@@ -1983,7 +2066,7 @@ lastFPSUpdate = platform->getExecMills();
 					else
 						gameAudio->playSound("alterDownEffect");
 				} else if(activeMenuSelection == &fullscreenSettingEntry) {
-					gameSystem->setStandard("displayStartFullscreen", ! gameSystem->getBool("displayStartFullscreen"), "");
+					gameSystem->setStandard("displayStartFullscreen", ! gameSystem->getBool("displayStartFullscreen"));
 					gameSystem->flushPreferences();
 
 					reScheme();
@@ -2141,6 +2224,17 @@ lastFPSUpdate = platform->getExecMills();
 							gameSystem->setStandard("islandTerrainDetail", 1.0f);
 					}
 
+					gameSystem->flushPreferences();
+
+					reScheme();
+					needRedraw = true;
+
+					if(key == SDLK_RIGHT)
+						gameAudio->playSound("alterUpEffect");
+					else
+						gameAudio->playSound("alterDownEffect");
+				} else if(activeMenuSelection == &developmentModeEntry) {
+					gameSystem->setStandard("developmentMode", ! gameSystem->getBool("developmentMode"), "");
 					gameSystem->flushPreferences();
 
 					reScheme();

@@ -91,6 +91,9 @@ public:
 	DrawStackEntry menuTip1Entry;
 	DrawStackEntry menuTip2Entry;
 	DrawStackEntry menuTip3Entry;
+	DrawStackEntry develStatsTitleEntry;
+	DrawStackEntry develStatsContentEntry;
+	DrawStackEntry develStatsContainerEntry;
 
 	// loading
 	DrawStackEntry loadingEntry;
@@ -102,11 +105,12 @@ public:
 
 	// playing
 	KeyListener* playingKeyListener;
+	KeyListener* playingDevelopmentModeKeyListener;
 	KeyAbsoluteListener* turretUpKeyListener;
 	KeyAbsoluteListener* turretDownKeyListener;
 	KeyAbsoluteListener* turretLeftKeyListener;
 	KeyAbsoluteListener* turretRightKeyListener;
-KeyAbsoluteListener* cameraAheadKeyListener;
+	KeyAbsoluteListener* cameraAheadKeyListener;
 	MouseButtonListener* primaryFireClickListener1;
 	MouseButtonListener* primaryFireClickListener2;
 	MouseButtonListener* primaryFireClickListener3;
@@ -129,6 +133,9 @@ KeyAbsoluteListener* cameraAheadKeyListener;
 	DrawStackEntry explosionEntry;
 	DrawStackEntry shellEntry;
 	DrawStackEntry strikeEffectEntry;
+	DrawStackEntry develControlsTitleEntry;
+	DrawStackEntry develControlsContentEntry;
+	DrawStackEntry develControlsContainerEntry;
 
 	// paused
 	KeyListener* pausedMenuKeyListener;
@@ -187,6 +194,9 @@ KeyAbsoluteListener* cameraAheadKeyListener;
 	DrawStackEntry terrainDetailEntry;
 	MouseZoneListener* terrainDetailButtonZoneListener;
 	MouseButtonListener* terrainDetailButtonClickListener;
+	DrawStackEntry developmentModeEntry;
+	MouseZoneListener* developmentModeButtonZoneListener;
+	MouseButtonListener* developmentModeButtonClickListener;
 	DrawStackEntry resetHighScoresEntry;
 	MouseZoneListener* resetHighScoresButtonZoneListener;
 	MouseButtonListener* resetHighScoresButtonClickListener;
@@ -216,8 +226,6 @@ KeyAbsoluteListener* cameraAheadKeyListener;
 	DrawStackEntry creditsTitleEntry;
 	DrawStackEntry creditsEntry;
 
-DrawStackEntry fpsEntry;
-
 	// cameras
 	IntroCamera introCamera;
 	FortressCamera fortressCamera;
@@ -231,7 +239,8 @@ DrawStackEntry fpsEntry;
 	unsigned int deleteKeyPressTime;
 	unsigned int lastCharacterDeletionTime;
 	unsigned int leftArrowPressTime, rightArrowPressTime, upArrowPressTime, downArrowPressTime;
-	unsigned int lastFPSUpdate;
+	unsigned int lastDevelInfoUpdate;
+	unsigned int lastGameTimeUpdate;
 
 //FIXME probably delete this fugly functionality
 	Vector2 keyboardCursorPosition;
@@ -258,7 +267,8 @@ private:
 			SCHEME_HELP,
 			SCHEME_ABOUT
 		} currentScheme;
-
+//FIXME make this private again once schemes is incorporated herein
+public:
 	void reScheme();
 
 public:

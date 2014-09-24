@@ -87,13 +87,14 @@ void GameSystem::setStandard(const char* key, bool value,
 void GameSystem::flushPreferences() {
 	platform->setPreference("preferencesVersion", getFloat("preferencesVersion"));
 	platform->setPreference("displayWindowedResolution", getString("displayWindowedResolution").c_str());
-	platform->setPreference("displayStartFullscreen", (getBool("displayStartFullscreen") == true ? 1.0f : 0.0f));
+	platform->setPreference("displayStartFullscreen", getBool("displayStartFullscreen") == true ? 1.0f : 0.0f);
 	platform->setPreference("displayFramerateLimiting", getFloat("displayFramerateLimiting"));
 	platform->setPreference("displayMultisamplingLevel", getFloat("displayMultisamplingLevel"));
 	platform->setPreference("audioMusicVolume", getFloat("audioMusicVolume"));
 	platform->setPreference("audioEffectsVolume", getFloat("audioEffectsVolume"));
 	platform->setPreference("gameStartingLevel", getString("gameStartingLevel").c_str());
 	platform->setPreference("islandTerrainDetail", getFloat("islandTerrainDetail"));
+	platform->setPreference("developmentMode", (getBool("developmentMode") == true ? 1.0f : 0.0f));
 	if(highScores.size() == 0) {
 		platform->setPreference("highScores", "");
 	} else {
@@ -307,6 +308,7 @@ GameSystem::GameSystem() {
 	setStandard("explosionRadius", 25.0f, "Radius of missile explosion.");
 	setStandard("explosionDuration", 2.0f, "Duration in seconds of missile explosion.");
 	setStandard("explosionSphereDensity", 64.0f, "Density of explosion sphere.");
+	setStandard("cameraMovementSpeed", 200.0f, "Speed in world units per second of camera movement in roaming mode.");
 
 	// HUD standards
 	setStandard("hudFPSTestFrequency", 1.0f, "Frequency per second of the FPS test.");
@@ -365,6 +367,7 @@ GameSystem::GameSystem() {
 
 	// general game standards
 	setStandard("preferencesVersion", 3.0f, "Version of preferences file format.");
+	setStandard("developmentMode", false, "Whether to enable extra development features.");
 	setStandard("gameStartingLevel", "Easy", "Starting difficulty level.");
 	setStandard("gameMaximumHighScores", 10.0f, "Maximum number of high scores to track.");
 	setStandard("islandMaximumWidth", 1000.0f, "Maximum island width.");
@@ -387,11 +390,12 @@ GameSystem::GameSystem() {
 			setStandard("displayWindowedResolution", platform->getPreferenceString("displayWindowedResolution").c_str());
 		setStandard("displayFramerateLimiting", platform->getPreferenceFloat("displayFramerateLimiting"));
 		setStandard("displayMultisamplingLevel", platform->getPreferenceFloat("displayMultisamplingLevel"));
-		setStandard("displayStartFullscreen", (platform->getPreferenceFloat("displayStartFullscreen") == 1.0f ? true : false));
+		setStandard("displayStartFullscreen", platform->getPreferenceFloat("displayStartFullscreen") == 1.0f ? true : false);
 		setStandard("audioMusicVolume", platform->getPreferenceFloat("audioMusicVolume"));
 		setStandard("audioEffectsVolume", platform->getPreferenceFloat("audioEffectsVolume"));
 		setStandard("gameStartingLevel", platform->getPreferenceString("gameStartingLevel").c_str());
 		setStandard("islandTerrainDetail", platform->getPreferenceFloat("islandTerrainDetail"));
+		setStandard("developmentMode", platform->getPreferenceFloat("developmentMode") == 1.0f ? true : false);
 		std::string highScoresString = platform->getPreferenceString("highScores");
 		size_t i = highScoresString.find('\t');
 		while(i != std::string::npos) {

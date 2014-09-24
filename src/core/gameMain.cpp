@@ -40,6 +40,10 @@ int gameMain(int argc, char* argv[]) {
 	inputHandler = new InputHandler();
 	gameLogic = new GameLogic();
 
+//FIXME delete this when schemes is incorporated directly into gameLogic
+gameLogic->reScheme();
+drawingMaster->execute();
+
 	// prepare a map of modules which are executed up to once per loop
 	mainLoopModules[inputHandler] = 0;
 	mainLoopModules[gameLogic] = 0;

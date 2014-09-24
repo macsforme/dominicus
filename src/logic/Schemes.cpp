@@ -19,6 +19,7 @@
 #include "math/MatrixMath.h"
 #include "math/ScalarMath.h"
 #include "math/VectorMath.h"
+#include "platform/Platform.h"
 #include "state/GameState.h"
 
 #include <sstream>
@@ -32,6 +33,7 @@ extern DrawingMaster* drawingMaster;
 extern GameGraphics* gameGraphics;
 extern GameLogic* gameLogic;
 extern GameState* gameState;
+extern Platform* platform;
 
 void Schemes::mainMenuScheme() {
 	// input
@@ -650,6 +652,15 @@ void Schemes::settingsScheme() {
 	drawingMaster->drawStack.push_back(gameLogic->terrainDetailEntry);
 	drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->terrainDetailEntry.second["metrics"]);
 
+	// development mode control label
+	*((float*) gameLogic->developmentModeEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
+	*((Vector4*) gameLogic->developmentModeEntry.second["fontColor"]) = (gameLogic->activeMenuSelection == &gameLogic->developmentModeEntry ? gameSystem->getColor("fontColorLight") : gameSystem->getColor("fontColorDark"));
+	*((std::string*) gameLogic->developmentModeEntry.second["text"]) = (gameSystem->getBool("developmentMode") ? "Development Mode: On" : "Development Mode: Off");
+	((UIMetrics*) gameLogic->developmentModeEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
+	((UIMetrics*) gameLogic->developmentModeEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(gameLogic->developmentModeEntry.second);
+	drawingMaster->drawStack.push_back(gameLogic->developmentModeEntry);
+	drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->developmentModeEntry.second["metrics"]);
+
 	// high scores reset button
 	((UIMetrics*) gameLogic->resetHighScoresEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
 	*((float*) gameLogic->resetHighScoresEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
@@ -774,6 +785,13 @@ void Schemes::settingsScheme() {
 	gameLogic->terrainDetailButtonClickListener->ll = gameLogic->terrainDetailButtonZoneListener->ll;
 	gameLogic->terrainDetailButtonClickListener->ur = gameLogic->terrainDetailButtonZoneListener->ur;
 	inputHandler->mouse->addListener(gameLogic->terrainDetailButtonClickListener);
+
+	gameLogic->developmentModeButtonZoneListener->ll = ((UIMetrics*) gameLogic->developmentModeEntry.second["metrics"])->position - ((UIMetrics*) gameLogic->developmentModeEntry.second["metrics"])->size / 2.0f;
+	gameLogic->developmentModeButtonZoneListener->ur = ((UIMetrics*) gameLogic->developmentModeEntry.second["metrics"])->position + ((UIMetrics*) gameLogic->developmentModeEntry.second["metrics"])->size / 2.0f;
+	inputHandler->mouse->addListener(gameLogic->developmentModeButtonZoneListener);
+	gameLogic->developmentModeButtonClickListener->ll = gameLogic->developmentModeButtonZoneListener->ll;
+	gameLogic->developmentModeButtonClickListener->ur = gameLogic->developmentModeButtonZoneListener->ur;
+	inputHandler->mouse->addListener(gameLogic->developmentModeButtonClickListener);
 
 	gameLogic->backButtonZoneListener->ll = ((UIMetrics*) gameLogic->backButtonEntry.second["metrics"])->position - ((UIMetrics*) gameLogic->backButtonEntry.second["metrics"])->size / 2.0f;
 	gameLogic->backButtonZoneListener->ur = ((UIMetrics*) gameLogic->backButtonEntry.second["metrics"])->position + ((UIMetrics*) gameLogic->backButtonEntry.second["metrics"])->size / 2.0f;
@@ -908,7 +926,8 @@ void Schemes::playingScheme() {
 	inputHandler->mouse->addListener(gameLogic->binocularsClickListener);
 	inputHandler->keyboard->addListener(gameLogic->quitKeyListener);
 	inputHandler->keyboard->addListener(gameLogic->fullScreenKeyListener);
-	inputHandler->keyboard->addListener(gameLogic->playingKeyListener);
+	if(gameSystem->getBool("developmentMode")) inputHandler->keyboard->addListener(gameLogic->playingDevelopmentModeKeyListener);
+	else inputHandler->keyboard->addListener(gameLogic->playingKeyListener);
 	inputHandler->keyboard->addListener(gameLogic->cameraAheadKeyListener);
 	inputHandler->keyboard->addListener(gameLogic->turretUpKeyListener);
 	inputHandler->keyboard->addListener(gameLogic->turretDownKeyListener);
@@ -943,17 +962,19 @@ void Schemes::playingScheme() {
 	drawingMaster->drawStack.push_back(gameLogic->fortressEntry);
 
 	// missile indicators
-	*((Vector4*) gameLogic->missileIndicators.second["color"]) = gameSystem->getColor("hudMissileIndicatorColor");
-	*((Vector2*) gameLogic->missileIndicators.second["size"]) = Vector2(
-			gameSystem->getFloat("hudMissileIndicatorSize") * (gameState->binoculars ? gameSystem->getFloat("hudMissileIndicatorBinocularsFactor") : 1.0f) / (float) gameGraphics->resolutionX * 2.0f,
-			gameSystem->getFloat("hudMissileIndicatorSize") * (gameState->binoculars ? gameSystem->getFloat("hudMissileIndicatorBinocularsFactor") : 1.0f) / (float) gameGraphics->resolutionY * 2.0f
-		);
-	*((Vector4*) gameLogic->missileIndicators.second["arrowColor"]) = gameSystem->getColor("hudMissileArrowColor");
-	*((Vector2*) gameLogic->missileIndicators.second["arrowSize"]) = Vector2(
-			gameSystem->getFloat("hudMissileArrowWidth") / (float) gameGraphics->resolutionX * 2.0f,
-			gameSystem->getFloat("hudMissileArrowHeight") / (float) gameGraphics->resolutionY * 2.0f
-		);
-	drawingMaster->drawStack.push_back(gameLogic->missileIndicators);
+	if(gameGraphics->currentCamera == &gameLogic->fortressCamera) {
+		*((Vector4*) gameLogic->missileIndicators.second["color"]) = gameSystem->getColor("hudMissileIndicatorColor");
+		*((Vector2*) gameLogic->missileIndicators.second["size"]) = Vector2(
+				gameSystem->getFloat("hudMissileIndicatorSize") * (gameState->binoculars ? gameSystem->getFloat("hudMissileIndicatorBinocularsFactor") : 1.0f) / (float) gameGraphics->resolutionX * 2.0f,
+				gameSystem->getFloat("hudMissileIndicatorSize") * (gameState->binoculars ? gameSystem->getFloat("hudMissileIndicatorBinocularsFactor") : 1.0f) / (float) gameGraphics->resolutionY * 2.0f
+			);
+		*((Vector4*) gameLogic->missileIndicators.second["arrowColor"]) = gameSystem->getColor("hudMissileArrowColor");
+		*((Vector2*) gameLogic->missileIndicators.second["arrowSize"]) = Vector2(
+				gameSystem->getFloat("hudMissileArrowWidth") / (float) gameGraphics->resolutionX * 2.0f,
+				gameSystem->getFloat("hudMissileArrowHeight") / (float) gameGraphics->resolutionY * 2.0f
+			);
+		drawingMaster->drawStack.push_back(gameLogic->missileIndicators);
+	}
 
 	// score
 	*((float*) gameLogic->scoreLabel.second["fontSize"]) = gameSystem->getFloat("fontSizeLarge");
@@ -1103,10 +1124,74 @@ void Schemes::playingScheme() {
 	}
 
 	// strike effect
-	drawingMaster->drawStack.push_back(gameLogic->strikeEffectEntry);
+	if(gameGraphics->currentCamera == &gameLogic->fortressCamera) drawingMaster->drawStack.push_back(gameLogic->strikeEffectEntry);
+
+	// development mode controls
+	if(gameSystem->getBool("developmentMode")) {
+		*((float*) gameLogic->develControlsTitleEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+		*((Vector4*) gameLogic->develControlsTitleEntry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
+		*((std::string*) gameLogic->develControlsTitleEntry.second["text"]) = "DEVELOPMENT MODE CONTROLS";
+		((UIMetrics*) gameLogic->develControlsTitleEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(gameLogic->develControlsTitleEntry.second);
+
+		*((float*) gameLogic->develControlsContentEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+		*((Vector4*) gameLogic->develControlsContentEntry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
+		*((std::string*) gameLogic->develControlsContentEntry.second["text"]) = "Freeze/Unfreeze:\t`\nReset Game:\tReturn\nChange View:\t\\\nTilt/Rotate Camera:\tArrow Keys\nAdvance Camera:\tSpace";
+		((UIMetrics*) gameLogic->develControlsContentEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(gameLogic->develControlsContentEntry.second);
+
+		*((float*) gameLogic->develControlsContainerEntry.second["padding"]) = gameSystem->getFloat("hudContainerPadding");
+		*((float*) gameLogic->develControlsContainerEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
+		*((float*) gameLogic->develControlsContainerEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
+		*((Vector4*) gameLogic->develControlsContainerEntry.second["insideColor"]) = gameSystem->getColor("hudContainerInsideColor");
+		*((Vector4*) gameLogic->develControlsContainerEntry.second["borderColor"]) = gameSystem->getColor("hudContainerInsideColor");
+		*((Vector4*) gameLogic->develControlsContainerEntry.second["outsideColor"]) = Vector4(
+				gameSystem->getColor("hudContainerInsideColor").x,
+				gameSystem->getColor("hudContainerInsideColor").y,
+				gameSystem->getColor("hudContainerInsideColor").z,
+				0.0f
+			);
+		((UIMetrics*) gameLogic->develControlsContainerEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_BOTTOM;
+		((UIMetrics*) gameLogic->develControlsContainerEntry.second["metrics"])->bearing2 = UIMetrics::BEARING_LEFT;
+		((UIMetrics*) gameLogic->develControlsContainerEntry.second["metrics"])->size = Vector2(
+				(((DrawLabel*) drawingMaster->drawers["label"])->getSize(gameLogic->develControlsTitleEntry.second).x >
+						((DrawLabel*) drawingMaster->drawers["label"])->getSize(gameLogic->develControlsContentEntry.second).x ?
+						((DrawLabel*) drawingMaster->drawers["label"])->getSize(gameLogic->develControlsTitleEntry.second).x :
+						((DrawLabel*) drawingMaster->drawers["label"])->getSize(gameLogic->develControlsContentEntry.second).x) +
+						gameSystem->getFloat("hudContainerPadding") / (float) gameGraphics->resolutionX * 4.0f,
+				((DrawLabel*) drawingMaster->drawers["label"])->getSize(gameLogic->develControlsTitleEntry.second).y +
+						(float) gameGraphics->fontManager->lineHeights[gameSystem->getFloat("fontSizeSmall")] / gameGraphics->resolutionY * 2.0f +
+						((DrawLabel*) drawingMaster->drawers["label"])->getSize(gameLogic->develControlsContentEntry.second).y +
+						gameSystem->getFloat("hudContainerPadding") / (float) gameGraphics->resolutionY * 2.0f // half of container padding in y when rendering text
+			);
+		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->develControlsContainerEntry.second["metrics"]);
+		drawingMaster->drawStack.push_back(gameLogic->develControlsContainerEntry);
+		drawingMaster->drawStack.push_back(gameLogic->develControlsTitleEntry);
+		drawingMaster->drawStack.push_back(gameLogic->develControlsContentEntry);
+	}
 
 	// re-arrange the UI
 	drawingMaster->uiLayoutAuthority->rearrange();
+
+	// set post-UI arrangement container content locations
+	if(gameSystem->getBool("developmentMode")) {
+		((UIMetrics*) gameLogic->develControlsTitleEntry.second["metrics"])->position = Vector2(
+				((UIMetrics*) gameLogic->develControlsContainerEntry.second["metrics"])->position.x,
+				((UIMetrics*) gameLogic->develControlsContainerEntry.second["metrics"])->position.y +
+						((UIMetrics*) gameLogic->develControlsContainerEntry.second["metrics"])->size.y / 2.0f -
+						gameSystem->getFloat("hudContainerPadding") / (float) gameGraphics->resolutionY - // half of container padding in y when rendering text
+						((UIMetrics*) gameLogic->develControlsTitleEntry.second["metrics"])->size.y / 2.0f
+			);
+
+		((UIMetrics*) gameLogic->develControlsContentEntry.second["metrics"])->position = Vector2(
+				((UIMetrics*) gameLogic->develControlsContainerEntry.second["metrics"])->position.x -
+						((UIMetrics*) gameLogic->develControlsContainerEntry.second["metrics"])->size.x / 2.0f +
+						gameSystem->getFloat("hudContainerPadding") / (float) gameGraphics->resolutionX * 2.0f +
+						((UIMetrics*) gameLogic->develControlsContentEntry.second["metrics"])->size.x / 2.0f,
+				((UIMetrics*) gameLogic->develControlsContainerEntry.second["metrics"])->position.y -
+						((UIMetrics*) gameLogic->develControlsContainerEntry.second["metrics"])->size.y / 2.0f +
+						gameSystem->getFloat("hudContainerPadding") / (float) gameGraphics->resolutionY + // half of container padding in y when rendering text
+						((UIMetrics*) gameLogic->develControlsContentEntry.second["metrics"])->size.y / 2.0f
+			);
+	}
 }
 
 void Schemes::introScheme() {
