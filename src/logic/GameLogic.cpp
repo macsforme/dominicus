@@ -604,6 +604,7 @@ GameLogic::GameLogic() :
 	newHighScoreContainer.second["insideColor"] = (void*) new Vector4;
 	newHighScoreContainer.second["borderColor"] = (void*) new Vector4;
 	newHighScoreContainer.second["outsideColor"] = (void*) new Vector4;
+	newHighScoreContainer.second["size"] = (void*) new Vector2;
 
 	newHighScoreNameLabel.first = "label";
 	newHighScoreNameLabel.second["metrics"] = (void*) new UIMetrics;
@@ -760,9 +761,7 @@ void GameLogic::reScheme() {
 				gameSystem->getColor("hudContainerInsideColor").z,
 				0.0f
 			);
-		((UIMetrics*) develStatsContainerEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_BOTTOM;
-		((UIMetrics*) develStatsContainerEntry.second["metrics"])->bearing2 = UIMetrics::BEARING_RIGHT;
-		((UIMetrics*) develStatsContainerEntry.second["metrics"])->size = Vector2(
+		*((Vector2*) develStatsContainerEntry.second["size"]) = Vector2(
 				(((DrawLabel*) drawingMaster->drawers["label"])->getSize(develStatsTitleEntry.second).x >
 						((DrawLabel*) drawingMaster->drawers["label"])->getSize(develStatsContentEntry.second).x ?
 						((DrawLabel*) drawingMaster->drawers["label"])->getSize(develStatsTitleEntry.second).x :
@@ -773,6 +772,9 @@ void GameLogic::reScheme() {
 						((DrawLabel*) drawingMaster->drawers["label"])->getSize(develStatsContentEntry.second).y +
 						gameSystem->getFloat("hudContainerPadding") / (float) gameGraphics->resolutionY * 2.0f // half of container padding in y when rendering text
 			);
+		((UIMetrics*) develStatsContainerEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_BOTTOM;
+		((UIMetrics*) develStatsContainerEntry.second["metrics"])->bearing2 = UIMetrics::BEARING_RIGHT;
+		((UIMetrics*) develStatsContainerEntry.second["metrics"])->size = *((Vector2*) develStatsContainerEntry.second["size"]);
 		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) develStatsContainerEntry.second["metrics"]);
 		drawingMaster->drawStack.push_back(develStatsContainerEntry);
 		drawingMaster->drawStack.push_back(develStatsTitleEntry);

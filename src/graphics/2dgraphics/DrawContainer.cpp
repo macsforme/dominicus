@@ -207,7 +207,7 @@ void DrawContainer::deleteArgList(DrawStackArgList argList) {
 void DrawContainer::execute(DrawStackArgList argList) {
 	// set up geometry
 	Vector2 position = ((UIMetrics*) argList["metrics"])->position;
-	Vector2 size = ((UIMetrics*) argList["metrics"])->size;//*((Vector2*) argList["size"]);
+	Vector2 size = *((Vector2*) argList["size"]); //((UIMetrics*) argList["metrics"])->size;
 	Vector2 padding = Vector2(
 			*((float*) argList["padding"]) * 2.0f / (float) gameGraphics->resolutionX,
 			*((float*) argList["padding"]) * 2.0f / (float) gameGraphics->resolutionY

@@ -1221,9 +1221,7 @@ void Schemes::playingScheme() {
 				gameSystem->getColor("hudContainerInsideColor").z,
 				0.0f
 			);
-		((UIMetrics*) gameLogic->develControlsContainerEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_BOTTOM;
-		((UIMetrics*) gameLogic->develControlsContainerEntry.second["metrics"])->bearing2 = UIMetrics::BEARING_LEFT;
-		((UIMetrics*) gameLogic->develControlsContainerEntry.second["metrics"])->size = Vector2(
+		*((Vector2*) gameLogic->develControlsContainerEntry.second["size"]) = Vector2(
 				(((DrawLabel*) drawingMaster->drawers["label"])->getSize(gameLogic->develControlsTitleEntry.second).x >
 						((DrawLabel*) drawingMaster->drawers["label"])->getSize(gameLogic->develControlsContentEntry.second).x ?
 						((DrawLabel*) drawingMaster->drawers["label"])->getSize(gameLogic->develControlsTitleEntry.second).x :
@@ -1234,6 +1232,9 @@ void Schemes::playingScheme() {
 						((DrawLabel*) drawingMaster->drawers["label"])->getSize(gameLogic->develControlsContentEntry.second).y +
 						gameSystem->getFloat("hudContainerPadding") / (float) gameGraphics->resolutionY * 2.0f // half of container padding in y when rendering text
 			);
+		((UIMetrics*) gameLogic->develControlsContainerEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_BOTTOM;
+		((UIMetrics*) gameLogic->develControlsContainerEntry.second["metrics"])->bearing2 = UIMetrics::BEARING_LEFT;
+		((UIMetrics*) gameLogic->develControlsContainerEntry.second["metrics"])->size = *((Vector2*) gameLogic->develControlsContainerEntry.second["size"]);
 		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->develControlsContainerEntry.second["metrics"]);
 		drawingMaster->drawStack.push_back(gameLogic->develControlsContainerEntry);
 		drawingMaster->drawStack.push_back(gameLogic->develControlsTitleEntry);
@@ -1590,8 +1591,7 @@ void Schemes::gameOverScheme() {
 				gameSystem->getColor("hudContainerBorderColor").z,
 				0.0f
 			);
-		((UIMetrics*) gameLogic->newHighScoreContainer.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
-		((UIMetrics*) gameLogic->newHighScoreContainer.second["metrics"])->size = Vector2(
+		*((Vector2*) gameLogic->newHighScoreContainer.second["size"]) = Vector2(
 				((UIMetrics*) gameLogic->newHighScoreNameLabel.second["metrics"])->size.x +
 						((UIMetrics*) gameLogic->newHighScoreNameField.second["metrics"])->size.x +
 						gameSystem->getFloat("hudContainerPadding") / gameGraphics->resolutionX * 4.0f +
@@ -1602,6 +1602,8 @@ void Schemes::gameOverScheme() {
 						((UIMetrics*) gameLogic->newHighScoreNameField.second["metrics"])->size.y) +
 						gameSystem->getFloat("hudContainerPadding") / gameGraphics->resolutionY * 4.0f
 			);
+		((UIMetrics*) gameLogic->newHighScoreContainer.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
+		((UIMetrics*) gameLogic->newHighScoreContainer.second["metrics"])->size = *((Vector2*) gameLogic->newHighScoreContainer.second["size"]);
 		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->newHighScoreContainer.second["metrics"]);
 	}
 
