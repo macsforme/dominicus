@@ -87,7 +87,12 @@ void Schemes::mainMenuScheme() {
 			gameSystem->getColor("hudContainerInsideColor")
 		);
 	*((Vector4*) gameLogic->playButtonEntry.second["borderColor"]) = gameSystem->getColor("hudContainerBorderColor");
-	*((Vector4*) gameLogic->playButtonEntry.second["outsideColor"]) = gameSystem->getColor("hudContainerOutsideColor");
+	*((Vector4*) gameLogic->playButtonEntry.second["outsideColor"]) = Vector4(
+			gameSystem->getColor("hudContainerBorderColor").x,
+			gameSystem->getColor("hudContainerBorderColor").y,
+			gameSystem->getColor("hudContainerBorderColor").z,
+			0.0f
+		);
 	Vector2* playButtonSize = (Vector2*) gameLogic->playButtonEntry.second["size"];
 	gameLogic->playButtonEntry.second.erase(gameLogic->playButtonEntry.second.find("size"));
 	*playButtonSize = ((DrawButton*) drawingMaster->drawers["button"])->getSize(gameLogic->playButtonEntry.second);
@@ -110,7 +115,12 @@ void Schemes::mainMenuScheme() {
 			gameSystem->getColor("hudContainerInsideColor")
 		);
 	*((Vector4*) gameLogic->settingsButtonEntry.second["borderColor"]) = gameSystem->getColor("hudContainerBorderColor");
-	*((Vector4*) gameLogic->settingsButtonEntry.second["outsideColor"]) = gameSystem->getColor("hudContainerOutsideColor");
+	*((Vector4*) gameLogic->settingsButtonEntry.second["outsideColor"]) = Vector4(
+			gameSystem->getColor("hudContainerBorderColor").x,
+			gameSystem->getColor("hudContainerBorderColor").y,
+			gameSystem->getColor("hudContainerBorderColor").z,
+			0.0f
+		);
 	Vector2* settingsButtonSize = (Vector2*) gameLogic->settingsButtonEntry.second["size"];
 	gameLogic->settingsButtonEntry.second.erase(gameLogic->settingsButtonEntry.second.find("size"));
 	*settingsButtonSize = ((DrawButton*) drawingMaster->drawers["button"])->getSize(gameLogic->settingsButtonEntry.second);
@@ -133,7 +143,12 @@ void Schemes::mainMenuScheme() {
 			gameSystem->getColor("hudContainerInsideColor")
 		);
 	*((Vector4*) gameLogic->highScoresButtonEntry.second["borderColor"]) = gameSystem->getColor("hudContainerBorderColor");
-	*((Vector4*) gameLogic->highScoresButtonEntry.second["outsideColor"]) = gameSystem->getColor("hudContainerOutsideColor");
+	*((Vector4*) gameLogic->highScoresButtonEntry.second["outsideColor"]) = Vector4(
+			gameSystem->getColor("hudContainerBorderColor").x,
+			gameSystem->getColor("hudContainerBorderColor").y,
+			gameSystem->getColor("hudContainerBorderColor").z,
+			0.0f
+		);
 	Vector2* highScoresButtonSize = (Vector2*) gameLogic->highScoresButtonEntry.second["size"];
 	gameLogic->highScoresButtonEntry.second.erase(gameLogic->highScoresButtonEntry.second.find("size"));
 	*highScoresButtonSize = ((DrawButton*) drawingMaster->drawers["button"])->getSize(gameLogic->highScoresButtonEntry.second);
@@ -156,7 +171,12 @@ void Schemes::mainMenuScheme() {
 			gameSystem->getColor("hudContainerInsideColor")
 		);
 	*((Vector4*) gameLogic->helpButtonEntry.second["borderColor"]) = gameSystem->getColor("hudContainerBorderColor");
-	*((Vector4*) gameLogic->helpButtonEntry.second["outsideColor"]) = gameSystem->getColor("hudContainerOutsideColor");
+	*((Vector4*) gameLogic->helpButtonEntry.second["outsideColor"]) = Vector4(
+			gameSystem->getColor("hudContainerBorderColor").x,
+			gameSystem->getColor("hudContainerBorderColor").y,
+			gameSystem->getColor("hudContainerBorderColor").z,
+			0.0f
+		);
 	Vector2* helpButtonSize = (Vector2*) gameLogic->helpButtonEntry.second["size"];
 	gameLogic->highScoresButtonEntry.second.erase(gameLogic->helpButtonEntry.second.find("size"));
 	*helpButtonSize = ((DrawButton*) drawingMaster->drawers["button"])->getSize(gameLogic->helpButtonEntry.second);
@@ -179,7 +199,12 @@ void Schemes::mainMenuScheme() {
 			gameSystem->getColor("hudContainerInsideColor")
 		);
 	*((Vector4*) gameLogic->quitButtonEntry.second["borderColor"]) = gameSystem->getColor("hudContainerBorderColor");
-	*((Vector4*) gameLogic->quitButtonEntry.second["outsideColor"]) = gameSystem->getColor("hudContainerOutsideColor");
+	*((Vector4*) gameLogic->quitButtonEntry.second["outsideColor"]) = Vector4(
+			gameSystem->getColor("hudContainerBorderColor").x,
+			gameSystem->getColor("hudContainerBorderColor").y,
+			gameSystem->getColor("hudContainerBorderColor").z,
+			0.0f
+		);
 	Vector2* quitButtonSize = (Vector2*) gameLogic->quitButtonEntry.second["size"];
 	gameLogic->highScoresButtonEntry.second.erase(gameLogic->quitButtonEntry.second.find("size"));
 	*quitButtonSize = ((DrawButton*) drawingMaster->drawers["button"])->getSize(gameLogic->quitButtonEntry.second);
@@ -347,7 +372,12 @@ void Schemes::helpScheme() {
 			gameSystem->getColor("hudContainerInsideColor")
 		);
 	*((Vector4*) gameLogic->aboutButtonEntry.second["borderColor"]) = gameSystem->getColor("hudContainerBorderColor");
-	*((Vector4*) gameLogic->aboutButtonEntry.second["outsideColor"]) = gameSystem->getColor("hudContainerOutsideColor");
+	*((Vector4*) gameLogic->aboutButtonEntry.second["outsideColor"]) = Vector4(
+			gameSystem->getColor("hudContainerBorderColor").x,
+			gameSystem->getColor("hudContainerBorderColor").y,
+			gameSystem->getColor("hudContainerBorderColor").z,
+			0.0f
+		);
 	((UIMetrics*) gameLogic->aboutButtonEntry.second["metrics"])->size = ((DrawButton*) drawingMaster->drawers["button"])->getSize(gameLogic->aboutButtonEntry.second);
 	drawingMaster->drawStack.push_back(gameLogic->aboutButtonEntry);
 	drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->aboutButtonEntry.second["metrics"]);
@@ -366,7 +396,12 @@ void Schemes::helpScheme() {
 			gameSystem->getColor("hudContainerInsideColor")
 		);
 	*((Vector4*) gameLogic->backButtonEntry.second["borderColor"]) = gameSystem->getColor("hudContainerBorderColor");
-	*((Vector4*) gameLogic->backButtonEntry.second["outsideColor"]) = gameSystem->getColor("hudContainerOutsideColor");
+	*((Vector4*) gameLogic->backButtonEntry.second["outsideColor"]) = Vector4(
+			gameSystem->getColor("hudContainerBorderColor").x,
+			gameSystem->getColor("hudContainerBorderColor").y,
+			gameSystem->getColor("hudContainerBorderColor").z,
+			0.0f
+		);
 	((UIMetrics*) gameLogic->backButtonEntry.second["metrics"])->size = ((DrawButton*) drawingMaster->drawers["button"])->getSize(gameLogic->backButtonEntry.second);
 	drawingMaster->drawStack.push_back(gameLogic->backButtonEntry);
 	drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->backButtonEntry.second["metrics"]);
@@ -485,7 +520,12 @@ void Schemes::aboutScheme() {
 			gameSystem->getColor("hudContainerInsideColor")
 		);
 	*((Vector4*) gameLogic->backButtonEntry.second["borderColor"]) = gameSystem->getColor("hudContainerBorderColor");
-	*((Vector4*) gameLogic->backButtonEntry.second["outsideColor"]) = gameSystem->getColor("hudContainerOutsideColor");
+	*((Vector4*) gameLogic->backButtonEntry.second["outsideColor"]) = Vector4(
+			gameSystem->getColor("hudContainerBorderColor").x,
+			gameSystem->getColor("hudContainerBorderColor").y,
+			gameSystem->getColor("hudContainerBorderColor").z,
+			0.0f
+		);
 	((UIMetrics*) gameLogic->backButtonEntry.second["metrics"])->size = ((DrawButton*) drawingMaster->drawers["button"])->getSize(gameLogic->backButtonEntry.second);
 	drawingMaster->drawStack.push_back(gameLogic->backButtonEntry);
 	drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->backButtonEntry.second["metrics"]);
@@ -675,7 +715,12 @@ void Schemes::settingsScheme() {
 			gameSystem->getColor("hudContainerInsideColor")
 		);
 	*((Vector4*) gameLogic->resetHighScoresEntry.second["borderColor"]) = gameSystem->getColor("hudContainerBorderColor");
-	*((Vector4*) gameLogic->resetHighScoresEntry.second["outsideColor"]) = gameSystem->getColor("hudContainerOutsideColor");
+	*((Vector4*) gameLogic->resetHighScoresEntry.second["outsideColor"]) = Vector4(
+			gameSystem->getColor("hudContainerBorderColor").x,
+			gameSystem->getColor("hudContainerBorderColor").y,
+			gameSystem->getColor("hudContainerBorderColor").z,
+			0.0f
+		);
 	((UIMetrics*) gameLogic->resetHighScoresEntry.second["metrics"])->size = ((DrawButton*) drawingMaster->drawers["button"])->getSize(gameLogic->resetHighScoresEntry.second);
 	drawingMaster->drawStack.push_back(gameLogic->resetHighScoresEntry);
 	drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->resetHighScoresEntry.second["metrics"]);
@@ -694,7 +739,12 @@ void Schemes::settingsScheme() {
 			gameSystem->getColor("hudContainerInsideColor")
 		);
 	*((Vector4*) gameLogic->backButtonEntry.second["borderColor"]) = gameSystem->getColor("hudContainerBorderColor");
-	*((Vector4*) gameLogic->backButtonEntry.second["outsideColor"]) = gameSystem->getColor("hudContainerOutsideColor");
+	*((Vector4*) gameLogic->backButtonEntry.second["outsideColor"]) = Vector4(
+			gameSystem->getColor("hudContainerBorderColor").x,
+			gameSystem->getColor("hudContainerBorderColor").y,
+			gameSystem->getColor("hudContainerBorderColor").z,
+			0.0f
+		);
 	((UIMetrics*) gameLogic->backButtonEntry.second["metrics"])->size = ((DrawButton*) drawingMaster->drawers["button"])->getSize(gameLogic->backButtonEntry.second);
 	drawingMaster->drawStack.push_back(gameLogic->backButtonEntry);
 	drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->backButtonEntry.second["metrics"]);
@@ -854,7 +904,12 @@ void Schemes::highScoresScheme() {
 			gameSystem->getColor("hudContainerInsideColor")
 		);
 	*((Vector4*) gameLogic->backButtonEntry.second["borderColor"]) = gameSystem->getColor("hudContainerBorderColor");
-	*((Vector4*) gameLogic->backButtonEntry.second["outsideColor"]) = gameSystem->getColor("hudContainerOutsideColor");
+	*((Vector4*) gameLogic->backButtonEntry.second["outsideColor"]) = Vector4(
+			gameSystem->getColor("hudContainerBorderColor").x,
+			gameSystem->getColor("hudContainerBorderColor").y,
+			gameSystem->getColor("hudContainerBorderColor").z,
+			0.0f
+		);
 	((UIMetrics*) gameLogic->backButtonEntry.second["metrics"])->size = ((DrawButton*) drawingMaster->drawers["button"])->getSize(gameLogic->backButtonEntry.second);
 	drawingMaster->drawStack.push_back(gameLogic->backButtonEntry);
 	drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameLogic->backButtonEntry.second["metrics"]);
@@ -1308,7 +1363,12 @@ void Schemes::pausedScheme() {
 			gameSystem->getColor("hudContainerInsideColor")
 		);
 	*((Vector4*) gameLogic->resumeButtonEntry.second["borderColor"]) = gameSystem->getColor("hudContainerBorderColor");
-	*((Vector4*) gameLogic->resumeButtonEntry.second["outsideColor"]) = gameSystem->getColor("hudContainerOutsideColor");
+	*((Vector4*) gameLogic->resumeButtonEntry.second["outsideColor"]) = Vector4(
+			gameSystem->getColor("hudContainerBorderColor").x,
+			gameSystem->getColor("hudContainerBorderColor").y,
+			gameSystem->getColor("hudContainerBorderColor").z,
+			0.0f
+		);
 	((UIMetrics*) gameLogic->resumeButtonEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
 	((UIMetrics*) gameLogic->resumeButtonEntry.second["metrics"])->size = ((DrawButton*) drawingMaster->drawers["button"])->getSize(gameLogic->resumeButtonEntry.second);
 	drawingMaster->drawStack.push_back(gameLogic->resumeButtonEntry);
@@ -1328,7 +1388,12 @@ void Schemes::pausedScheme() {
 			gameSystem->getColor("hudContainerInsideColor")
 		);
 	*((Vector4*) gameLogic->endGameButtonEntry.second["borderColor"]) = gameSystem->getColor("hudContainerBorderColor");
-	*((Vector4*) gameLogic->endGameButtonEntry.second["outsideColor"]) = gameSystem->getColor("hudContainerOutsideColor");
+	*((Vector4*) gameLogic->endGameButtonEntry.second["outsideColor"]) = Vector4(
+			gameSystem->getColor("hudContainerBorderColor").x,
+			gameSystem->getColor("hudContainerBorderColor").y,
+			gameSystem->getColor("hudContainerBorderColor").z,
+			0.0f
+		);
 	((UIMetrics*) gameLogic->endGameButtonEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
 	((UIMetrics*) gameLogic->endGameButtonEntry.second["metrics"])->size = ((DrawButton*) drawingMaster->drawers["button"])->getSize(gameLogic->endGameButtonEntry.second);
 	drawingMaster->drawStack.push_back(gameLogic->endGameButtonEntry);
@@ -1484,8 +1549,13 @@ void Schemes::gameOverScheme() {
 		*((float*) gameLogic->newHighScoreContainer.second["border"]) = 0.0f;
 		*((float*) gameLogic->newHighScoreContainer.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
 		*((Vector4*) gameLogic->newHighScoreContainer.second["insideColor"]) = gameSystem->getColor("hudContainerInsideColor");
-		*((Vector4*) gameLogic->newHighScoreContainer.second["borderColor"]) = gameSystem->getColor("hudContainerOutsideColor");
-		*((Vector4*) gameLogic->newHighScoreContainer.second["outsideColor"]) = gameSystem->getColor("hudContainerOutsideColor");
+		*((Vector4*) gameLogic->newHighScoreContainer.second["borderColor"]) = gameSystem->getColor("hudContainerInsideColor");
+		*((Vector4*) gameLogic->newHighScoreContainer.second["outsideColor"]) = Vector4(
+				gameSystem->getColor("hudContainerBorderColor").x,
+				gameSystem->getColor("hudContainerBorderColor").y,
+				gameSystem->getColor("hudContainerBorderColor").z,
+				0.0f
+			);
 		((UIMetrics*) gameLogic->newHighScoreContainer.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
 		((UIMetrics*) gameLogic->newHighScoreContainer.second["metrics"])->size = Vector2(
 				((UIMetrics*) gameLogic->newHighScoreNameLabel.second["metrics"])->size.x +
@@ -1515,7 +1585,12 @@ void Schemes::gameOverScheme() {
 			gameSystem->getColor("hudContainerInsideColor")
 		);
 	*((Vector4*) gameLogic->gameOverContinueButton.second["borderColor"]) = gameSystem->getColor("hudContainerBorderColor");
-	*((Vector4*) gameLogic->gameOverContinueButton.second["outsideColor"]) = gameSystem->getColor("hudContainerOutsideColor");
+	*((Vector4*) gameLogic->gameOverContinueButton.second["outsideColor"]) = Vector4(
+			gameSystem->getColor("hudContainerBorderColor").x,
+			gameSystem->getColor("hudContainerBorderColor").y,
+			gameSystem->getColor("hudContainerBorderColor").z,
+			0.0f
+		);
 	((UIMetrics*) gameLogic->gameOverContinueButton.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
 	((UIMetrics*) gameLogic->gameOverContinueButton.second["metrics"])->size = ((DrawButton*) drawingMaster->drawers["button"])->getSize(gameLogic->gameOverContinueButton.second);
 	drawingMaster->drawStack.push_back(gameLogic->gameOverContinueButton);
