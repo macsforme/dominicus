@@ -99,7 +99,7 @@ public:
 	void applyScreenResolution(std::string resolution);
 
 	// fps limiting enumeration
-	enum FRAMERATE_LIMITING {
+	enum FrameRateLimiting {
 		LIMIT_VSYNC,
 		LIMIT_30,
 		LIMIT_60,
