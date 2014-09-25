@@ -717,7 +717,7 @@ void GameLogic::reScheme() {
 		*((Vector4*) develStatsContentEntry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
 		std::stringstream stringStream;
 		stringStream << "Uptime:\t";
-		stringStream << (platform->getExecMills() / 216000000);
+		stringStream << (platform->getExecMills() / 3600000);
 		stringStream << ":";
 		char minuteSecondString[8];
 		sprintf(
@@ -733,7 +733,7 @@ void GameLogic::reScheme() {
 		if(gameState == NULL) {
 			stringStream << "NULL\n";
 		} else {
-			stringStream << (gameState->lastUpdateGameTime / 216000000);
+			stringStream << (gameState->lastUpdateGameTime / 3600000);
 			stringStream << ":";
 			sprintf(
 					minuteSecondString,
