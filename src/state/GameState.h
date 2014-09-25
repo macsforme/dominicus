@@ -1,4 +1,4 @@
-// GamemState.h
+// GameState.h
 // Crucible Island
 
 #ifndef GAMESTATE_H
