@@ -3,6 +3,9 @@
 
 #include "graphics/text/TextBlock.h"
 
+#include <cstdlib>
+#include <string>
+
 TextBlock::TextBlock(const char* dataString, unsigned int wrapX, unsigned int wrapY,
 		FontManager* fontManager, unsigned int size) {
 	// create a list of character positions for rendering a block of text

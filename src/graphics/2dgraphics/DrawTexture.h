@@ -4,9 +4,6 @@
 #ifndef DRAWTEXTURE_H
 #define DRAWTEXTURE_H
 
-#include <map>
-#include <string>
-
 #include "graphics/DrawTypes.h"
 #include "math/VectorMath.h"
 

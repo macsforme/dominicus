@@ -4,9 +4,6 @@
 #ifndef SHIPRENDERER_H
 #define SHIPRENDERER_H
 
-#include <map>
-#include <string>
-
 #include "geometry/Mesh.h"
 #include "graphics/DrawTypes.h"
 
@@ -18,7 +15,7 @@ public:
 	ShipRenderer();
 	~ShipRenderer();
 
-	void execute(std::map<std::string, void*> arguments);
+	void execute(DrawStackArgList arguments);
 };
 
 #endif // SHIPRENDERER_H

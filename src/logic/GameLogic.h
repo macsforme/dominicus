@@ -4,62 +4,16 @@
 #ifndef GAMELOGIC_H
 #define GAMELOGIC_H
 
-// program headers
-#include "audio/GameAudio.h"
-#include "core/GameSystem.h"
+#include <string>
+
 #include "core/MainLoopMember.h"
-#include "graphics/DrawingMaster.h"
-#include "graphics/GameGraphics.h"
-#include "graphics/2dgraphics/DrawButton.h"
-#include "graphics/2dgraphics/DrawCircle.h"
-#include "graphics/2dgraphics/DrawField.h"
-#include "graphics/2dgraphics/DrawGaugePanel.h"
-#include "graphics/2dgraphics/DrawGrayOut.h"
-#include "graphics/2dgraphics/DrawRadar.h"
-#include "graphics/2dgraphics/DrawLabel.h"
-#include "graphics/2dgraphics/DrawMissileIndicators.h"
-#include "graphics/2dgraphics/DrawStrikeEffect.h"
-#include "graphics/2dgraphics/DrawTexture.h"
-#include "graphics/3dgraphics/ExplosionRenderer.h"
-#include "graphics/3dgraphics/ShipRenderer.h"
-#include "graphics/3dgraphics/SkyRenderer.h"
-#include "graphics/3dgraphics/MissileRenderer.h"
-#include "graphics/3dgraphics/MissileTrailRenderer.h"
-#include "graphics/3dgraphics/ShellRenderer.h"
-#include "graphics/3dgraphics/TerrainRenderer.h"
-#include "graphics/3dgraphics/FortressRenderer.h"
-#include "graphics/3dgraphics/WaterRenderer.h"
-#include "graphics/texture/Texture.h"
-#include "input/InputHandler.h"
+#include "graphics/DrawTypes.h"
+#include "graphics/UILayoutAuthority.h"
 #include "input/Keyboard.h"
 #include "input/Mouse.h"
 #include "logic/Camera.h"
-#include "logic/Schemes.h"
-#include "graphics/UILayoutAuthority.h"
-#include "math/MatrixMath.h"
 #include "math/VectorMath.h"
-#include "platform/OpenGLHeaders.h"
-#include "platform/Platform.h"
-#include "state/GameState.h"
 
-// library headers
-#include <map>
-#include <SDL.h>
-#include <sstream>
-#include <string>
-#include <vector>
-
-// global variables
-extern DrawingMaster* drawingMaster;
-extern GameAudio* gameAudio;
-extern GameGraphics* gameGraphics;
-extern GameState* gameState;
-extern GameSystem* gameSystem;
-extern InputHandler* inputHandler;
-extern bool keepProgramAlive;
-extern std::map<MainLoopMember*,unsigned int> mainLoopModules;
-
-// class definition
 class GameLogic : public MainLoopMember {
 public:
 	// main menu

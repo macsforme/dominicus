@@ -3,10 +3,12 @@
 
 #include "graphics/2dgraphics/DrawCircle.h"
 
+#include <cstdlib>
 #include <vector>
 
 #include "graphics/GameGraphics.h"
 #include "math/VectorMath.h"
+#include "platform/OpenGLHeaders.h"
 
 extern GameGraphics* gameGraphics;
 

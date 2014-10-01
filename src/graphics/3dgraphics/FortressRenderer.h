@@ -4,9 +4,6 @@
 #ifndef FORTRESSRENDERER_H
 #define FORTRESSRENDERER_H
 
-#include <map>
-#include <string>
-
 #include "geometry/Mesh.h"
 #include "graphics/DrawTypes.h"
 #include "math/VectorMath.h"
@@ -22,7 +19,7 @@ public:
 	FortressRenderer();
 	~FortressRenderer();
 
-	void execute(std::map<std::string, void*> arguments);
+	void execute(DrawStackArgList arguments);
 };
 
 #endif // FORTRESSRENDERER_H

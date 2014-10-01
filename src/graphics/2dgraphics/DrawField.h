@@ -4,9 +4,6 @@
 #ifndef DRAWFIELD_H
 #define DRAWFIELD_H
 
-#include <map>
-#include <string>
-
 #include "graphics/DrawTypes.h"
 #include "graphics/2dgraphics/DrawLabel.h"
 #include "math/VectorMath.h"

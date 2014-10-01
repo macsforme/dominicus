@@ -3,14 +3,8 @@
 
 #include "graphics/3dgraphics/WaterRenderer.h"
 
-#include <vector>
-
-#include "geometry/Mesh.h"
 #include "graphics/GameGraphics.h"
-#include "logic/Camera.h"
 #include "math/MatrixMath.h"
-#include "math/MiscMath.h"
-#include "math/VectorMath.h"
 #include "platform/OpenGLHeaders.h"
 #include "platform/Platform.h"
 #include "state/GameState.h"
@@ -51,7 +45,7 @@ WaterRenderer::~WaterRenderer() {
 	glDeleteBuffers(1, &(vertexBuffers["elements"]));
 }
 
-void WaterRenderer::execute(std::map<std::string, void*> arguments) {
+void WaterRenderer::execute(DrawStackArgList arguments) {
 	// prepare variables
 	Matrix4 mvpMatrix = gameGraphics->currentCamera->mvMatrix;
 	mvpMatrix *= (gameState->binoculars ? gameGraphics->ppBinoMatrix : gameGraphics->ppMatrix);

@@ -5,7 +5,6 @@
 #define MOUSE_H
 
 #include <SDL.h>
-#include <stdint.h>
 #include <vector>
 
 #include "math/VectorMath.h"

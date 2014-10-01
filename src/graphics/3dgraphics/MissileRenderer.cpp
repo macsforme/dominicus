@@ -3,12 +3,15 @@
 
 #include "graphics/3dgraphics/MissileRenderer.h"
 
+#include <cstdlib>
+#include <map>
+#include <string>
 #include <vector>
 
 #include "core/GameSystem.h"
 #include "graphics/GameGraphics.h"
-#include "logic/Camera.h"
 #include "math/MatrixMath.h"
+#include "math/ScalarMath.h"
 #include "math/VectorMath.h"
 #include "platform/OpenGLHeaders.h"
 #include "state/GameState.h"
@@ -93,7 +96,7 @@ MissileRenderer::~MissileRenderer() {
 	glDeleteBuffers(1, &(vertexBuffers["elements"]));
 }
 
-void MissileRenderer::execute(std::map<std::string, void*> arguments) {
+void MissileRenderer::execute(DrawStackArgList arguments) {
 	// state
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_DEPTH_TEST);

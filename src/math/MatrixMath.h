@@ -1,15 +1,13 @@
 // MatrixMath.h
 // Crucible Island
-// licenses/DOMINICUS.txt for the license text.
 
 #ifndef MATRIXMATH_H
 #define MATRIXMATH_H
 
-// program headers
-#include "math/VectorMath.h"
-
-// library headers
+#include <cmath>
 #include <math.h>
+
+#include "math/VectorMath.h"
 
 class Matrix3 {
 public:

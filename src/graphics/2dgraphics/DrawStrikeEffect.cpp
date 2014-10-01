@@ -7,6 +7,8 @@
 
 #include "core/GameSystem.h"
 #include "graphics/GameGraphics.h"
+#include "math/VectorMath.h"
+#include "platform/OpenGLHeaders.h"
 #include "state/GameState.h"
 
 extern GameGraphics* gameGraphics;

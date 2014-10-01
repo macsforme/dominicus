@@ -3,6 +3,15 @@
 
 #include "core/GameSystem.h"
 
+#include <cstdio>
+#include <cstdlib>
+#include <sstream>
+
+#include "math/MiscMath.h"
+#include "platform/Platform.h"
+
+extern Platform* platform;
+
 bool GameSystem::isStandard(const char* key) const {
 	if(standards.find(key) != standards.end())
 		return true;

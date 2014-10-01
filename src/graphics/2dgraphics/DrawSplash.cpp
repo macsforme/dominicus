@@ -3,6 +3,8 @@
 
 #include "graphics/2dgraphics/DrawSplash.h"
 
+#include <cstdlib>
+
 #include "graphics/GameGraphics.h"
 #include "graphics/texture/Texture.h"
 #include "platform/OpenGLHeaders.h"

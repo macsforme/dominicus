@@ -3,6 +3,20 @@
 
 #include "core/gameMain.h"
 
+#include <cstdlib>
+#include <map>
+#include <SDL.h>
+
+#include "audio/GameAudio.h"
+#include "core/GameSystem.h"
+#include "core/MainLoopMember.h"
+#include "graphics/DrawingMaster.h"
+#include "graphics/GameGraphics.h"
+#include "input/InputHandler.h"
+#include "logic/GameLogic.h"
+#include "platform/Platform.h"
+#include "state/GameState.h"
+
 // global variable declarations
 DrawingMaster* drawingMaster;
 GameAudio* gameAudio;

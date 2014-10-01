@@ -4,11 +4,10 @@
 #ifndef VECTORMATH_H
 #define VECTORMATH_H
 
-// program headers
-#include "math/ScalarMath.h"
-
-// library headers
+#include <cmath>
 #include <math.h>
+
+#include "math/ScalarMath.h"
 
 class Vector2 {
 public:

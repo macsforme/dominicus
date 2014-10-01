@@ -4,9 +4,6 @@
 #ifndef DRAWGAUGEPANEL_H
 #define DRAWGAUGEPANEL_H
 
-#include <map>
-#include <string>
-
 #include "graphics/DrawTypes.h"
 #include "graphics/2dgraphics/DrawContainer.h"
 #include "graphics/2dgraphics/DrawProgressBar.h"

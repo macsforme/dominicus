@@ -3,11 +3,15 @@
 
 #include "graphics/2dgraphics/DrawRoundedTriangle.h"
 
+#include <cmath>
+#include <cstdlib>
 #include <vector>
 
 #include "graphics/GameGraphics.h"
 #include "math/MatrixMath.h"
+#include "math/ScalarMath.h"
 #include "math/VectorMath.h"
+#include "platform/OpenGLHeaders.h"
 
 extern GameGraphics* gameGraphics;
 

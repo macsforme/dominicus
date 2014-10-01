@@ -4,9 +4,6 @@
 #ifndef DRAWGRAYOUT_H
 #define DRAWGRAYOUT_H
 
-#include <map>
-#include <string>
-
 #include "graphics/DrawTypes.h"
 #include "math/VectorMath.h"
 

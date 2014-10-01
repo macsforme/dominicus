@@ -3,6 +3,8 @@
 
 #include "graphics/UILayoutAuthority.h"
 
+#include <cstdlib>
+
 UIMetrics* UILayoutAuthority::findPriorElementCenter(int index) {
 	// search for higher-priority elements with our same bearing (reverse order)
 	for(int i = index - 1; i >= 0; --i) {

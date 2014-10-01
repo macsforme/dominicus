@@ -3,6 +3,18 @@
 
 #include "graphics/text/FontManager.h"
 
+#include <cmath>
+#include <cstdlib>
+#include <sstream>
+#include <stdint.h>
+#include <string>
+
+#include "core/GameSystem.h"
+#include "platform/Platform.h"
+
+extern Platform* platform;
+extern GameSystem* gameSystem;
+
 FontManager::FontManager() {
 	// initialize the freetype library
 	if(FT_Init_FreeType(&library))

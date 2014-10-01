@@ -3,13 +3,10 @@
 
 #include "geometry/Mesh.h"
 
+#include <cstdlib>
 #include <fstream>
-#include <map>
-#include <string>
-#include <vector>
 
 #include "core/GameSystem.h"
-#include "math/VectorMath.h"
 #include "platform/Platform.h"
 
 extern GameSystem* gameSystem;

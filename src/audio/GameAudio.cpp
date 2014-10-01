@@ -3,7 +3,16 @@
 
 #include "audio/GameAudio.h"
 
+#include <cstdlib>
+#include <cstring>
+#include <sstream>
+
+#include "core/GameSystem.h"
+#include "platform/Platform.h"
+
 extern GameAudio* gameAudio;
+extern GameSystem* gameSystem;
+extern Platform* platform;
 
 void mixAudio(void* userData, Uint8* stream, int length) {
 	// play the background music

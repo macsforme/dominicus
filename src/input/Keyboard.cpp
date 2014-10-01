@@ -3,6 +3,10 @@
 
 #include "input/Keyboard.h"
 
+#include "core/GameSystem.h"
+
+extern GameSystem* gameSystem;
+
 KeyListener::KeyListener(std::vector<SDLKey> keys, bool trap) :
 		listeningKeys(keys), trap(trap) { }
 

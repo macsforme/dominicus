@@ -3,13 +3,20 @@
 
 #include "graphics/2dgraphics/DrawRadar.h"
 
+#include <cmath>
+#include <cstdlib>
+#include <map>
+#include <stdint.h>
+#include <string>
+
 #include "core/GameSystem.h"
+#include "geometry/Mesh.h"
 #include "graphics/GameGraphics.h"
 #include "graphics/texture/Texture.h"
 #include "graphics/UILayoutAuthority.h"
 #include "math/MatrixMath.h"
 #include "math/MiscMath.h"
-#include "state/GameState.h"
+#include "math/ScalarMath.h"
 
 extern GameGraphics* gameGraphics;
 extern GameState* gameState;
@@ -223,7 +230,7 @@ void DrawRadar::execute(DrawStackArgList argList) {
 
 	// get the actual size so possibly incorrect metrics don't skew the aspect ratio
 	Vector2 actualSize = getSize(argList);
-	Vector2 padding = Vector2(
+	Vector2 padding(
 			*((float*) argList["padding"]) / (float) gameGraphics->resolutionX * 2.0f,
 			*((float*) argList["padding"]) / (float) gameGraphics->resolutionY * 2.0f
 		);
@@ -341,18 +348,18 @@ void DrawRadar::execute(DrawStackArgList argList) {
 	glDisable(GL_SCISSOR_TEST);
 
 	// draw view triangle
-	Vector2 triangleSize = Vector2(
+	Vector2 triangleSize(
 			(actualSize.y / 2.0f - padding.y / 2.0f) /
 					gameGraphics->aspectRatio *
 					tan(radians(gameSystem->getFloat(gameState->binoculars ? "renderingPerspectiveBinocularsFOV" : "renderingPerspectiveFOV"))) *
 					2.0f,
 			actualSize.y / 2.0f - padding.y / 2.0f
 		);
-	Vector2 trianglePosition = Vector2(metrics->position.x, metrics->position.y + triangleSize.y / 2.0f);
+	Vector2 trianglePosition(metrics->position.x, metrics->position.y + triangleSize.y / 2.0f);
 	float triangleRotation = 180.0f;
 	float triangleEdge = gameSystem->getFloat("hudContainerSoftEdge");
 	Vector4 triangleInsideColor = gameSystem->getColor("radarViewConeColor");
-	Vector4 triangleOutsideColor = Vector4(
+	Vector4 triangleOutsideColor(
 			gameSystem->getColor("radarViewConeColor").x,
 			gameSystem->getColor("radarViewConeColor").y,
 			gameSystem->getColor("radarViewConeColor").z,

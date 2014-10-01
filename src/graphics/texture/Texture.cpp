@@ -3,6 +3,15 @@
 
 #include "graphics/texture/Texture.h"
 
+#include <cstdlib>
+#include <cstring>
+#include <fstream>
+#include <sstream>
+
+#include "core/GameSystem.h"
+
+extern GameSystem* gameSystem;
+
 uint8_t Texture::getRedValueAt(uint32_t column, uint32_t row) {
 	if(pixelData == NULL)
 		gameSystem->log(GameSystem::LOG_FATAL, "Texture pixel color requested before memory allocated.");

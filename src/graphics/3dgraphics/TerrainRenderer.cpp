@@ -3,13 +3,14 @@
 
 #include "graphics/3dgraphics/TerrainRenderer.h"
 
+#include <cstdlib>
+#include <string>
 #include <vector>
 
 #include "geometry/Mesh.h"
 #include "graphics/GameGraphics.h"
-#include "logic/Camera.h"
+#include "graphics/texture/Texture.h"
 #include "math/MatrixMath.h"
-#include "math/VectorMath.h"
 #include "state/GameState.h"
 
 extern GameGraphics* gameGraphics;
@@ -112,7 +113,7 @@ void TerrainRenderer::reloadState() {
 	glDisable(GL_TEXTURE_2D);
 }
 
-void TerrainRenderer::execute(std::map<std::string, void*> arguments) {
+void TerrainRenderer::execute(DrawStackArgList arguments) {
 	// prepare variables
 	Matrix4 mvMatrix = gameGraphics->currentCamera->mvMatrix;
 	float mvMatrixArray[] = {

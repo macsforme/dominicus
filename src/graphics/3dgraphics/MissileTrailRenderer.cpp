@@ -3,14 +3,17 @@
 
 #include "graphics/3dgraphics/MissileTrailRenderer.h"
 
+#include <cstdlib>
+#include <map>
+#include <string>
 #include <vector>
 
 #include "core/GameSystem.h"
 #include "graphics/GameGraphics.h"
-#include "logic/Camera.h"
+#include "graphics/texture/Texture.h"
 #include "math/MatrixMath.h"
+#include "math/ScalarMath.h"
 #include "math/VectorMath.h"
-#include "platform/OpenGLHeaders.h"
 #include "state/GameState.h"
 
 extern GameGraphics* gameGraphics;
@@ -129,7 +132,7 @@ MissileTrailRenderer::~MissileTrailRenderer() {
 	glDeleteBuffers(1, &(vertexBuffers["elements"]));
 }
 
-void MissileTrailRenderer::execute(std::map<std::string, void*> arguments) {
+void MissileTrailRenderer::execute(DrawStackArgList arguments) {
 	// state
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_DEPTH_TEST);

@@ -1,4 +1,4 @@
-// DrawingMaster.h
+// DrawingMaster.cpp
 // Crucible Island
 
 #include "graphics/DrawingMaster.h"
@@ -28,6 +28,7 @@
 #include "graphics/3dgraphics/SkyRenderer.h"
 #include "graphics/3dgraphics/TerrainRenderer.h"
 #include "graphics/3dgraphics/WaterRenderer.h"
+#include "math/VectorMath.h"
 
 extern GameSystem* gameSystem;
 extern GameGraphics* gameGraphics;

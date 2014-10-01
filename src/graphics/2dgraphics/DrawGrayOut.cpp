@@ -3,7 +3,7 @@
 
 #include "graphics/2dgraphics/DrawGrayOut.h"
 
-#include <vector>
+#include <cstdlib>
 
 #include "graphics/GameGraphics.h"
 #include "platform/OpenGLHeaders.h"

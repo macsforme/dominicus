@@ -3,10 +3,10 @@
 
 #include "graphics/2dgraphics/DrawTexture.h"
 
-#include <vector>
+#include <cstdlib>
+#include <string>
 
 #include "graphics/GameGraphics.h"
-#include "graphics/texture/Texture.h"
 #include "graphics/UILayoutAuthority.h"
 #include "platform/OpenGLHeaders.h"
 

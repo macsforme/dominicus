@@ -4,19 +4,9 @@
 #ifndef KEYBOARD_H
 #define KEYBOARD_H
 
-// program headers
-#include "core/GameSystem.h"
-
-// library headers
-#include <map>
 #include <SDL.h>
-#include <sstream>
-#include <stdint.h>
 #include <string>
 #include <vector>
-
-// global variables
-extern GameSystem* gameSystem;
 
 class KeyListener {
 public:

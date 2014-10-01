@@ -1,17 +1,14 @@
-// MissileRenderer
+// ExplosionRenderer.cpp
 // Crucible Island
 
 #include "graphics/3dgraphics/ExplosionRenderer.h"
 
-#include <cstdlib>
-#include <vector>
-
 #include "core/GameSystem.h"
 #include "geometry/Sphere.h"
 #include "graphics/GameGraphics.h"
-#include "logic/Camera.h"
 #include "math/MatrixMath.h"
 #include "platform/OpenGLHeaders.h"
+#include "state/GameState.h"
 
 extern GameGraphics* gameGraphics;
 extern GameState* gameState;
@@ -61,7 +58,7 @@ ExplosionRenderer::~ExplosionRenderer() {
 	glDeleteBuffers(1, &(vertexBuffers["elements"]));
 }
 
-void ExplosionRenderer::execute(std::map<std::string, void*> arguments) {
+void ExplosionRenderer::execute(DrawStackArgList arguments) {
 	// update missile caches
 	size_t i = 0;
 	while(i < explodingMissiles.size()) {
@@ -240,7 +237,7 @@ void ExplosionRenderer::execute(std::map<std::string, void*> arguments) {
 			float scaleFactor;
 			if(progression <= 0.5f)
 				scaleFactor = progression * 2.0f * 0.6f;
-			else if (progression <= 0.75f)
+			else if(progression <= 0.75f)
 				scaleFactor = (progression - 0.5f) * 4.0f * 0.3f + 0.6f;
 			else
 				scaleFactor = (progression - 0.75f) * 4.0f * 0.1f + 0.9f;

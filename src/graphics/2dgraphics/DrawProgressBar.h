@@ -4,9 +4,6 @@
 #ifndef DRAWPROGRESSBAR_H
 #define DRAWPROGRESSBAR_H
 
-#include <map>
-#include <string>
-
 #include "graphics/DrawTypes.h"
 #include "math/VectorMath.h"
 

@@ -4,19 +4,10 @@
 #ifndef GAMEAUDIO_H
 #define GAMEAUDIO_H
 
-// program headers
-#include "core/GameSystem.h"
-#include "platform/Platform.h"
-
-// library headers
-#include <SDL.h>
-#include <sstream>
-#include <string>
 #include <map>
-
-// global variables
-extern GameSystem* gameSystem;
-extern Platform* platform;
+#include <SDL.h>
+#include <string>
+#include <vector>
 
 class GameAudio {
 public:

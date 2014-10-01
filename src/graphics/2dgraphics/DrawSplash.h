@@ -4,9 +4,6 @@
 #ifndef DRAWSPLASH_H
 #define DRAWSPLASH_H
 
-#include <map>
-#include <string>
-
 #include "graphics/DrawTypes.h"
 #include "graphics/2dgraphics/DrawTexture.h"
 #include "math/VectorMath.h"

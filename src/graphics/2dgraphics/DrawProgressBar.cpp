@@ -3,7 +3,7 @@
 
 #include "graphics/2dgraphics/DrawProgressBar.h"
 
-#include <vector>
+#include <cstdlib>
 
 #include "graphics/GameGraphics.h"
 #include "graphics/UILayoutAuthority.h"

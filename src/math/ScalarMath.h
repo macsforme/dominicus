@@ -4,13 +4,11 @@
 #ifndef SCALARMATH_H
 #define SCALARMATH_H
 
-// library headers
+#include <cmath>
 #include <math.h>
 
-// constants
 #define PI 3.14159265
 
-// common functions
 inline float radians(float deg) {
 	return (float)(deg * PI / 180);
 }

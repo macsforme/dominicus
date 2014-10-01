@@ -6,6 +6,8 @@
 
 #include <map>
 #include <string>
+#include <utility>
+#include <vector>
 
 #include "math/VectorMath.h"
 #include "platform/OpenGLHeaders.h"
@@ -19,7 +21,7 @@ protected:
 	std::map<std::string, GLuint> vertexBuffers;
 
 public:
-	virtual void execute(std::map<std::string, void*> arguments) = 0;
+	virtual void execute(DrawStackArgList arguments) = 0;
 };
 
 class BaseUIElement : public BaseDrawNode {

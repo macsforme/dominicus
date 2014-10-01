@@ -1,13 +1,15 @@
-// DrawButton.cpp
+// DrawGaugePanel.cpp
 // Crucible Island
 
 #include "graphics/2dgraphics/DrawGaugePanel.h"
 
+#include <cstdlib>
+#include <map>
+#include <string>
 #include <vector>
 
 #include "graphics/GameGraphics.h"
 #include "graphics/UILayoutAuthority.h"
-#include "platform/OpenGLHeaders.h"
 
 extern GameGraphics* gameGraphics;
 
@@ -88,12 +90,12 @@ Vector2 DrawGaugePanel::getSize(DrawStackArgList argList) {
 	testArguments.clear();
 	testArguments["size"] = argList["progressBarSize"];
 
-	Vector2 progressBarSize = Vector2(	// pixels in, screen dimensions out
+	Vector2 progressBarSize(	// pixels in, screen dimensions out
 			((Vector2*) argList["progressBarSize"])->x / (float) gameGraphics->resolutionX * 2.0f,
 			((Vector2*) argList["progressBarSize"])->y / (float) gameGraphics->resolutionY * 2.0f
 		);
 
-	Vector2 padding = Vector2(
+	Vector2 padding(
 		*((float*) argList["padding"]) / (float) gameGraphics->resolutionX * 2.0f,
 		*((float*) argList["padding"]) / (float) gameGraphics->resolutionY * 2.0f
 	);
@@ -133,12 +135,12 @@ void DrawGaugePanel::execute(DrawStackArgList argList) {
 	testArguments.clear();
 	testArguments["size"] = argList["progressBarSize"];
 
-	Vector2 progressBarSize = Vector2(
+	Vector2 progressBarSize(
 			((Vector2*) argList["progressBarSize"])->x / (float) gameGraphics->resolutionX * 2.0f,
 			((Vector2*) argList["progressBarSize"])->y / (float) gameGraphics->resolutionY * 2.0f
 		);
 
-	Vector2 padding = Vector2(
+	Vector2 padding(
 		*((float*) argList["padding"]) / (float) gameGraphics->resolutionX * 2.0f,
 		*((float*) argList["padding"]) / (float) gameGraphics->resolutionY * 2.0f
 	);

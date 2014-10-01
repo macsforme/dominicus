@@ -51,7 +51,7 @@ Vector2 DrawButton::getSize(DrawStackArgList argList) {
 	if(argList.find("size") != argList.end())
 		return *((Vector2*) argList["size"]);
 
-	Vector2 padding = Vector2(
+	Vector2 padding(
 		*((float*) argList["padding"]) / (float) gameGraphics->resolutionX * 2.0f,
 		*((float*) argList["padding"]) / (float) gameGraphics->resolutionY * 2.0f
 	);

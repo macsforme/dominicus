@@ -1,16 +1,15 @@
-// MissileRenderer
+// ShellRenderer.cpp
 // Crucible Island
 
 #include "graphics/3dgraphics/ShellRenderer.h"
 
-#include <vector>
+#include <cstdlib>
 
 #include "core/GameSystem.h"
 #include "geometry/Sphere.h"
 #include "graphics/GameGraphics.h"
-#include "logic/Camera.h"
-#include "math/VectorMath.h"
 #include "math/MatrixMath.h"
+#include "math/VectorMath.h"
 #include "platform/OpenGLHeaders.h"
 #include "state/GameState.h"
 
@@ -69,7 +68,7 @@ ShellRenderer::~ShellRenderer() {
 	glDeleteBuffers(1, &(vertexBuffers["elements"]));
 }
 
-void ShellRenderer::execute(std::map<std::string, void*> arguments) {
+void ShellRenderer::execute(DrawStackArgList arguments) {
 	// state
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);

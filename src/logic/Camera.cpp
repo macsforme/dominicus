@@ -3,12 +3,13 @@
 
 #include "logic/Camera.h"
 
+#include <cmath>
+#include <cstdlib>
+
 #include "core/GameSystem.h"
-#include "geometry/Mesh.h"
 #include "graphics/DrawingMaster.h"
 #include "graphics/3dgraphics/FortressRenderer.h"
-#include "math/MiscMath.h"
-#include "platform/Platform.h"
+#include "math/ScalarMath.h"
 #include "state/GameState.h"
 
 extern DrawingMaster* drawingMaster;

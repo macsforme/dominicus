@@ -4,13 +4,11 @@
 #ifndef DRAWRADAR_H
 #define DRAWRADAR_H
 
-#include <map>
-#include <string>
 #include <vector>
 
 #include "graphics/DrawTypes.h"
-#include "graphics/2dgraphics/DrawContainer.h"
 #include "graphics/2dgraphics/DrawCircle.h"
+#include "graphics/2dgraphics/DrawContainer.h"
 #include "graphics/2dgraphics/DrawRoundedTriangle.h"
 #include "math/VectorMath.h"
 #include "platform/OpenGLHeaders.h"

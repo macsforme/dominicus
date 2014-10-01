@@ -3,15 +3,20 @@
 
 #include "graphics/GameGraphics.h"
 
+#include <cmath>
+#include <cstdlib>
+#include <cstring>
 #include <fstream>
 #include <SDL.h>
 #include <sstream>
 #include <stdint.h>
 #include <string.h>
 
-#include "graphics/DrawingMaster.h"
 #include "core/GameSystem.h"
+#include "core/MainLoopMember.h"
 #include "geometry/DiamondSquare.h"
+#include "graphics/DrawingMaster.h"
+#include "math/ScalarMath.h"
 #include "math/VectorMath.h"
 #include "platform/Platform.h"
 

@@ -3,12 +3,13 @@
 
 #include "graphics/2dgraphics/DrawMissileIndicators.h"
 
+#include <cstdlib>
 #include <vector>
 
 #include "graphics/GameGraphics.h"
-#include "graphics/UILayoutAuthority.h"
 #include "math/MatrixMath.h"
 #include "math/MiscMath.h"
+#include "math/ScalarMath.h"
 #include "platform/OpenGLHeaders.h"
 #include "state/GameState.h"
 
@@ -98,13 +99,13 @@ void DrawMissileIndicators::execute(DrawStackArgList argList) {
 	}
 
 	// draw locator arrows
-	Vector4 arrowOutsideColor = Vector4(
+	Vector4 arrowOutsideColor(
 			arrowInsideColor.x,
 			arrowInsideColor.y,
 			arrowInsideColor.z,
 			0.0f
 		);
-	Vector2 arrowPosition = Vector2(0.0f, 0.0f);
+	Vector2 arrowPosition(0.0f, 0.0f);
 	float arrowRotation = 0.0f;
 	float arrowSoftEdge = 2.0f;
 

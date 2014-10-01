@@ -4,11 +4,11 @@
 #include "graphics/2dgraphics/DrawContainer.h"
 
 #include <cmath>
-#include <vector>
+#include <cstdlib>
 
-#include "math/ScalarMath.h"
 #include "graphics/GameGraphics.h"
 #include "graphics/UILayoutAuthority.h"
+#include "math/ScalarMath.h"
 #include "platform/OpenGLHeaders.h"
 
 extern GameGraphics* gameGraphics;
@@ -208,7 +208,7 @@ void DrawContainer::execute(DrawStackArgList argList) {
 	// set up geometry
 	Vector2 position = ((UIMetrics*) argList["metrics"])->position;
 	Vector2 size = *((Vector2*) argList["size"]); //((UIMetrics*) argList["metrics"])->size;
-	Vector2 padding = Vector2(
+	Vector2 padding(
 			*((float*) argList["padding"]) * 2.0f / (float) gameGraphics->resolutionX,
 			*((float*) argList["padding"]) * 2.0f / (float) gameGraphics->resolutionY
 		);

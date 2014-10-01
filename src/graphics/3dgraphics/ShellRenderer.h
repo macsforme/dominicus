@@ -4,9 +4,6 @@
 #ifndef SHELLRENDERER_H
 #define SHELLRENDERER_H
 
-#include <map>
-#include <string>
-
 #include "geometry/Mesh.h"
 #include "graphics/DrawTypes.h"
 
@@ -19,7 +16,7 @@ public:
 	ShellRenderer();
 	~ShellRenderer();
 
-	void execute(std::map<std::string, void*> arguments);
+	void execute(DrawStackArgList arguments);
 };
 
 #endif // SHELLRENDERER_H

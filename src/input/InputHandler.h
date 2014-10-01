@@ -4,8 +4,6 @@
 #ifndef INPUTHANDLER_H
 #define INPUTHANDLER_H
 
-#include <SDL.h>
-
 #include "core/MainLoopMember.h"
 #include "input/Keyboard.h"
 #include "input/Mouse.h"

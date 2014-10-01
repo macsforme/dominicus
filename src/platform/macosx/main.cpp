@@ -1,12 +1,11 @@
 // main.cpp
 // Crucible Island
 
-// program headers
-#include "core/gameMain.h"
-
-// library headers
+#include <cstdlib>
 #include <iostream>
 #include <SDL.h>
+
+#include "core/gameMain.h"
 
 int main(int argc, char* argv[]) {
 	// initialize SDL

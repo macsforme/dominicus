@@ -3,12 +3,15 @@
 
 #include "graphics/3dgraphics/ShipRenderer.h"
 
+#include <cstdlib>
+#include <map>
+#include <string>
 #include <vector>
 
 #include "core/GameSystem.h"
 #include "graphics/GameGraphics.h"
-#include "logic/Camera.h"
 #include "math/MatrixMath.h"
+#include "math/ScalarMath.h"
 #include "math/VectorMath.h"
 #include "platform/OpenGLHeaders.h"
 #include "state/GameState.h"
@@ -93,7 +96,7 @@ ShipRenderer::~ShipRenderer() {
 	glDeleteBuffers(1, &(vertexBuffers["elements"]));
 }
 
-void ShipRenderer::execute(std::map<std::string, void*> arguments) {
+void ShipRenderer::execute(DrawStackArgList arguments) {
 	// state
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_DEPTH_TEST);

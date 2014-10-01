@@ -4,9 +4,9 @@
 #ifndef TEXTBLOCK_H
 #define TEXTBLOCK_H
 
-// program headers
+#include <vector>
+
 #include "graphics/text/FontManager.h"
-#include "math/ScalarMath.h"
 #include "math/VectorMath.h"
 
 class TextBlock {

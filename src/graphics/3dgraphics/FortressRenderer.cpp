@@ -3,11 +3,15 @@
 
 #include "graphics/3dgraphics/FortressRenderer.h"
 
+#include <cstdlib>
+#include <map>
+#include <string>
 #include <vector>
 
 #include "core/GameSystem.h"
 #include "graphics/GameGraphics.h"
-#include "logic/Camera.h"
+#include "math/MatrixMath.h"
+#include "math/ScalarMath.h"
 #include "platform/OpenGLHeaders.h"
 #include "state/GameState.h"
 
@@ -123,7 +127,7 @@ FortressRenderer::~FortressRenderer() {
 	glDeleteBuffers(1, &(vertexBuffers["elements"]));
 }
 
-void FortressRenderer::execute(std::map<std::string, void*> arguments) {
+void FortressRenderer::execute(DrawStackArgList arguments) {
 	Matrix4 mvMatrix; mvMatrix.identity();
 	translateMatrix(gameState->fortress.position.x, gameState->fortress.position.y, gameState->fortress.position.z, mvMatrix);
 	mvMatrix = mvMatrix * gameGraphics->currentCamera->mvMatrix;

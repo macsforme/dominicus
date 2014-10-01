@@ -4,12 +4,6 @@
 #ifndef MAINLOOPMEMBER_H
 #define MAINLOOPMEMBER_H
 
-// program headers
-#include "platform/Platform.h"
-
-// global variables
-extern Platform* platform;
-
 class MainLoopMember {
 protected:
 	unsigned int last;

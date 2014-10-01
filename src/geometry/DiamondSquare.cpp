@@ -3,6 +3,9 @@
 
 #include "geometry/DiamondSquare.h"
 
+#include <cmath>
+#include <cstdlib>
+
 DiamondSquare::DiamondSquare(unsigned int size, float roughness) :
 		size(size) {
 	// initialize the memory

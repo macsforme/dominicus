@@ -4,24 +4,14 @@
 #ifndef FONTMANAGER_H
 #define FONTMANAGER_H
 
-// program headers
-#include "core/GameSystem.h"
-#include "graphics/texture/Texture.h"
-#include "platform/OpenGLHeaders.h"
-#include "platform/Platform.h"
-
-// library headers
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include <map>
 #include <math.h>
-#include <sstream>
-#include <string>
 #include <vector>
 
-// global variables
-extern Platform* platform;
-extern GameSystem* gameSystem;
+#include "graphics/texture/Texture.h"
+#include "platform/OpenGLHeaders.h"
 
 class FontManager {
 public:

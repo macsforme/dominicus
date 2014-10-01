@@ -3,7 +3,9 @@
 
 #include "graphics/2dgraphics/DrawField.h"
 
-#include <vector>
+#include <cstdlib>
+#include <map>
+#include <string>
 
 #include "graphics/GameGraphics.h"
 #include "graphics/text/TextBlock.h"

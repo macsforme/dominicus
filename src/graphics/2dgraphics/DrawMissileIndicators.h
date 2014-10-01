@@ -4,9 +4,6 @@
 #ifndef DRAWMISSILEINDICATORS_H
 #define DRAWMISSILEINDICATORS_H
 
-#include <map>
-#include <string>
-
 #include "graphics/DrawTypes.h"
 #include "graphics/2dgraphics/DrawRoundedTriangle.h"
 #include "math/VectorMath.h"

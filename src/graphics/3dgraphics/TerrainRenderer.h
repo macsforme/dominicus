@@ -4,9 +4,6 @@
 #ifndef TERRAINRENDERER_H
 #define TERRAINRENDERER_H
 
-#include <map>
-#include <string>
-
 #include "graphics/DrawTypes.h"
 #include "platform/OpenGLHeaders.h"
 
@@ -20,7 +17,7 @@ public:
 
 	void reloadState();
 
-	void execute(std::map<std::string, void*> arguments);
+	void execute(DrawStackArgList arguments);
 };
 
 #endif // TERRAINRENDERER_H

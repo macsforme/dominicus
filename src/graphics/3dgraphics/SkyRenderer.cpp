@@ -3,11 +3,12 @@
 
 #include "graphics/3dgraphics/SkyRenderer.h"
 
-#include <vector>
+#include <cmath>
 
 #include "graphics/GameGraphics.h"
-#include "logic/Camera.h"
 #include "math/MatrixMath.h"
+#include "math/MiscMath.h"
+#include "math/ScalarMath.h"
 #include "math/VectorMath.h"
 #include "platform/OpenGLHeaders.h"
 #include "state/GameState.h"
@@ -45,7 +46,7 @@ SkyRenderer::~SkyRenderer() {
 	glDeleteBuffers(1, &(vertexBuffers["elements"]));
 }
 
-void SkyRenderer::execute(std::map<std::string, void*> arguments) {
+void SkyRenderer::execute(DrawStackArgList arguments) {
 	// prepare variables
 	Matrix4 mvpMatrix; mvpMatrix.identity();
 	scaleMatrix(

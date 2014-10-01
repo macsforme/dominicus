@@ -4,7 +4,6 @@
 #ifndef DRAWCONTAINER_H
 #define DRAWCONTAINER_H
 
-#include <map>
 #include <vector>
 
 #include "graphics/DrawTypes.h"

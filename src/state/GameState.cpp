@@ -3,6 +3,19 @@
 
 #include "state/GameState.h"
 
+#include <cmath>
+#include <cstring>
+
+#include "audio/GameAudio.h"
+#include "geometry/DiamondSquare.h"
+#include "math/MatrixMath.h"
+#include "math/MiscMath.h"
+#include "math/ScalarMath.h"
+#include "platform/Platform.h"
+
+extern GameAudio* gameAudio;
+extern Platform* platform;
+
 GameState::GameState() : MainLoopMember((unsigned int) gameSystem->getFloat("stateUpdateFrequency")) {
 	// randomly generate the island
 	size_t density = (size_t) gameSystem->getFloat("islandTerrainBaseDensity");
@@ -62,7 +75,7 @@ GameState::GameState() : MainLoopMember((unsigned int) gameSystem->getFloat("sta
 	// generate an "alphaBump" mappings for height variance in island
 	float alphaHeightMap[density][density];
 
-	Vector2 midpoint = Vector2(0.0f, 0.0f);
+	Vector2 midpoint(0.0f, 0.0f);
 
 	// fill the mask with values
 	for(unsigned int p = 0; p < density; ++p) {
@@ -439,7 +452,7 @@ unsigned int GameState::execute(bool unScheduled) {
 			Vector3 originsVector = missileStartPos - shellStartPos;
 			float cpaProgression = -dot(originsVector, travelsVector) / dotProd;
 
-			if(isnan(cpaProgression) || cpaProgression < 0.0f)
+			if(std::isnan(cpaProgression) || cpaProgression < 0.0f)
 				cpaProgression = 0.0f;
 			if(cpaProgression > 1.0f)
 				cpaProgression = 1.0f;
@@ -450,7 +463,7 @@ unsigned int GameState::execute(bool unScheduled) {
 			originsVector = (missileStartPos + missileTravelVec * cpaProgression) - (shellStartPos + shellTravelVec * cpaProgression);
 			float cpaMissileProgression = -dot(originsVector, travelsVector) / dotProd;
 
-			if(isnan(cpaMissileProgression) || cpaMissileProgression < 0.0f)
+			if(std::isnan(cpaMissileProgression) || cpaMissileProgression < 0.0f)
 				cpaMissileProgression = 0.0f;
 			if(cpaMissileProgression > 1.0f)
 				cpaMissileProgression = 1.0f;

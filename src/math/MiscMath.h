@@ -4,8 +4,6 @@
 #ifndef MISCMATH_H
 #define MISCMATH_H
 
-// program headers
-#include "math/MatrixMath.h"
 #include "math/ScalarMath.h"
 #include "math/VectorMath.h"
 

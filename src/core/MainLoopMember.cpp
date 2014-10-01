@@ -3,6 +3,10 @@
 
 #include "core/MainLoopMember.h"
 
+#include "platform/Platform.h"
+
+extern Platform* platform;
+
 MainLoopMember::MainLoopMember(unsigned int requestedFrequency) {
 	last = 0;
 	targetSleepMills = (int) (requestedFrequency != 0 ? 1000 / requestedFrequency : 0);

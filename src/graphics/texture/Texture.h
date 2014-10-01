@@ -4,18 +4,8 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
-// program headers
-#include "core/GameSystem.h"
-
-// library headers
-#include <cstring>
-#include <fstream>
-#include <sstream>
 #include <stdint.h>
 #include <string>
-
-// global variables
-extern GameSystem* gameSystem;
 
 class Texture {
 public:

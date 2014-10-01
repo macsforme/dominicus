@@ -1,14 +1,12 @@
-// MissileRenderer.h
+// MissileTrailRenderer.h
 // Crucible Island
 
 #ifndef MISSILETRAILRENDERER_H
 #define MISSILETRAILRENDERER_H
 
-#include <map>
-#include <string>
-
 #include "geometry/Mesh.h"
 #include "graphics/DrawTypes.h"
+#include "platform/OpenGLHeaders.h"
 
 class MissileTrailRenderer : public BaseDrawNode {
 private:
@@ -20,7 +18,7 @@ public:
 	MissileTrailRenderer();
 	~MissileTrailRenderer();
 
-	void execute(std::map<std::string, void*> arguments);
+	void execute(DrawStackArgList arguments);
 };
 
 #endif // MISSILETRAILRENDERER_H

@@ -4,13 +4,10 @@
 #ifndef UILAYOUTAUTHORITY_H
 #define UILAYOUTAUTHORITY_H
 
-// program headers
-#include "math/VectorMath.h"
-
-// library headers
 #include <vector>
 
-// class definitions
+#include "math/VectorMath.h"
+
 class UIMetrics {
 public:
 	enum Bearing {

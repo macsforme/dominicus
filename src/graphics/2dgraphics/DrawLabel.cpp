@@ -3,15 +3,19 @@
 
 #include "graphics/2dgraphics/DrawLabel.h"
 
+#include <cstdlib>
+#include <sstream>
+#include <string>
 #include <vector>
 
+#include "core/GameSystem.h"
 #include "graphics/GameGraphics.h"
-#include "graphics/text/FontManager.h"
 #include "graphics/text/TextBlock.h"
 #include "graphics/UILayoutAuthority.h"
 #include "platform/OpenGLHeaders.h"
 
 extern GameGraphics* gameGraphics;
+extern GameSystem* gameSystem;
 
 DrawLabel::DrawLabel() {
 	// set up vertex buffers
@@ -309,7 +313,7 @@ void DrawLabel::execute(DrawStackArgList argList) {
 	}
 
 	// get the actual size so possibly incorrect metrics don't skew the text
-	Vector2 actualSize = Vector2(
+	Vector2 actualSize(
 			(float) textBlock.width / (float) gameGraphics->resolutionX * 2.0f,
 			(float) textBlock.height / (float) gameGraphics->resolutionY * 2.0f
 		);

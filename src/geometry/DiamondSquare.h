@@ -6,12 +6,6 @@
 #ifndef DIAMONDSQUARE_H
 #define DIAMONDSQUARE_H
 
-// program headers
-#include "math/ScalarMath.h"
-
-// library headers
-#include <cstdlib>
-
 class DiamondSquare {
 public:
 	unsigned int size;

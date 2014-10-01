@@ -4,24 +4,17 @@
 #ifndef GAMESTATE_H
 #define GAMESTATE_H
 
-// program headers
-#include "audio/GameAudio.h"
-#include "core/GameSystem.h"
-#include "core/MainLoopMember.h"
-#include "math/VectorMath.h"
-#include "math/MatrixMath.h"
-#include "math/MiscMath.h"
-#include "geometry/DiamondSquare.h"
-#include "geometry/Mesh.h"
-
-// library headers
+#include <cstdlib>
+#include <string>
 #include <vector>
 
-// global variables
-extern GameAudio* gameAudio;
+#include "core/GameSystem.h"
+#include "core/MainLoopMember.h"
+#include "geometry/Mesh.h"
+#include "math/VectorMath.h"
+
 extern GameSystem* gameSystem;
 
-// class definitions
 class Fortress {
 public:
 	float health;

@@ -1,12 +1,11 @@
 // DrawStrikeEffect.h
-// crucible island
+// Crucible Island
 
 #ifndef DRAWSTRIKEEFFECT_H
 #define DRAWSTRIKEEFFECT_H
 
 #include "graphics/DrawTypes.h"
 #include "graphics/2dgraphics/DrawGrayOut.h"
-#include "math/VectorMath.h"
 
 class DrawStrikeEffect : public DrawGrayOut {
 public:

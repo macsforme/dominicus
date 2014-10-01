@@ -3,36 +3,35 @@
 
 #include "logic/Schemes.h"
 
-#include "graphics/DrawingMaster.h"
-#include "graphics/GameGraphics.h"
-#include "graphics/text/TextBlock.h"
-#include "graphics/2dgraphics/DrawProgressBar.h"
-#include "graphics/2dgraphics/DrawButton.h"
-#include "graphics/2dgraphics/DrawContainer.h"
-#include "graphics/2dgraphics/DrawLabel.h"
-#include "graphics/2dgraphics/DrawField.h"
-#include "graphics/2dgraphics/DrawGaugePanel.h"
-#include "graphics/2dgraphics/DrawStrikeEffect.h"
-#include "graphics/2dgraphics/DrawTexture.h"
-#include "logic/GameLogic.h"
-#include "graphics/UILayoutAuthority.h"
-#include "math/MatrixMath.h"
-#include "math/ScalarMath.h"
-#include "math/VectorMath.h"
-#include "platform/Platform.h"
-#include "state/GameState.h"
-
+#include <cstdio>
+#include <cstdlib>
 #include <sstream>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
-#include <utility>
 #include <vector>
+
+#include "core/GameSystem.h"
+#include "graphics/DrawingMaster.h"
+#include "graphics/GameGraphics.h"
+#include "graphics/UILayoutAuthority.h"
+#include "graphics/2dgraphics/DrawButton.h"
+#include "graphics/2dgraphics/DrawField.h"
+#include "graphics/2dgraphics/DrawGaugePanel.h"
+#include "graphics/2dgraphics/DrawLabel.h"
+#include "graphics/2dgraphics/DrawRadar.h"
+#include "graphics/2dgraphics/DrawTexture.h"
+#include "input/InputHandler.h"
+#include "logic/GameLogic.h"
+#include "math/VectorMath.h"
+#include "platform/Platform.h"
+#include "state/GameState.h"
 
 extern DrawingMaster* drawingMaster;
 extern GameGraphics* gameGraphics;
 extern GameLogic* gameLogic;
 extern GameState* gameState;
+extern InputHandler* inputHandler;
 extern Platform* platform;
 
 void Schemes::mainMenuScheme() {
@@ -433,7 +432,7 @@ void Schemes::helpScheme() {
 
 	// re-arrange the UI
 	drawingMaster->uiLayoutAuthority->rearrange();
-	
+
 	// set up button listeners with new position
 	gameLogic->aboutButtonZoneListener->ll = ((UIMetrics*) gameLogic->aboutButtonEntry.second["metrics"])->position -	((UIMetrics*) gameLogic->aboutButtonEntry.second["metrics"])->size / 2.0f;
 	gameLogic->aboutButtonZoneListener->ur = ((UIMetrics*) gameLogic->aboutButtonEntry.second["metrics"])->position + ((UIMetrics*) gameLogic->aboutButtonEntry.second["metrics"])->size / 2.0f;
@@ -557,7 +556,7 @@ void Schemes::aboutScheme() {
 
 	// re-arrange the UI
 	drawingMaster->uiLayoutAuthority->rearrange();
-	
+
 	// set up button listener with new position
 	gameLogic->backButtonZoneListener->ll = ((UIMetrics*) gameLogic->backButtonEntry.second["metrics"])->position -	((UIMetrics*) gameLogic->backButtonEntry.second["metrics"])->size / 2.0f;
 	gameLogic->backButtonZoneListener->ur = ((UIMetrics*) gameLogic->backButtonEntry.second["metrics"])->position + ((UIMetrics*) gameLogic->backButtonEntry.second["metrics"])->size / 2.0f;
@@ -776,7 +775,7 @@ void Schemes::settingsScheme() {
 
 	// re-arrange the UI
 	drawingMaster->uiLayoutAuthority->rearrange();
-	
+
 	// set up button listeners with new positions
 	gameLogic->levelButtonZoneListener->ll = ((UIMetrics*) gameLogic->levelSettingEntry.second["metrics"])->position - ((UIMetrics*) gameLogic->levelSettingEntry.second["metrics"])->size / 2.0f;
 	gameLogic->levelButtonZoneListener->ur = ((UIMetrics*) gameLogic->levelSettingEntry.second["metrics"])->position + ((UIMetrics*) gameLogic->levelSettingEntry.second["metrics"])->size / 2.0f;
@@ -958,7 +957,7 @@ void Schemes::highScoresScheme() {
 
 	// re-arrange the UI
 	drawingMaster->uiLayoutAuthority->rearrange();
-	
+
 	// set up button listener with new position
 	gameLogic->backButtonZoneListener->ll = ((UIMetrics*) gameLogic->backButtonEntry.second["metrics"])->position -	((UIMetrics*) gameLogic->backButtonEntry.second["metrics"])->size / 2.0f;
 	gameLogic->backButtonZoneListener->ur = ((UIMetrics*) gameLogic->backButtonEntry.second["metrics"])->position + ((UIMetrics*) gameLogic->backButtonEntry.second["metrics"])->size / 2.0f;
@@ -1453,7 +1452,7 @@ void Schemes::pausedScheme() {
 
 	// re-arrange the UI
 	drawingMaster->uiLayoutAuthority->rearrange();
-	
+
 	// set up button listeners with new position
 	gameLogic->resumeButtonZoneListener->ll = ((UIMetrics*) gameLogic->resumeButtonEntry.second["metrics"])->position -	((UIMetrics*) gameLogic->resumeButtonEntry.second["metrics"])->size / 2.0f;
 	gameLogic->resumeButtonZoneListener->ur = ((UIMetrics*) gameLogic->resumeButtonEntry.second["metrics"])->position + ((UIMetrics*) gameLogic->resumeButtonEntry.second["metrics"])->size / 2.0f;

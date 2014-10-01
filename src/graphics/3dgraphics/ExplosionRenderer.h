@@ -4,13 +4,12 @@
 #ifndef EXPLOSIONRENDERER_H
 #define EXPLOSIONRENDERER_H
 
-#include <map>
-#include <string>
+#include <cstdlib>
+#include <vector>
 
 #include "geometry/Mesh.h"
 #include "graphics/DrawTypes.h"
 #include "math/VectorMath.h"
-#include "state/GameState.h"
 
 class ExplosionRenderer : public BaseDrawNode {
 private:
@@ -34,7 +33,7 @@ public:
 	ExplosionRenderer();
 	~ExplosionRenderer();
 
-	void execute(std::map<std::string, void*> arguments);
+	void execute(DrawStackArgList);
 
 	void reloadState();
 };

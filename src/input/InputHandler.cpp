@@ -3,6 +3,8 @@
 
 #include "input/InputHandler.h"
 
+#include <SDL.h>
+
 #include "core/GameSystem.h"
 
 extern GameSystem* gameSystem;
@@ -19,15 +21,14 @@ InputHandler::~InputHandler() {
 }
 
 unsigned int InputHandler::execute(bool unScheduled) {
-	// poll SDL for events and forward the ones we use to the appropriate
-	// input handler
+	// poll SDL for events and forward the ones we use to the appropriate input handler
 	SDL_Event event;
 
 	while(SDL_PollEvent(&event)) {
 		switch(event.type) {
 		case SDL_QUIT:
 			keepProgramAlive = false;
-			
+
 			break;
 		case SDL_KEYDOWN:
 		case SDL_KEYUP:
@@ -45,11 +46,9 @@ unsigned int InputHandler::execute(bool unScheduled) {
 		}
 	}
 
-	// run the input handlers
 	keyboard->execute();
 	mouse->execute();
 
-	// track runcount
 	trackRunCount();
 
 	// calculate and return sleep time from superclass

@@ -3,6 +3,45 @@
 
 #include "logic/GameLogic.h"
 
+#include <cmath>
+#include <cstdio>
+#include <cstdlib>
+#include <map>
+#include <SDL.h>
+#include <sstream>
+#include <utility>
+#include <vector>
+
+#include "audio/GameAudio.h"
+#include "core/GameSystem.h"
+#include "graphics/DrawingMaster.h"
+#include "graphics/GameGraphics.h"
+#include "graphics/2dgraphics/DrawButton.h"
+#include "graphics/2dgraphics/DrawField.h"
+#include "graphics/2dgraphics/DrawGaugePanel.h"
+#include "graphics/2dgraphics/DrawLabel.h"
+#include "graphics/2dgraphics/DrawMissileIndicators.h"
+#include "graphics/2dgraphics/DrawRadar.h"
+#include "graphics/2dgraphics/DrawTexture.h"
+#include "graphics/3dgraphics/ExplosionRenderer.h"
+#include "graphics/3dgraphics/TerrainRenderer.h"
+#include "input/InputHandler.h"
+#include "logic/Schemes.h"
+#include "math/MatrixMath.h"
+#include "math/ScalarMath.h"
+#include "platform/Platform.h"
+#include "state/GameState.h"
+
+extern DrawingMaster* drawingMaster;
+extern GameAudio* gameAudio;
+extern GameGraphics* gameGraphics;
+extern GameState* gameState;
+extern GameSystem* gameSystem;
+extern InputHandler* inputHandler;
+extern Platform* platform;
+extern bool keepProgramAlive;
+extern std::map<MainLoopMember*,unsigned int> mainLoopModules;
+
 GameLogic::GameLogic() :
 		MainLoopMember((unsigned int) gameSystem->getFloat("logicUpdateFrequency")),
 		mouseActive(false),
@@ -211,7 +250,7 @@ GameLogic::GameLogic() :
 	creditsEntry.second["fontColor"] = (void*) new Vector4;
 	creditsEntry.second["wrap"] = (void*) new float;
 	creditsEntry.second["text"] = (void*) new std::string;
-	
+
 	std::vector<SDLKey> settingsMenuKeys;
 	settingsMenuKeys.push_back(SDLK_UP);
 	settingsMenuKeys.push_back(SDLK_DOWN);
@@ -263,7 +302,7 @@ GameLogic::GameLogic() :
 	fullscreenSettingEntry.second["text"] = (void*) new std::string;
 	fullscreenButtonZoneListener = new MouseZoneListener();
 	fullscreenButtonClickListener = new MouseButtonListener();
-	
+
 	windowedScreenResolutionEntry.first = "label";
 	windowedScreenResolutionEntry.second["metrics"] = (void*) new UIMetrics;
 	windowedScreenResolutionEntry.second["fontSize"] = (void*) new float;
@@ -692,7 +731,7 @@ void GameLogic::reScheme() {
 	case SCHEME_SETTINGS:
 		Schemes::settingsScheme();
 		break;
-		
+
 	case SCHEME_HIGHSCORES:
 		Schemes::highScoresScheme();
 		break;
@@ -1729,7 +1768,7 @@ unsigned int GameLogic::execute(bool unScheduled) {
 				gameSystem->setStandard("gameStartingLevel", "Easy", "");
 			}
 			gameSystem->flushPreferences();
-			
+
 			reScheme();
 			needRedraw = true;
 
@@ -2027,7 +2066,7 @@ unsigned int GameLogic::execute(bool unScheduled) {
 						gameSystem->setStandard("gameStartingLevel", (key == SDLK_RIGHT ? "Easy" : "Medium"), "");
 					}
 					gameSystem->flushPreferences();
-			
+
 					reScheme();
 					needRedraw = true;
 

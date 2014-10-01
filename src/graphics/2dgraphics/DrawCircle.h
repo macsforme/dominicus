@@ -4,9 +4,6 @@
 #ifndef DRAWCIRCLE_H
 #define DRAWCIRCLE_H
 
-#include <map>
-#include <string>
-
 #include "graphics/DrawTypes.h"
 #include "graphics/2dgraphics/DrawContainer.h"
 

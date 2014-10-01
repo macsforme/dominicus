@@ -1,16 +1,19 @@
 // Platform.cpp
 // Crucible Island
 
+#include <CoreFoundation/CoreFoundation.h>
+#include <cstdlib>
+#include <iostream>
+#include <mach/mach_time.h>
+#include <sstream>
+#include <stdint.h>
+#include <string>
+#include <time.h>
+
+#include "core/GameSystem.h"
 #include "platform/Platform.h"
 
-// platform-specific system headers
-#include <CoreFoundation/CoreFoundation.h>
-#include <iostream>
-#include <sstream>
-#include <mach/mach_time.h>
-#include <SDL.h>
-#include <stdint.h>
-#include <time.h>
+extern GameSystem* gameSystem;
 
 Platform::Platform() {
 	// determine the resource directory path
