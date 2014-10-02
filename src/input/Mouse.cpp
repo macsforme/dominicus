@@ -7,9 +7,6 @@
 
 extern GameGraphics* gameGraphics;
 
-MouseButtonListener::MouseButtonListener(uint8_t button, Vector2 ll, Vector2 ur, bool trap) :
-		listeningButton(button), ll(ll), ur(ur), trap(trap), buttonHit(false) { }
-
 bool MouseButtonListener::wasClicked() {
 	if(! buttonHit)
 		return false;
@@ -18,8 +15,6 @@ bool MouseButtonListener::wasClicked() {
 
 	return true;
 }
-
-MouseMotionListener::MouseMotionListener(bool trap) : trap(trap), motion(false) { }
 
 bool MouseMotionListener::wasMoved() {
 	if(! motion)
@@ -30,9 +25,6 @@ bool MouseMotionListener::wasMoved() {
 	return true;
 }
 
-MouseZoneListener::MouseZoneListener(Vector2 ll, Vector2 ur, bool trap) :
-		ll(ll), ur(ur), trap(trap), isEntered(false), wasChange(false) { }
-
 bool MouseZoneListener::wasChanged() {
 	if(! wasChange)
 		return false;
@@ -40,10 +32,6 @@ bool MouseZoneListener::wasChanged() {
 	wasChange = false;
 
 	return true;
-}
-
-void Mouse::addListener(MouseButtonListener* listener) {
-	mouseButtonListeners.push_back(listener);
 }
 
 void Mouse::removeListener(MouseButtonListener* listener) {
@@ -56,10 +44,6 @@ void Mouse::removeListener(MouseButtonListener* listener) {
 	}
 }
 
-void Mouse::addListener(MouseMotionListener* listener) {
-	mouseMotionListeners.push_back(listener);
-}
-
 void Mouse::removeListener(MouseMotionListener* listener) {
 	for(int i = (int) mouseMotionListeners.size() - 1; i >= 0; --i) {
 		if(mouseMotionListeners[i] == listener) {
@@ -68,10 +52,6 @@ void Mouse::removeListener(MouseMotionListener* listener) {
 			break;
 		}
 	}
-}
-
-void Mouse::addListener(MouseZoneListener* listener) {
-	mouseZoneListeners.push_back(listener);
 }
 
 void Mouse::removeListener(MouseZoneListener* listener) {

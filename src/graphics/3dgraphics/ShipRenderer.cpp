@@ -20,9 +20,7 @@ extern GameGraphics* gameGraphics;
 extern GameState* gameState;
 extern GameSystem* gameSystem;
 
-ShipRenderer::ShipRenderer() {
-	shipMesh = Mesh("ship");
-
+ShipRenderer::ShipRenderer() : shipMesh(Mesh("ship")) {
 	// set up vertex buffers
 	glGenBuffers(1, &(vertexBuffers["vertices"]));
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);

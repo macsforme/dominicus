@@ -10,15 +10,7 @@
 extern GameSystem* gameSystem;
 extern bool keepProgramAlive;
 
-InputHandler::InputHandler() : MainLoopMember((unsigned int) gameSystem->getFloat("inputPollingFrequency")) {
-	keyboard = new Keyboard();
-	mouse = new Mouse();
-}
-
-InputHandler::~InputHandler() {
-	delete keyboard;
-	delete mouse;
-}
+InputHandler::InputHandler() : MainLoopMember((unsigned int) gameSystem->getFloat("inputPollingFrequency")) { }
 
 unsigned int InputHandler::execute(bool unScheduled) {
 	// poll SDL for events and forward the ones we use to the appropriate input handler
@@ -32,13 +24,13 @@ unsigned int InputHandler::execute(bool unScheduled) {
 			break;
 		case SDL_KEYDOWN:
 		case SDL_KEYUP:
-			keyboard->eventStack.push_back(event);
+			keyboard.eventStack.push_back(event);
 
 			break;
 		case SDL_MOUSEMOTION:
 		case SDL_MOUSEBUTTONDOWN:
 		case SDL_ACTIVEEVENT:
-			mouse->eventStack.push_back(event);
+			mouse.eventStack.push_back(event);
 
 			break;
 		default:
@@ -46,8 +38,8 @@ unsigned int InputHandler::execute(bool unScheduled) {
 		}
 	}
 
-	keyboard->execute();
-	mouse->execute();
+	keyboard.execute();
+	mouse.execute();
 
 	trackRunCount();
 

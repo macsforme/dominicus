@@ -13,9 +13,8 @@
 // Build identifier string (DEVEL | ALPHA# | BETA# | STABLE)
 #define PROGRAM_BUILDSTRING "DEVEL"
 
+#include <cstdlib>
 #include <map>
-#include <SDL.h>
-#include <stdint.h>
 #include <string>
 #include <utility>
 #include <vector>
@@ -23,12 +22,8 @@
 #include "math/VectorMath.h"
 
 class GameSystem {
-public:
-	std::string versionString;
+	std::vector<std::string> logLines;
 
-	unsigned int displayResolutionX, displayResolutionY; // hardware specification
-
-private:
 	struct StandardEntry {
 		std::string value;
 		std::string description;
@@ -37,46 +32,36 @@ private:
 
 	std::map<std::string,StandardEntry> standards;
 
-	typedef std::vector< std::pair<std::string, SDLKey> > KeyBindingStorage;
-	typedef std::vector< std::pair<std::string, uint8_t> > MouseButtonBindingStorage;
-
-	KeyBindingStorage keyBindings;
-	MouseButtonBindingStorage mouseButtonBindings;
+	StandardEntry getStandard(const char* key);
 
 public:
+	GameSystem();
+
 	enum LogDetail {
 		LOG_INFO, // critical game information that is always displayed
 		LOG_VERBOSE, // verbose information that users generally don't need to see
 		LOG_FATAL // errors created by outside means that we can't survive
 	};
 
-	std::vector<std::string> logLines;
-
 	void log(LogDetail detail, std::string report);
 
-	bool isStandard(const char* key) const;
-
-private:
-	StandardEntry getStandard(const char* key);
-
-public:
-	std::string getString(const char* key);
+	std::string getString(const char* key) { return getStandard(key).value; }
 	Vector4 getColor(const char* key);
-	float getFloat(const char* key);
-	bool getBool(const char* key);
+	float getFloat(const char* key) { return (float) atof(getString(key).c_str()); }
+	bool getBool(const char* key) { return getString(key) != "false"; }
 
-	// standards manipulation
 	void setStandard(const char* key, const char* value, const char* description = "", bool locked = false);
 	void setStandard(const char* key, Vector4 value, const char* description = "", bool locked = false);
 	void setStandard(const char* key, float value, const char* description = "", bool locked = false);
 	void setStandard(const char* key, bool value, const char* description = "", bool locked = false);
+	std::string versionString;
 
-	// standards/preferences integration
+	unsigned int displayResolutionX, displayResolutionY; // hardware specification
+
 	void flushPreferences();
 
 	std::vector< std::pair<unsigned int, std::string> > highScores;
 
-	// window element scaling
 	std::vector< std::pair<unsigned int, unsigned int> > getAllowedWindowResolutions();
 	void applyScreenResolution(std::string resolution);
 
@@ -88,7 +73,6 @@ public:
 		LIMIT_OFF
 	};
 
-	GameSystem();
 };
 
 #endif // GAMESYSTEM_H

@@ -4,20 +4,13 @@
 #include "core/GameSystem.h"
 
 #include <cstdio>
-#include <cstdlib>
+#include <SDL.h>
 #include <sstream>
 
 #include "math/MiscMath.h"
 #include "platform/Platform.h"
 
 extern Platform* platform;
-
-bool GameSystem::isStandard(const char* key) const {
-	if(standards.find(key) != standards.end())
-		return true;
-	else
-		return false;
-}
 
 GameSystem::StandardEntry GameSystem::getStandard(const char* key) {
 	if(standards.find(key) == standards.end()) {
@@ -28,156 +21,6 @@ GameSystem::StandardEntry GameSystem::getStandard(const char* key) {
 	}
 
 	return standards[key];
-}
-
-std::string GameSystem::getString(const char* key) {
-	return getStandard(key).value;
-}
-
-Vector4 GameSystem::getColor(const char* key) {
-	int colors[4];
-	sscanf(getString(key).c_str(), "%2x%2x%2x%2x", &colors[0], &colors[1], &colors[2], &colors[3]);
-
-	return Vector4(
-			(float) colors[0] / 255.0f,
-			(float) colors[1] / 255.0f,
-			(float) colors[2] / 255.0f,
-			(float) colors[3] / 255.0f
-		);
-}
-
-float GameSystem::getFloat(const char* key) {
-	return (float) atof(getString(key).c_str());
-}
-
-bool GameSystem::getBool(const char* key) {
-	return getString(key) != "false";
-}
-
-void GameSystem::setStandard(const char* key, const char* value,
-		const char* description, bool locked) {
-	StandardEntry entry;
-
-	entry.value = value;
-	if(strcmp(description, "") != 0) entry.description = description;
-	entry.locked = locked;
-
-	standards[key] = entry;
-}
-
-void GameSystem::setStandard(const char* key, Vector4 value,
-		const char* description, bool locked) {
-	char str[9];
-	sprintf(
-			str,
-			"%02x%02x%02x%02x",
-			(int) (value.x * 255.0f),
-			(int) (value.y * 255.0f),
-			(int) (value.z * 255.0f),
-			(int) (value.w * 255.0f)
-		);
-
-	setStandard(key, str, description, locked);
-}
-
-void GameSystem::setStandard(const char* key, float value,
-		const char* description, bool locked) {
-	std::stringstream str;
-	str << value;
-
-	setStandard(key, str.str().c_str(), description, locked);
-}
-
-void GameSystem::setStandard(const char* key, bool value,
-		const char* description, bool locked) {
-	setStandard(key, (value != false ? "true" : "false"), description, locked);
-}
-
-void GameSystem::flushPreferences() {
-	platform->setPreference("preferencesVersion", getFloat("preferencesVersion"));
-	platform->setPreference("displayWindowedResolution", getString("displayWindowedResolution").c_str());
-	platform->setPreference("displayStartFullscreen", getBool("displayStartFullscreen") == true ? 1.0f : 0.0f);
-	platform->setPreference("displayFramerateLimiting", getFloat("displayFramerateLimiting"));
-	platform->setPreference("displayMultisamplingLevel", getFloat("displayMultisamplingLevel"));
-	platform->setPreference("audioMusicVolume", getFloat("audioMusicVolume"));
-	platform->setPreference("audioEffectsVolume", getFloat("audioEffectsVolume"));
-	platform->setPreference("gameStartingLevel", getString("gameStartingLevel").c_str());
-	platform->setPreference("islandTerrainDetail", getFloat("islandTerrainDetail"));
-	platform->setPreference("developmentMode", (getBool("developmentMode") == true ? 1.0f : 0.0f));
-	if(highScores.size() == 0) {
-		platform->setPreference("highScores", "");
-	} else {
-		std::stringstream stringStream;
-		stringStream << "\"";
-		for(size_t i = 0; i < highScores.size(); ++i)
-			stringStream << (i > 0 ? "\n" : "") << highScores[i].second << "\t" << highScores[i].first;
-		stringStream << "\"";
-		platform->setPreference("highScores", stringStream.str().c_str());
-	}
-}
-
-void GameSystem::log(LogDetail detail, std::string report) {
-	std::stringstream fullReport;
-
-	if(platform != NULL)
-		fullReport << platform->getExecMills() << " ";
-	else
-		fullReport << "0 ";
-
-	if(detail == LOG_INFO)
-		fullReport << "INFO: " << report;
-	else if(detail == LOG_VERBOSE)
-		fullReport << "VERBOSE: " << report;
-	else
-		fullReport << "FATAL: " << report;
-
-		logLines.push_back(fullReport.str());
-
-	if(detail == LOG_FATAL) {
-		Platform::consoleOut(fullReport.str() + "\n");
-
-		exit(1);
-	}
-}
-
-std::vector< std::pair<unsigned int, unsigned int> > GameSystem::getAllowedWindowResolutions() {
-	// return all resolutions within limit of screen resolution factor
-	std::string resolutionsString = getString("displayWindowedResolutions");
-	std::vector< std::pair<unsigned int, unsigned int> > resolutions;
-
-	size_t stringOffset = 0;
-	while(stringOffset < resolutionsString.length()) {
-		std::string resolution = resolutionsString.substr(stringOffset, resolutionsString.find(',', stringOffset) - stringOffset);
-		std::pair<unsigned int, unsigned int> resolutionPair;
-		resolutionPair.first = (unsigned int) atoi(resolution.substr(0, resolution.find('x')).c_str());
-		resolutionPair.second = (unsigned int) atoi(resolution.substr(resolution.find('x') + 1, std::string::npos).c_str());
-
-		if(resolutionPair.second <= (unsigned int) ((float) displayResolutionY * getFloat("displayWindowedMaxPortion")))
-			resolutions.push_back(resolutionPair);
-
-		stringOffset += resolution.length() + 1;
-	}
-
-	return resolutions;
-}
-
-void GameSystem::applyScreenResolution(std::string resolution) {
-	std::string resolutionsString = getString("displayWindowedResolutions");
-	float scalingFactor = atof(resolution.substr(resolution.find('x') + 1, std::string::npos).c_str()) /
-			atof(resolutionsString.substr(resolutionsString.find('x') + 1, resolutionsString.find(',') - resolutionsString.find('x') + 1).c_str());
-
-	// round sizes to nearest even integer
-	setStandard("hudElementMargin", (float) (roundToInt(getFloat("hudBaseElementMargin") * scalingFactor / 2.0f) * 2));
-	setStandard("hudContainerPadding", (float) (roundToInt(getFloat("hudBaseContainerPadding") * scalingFactor / 2.0f) * 2));
-	setStandard("hudButtonPadding", (float) (roundToInt(getFloat("hudBaseButtonPadding") * scalingFactor / 2.0f) * 2));
-	setStandard("hudBigButtonPadding", (float) (roundToInt(getFloat("hudBaseBigButtonPadding") * scalingFactor / 2.0f) * 2));
-	setStandard("hudGaugePadding", (float) (roundToInt(getFloat("hudBaseGaugePadding") * scalingFactor / 2.0f) * 2));
-	setStandard("fontSizeSmall", (float) (roundToInt(getFloat("fontBaseSizeSmall") * scalingFactor / 2.0f) * 2));
-	setStandard("fontSizeMedium", (float) (roundToInt(getFloat("fontBaseSizeMedium") * scalingFactor / 2.0f) * 2));
-	setStandard("fontSizeLarge", (float) (roundToInt(getFloat("fontBaseSizeLarge") * scalingFactor / 2.0f) * 2));
-	setStandard("fontSizeSuper", (float) (roundToInt(getFloat("fontBaseSizeSuper") * scalingFactor / 2.0f) * 2));
-	setStandard("logoHeight", (float) (roundToInt(getFloat("logoBaseHeight") * scalingFactor / 2.0f) * 2));
-	setStandard("gaugeImagesHeight", (float) (roundToInt(getFloat("gaugeImagesBaseHeight") * scalingFactor / 2.0f) * 2));
 }
 
 GameSystem::GameSystem() {
@@ -423,4 +266,138 @@ GameSystem::GameSystem() {
 	std::stringstream buildInfo;
 	buildInfo << "Game Version: " << versionString;
 	this->log(LOG_INFO, buildInfo.str().c_str());
+}
+
+void GameSystem::log(LogDetail detail, std::string report) {
+	std::stringstream fullReport;
+
+	if(platform != NULL)
+		fullReport << platform->getExecMills() << " ";
+	else
+		fullReport << "0 ";
+
+	if(detail == LOG_INFO)
+		fullReport << "INFO: " << report;
+	else if(detail == LOG_VERBOSE)
+		fullReport << "VERBOSE: " << report;
+	else
+		fullReport << "FATAL: " << report;
+
+		logLines.push_back(fullReport.str());
+
+	if(detail == LOG_FATAL) {
+		Platform::consoleOut(fullReport.str() + "\n");
+
+		exit(1);
+	}
+}
+
+Vector4 GameSystem::getColor(const char* key) {
+	int colors[4];
+	sscanf(getString(key).c_str(), "%2x%2x%2x%2x", &colors[0], &colors[1], &colors[2], &colors[3]);
+
+	return Vector4(
+			(float) colors[0] / 255.0f,
+			(float) colors[1] / 255.0f,
+			(float) colors[2] / 255.0f,
+			(float) colors[3] / 255.0f
+		);
+}
+
+void GameSystem::setStandard(const char* key, const char* value, const char* description, bool locked) {
+	StandardEntry entry;
+
+	entry.value = value;
+	if(strcmp(description, "") != 0) entry.description = description;
+	entry.locked = locked;
+
+	standards[key] = entry;
+}
+
+void GameSystem::setStandard(const char* key, Vector4 value, const char* description, bool locked) {
+	char str[9];
+	sprintf(
+			str,
+			"%02x%02x%02x%02x",
+			(int) (value.x * 255.0f),
+			(int) (value.y * 255.0f),
+			(int) (value.z * 255.0f),
+			(int) (value.w * 255.0f)
+		);
+
+	setStandard(key, str, description, locked);
+}
+
+void GameSystem::setStandard(const char* key, float value, const char* description, bool locked) {
+	std::stringstream str;
+	str << value;
+
+	setStandard(key, str.str().c_str(), description, locked);
+}
+
+void GameSystem::setStandard(const char* key, bool value, const char* description, bool locked) {
+	setStandard(key, (value != false ? "true" : "false"), description, locked);
+}
+
+void GameSystem::flushPreferences() {
+	platform->setPreference("preferencesVersion", getFloat("preferencesVersion"));
+	platform->setPreference("displayWindowedResolution", getString("displayWindowedResolution").c_str());
+	platform->setPreference("displayStartFullscreen", getBool("displayStartFullscreen") == true ? 1.0f : 0.0f);
+	platform->setPreference("displayFramerateLimiting", getFloat("displayFramerateLimiting"));
+	platform->setPreference("displayMultisamplingLevel", getFloat("displayMultisamplingLevel"));
+	platform->setPreference("audioMusicVolume", getFloat("audioMusicVolume"));
+	platform->setPreference("audioEffectsVolume", getFloat("audioEffectsVolume"));
+	platform->setPreference("gameStartingLevel", getString("gameStartingLevel").c_str());
+	platform->setPreference("islandTerrainDetail", getFloat("islandTerrainDetail"));
+	platform->setPreference("developmentMode", (getBool("developmentMode") == true ? 1.0f : 0.0f));
+	if(highScores.size() == 0) {
+		platform->setPreference("highScores", "");
+	} else {
+		std::stringstream stringStream;
+		stringStream << "\"";
+		for(size_t i = 0; i < highScores.size(); ++i)
+			stringStream << (i > 0 ? "\n" : "") << highScores[i].second << "\t" << highScores[i].first;
+		stringStream << "\"";
+		platform->setPreference("highScores", stringStream.str().c_str());
+	}
+}
+
+std::vector< std::pair<unsigned int, unsigned int> > GameSystem::getAllowedWindowResolutions() {
+	// return all resolutions within limit of screen resolution factor
+	std::string resolutionsString = getString("displayWindowedResolutions");
+	std::vector< std::pair<unsigned int, unsigned int> > resolutions;
+
+	size_t stringOffset = 0;
+	while(stringOffset < resolutionsString.length()) {
+		std::string resolution = resolutionsString.substr(stringOffset, resolutionsString.find(',', stringOffset) - stringOffset);
+		std::pair<unsigned int, unsigned int> resolutionPair;
+		resolutionPair.first = (unsigned int) atoi(resolution.substr(0, resolution.find('x')).c_str());
+		resolutionPair.second = (unsigned int) atoi(resolution.substr(resolution.find('x') + 1, std::string::npos).c_str());
+
+		if(resolutionPair.second <= (unsigned int) ((float) displayResolutionY * getFloat("displayWindowedMaxPortion")))
+			resolutions.push_back(resolutionPair);
+
+		stringOffset += resolution.length() + 1;
+	}
+
+	return resolutions;
+}
+
+void GameSystem::applyScreenResolution(std::string resolution) {
+	std::string resolutionsString = getString("displayWindowedResolutions");
+	float scalingFactor = atof(resolution.substr(resolution.find('x') + 1, std::string::npos).c_str()) /
+			atof(resolutionsString.substr(resolutionsString.find('x') + 1, resolutionsString.find(',') - resolutionsString.find('x') + 1).c_str());
+
+	// round sizes to nearest even integer
+	setStandard("hudElementMargin", (float) (roundToInt(getFloat("hudBaseElementMargin") * scalingFactor / 2.0f) * 2));
+	setStandard("hudContainerPadding", (float) (roundToInt(getFloat("hudBaseContainerPadding") * scalingFactor / 2.0f) * 2));
+	setStandard("hudButtonPadding", (float) (roundToInt(getFloat("hudBaseButtonPadding") * scalingFactor / 2.0f) * 2));
+	setStandard("hudBigButtonPadding", (float) (roundToInt(getFloat("hudBaseBigButtonPadding") * scalingFactor / 2.0f) * 2));
+	setStandard("hudGaugePadding", (float) (roundToInt(getFloat("hudBaseGaugePadding") * scalingFactor / 2.0f) * 2));
+	setStandard("fontSizeSmall", (float) (roundToInt(getFloat("fontBaseSizeSmall") * scalingFactor / 2.0f) * 2));
+	setStandard("fontSizeMedium", (float) (roundToInt(getFloat("fontBaseSizeMedium") * scalingFactor / 2.0f) * 2));
+	setStandard("fontSizeLarge", (float) (roundToInt(getFloat("fontBaseSizeLarge") * scalingFactor / 2.0f) * 2));
+	setStandard("fontSizeSuper", (float) (roundToInt(getFloat("fontBaseSizeSuper") * scalingFactor / 2.0f) * 2));
+	setStandard("logoHeight", (float) (roundToInt(getFloat("logoBaseHeight") * scalingFactor / 2.0f) * 2));
+	setStandard("gaugeImagesHeight", (float) (roundToInt(getFloat("gaugeImagesBaseHeight") * scalingFactor / 2.0f) * 2));
 }

@@ -10,11 +10,10 @@
 
 class InputHandler : public MainLoopMember {
 public:
-	Keyboard* keyboard;
-	Mouse* mouse;
+	Keyboard keyboard;
+	Mouse mouse;
 
 	InputHandler();
-	~InputHandler();
 
 	unsigned int execute(bool unScheduled = false);
 };

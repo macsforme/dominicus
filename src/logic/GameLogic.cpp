@@ -44,6 +44,8 @@ extern std::map<MainLoopMember*,unsigned int> mainLoopModules;
 
 GameLogic::GameLogic() :
 		MainLoopMember((unsigned int) gameSystem->getFloat("logicUpdateFrequency")),
+		currentScheme(SCHEME_MAINMENU),
+		activeMenuSelection(&playButtonEntry),
 		mouseActive(false),
 		keyboardCursorPosition(Vector2(0.0f, 0.0f)),
 		playerName(""),
@@ -54,7 +56,8 @@ GameLogic::GameLogic() :
 		upArrowPressTime(0),
 		downArrowPressTime(0),
 		lastDevelInfoUpdate(0),
-		lastGameTimeUpdate(0) {
+		lastGameTimeUpdate(0),
+		lastUpdate(0) {
 	// independent key listeners
 	std::vector<SDLKey> keysVector;
 
@@ -670,25 +673,19 @@ GameLogic::GameLogic() :
 
 //FIXME reorder all those according to header (well, reorder header too if necessary)
 
-	// build the initial draw stack
-	currentScheme = SCHEME_MAINMENU;
-	activeMenuSelection = &playButtonEntry;
+	// clear the motion listener
+	inputHandler->execute();
+	mouseMotionListener->wasMoved();
+
 //FIXME after schemes is gone we can put this back in because we can refer to our own data
 //	reScheme();
-
-	// start audio
-	gameAudio->setBackgroundMusic("menuSong");
 
 	// draw the initial frame
 //FIXME re-implement this once schemes is gone
 //	drawingMaster->execute(true);
 
-	// clear the motion listener
-	inputHandler->execute();
-	mouseMotionListener->wasMoved();
-
-	// zero the lastUpdate time
-	lastUpdate = 0;
+	// start audio
+	gameAudio->setBackgroundMusic("menuSong");
 }
 
 GameLogic::~GameLogic() {
@@ -699,8 +696,8 @@ void GameLogic::reScheme() {
 	// always clear the current stacks
 	drawingMaster->drawStack.clear();
 	drawingMaster->uiLayoutAuthority->metrics.clear();
-	inputHandler->keyboard->clearListeners();
-	inputHandler->mouse->clearListeners();
+	inputHandler->keyboard.clearListeners();
+	inputHandler->mouse.clearListeners();
 
 	// call the appropriate scheme function and do any associated logic
 	switch (currentScheme) {
@@ -1152,8 +1149,8 @@ unsigned int GameLogic::execute(bool unScheduled) {
 
 			currentScheme = SCHEME_GAMEOVER;
 			activeMenuSelection = &gameOverContinueButton;
-			inputHandler->keyboard->listenUnicode = true;
-			inputHandler->keyboard->unicodeChars = "";
+			inputHandler->keyboard.listenUnicode = true;
+			inputHandler->keyboard.unicodeChars = "";
 
 			reScheme();
 			SDL_WM_GrabInput(SDL_GRAB_OFF);
@@ -1192,7 +1189,7 @@ unsigned int GameLogic::execute(bool unScheduled) {
 			}
 
 			// constrain to control radius
-			Vector2 correctAspectMousePosition(inputHandler->mouse->position.x * gameGraphics->aspectRatio, inputHandler->mouse->position.y);
+			Vector2 correctAspectMousePosition(inputHandler->mouse.position.x * gameGraphics->aspectRatio, inputHandler->mouse.position.y);
 			if(mag(correctAspectMousePosition) > gameSystem->getFloat("hudControlAreaRadius") * 2.0f / gameGraphics->resolutionY) {
 				Vector2 mousePositionVector = correctAspectMousePosition * (gameSystem->getFloat("hudControlAreaRadius") * 2.0f / gameGraphics->resolutionY) / mag(correctAspectMousePosition);
 
@@ -1209,7 +1206,7 @@ unsigned int GameLogic::execute(bool unScheduled) {
 
 		// do movement
 		if(mouseActive) {
-			Vector2 correctAspectMousePosition(inputHandler->mouse->position.x * gameGraphics->aspectRatio, inputHandler->mouse->position.y);
+			Vector2 correctAspectMousePosition(inputHandler->mouse.position.x * gameGraphics->aspectRatio, inputHandler->mouse.position.y);
 			float effectiveDeadAreaRadius = gameSystem->getFloat("hudControlSpotSize") / (float) gameGraphics->resolutionY;
 
 			if(mag(correctAspectMousePosition) > effectiveDeadAreaRadius) {
@@ -1439,8 +1436,8 @@ unsigned int GameLogic::execute(bool unScheduled) {
 
 			gameAudio->playSound("selectEffect");
 		} else if(endGameButtonClickListener->wasClicked()) {
-				inputHandler->keyboard->listenUnicode = true;
-				inputHandler->keyboard->unicodeChars = "";
+				inputHandler->keyboard.listenUnicode = true;
+				inputHandler->keyboard.unicodeChars = "";
 
 				playerName = "";
 
@@ -1506,8 +1503,8 @@ unsigned int GameLogic::execute(bool unScheduled) {
 					else
 						gameAudio->playSound("backEffect");
 				} else if(activeMenuSelection == &endGameButtonEntry) {
-					inputHandler->keyboard->listenUnicode = true;
-					inputHandler->keyboard->unicodeChars = "";
+					inputHandler->keyboard.listenUnicode = true;
+					inputHandler->keyboard.unicodeChars = "";
 
 					playerName = "";
 
@@ -1524,11 +1521,11 @@ unsigned int GameLogic::execute(bool unScheduled) {
 		}
 	} else if(currentScheme == SCHEME_GAMEOVER) {
 		// typing
-		if(inputHandler->keyboard->unicodeChars != "") {
+		if(inputHandler->keyboard.unicodeChars != "") {
 			if(playerName.length() < gameSystem->getFloat("hudFieldWidth")) {
-				for(size_t i = 0; i < inputHandler->keyboard->unicodeChars.length(); ++i) {
-					if(gameSystem->getString("inputAllowedNameChars").find(inputHandler->keyboard->unicodeChars.substr(i, 1)) != std::string::npos) {
-						playerName += inputHandler->keyboard->unicodeChars.substr(i, 1);
+				for(size_t i = 0; i < inputHandler->keyboard.unicodeChars.length(); ++i) {
+					if(gameSystem->getString("inputAllowedNameChars").find(inputHandler->keyboard.unicodeChars.substr(i, 1)) != std::string::npos) {
+						playerName += inputHandler->keyboard.unicodeChars.substr(i, 1);
 
 						activeMenuSelection = &gameOverContinueButton;
 
@@ -1538,7 +1535,7 @@ unsigned int GameLogic::execute(bool unScheduled) {
 				}
 			}
 
-			inputHandler->keyboard->unicodeChars = "";
+			inputHandler->keyboard.unicodeChars = "";
 		}
 
 		if(deleteKeyListener->isDown && playerName.length() > 0) {

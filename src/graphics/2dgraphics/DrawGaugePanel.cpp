@@ -13,11 +13,6 @@
 
 extern GameGraphics* gameGraphics;
 
-DrawGaugePanel::DrawGaugePanel(DrawContainer* newContainerDrawer, DrawProgressBar* newProgressBarDrawer, DrawTexture* newTextureDrawer) :
-		containerDrawer(newContainerDrawer),
-		progressBarDrawer(newProgressBarDrawer),
-		textureDrawer(newTextureDrawer) { }
-
 DrawStackArgList DrawGaugePanel::instantiateArgList() {
 	DrawStackArgList argList;
 

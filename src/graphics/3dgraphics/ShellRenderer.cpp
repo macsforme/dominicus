@@ -17,9 +17,7 @@ extern GameGraphics* gameGraphics;
 extern GameState* gameState;
 extern GameSystem* gameSystem;
 
-ShellRenderer::ShellRenderer() {
-	sphere = makeSphere((size_t) gameSystem->getFloat("shellDensity"));
-
+ShellRenderer::ShellRenderer() : sphere(makeSphere((size_t) gameSystem->getFloat("shellDensity"))) {
 	// set up vertex buffers
 	glGenBuffers(1, &(vertexBuffers["vertices"]));
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);

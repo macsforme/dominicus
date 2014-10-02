@@ -13,10 +13,10 @@ protected:
 	unsigned int lastRunCountCheck;
 	unsigned int runsCounter;
 
+	MainLoopMember(unsigned int requestedFrequency);
+
 	// called by inherited classes to calculate milliseconds needed to sleep
 	unsigned int getSleepTime();
-
-	MainLoopMember(unsigned int requestedFrequency);
 
 public:
 	unsigned int runRate;

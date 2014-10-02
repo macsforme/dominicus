@@ -13,7 +13,7 @@ private:
 	DrawRoundedTriangle* roundedTriangleDrawer;
 
 public:
-	DrawMissileIndicators(DrawRoundedTriangle* newRoundedTriangleDrawer);
+	DrawMissileIndicators(DrawRoundedTriangle* roundedTriangleDrawer);
 	~DrawMissileIndicators();
 
 	DrawStackArgList instantiateArgList();

@@ -8,12 +8,9 @@
 #include <string>
 #include <vector>
 
-#include "core/GameSystem.h"
 #include "core/MainLoopMember.h"
 #include "geometry/Mesh.h"
 #include "math/VectorMath.h"
-
-extern GameSystem* gameSystem;
 
 class Fortress {
 public:
@@ -33,25 +30,10 @@ public:
 			rotation(0.0f),
 			tilt(0.0f) { };
 
-	void addRotation(float value) {
-		rotation += value;
-		while(rotation > 360.0f) rotation -= 360.0f;
-		while(rotation < 0.0f) rotation += 360.0f;
-	}
-	void addTilt(float value) {
-		tilt += value;
-		if(tilt > gameSystem->getFloat("stateFortressMaximumTilt"))
-			tilt = gameSystem->getFloat("stateFortressMaximumTilt");
-		else if(tilt < gameSystem->getFloat("stateFortressMinimumTilt"))
-			tilt = gameSystem->getFloat("stateFortressMinimumTilt");
-	}
+	void addRotation(float value);
+	void addTilt(float value);
 
-	void missileStrike() {
-		health -= gameSystem->getFloat("stateMissileStrikeDepletion");
-
-		if(health < 0.0f)
-			health = 0.0f;
-	}
+	void missileStrike();
 };
 
 class Shell {
@@ -80,6 +62,9 @@ public:
 };
 
 class GameState : public MainLoopMember {
+private:
+	unsigned int getGameMills();
+
 public:
 	Mesh island;
 	Fortress fortress;
@@ -103,14 +88,11 @@ public:
 	unsigned int lastUpdateGameTime;
 	int gameTimeMargin;
 
-	unsigned int execute(bool unScheduled = false);
-
 	GameState();
 	~GameState();
 
-private:
-	unsigned int getGameMills();
-public:
+	unsigned int execute(bool unScheduled = false);
+
 	void pause();
 	void resume();
 	void bumpStart();

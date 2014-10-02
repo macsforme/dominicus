@@ -7,9 +7,6 @@
 
 extern GameSystem* gameSystem;
 
-KeyListener::KeyListener(std::vector<SDLKey> keys, bool trap) :
-		listeningKeys(keys), trap(trap) { }
-
 SDLKey KeyListener::popKey() {
 	if(keyHits.size() == 0)
 		return SDLK_UNKNOWN;
@@ -18,13 +15,6 @@ SDLKey KeyListener::popKey() {
 	keyHits.erase(keyHits.begin());
 
 	return toReturn;
-}
-
-KeyAbsoluteListener::KeyAbsoluteListener(SDLKey listeningKey, bool trap) :
-		listeningKey(listeningKey), trap(trap), isDown(false) { }
-
-void Keyboard::addListener(KeyListener* listener) {
-	keyListeners.push_back(listener);
 }
 
 void Keyboard::removeListener(KeyListener* listener) {
@@ -37,10 +27,6 @@ void Keyboard::removeListener(KeyListener* listener) {
 	}
 }
 
-void Keyboard::addListener(KeyAbsoluteListener* listener) {
-	keyAbsoluteListeners.push_back(listener);
-}
-
 void Keyboard::removeListener(KeyAbsoluteListener* listener) {
 	for(int i = (int) keyAbsoluteListeners.size() - 1; i >= 0; --i) {
 		if(keyAbsoluteListeners[i] == listener) {
@@ -49,12 +35,6 @@ void Keyboard::removeListener(KeyAbsoluteListener* listener) {
 			break;
 		}
 	}
-}
-
-void Keyboard::clearListeners() {
-	// clear all listeners
-	keyListeners.clear();
-	keyAbsoluteListeners.clear();
 }
 
 void Keyboard::execute() {

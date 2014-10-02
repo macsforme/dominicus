@@ -5,6 +5,7 @@
 #define MOUSE_H
 
 #include <SDL.h>
+#include <stdint.h>
 #include <vector>
 
 #include "math/VectorMath.h"
@@ -19,11 +20,16 @@ public:
 	bool buttonHit;
 
 	MouseButtonListener(
-			uint8_t button = SDL_BUTTON_LEFT,
+			uint8_t listeningButton = SDL_BUTTON_LEFT,
 			Vector2 ll = Vector2(-1.0f, -1.0f),
 			Vector2 ur = Vector2(1.0f, 1.0f),
 			bool trap = false
-		);
+		) :
+			listeningButton(listeningButton),
+			ll(ll),
+			ur(ur),
+			trap(trap),
+			buttonHit(false) { }
 
 	bool wasClicked();
 };
@@ -34,7 +40,7 @@ public:
 
 	bool motion;
 
-	MouseMotionListener(bool trap = false);
+	MouseMotionListener(bool trap = false) : trap(trap), motion(false) { }
 
 	bool wasMoved();
 };
@@ -53,7 +59,12 @@ public:
 			Vector2 ll = Vector2(-1.0f, -1.0f),
 			Vector2 ur = Vector2(1.0f, 1.0f),
 			bool trap = false
-		);
+		) :
+			ll(ll),
+			ur(ur),
+			trap(trap),
+			isEntered(false),
+			wasChange(false) { }
 
 	bool wasChanged();
 };
@@ -71,13 +82,13 @@ public:
 
 	Mouse() : position(Vector2(0.0f, 0.0f)), isInWindow(false) { };
 
-	void addListener(MouseButtonListener*);
+	void addListener(MouseButtonListener* listener) { mouseButtonListeners.push_back(listener); }
 	void removeListener(MouseButtonListener*);
 
-	void addListener(MouseMotionListener*);
+	void addListener(MouseMotionListener* listener) { mouseMotionListeners.push_back(listener); }
 	void removeListener(MouseMotionListener*);
 
-	void addListener(MouseZoneListener*);
+	void addListener(MouseZoneListener* listener) { mouseZoneListeners.push_back(listener); }
 	void removeListener(MouseZoneListener*);
 
 	void clearListeners();

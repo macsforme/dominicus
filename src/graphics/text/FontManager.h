@@ -14,6 +14,17 @@
 #include "platform/OpenGLHeaders.h"
 
 class FontManager {
+private:
+	// internal freetype objects
+	FT_Library library;
+	FT_Face fontFace;
+
+	// texture representations of OpenGL font caches
+	std::map<unsigned int, Texture*> fontTextureCaches;
+
+	// internal functions
+	float positiveNormalize(unsigned int coordinate, unsigned int scale) { return (float) coordinate / (float) scale; }
+
 public:
 	struct FontData {
 		// pixel dimensions
@@ -40,18 +51,6 @@ public:
 	// OpenGL texture IDs for font caches of each size
 	std::map<unsigned int, GLuint> textureIDs;
 
-private:
-	// internal freetype objects
-	FT_Library library;
-	FT_Face fontFace;
-
-	// texture representations of OpenGL font caches
-	std::map<unsigned int, Texture*> fontTextureCaches;
-
-	// internal functions
-	float positiveNormalize(unsigned int coordinate, unsigned int scale);
-
-public:
 	// object management
 	FontManager();
 	~FontManager();

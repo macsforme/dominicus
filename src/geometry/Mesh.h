@@ -24,6 +24,10 @@ public:
 
 	std::map< std::string,std::vector<Face> > faceGroups;
 
+	// constructors
+	Mesh() { };
+	Mesh(std::string filename);
+
 	// vertex manipulation
 	void addVertex(Vector3 vertex) { vertices.push_back(vertex); }
 	void changeVertex(unsigned int index, Vector3 vertex) {
@@ -129,10 +133,6 @@ public:
 	// utility methods
 	void autoNormal();
 	void autoTexCoord(unsigned int index, std::string group);
-
-	// constructors
-	Mesh() { };
-	Mesh(std::string filename);
 };
 
 #endif // MESH_H

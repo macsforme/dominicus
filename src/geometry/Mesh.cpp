@@ -12,78 +12,6 @@
 extern GameSystem* gameSystem;
 extern Platform* platform;
 
-void Mesh::autoNormal() {
-	normals.clear();
-
-	std::map<unsigned int, std::vector<Vector3> > vertexNormals;
-
-	for(
-			std::map< std::string,std::vector<Face> >::iterator groupItr =
-					faceGroups.begin();
-			groupItr != faceGroups.end();
-			++groupItr
-		) {
-		for(
-				size_t index = 0;
-				index < groupItr->second.size();
-				++index
-			) {
-			Vector3 v1(
-					vertices[groupItr->second[index].vertices[1]] -
-					vertices[groupItr->second[index].vertices[0]]
-				);
-			Vector3 v2(
-					vertices[groupItr->second[index].vertices[2]] -
-					vertices[groupItr->second[index].vertices[1]]
-				);
-
-			Vector3 normal = cross(v1, v2);
-			normal.norm();
-
-			vertexNormals[groupItr->second[index].vertices[0]].push_back(normal);
-			vertexNormals[groupItr->second[index].vertices[1]].push_back(normal);
-			vertexNormals[groupItr->second[index].vertices[2]].push_back(normal);
-
-			groupItr->second[index].normals[0] = groupItr->second[index].vertices[0];
-			groupItr->second[index].normals[1] = groupItr->second[index].vertices[1];
-			groupItr->second[index].normals[2] = groupItr->second[index].vertices[2];
-		}
-	}
-
-	for(size_t i = 0; i < vertices.size(); ++i) {
-		unsigned int count = 0;
-		Vector3 total(0.0f, 0.0f, 0.0f);
-
-		for(size_t p = 0; p < vertexNormals[i].size(); ++p) {
-			++count;
-			total += vertexNormals[i][p];
-		}
-
-		total /= count;
-		normals.push_back(total);
-	}
-}
-
-void Mesh::autoTexCoord(unsigned int index, std::string group = "") {
-	texCoords.push_back(Vector2(
-			vertices[faceGroups[group][index].vertices[0]].x,
-			vertices[faceGroups[group][index].vertices[0]].y
-		));
-	faceGroups[group][index].texCoords[0] = texCoords.size() - 1;
-
-	texCoords.push_back(Vector2(
-			vertices[faceGroups[group][index].vertices[1]].x,
-			vertices[faceGroups[group][index].vertices[1]].y
-		));
-	faceGroups[group][index].texCoords[1] = texCoords.size() - 1;
-
-	texCoords.push_back(Vector2(
-			vertices[faceGroups[group][index].vertices[2]].x,
-			vertices[faceGroups[group][index].vertices[2]].y
-		));
-	faceGroups[group][index].texCoords[2] = texCoords.size() - 1;
-}
-
 Mesh::Mesh(std::string filename) {
 	std::ifstream objFile;
 	std::string line;
@@ -205,4 +133,76 @@ Mesh::Mesh(std::string filename) {
 	}
 
 	objFile.close();
+}
+
+void Mesh::autoNormal() {
+	normals.clear();
+
+	std::map<unsigned int, std::vector<Vector3> > vertexNormals;
+
+	for(
+			std::map< std::string,std::vector<Face> >::iterator groupItr =
+					faceGroups.begin();
+			groupItr != faceGroups.end();
+			++groupItr
+		) {
+		for(
+				size_t index = 0;
+				index < groupItr->second.size();
+				++index
+			) {
+			Vector3 v1(
+					vertices[groupItr->second[index].vertices[1]] -
+					vertices[groupItr->second[index].vertices[0]]
+				);
+			Vector3 v2(
+					vertices[groupItr->second[index].vertices[2]] -
+					vertices[groupItr->second[index].vertices[1]]
+				);
+
+			Vector3 normal = cross(v1, v2);
+			normal.norm();
+
+			vertexNormals[groupItr->second[index].vertices[0]].push_back(normal);
+			vertexNormals[groupItr->second[index].vertices[1]].push_back(normal);
+			vertexNormals[groupItr->second[index].vertices[2]].push_back(normal);
+
+			groupItr->second[index].normals[0] = groupItr->second[index].vertices[0];
+			groupItr->second[index].normals[1] = groupItr->second[index].vertices[1];
+			groupItr->second[index].normals[2] = groupItr->second[index].vertices[2];
+		}
+	}
+
+	for(size_t i = 0; i < vertices.size(); ++i) {
+		unsigned int count = 0;
+		Vector3 total(0.0f, 0.0f, 0.0f);
+
+		for(size_t p = 0; p < vertexNormals[i].size(); ++p) {
+			++count;
+			total += vertexNormals[i][p];
+		}
+
+		total /= count;
+		normals.push_back(total);
+	}
+}
+
+void Mesh::autoTexCoord(unsigned int index, std::string group = "") {
+	texCoords.push_back(Vector2(
+			vertices[faceGroups[group][index].vertices[0]].x,
+			vertices[faceGroups[group][index].vertices[0]].y
+		));
+	faceGroups[group][index].texCoords[0] = texCoords.size() - 1;
+
+	texCoords.push_back(Vector2(
+			vertices[faceGroups[group][index].vertices[1]].x,
+			vertices[faceGroups[group][index].vertices[1]].y
+		));
+	faceGroups[group][index].texCoords[1] = texCoords.size() - 1;
+
+	texCoords.push_back(Vector2(
+			vertices[faceGroups[group][index].vertices[2]].x,
+			vertices[faceGroups[group][index].vertices[2]].y
+		));
+	faceGroups[group][index].texCoords[2] = texCoords.size() - 1;
 }

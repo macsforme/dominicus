@@ -15,7 +15,7 @@ public:
 
 	std::vector<SDLKey> keyHits;
 
-	KeyListener(std::vector<SDLKey> keys, bool trap = false);
+	KeyListener(std::vector<SDLKey> keys, bool trap = false) : listeningKeys(keys), trap(trap) { }
 
 	SDLKey popKey();
 };
@@ -27,7 +27,7 @@ public:
 
 	bool isDown;
 
-	KeyAbsoluteListener(SDLKey listeningKey, bool trap = false);
+	KeyAbsoluteListener(SDLKey listeningKey, bool trap = false) : listeningKey(listeningKey), trap(trap), isDown(false) { }
 };
 
 class Keyboard {
@@ -40,15 +40,15 @@ public:
 	std::vector<KeyListener*> keyListeners;
 	std::vector<KeyAbsoluteListener*> keyAbsoluteListeners;
 
-	void addListener(KeyListener* listener);
-	void removeListener(KeyListener* listener);
-
-	void addListener(KeyAbsoluteListener* listener);
-	void removeListener(KeyAbsoluteListener* listener);
-
 	Keyboard() : listenUnicode(false) { }
 
-	void clearListeners();
+	void addListener(KeyListener* listener) { keyListeners.push_back(listener); }
+	void removeListener(KeyListener* listener);
+
+	void addListener(KeyAbsoluteListener* listener) { keyAbsoluteListeners.push_back(listener); }
+	void removeListener(KeyAbsoluteListener* listener);
+
+	void clearListeners() { keyListeners.clear(); keyAbsoluteListeners.clear(); }
 
 	void execute();
 };

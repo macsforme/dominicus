@@ -11,10 +11,6 @@
 
 extern GameGraphics* gameGraphics;
 
-DrawButton::DrawButton(DrawContainer* newContainerDrawer, DrawLabel* newLabelDrawer) :
-		containerDrawer(newContainerDrawer),
-		labelDrawer(newLabelDrawer) { }
-
 DrawStackArgList DrawButton::instantiateArgList() {
 	DrawStackArgList argList;
 

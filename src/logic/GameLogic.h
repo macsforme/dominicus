@@ -15,13 +15,29 @@
 #include "math/VectorMath.h"
 
 class GameLogic : public MainLoopMember {
+private:
+	enum {
+			SCHEME_MAINMENU,
+			SCHEME_LOADING,
+			SCHEME_INTRO,
+			SCHEME_PLAYING,
+			SCHEME_PAUSED,
+			SCHEME_GAMEOVER,
+			SCHEME_SETTINGS,
+			SCHEME_HIGHSCORES,
+			SCHEME_HELP,
+			SCHEME_ABOUT
+		} currentScheme;
+
 public:
+	// focus tracking
+	DrawStackEntry* activeMenuSelection;
+
 	// main menu
 	KeyListener* quitKeyListener;
 	KeyListener* fullScreenKeyListener;
 	KeyListener* mainMenuKeyListener;
 	MouseMotionListener* mouseMotionListener;
-	DrawStackEntry* activeMenuSelection;
 	DrawStackEntry splashEntry;
 	UIMetrics* mainMenuSpacer1Metrics;
 	DrawStackEntry titleEntry;
@@ -198,8 +214,6 @@ public:
 
 //FIXME probably delete this fugly functionality
 	Vector2 keyboardCursorPosition;
-//	unsigned int lastClockUpdate;
-//	unsigned int lastFrameTime;
 
 	// time management
 	unsigned int lastUpdate;
@@ -208,25 +222,10 @@ public:
 	GameLogic();
 	~GameLogic();
 
-private:
-	enum {
-			SCHEME_MAINMENU,
-			SCHEME_LOADING,
-			SCHEME_INTRO,
-			SCHEME_PLAYING,
-			SCHEME_PAUSED,
-			SCHEME_GAMEOVER,
-			SCHEME_SETTINGS,
-			SCHEME_HIGHSCORES,
-			SCHEME_HELP,
-			SCHEME_ABOUT
-		} currentScheme;
 //FIXME make this private again once schemes is incorporated herein
 public:
 	void reScheme();
 
-public:
-	// looping
 	unsigned int execute(bool unScheduled = false);
 };
 

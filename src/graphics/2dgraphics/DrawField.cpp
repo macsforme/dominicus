@@ -14,7 +14,7 @@
 
 extern GameGraphics* gameGraphics;
 
-DrawField::DrawField(DrawLabel* newLabelDrawer) : labelDrawer(newLabelDrawer) {
+DrawField::DrawField(DrawLabel* labelDrawer) : labelDrawer(labelDrawer) {
 	// set up vertex buffers
 	glGenBuffers(1, &(vertexBuffers["vertices"]));
 	glGenBuffers(1, &(vertexBuffers["elements"]));

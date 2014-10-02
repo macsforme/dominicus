@@ -15,7 +15,7 @@ private:
 	DrawLabel* labelDrawer;
 
 public:
-	DrawButton(DrawContainer* newContainerDrawer, DrawLabel* newLabelDrawer);
+	DrawButton(DrawContainer* containerDrawer, DrawLabel* labelDrawer) : containerDrawer(containerDrawer), labelDrawer(labelDrawer) { }
 
 	DrawStackArgList instantiateArgList();
 	void deleteArgList(DrawStackArgList argList);

@@ -17,7 +17,10 @@ private:
 	DrawTexture* textureDrawer;
 
 public:
-	DrawGaugePanel(DrawContainer* newContainerDrawer, DrawProgressBar* newProgressBarDrawer, DrawTexture* newTextureDrawer);
+	DrawGaugePanel(DrawContainer* containerDrawer, DrawProgressBar* progressBarDrawer, DrawTexture* textureDrawer) :
+		containerDrawer(containerDrawer),
+		progressBarDrawer(progressBarDrawer),
+		textureDrawer(textureDrawer) { }
 
 	DrawStackArgList instantiateArgList();
 	void deleteArgList(DrawStackArgList argList);

@@ -7,6 +7,7 @@
 #include <cstring>
 
 #include "audio/GameAudio.h"
+#include "core/GameSystem.h"
 #include "geometry/DiamondSquare.h"
 #include "math/MatrixMath.h"
 #include "math/MiscMath.h"
@@ -14,9 +15,44 @@
 #include "platform/Platform.h"
 
 extern GameAudio* gameAudio;
+extern GameSystem* gameSystem;
 extern Platform* platform;
 
-GameState::GameState() : MainLoopMember((unsigned int) gameSystem->getFloat("stateUpdateFrequency")) {
+void Fortress::addRotation(float value) {
+	rotation += value;
+	while(rotation > 360.0f) rotation -= 360.0f;
+	while(rotation < 0.0f) rotation += 360.0f;
+}
+
+void Fortress::addTilt(float value) {
+	tilt += value;
+	if(tilt > gameSystem->getFloat("stateFortressMaximumTilt"))
+		tilt = gameSystem->getFloat("stateFortressMaximumTilt");
+	else if(tilt < gameSystem->getFloat("stateFortressMinimumTilt"))
+		tilt = gameSystem->getFloat("stateFortressMinimumTilt");
+}
+
+void Fortress::missileStrike() {
+	health -= gameSystem->getFloat("stateMissileStrikeDepletion");
+	if(health < 0.0f) health = 0.0f;
+}
+
+unsigned int GameState::getGameMills() {
+	// execution time since game began (excluding pauses)
+	if(isPaused)
+		return (unsigned int) gameTimeMargin;
+	else
+		return (unsigned int) (platform->getExecMills() - gameTimeMargin);
+}
+
+GameState::GameState() : MainLoopMember((unsigned int) gameSystem->getFloat("stateUpdateFrequency")),
+		score(0),
+		binoculars(false),
+		recoil(false),
+		empIsCharging(false),
+		lastStrikeTime(0),
+		isPaused(false),
+		lastUpdateGameTime(0) {
 	// randomly generate the island
 	size_t density = (size_t) gameSystem->getFloat("islandTerrainBaseDensity");
 	density *= (size_t) pow(2.0f, gameSystem->getFloat("islandTerrainDetail") - 1.0f);
@@ -231,18 +267,7 @@ GameState::GameState() : MainLoopMember((unsigned int) gameSystem->getFloat("sta
 	missileRadius = maxDist;
 
 	// set start time
-	isPaused = false;
 	gameTimeMargin = platform->getExecMills();
-	lastUpdateGameTime = 0;
-
-	// set starting score
-	score = 0;
-
-	// initialize other stuff
-	binoculars = false;
-	empIsCharging = false;
-	recoil = 0.0f;
-	lastStrikeTime = 0;
 }
 
 GameState::~GameState() {
@@ -588,14 +613,6 @@ unsigned int GameState::execute(bool unScheduled) {
 		return 0;
 	else
 		return getSleepTime();
-}
-
-unsigned int GameState::getGameMills() {
-	// execution time since game began (excluding pauses)
-	if(isPaused)
-		return (unsigned int) gameTimeMargin;
-	else
-		return (unsigned int) (platform->getExecMills() - gameTimeMargin);
 }
 
 void GameState::pause() {

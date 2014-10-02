@@ -83,10 +83,6 @@ FontManager::~FontManager() {
 			glDeleteTextures(1, &texItr->second);
 }
 
-float FontManager::positiveNormalize(unsigned int coordinate, unsigned int scale) {
-	return (float) coordinate / (float) scale;
-}
-
 void FontManager::rebuildFontTextureCache(unsigned int size) {
 	// don't rebuild a cache if there are no characters to cache
 	if(getCachedCharsList(size).size() == 0) {

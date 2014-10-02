@@ -13,7 +13,7 @@ private:
 	DrawLabel* labelDrawer;
 
 public:
-	DrawField(DrawLabel* newLabelDrawer);
+	DrawField(DrawLabel* labelDrawer);
 	~DrawField();
 
 	DrawStackArgList instantiateArgList();

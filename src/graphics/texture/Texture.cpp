@@ -12,172 +12,6 @@
 
 extern GameSystem* gameSystem;
 
-uint8_t Texture::getRedValueAt(uint32_t column, uint32_t row) {
-	if(pixelData == NULL)
-		gameSystem->log(GameSystem::LOG_FATAL, "Texture pixel color requested before memory allocated.");
-	if(column >= width || row >= height) {
-		std::stringstream err;
-		err << "Texture row or column index for retrieval out-of-bounds at " <<
-				column << "," <<
-				row << " (dimensions " <<
-				width << "," <<
-				height << ").";
-
-		gameSystem->log(GameSystem::LOG_FATAL, err.str().c_str());
-	}
-
-	return *((uint8_t*) pixelData +
-			row *
-			(width * (format == FORMAT_RGBA ? 4 : 3) +
-					(width * (format == FORMAT_RGBA ? 4 : 3) % 4 > 0 ?
-					4 - (width * (format == FORMAT_RGBA ? 4 : 3) % 4) : 0)) +
-			column * (format == FORMAT_RGBA ? 4 : 3) +
-			0);
-}
-
-uint8_t Texture::getGreenValueAt(uint32_t column, uint32_t row) {
-	if(pixelData == NULL)
-		gameSystem->log(GameSystem::LOG_FATAL, "Texture pixel color requested before memory allocated.");
-	if(column >= width || row >= height) {
-		std::stringstream err;
-		err << "Texture row or column index for retrieval out-of-bounds at " <<
-				column << "," <<
-				row << " (dimensions " <<
-				width << "," <<
-				height << ").";
-
-		gameSystem->log(GameSystem::LOG_FATAL, err.str().c_str());
-	}
-
-	return *((uint8_t*) pixelData +
-			row *
-			(width * (format == FORMAT_RGBA ? 4 : 3) +
-					(width * (format == FORMAT_RGBA ? 4 : 3) % 4 > 0 ?
-					4 - (width * (format == FORMAT_RGBA ? 4 : 3) % 4) : 0)) +
-			column * (format == FORMAT_RGBA ? 4 : 3) +
-			1);
-}
-
-uint8_t Texture::getBlueValueAt(uint32_t column, uint32_t row) {
-	if(pixelData == NULL)
-		gameSystem->log(GameSystem::LOG_FATAL, "Texture pixel color requested before memory allocated.");
-	if(column >= width || row >= height) {
-		std::stringstream err;
-		err << "Texture row or column index for retrieval out-of-bounds at " <<
-				column << "," <<
-				row << " (dimensions " <<
-				width << "," <<
-				height << ").";
-
-		gameSystem->log(GameSystem::LOG_FATAL, err.str().c_str());
-	}
-
-	return *((uint8_t*) pixelData +
-			row *
-			(width * (format == FORMAT_RGBA ? 4 : 3) +
-					(width * (format == FORMAT_RGBA ? 4 : 3) % 4 > 0 ?
-					4 - (width * (format == FORMAT_RGBA ? 4 : 3) % 4) : 0)) +
-			column * (format == FORMAT_RGBA ? 4 : 3) +
-			2);
-}
-
-uint8_t Texture::getAlphaValueAt(uint32_t column, uint32_t row) {
-	if(pixelData == NULL)
-		gameSystem->log(GameSystem::LOG_FATAL, "Texture pixel color requested before memory allocated.");
-	if(column >= width || row >= height) {
-		std::stringstream err;
-		err << "Texture row or column index for retrieval out-of-bounds at " <<
-				column << "," <<
-				row << " (dimensions " <<
-				width << "," <<
-				height << ").";
-
-		gameSystem->log(GameSystem::LOG_FATAL, err.str().c_str());
-	}
-
-	if(format == FORMAT_RGBA)
-		return *((uint8_t*) pixelData +
-				row *
-				(width * (format == FORMAT_RGBA ? 4 : 3) +
-						(width * (format == FORMAT_RGBA ? 4 : 3) % 4 > 0 ?
-						4 - (width * (format == FORMAT_RGBA ? 4 : 3) % 4) : 0)) +
-				column * (format == FORMAT_RGBA ? 4 : 3) +
-				3);
-	else
-		return 0xFF;
-}
-
-void Texture::setColorAt(
-			uint32_t column, uint32_t row, uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha
-		) {
-	if(pixelData == NULL)
-		gameSystem->log(GameSystem::LOG_FATAL, "Texture pixel color specified before memory allocated.");
-	if(column >= width || row >= height) {
-		std::stringstream err;
-		err << "Texture row or column index for set out-of-bounds at " <<
-				column << "," <<
-				row << " (dimensions " <<
-				width << "," <<
-				height << ").";
-
-		gameSystem->log(GameSystem::LOG_FATAL, err.str().c_str());
-	}
-	// create a marker pointer at the correct position in the data buffer,
-	// accounting for row-padding if necessary
-	uint8_t* position =
-			(uint8_t*) pixelData +
-			row *
-			(width * (format == FORMAT_RGBA ? 4 : 3) +
-					(width * (format == FORMAT_RGBA ? 4 : 3) % 4 > 0 ?
-					4 - (width * (format == FORMAT_RGBA ? 4 : 3) % 4) : 0)) +
-			column * (format == FORMAT_RGBA ? 4 : 3);
-
-	// copy the colors in
-	*(position++) = red;
-	*(position++) = green;
-	*(position++) = blue;
-	if(format == FORMAT_RGBA)
-		*position = alpha;
-}
-
-void Texture::setDepth(unsigned int depth) {
-	for(unsigned int i = 0; i < width; ++i) {
-		for(unsigned int p = 0; p < height; ++p) {
-			unsigned int step = 255 / depth;
-			if(step == 0) step = 1;
-
-			uint8_t redColor = getRedValueAt((uint32_t) i, (uint32_t) p);
-			uint8_t greenColor = getGreenValueAt((uint32_t) i, (uint32_t) p);
-			uint8_t blueColor = getBlueValueAt((uint32_t) i, (uint32_t) p);
-			uint8_t alphaColor = getAlphaValueAt((uint32_t) i, (uint32_t) p);
-
-			uint8_t redDividend = redColor / step;
-			uint8_t redModulus = redColor % step;
-			if(redModulus >= step / 2) redDividend += 1;
-			redColor = redDividend * step;
-
-			uint8_t greenDividend = greenColor / step;
-			uint8_t greenModulus = greenColor % step;
-			if(greenModulus >= step / 2) greenDividend += 1;
-			greenColor = greenDividend * step;
-
-			uint8_t blueDividend = blueColor / step;
-			uint8_t blueModulus = blueColor % step;
-			if(blueModulus >= step / 2) blueDividend += 1;
-			blueColor = blueDividend * step;
-
-			setColorAt(
-					(uint32_t) i,
-					(uint32_t) p,
-					redColor,
-					greenColor,
-					blueColor,
-					alphaColor
-				);
-		}
-	}
-}
-
 Texture::Texture(uint32_t newWidth, uint32_t newHeight, PixelFormat newFormat) {
 	width = newWidth;
 	height = newHeight;
@@ -449,4 +283,170 @@ Texture::Texture(std::string filename) {
 
 Texture::~Texture() {
 	free(pixelData);
+}
+
+uint8_t Texture::getRedValueAt(uint32_t column, uint32_t row) {
+	if(pixelData == NULL)
+		gameSystem->log(GameSystem::LOG_FATAL, "Texture pixel color requested before memory allocated.");
+	if(column >= width || row >= height) {
+		std::stringstream err;
+		err << "Texture row or column index for retrieval out-of-bounds at " <<
+				column << "," <<
+				row << " (dimensions " <<
+				width << "," <<
+				height << ").";
+
+		gameSystem->log(GameSystem::LOG_FATAL, err.str().c_str());
+	}
+
+	return *((uint8_t*) pixelData +
+			row *
+			(width * (format == FORMAT_RGBA ? 4 : 3) +
+					(width * (format == FORMAT_RGBA ? 4 : 3) % 4 > 0 ?
+					4 - (width * (format == FORMAT_RGBA ? 4 : 3) % 4) : 0)) +
+			column * (format == FORMAT_RGBA ? 4 : 3) +
+			0);
+}
+
+uint8_t Texture::getGreenValueAt(uint32_t column, uint32_t row) {
+	if(pixelData == NULL)
+		gameSystem->log(GameSystem::LOG_FATAL, "Texture pixel color requested before memory allocated.");
+	if(column >= width || row >= height) {
+		std::stringstream err;
+		err << "Texture row or column index for retrieval out-of-bounds at " <<
+				column << "," <<
+				row << " (dimensions " <<
+				width << "," <<
+				height << ").";
+
+		gameSystem->log(GameSystem::LOG_FATAL, err.str().c_str());
+	}
+
+	return *((uint8_t*) pixelData +
+			row *
+			(width * (format == FORMAT_RGBA ? 4 : 3) +
+					(width * (format == FORMAT_RGBA ? 4 : 3) % 4 > 0 ?
+					4 - (width * (format == FORMAT_RGBA ? 4 : 3) % 4) : 0)) +
+			column * (format == FORMAT_RGBA ? 4 : 3) +
+			1);
+}
+
+uint8_t Texture::getBlueValueAt(uint32_t column, uint32_t row) {
+	if(pixelData == NULL)
+		gameSystem->log(GameSystem::LOG_FATAL, "Texture pixel color requested before memory allocated.");
+	if(column >= width || row >= height) {
+		std::stringstream err;
+		err << "Texture row or column index for retrieval out-of-bounds at " <<
+				column << "," <<
+				row << " (dimensions " <<
+				width << "," <<
+				height << ").";
+
+		gameSystem->log(GameSystem::LOG_FATAL, err.str().c_str());
+	}
+
+	return *((uint8_t*) pixelData +
+			row *
+			(width * (format == FORMAT_RGBA ? 4 : 3) +
+					(width * (format == FORMAT_RGBA ? 4 : 3) % 4 > 0 ?
+					4 - (width * (format == FORMAT_RGBA ? 4 : 3) % 4) : 0)) +
+			column * (format == FORMAT_RGBA ? 4 : 3) +
+			2);
+}
+
+uint8_t Texture::getAlphaValueAt(uint32_t column, uint32_t row) {
+	if(pixelData == NULL)
+		gameSystem->log(GameSystem::LOG_FATAL, "Texture pixel color requested before memory allocated.");
+	if(column >= width || row >= height) {
+		std::stringstream err;
+		err << "Texture row or column index for retrieval out-of-bounds at " <<
+				column << "," <<
+				row << " (dimensions " <<
+				width << "," <<
+				height << ").";
+
+		gameSystem->log(GameSystem::LOG_FATAL, err.str().c_str());
+	}
+
+	if(format == FORMAT_RGBA)
+		return *((uint8_t*) pixelData +
+				row *
+				(width * (format == FORMAT_RGBA ? 4 : 3) +
+						(width * (format == FORMAT_RGBA ? 4 : 3) % 4 > 0 ?
+						4 - (width * (format == FORMAT_RGBA ? 4 : 3) % 4) : 0)) +
+				column * (format == FORMAT_RGBA ? 4 : 3) +
+				3);
+	else
+		return 0xFF;
+}
+
+void Texture::setColorAt(
+			uint32_t column, uint32_t row, uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha
+		) {
+	if(pixelData == NULL)
+		gameSystem->log(GameSystem::LOG_FATAL, "Texture pixel color specified before memory allocated.");
+	if(column >= width || row >= height) {
+		std::stringstream err;
+		err << "Texture row or column index for set out-of-bounds at " <<
+				column << "," <<
+				row << " (dimensions " <<
+				width << "," <<
+				height << ").";
+
+		gameSystem->log(GameSystem::LOG_FATAL, err.str().c_str());
+	}
+	// create a marker pointer at the correct position in the data buffer,
+	// accounting for row-padding if necessary
+	uint8_t* position =
+			(uint8_t*) pixelData +
+			row *
+			(width * (format == FORMAT_RGBA ? 4 : 3) +
+					(width * (format == FORMAT_RGBA ? 4 : 3) % 4 > 0 ?
+					4 - (width * (format == FORMAT_RGBA ? 4 : 3) % 4) : 0)) +
+			column * (format == FORMAT_RGBA ? 4 : 3);
+
+	// copy the colors in
+	*(position++) = red;
+	*(position++) = green;
+	*(position++) = blue;
+	if(format == FORMAT_RGBA)
+		*position = alpha;
+}
+
+void Texture::setDepth(unsigned int depth) {
+	for(unsigned int i = 0; i < width; ++i) {
+		for(unsigned int p = 0; p < height; ++p) {
+			unsigned int step = 255 / depth;
+			if(step == 0) step = 1;
+
+			uint8_t redColor = getRedValueAt((uint32_t) i, (uint32_t) p);
+			uint8_t greenColor = getGreenValueAt((uint32_t) i, (uint32_t) p);
+			uint8_t blueColor = getBlueValueAt((uint32_t) i, (uint32_t) p);
+			uint8_t alphaColor = getAlphaValueAt((uint32_t) i, (uint32_t) p);
+
+			uint8_t redDividend = redColor / step;
+			uint8_t redModulus = redColor % step;
+			if(redModulus >= step / 2) redDividend += 1;
+			redColor = redDividend * step;
+
+			uint8_t greenDividend = greenColor / step;
+			uint8_t greenModulus = greenColor % step;
+			if(greenModulus >= step / 2) greenDividend += 1;
+			greenColor = greenDividend * step;
+
+			uint8_t blueDividend = blueColor / step;
+			uint8_t blueModulus = blueColor % step;
+			if(blueModulus >= step / 2) blueDividend += 1;
+			blueColor = blueDividend * step;
+
+			setColorAt(
+					(uint32_t) i,
+					(uint32_t) p,
+					redColor,
+					greenColor,
+					blueColor,
+					alphaColor
+				);
+		}
+	}
 }

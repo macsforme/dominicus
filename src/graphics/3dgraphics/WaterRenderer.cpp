@@ -3,6 +3,7 @@
 
 #include "graphics/3dgraphics/WaterRenderer.h"
 
+#include "core/GameSystem.h"
 #include "graphics/GameGraphics.h"
 #include "math/MatrixMath.h"
 #include "platform/OpenGLHeaders.h"
@@ -11,6 +12,7 @@
 
 extern GameGraphics* gameGraphics;
 extern GameState* gameState;
+extern GameSystem* gameSystem;
 extern Platform* platform;
 
 WaterRenderer::WaterRenderer() {

@@ -7,14 +7,13 @@
 
 extern Platform* platform;
 
-MainLoopMember::MainLoopMember(unsigned int requestedFrequency) {
-	last = 0;
-	targetSleepMills = (int) (requestedFrequency != 0 ? 1000 / requestedFrequency : 0);
-	workingSleepMills = targetSleepMills;
-	lastRunCountCheck = 0;
-	runsCounter = 0;
-	runRate = 0;
-}
+MainLoopMember::MainLoopMember(unsigned int requestedFrequency) :
+		last(0),
+		targetSleepMills((int) (requestedFrequency != 0 ? 1000 / requestedFrequency : 0)),
+		workingSleepMills(targetSleepMills),
+		lastRunCountCheck(0),
+		runsCounter(0),
+		runRate(0) { }
 
 unsigned int MainLoopMember::getSleepTime() {
 	// calculate the required sleep time

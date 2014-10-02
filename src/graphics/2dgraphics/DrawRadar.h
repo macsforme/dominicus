@@ -27,7 +27,7 @@ private:
 	DrawRoundedTriangle* roundedTriangleDrawer;
 
 public:
-	DrawRadar(DrawContainer* newContainerDrawer, DrawCircle* newCircleDrawer, DrawRoundedTriangle* newRoundedTriangleDrawer);
+	DrawRadar(DrawContainer* containerDrawer, DrawCircle* circleDrawer, DrawRoundedTriangle* roundedTriangleDrawer);
 	~DrawRadar();
 
 	void reloadState();

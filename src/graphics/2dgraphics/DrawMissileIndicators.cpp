@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <vector>
 
+#include "core/GameSystem.h"
 #include "graphics/GameGraphics.h"
 #include "math/MatrixMath.h"
 #include "math/MiscMath.h"
@@ -15,9 +16,10 @@
 
 extern GameGraphics* gameGraphics;
 extern GameState* gameState;
+extern GameSystem* gameSystem;
 
-DrawMissileIndicators::DrawMissileIndicators(DrawRoundedTriangle* newRoundedTriangleDrawer) :
-		roundedTriangleDrawer(newRoundedTriangleDrawer) {
+DrawMissileIndicators::DrawMissileIndicators(DrawRoundedTriangle* roundedTriangleDrawer) :
+		roundedTriangleDrawer(roundedTriangleDrawer) {
 	// set up vertex buffers
 	glGenBuffers(1, &(vertexBuffers["vertices"]));
 	glGenBuffers(1, &(vertexBuffers["elements"]));

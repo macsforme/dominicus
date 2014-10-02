@@ -6,8 +6,7 @@
 #include <cmath>
 #include <cstdlib>
 
-DiamondSquare::DiamondSquare(unsigned int size, float roughness) :
-		size(size) {
+DiamondSquare::DiamondSquare(unsigned int size, float roughness) : size(size) {
 	// initialize the memory
 	data = new float*[size];
 	for(unsigned int i = 0; i < size; ++i)

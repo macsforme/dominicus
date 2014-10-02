@@ -22,11 +22,11 @@ extern GameGraphics* gameGraphics;
 extern GameState* gameState;
 extern GameSystem* gameSystem;
 
-DrawRadar::DrawRadar(DrawContainer* newContainerDrawer, DrawCircle* newCircleDrawer, DrawRoundedTriangle* newRoundedTriangleDrawer) :
+DrawRadar::DrawRadar(DrawContainer* containerDrawer, DrawCircle* circleDrawer, DrawRoundedTriangle* roundedTriangleDrawer) :
 		lastRotation(0),
-		containerDrawer(newContainerDrawer),
-		circleDrawer(newCircleDrawer),
-		roundedTriangleDrawer(newRoundedTriangleDrawer) {
+		containerDrawer(containerDrawer),
+		circleDrawer(circleDrawer),
+		roundedTriangleDrawer(roundedTriangleDrawer) {
 	// set up vertex buffers
 	glGenBuffers(1, &(vertexBuffers["vertices"]));
 	glGenBuffers(1, &(vertexBuffers["elements"]));

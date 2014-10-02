@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 
+#include "core/GameSystem.h"
 #include "geometry/Mesh.h"
 #include "graphics/GameGraphics.h"
 #include "graphics/texture/Texture.h"
@@ -15,6 +16,7 @@
 
 extern GameGraphics* gameGraphics;
 extern GameState* gameState;
+extern GameSystem* gameSystem;
 
 TerrainRenderer::TerrainRenderer() {
 	// set up vertex buffers

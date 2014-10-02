@@ -6,6 +6,7 @@
 
 #include <map>
 #include <SDL.h>
+#include <stdint.h>
 #include <string>
 #include <vector>
 

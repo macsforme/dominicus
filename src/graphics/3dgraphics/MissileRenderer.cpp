@@ -20,7 +20,7 @@ extern GameGraphics* gameGraphics;
 extern GameState* gameState;
 extern GameSystem* gameSystem;
 
-MissileRenderer::MissileRenderer() {
+MissileRenderer::MissileRenderer() : missileMesh(Mesh("missile")) {
 	missileMesh = Mesh("missile");
 
 	// set up vertex buffers

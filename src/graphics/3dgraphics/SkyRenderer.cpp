@@ -5,6 +5,7 @@
 
 #include <cmath>
 
+#include "core/GameSystem.h"
 #include "graphics/GameGraphics.h"
 #include "math/MatrixMath.h"
 #include "math/MiscMath.h"
@@ -15,6 +16,7 @@
 
 extern GameGraphics* gameGraphics;
 extern GameState* gameState;
+extern GameSystem* gameSystem;
 
 SkyRenderer::SkyRenderer() {
 	// set up vertex buffers
