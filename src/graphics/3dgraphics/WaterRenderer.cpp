@@ -70,6 +70,11 @@ void WaterRenderer::execute(DrawStackArgList arguments) {
 	// state
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glDisable(GL_CULL_FACE);
+	glDisable(GL_DEPTH_TEST);
+	if(gameGraphics->supportsMultisampling) glDisable(GL_MULTISAMPLE);
+	glDisable(GL_SCISSOR_TEST);
+	glDisable(GL_TEXTURE_2D);
 
 	// enable shader
 	glUseProgram(gameGraphics->getProgramID("water"));
@@ -108,7 +113,4 @@ void WaterRenderer::execute(DrawStackArgList arguments) {
 	glDrawElements(GL_QUADS, 4, GL_UNSIGNED_SHORT, (GLvoid*) 0);
 
 	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("water"), "position"));
-
-	// undo state
-	glDisable(GL_BLEND);
 }

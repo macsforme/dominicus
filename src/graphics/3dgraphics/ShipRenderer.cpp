@@ -96,11 +96,13 @@ ShipRenderer::~ShipRenderer() {
 
 void ShipRenderer::execute(DrawStackArgList arguments) {
 	// state
-	glEnable(GL_TEXTURE_2D);
-	glEnable(GL_DEPTH_TEST);
+	glDisable(GL_BLEND);
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CW);
+	glEnable(GL_DEPTH_TEST);
 	if(gameGraphics->supportsMultisampling) glEnable(GL_MULTISAMPLE);
+	glDisable(GL_SCISSOR_TEST);
+	glEnable(GL_TEXTURE_2D);
 
 	// enable shader
 	glUseProgram(gameGraphics->getProgramID("colorTextureLighting"));
@@ -173,10 +175,4 @@ void ShipRenderer::execute(DrawStackArgList arguments) {
 	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("colorTextureLighting"), "normal"));
 	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("colorTextureLighting"), "texCoord"));
 	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("colorTextureLighting"), "color"));
-
-	// undo state
-	glDisable(GL_TEXTURE_2D);
-	glDisable(GL_DEPTH_TEST);
-	glDisable(GL_CULL_FACE);
-	if(gameGraphics->supportsMultisampling) glDisable(GL_MULTISAMPLE);
 }

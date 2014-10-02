@@ -122,8 +122,6 @@ MissileTrailRenderer::MissileTrailRenderer() {
 	);
 
 	glGenerateMipmap(GL_TEXTURE_2D);
-
-	glDisable(GL_TEXTURE_2D);
 }
 
 MissileTrailRenderer::~MissileTrailRenderer() {
@@ -134,13 +132,14 @@ MissileTrailRenderer::~MissileTrailRenderer() {
 
 void MissileTrailRenderer::execute(DrawStackArgList arguments) {
 	// state
-	glEnable(GL_TEXTURE_2D);
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
-	glFrontFace(GL_CW);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_CULL_FACE);
+	glFrontFace(GL_CW);
+	glEnable(GL_DEPTH_TEST);
 	if(gameGraphics->supportsMultisampling) glEnable(GL_MULTISAMPLE);
+	glDisable(GL_SCISSOR_TEST);
+	glEnable(GL_TEXTURE_2D);
 
 	// enable shader
 	glUseProgram(gameGraphics->getProgramID("missileTrail"));
@@ -202,11 +201,4 @@ void MissileTrailRenderer::execute(DrawStackArgList arguments) {
 	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("missileTrail"), "normal"));
 	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("missileTrail"), "texCoord"));
 	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("missileTrail"), "color"));
-
-	// undo state
-	glDisable(GL_TEXTURE_2D);
-	glDisable(GL_DEPTH_TEST);
-	glDisable(GL_CULL_FACE);
-	glDisable(GL_BLEND);
-	if(gameGraphics->supportsMultisampling) glDisable(GL_MULTISAMPLE);
 }

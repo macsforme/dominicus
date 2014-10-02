@@ -398,9 +398,13 @@ void DrawLabel::execute(DrawStackArgList argList) {
 	delete[] vertexBufferArray;
 
 	// state
-	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glDisable(GL_CULL_FACE);
+	glDisable(GL_DEPTH_TEST);
+	if(gameGraphics->supportsMultisampling) glDisable(GL_MULTISAMPLE);
+	glDisable(GL_SCISSOR_TEST);
+	glEnable(GL_TEXTURE_2D);
 
 	// enable shader
 	glUseProgram(gameGraphics->getProgramID("colorTexture"));
@@ -434,8 +438,4 @@ void DrawLabel::execute(DrawStackArgList argList) {
 	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("colorTexture"), "position"));
 	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("colorTexture"), "texCoord"));
 	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("colorTexture"), "color"));
-
-	// undo state
-	glDisable(GL_TEXTURE_2D);
-	glDisable(GL_BLEND);
 }

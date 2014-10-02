@@ -181,7 +181,11 @@ void ExplosionRenderer::execute(DrawStackArgList arguments) {
 	// state
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glDisable(GL_CULL_FACE);
+	glDisable(GL_DEPTH_TEST);
 	if(gameGraphics->supportsMultisampling) glEnable(GL_MULTISAMPLE);
+	glDisable(GL_SCISSOR_TEST);
+	glDisable(GL_TEXTURE_2D);
 
 	// enable shader
 	glUseProgram(gameGraphics->getProgramID("explosion"));
@@ -269,10 +273,6 @@ void ExplosionRenderer::execute(DrawStackArgList arguments) {
 
 	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("explosion"), "position"));
 	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("explosion"), "normal"));
-
-	// undo state
-	glDisable(GL_BLEND);
-	if(gameGraphics->supportsMultisampling) glDisable(GL_MULTISAMPLE);
 }
 
 void ExplosionRenderer::reloadState() {

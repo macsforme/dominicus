@@ -540,13 +540,11 @@ GLuint GameGraphics::getTextureID(std::string filename) {
 	Texture texture(filenameStream.str().c_str());
 
 	// load the texture into OpenGL
-	bool texturesWereEnabled = glIsEnabled(GL_TEXTURE_2D);
-	if(! texturesWereEnabled) glEnable(GL_TEXTURE_2D);
+	glEnable(GL_TEXTURE_2D);
 
 	GLuint textureID = 0;
 	glGenTextures(1, &textureID);
 
-	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, textureID);
 
 	glTexImage2D(
@@ -562,8 +560,6 @@ GLuint GameGraphics::getTextureID(std::string filename) {
 	);
 
 	glGenerateMipmap(GL_TEXTURE_2D);
-
-	if(! texturesWereEnabled) glDisable(GL_TEXTURE_2D);
 
 	textureIDs[filename] = textureID;
 

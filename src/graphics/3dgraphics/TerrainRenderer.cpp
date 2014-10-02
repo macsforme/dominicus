@@ -104,8 +104,6 @@ void TerrainRenderer::reloadState() {
 	);
 
 	glGenerateMipmap(GL_TEXTURE_2D);
-
-	glDisable(GL_TEXTURE_2D);
 }
 
 void TerrainRenderer::execute(DrawStackArgList arguments) {
@@ -128,13 +126,14 @@ void TerrainRenderer::execute(DrawStackArgList arguments) {
 		};
 
 	// state
-	glEnable(GL_TEXTURE_2D);
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
-	glFrontFace(GL_CW);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_CULL_FACE);
+	glFrontFace(GL_CW);
+	glEnable(GL_DEPTH_TEST);
 	if(gameGraphics->supportsMultisampling) glEnable(GL_MULTISAMPLE);
+	glDisable(GL_SCISSOR_TEST);
+	glEnable(GL_TEXTURE_2D);
 
 	// enable shader
 	glUseProgram(gameGraphics->getProgramID("terrain"));
@@ -208,11 +207,4 @@ void TerrainRenderer::execute(DrawStackArgList arguments) {
 	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("terrain"), "position"));
 	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("terrain"), "normal"));
 	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("terrain"), "texCoord"));
-
-	// undo state
-	glDisable(GL_TEXTURE_2D);
-	glDisable(GL_DEPTH_TEST);
-	glDisable(GL_CULL_FACE);
-	glDisable(GL_BLEND);
-	if(gameGraphics->supportsMultisampling) glDisable(GL_MULTISAMPLE);
 }

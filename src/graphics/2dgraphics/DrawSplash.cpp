@@ -29,6 +29,11 @@ void DrawSplash::execute(DrawStackArgList argList) {
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexBufferArray), vertexBufferArray, GL_STREAM_DRAW);
 
 	// state
+	glDisable(GL_BLEND);
+	glDisable(GL_CULL_FACE);
+	glDisable(GL_DEPTH_TEST);
+	if(gameGraphics->supportsMultisampling) glDisable(GL_MULTISAMPLE);
+	glDisable(GL_SCISSOR_TEST);
 	glEnable(GL_TEXTURE_2D);
 
 	// enable shader
@@ -62,7 +67,4 @@ void DrawSplash::execute(DrawStackArgList argList) {
 	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("colorTexture"), "position"));
 	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("colorTexture"), "texCoord"));
 	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("colorTexture"), "color"));
-
-	// undo state
-	glDisable(GL_TEXTURE_2D);
 }

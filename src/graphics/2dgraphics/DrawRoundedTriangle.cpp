@@ -182,6 +182,11 @@ void DrawRoundedTriangle::execute(DrawStackArgList argList) {
 	// state
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glDisable(GL_CULL_FACE);
+	glDisable(GL_DEPTH_TEST);
+	if(gameGraphics->supportsMultisampling) glDisable(GL_MULTISAMPLE);
+	glDisable(GL_SCISSOR_TEST);
+	glDisable(GL_TEXTURE_2D);
 
 	// enable shader
 	glUseProgram(gameGraphics->getProgramID("hudContainer"));
@@ -242,7 +247,4 @@ void DrawRoundedTriangle::execute(DrawStackArgList argList) {
 	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("hudContainer"), "curveOriginCoord"));
 	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("hudContainer"), "border1Dist"));
 	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("hudContainer"), "border2Dist"));
-
-	// undo state
-	glDisable(GL_BLEND);
 }

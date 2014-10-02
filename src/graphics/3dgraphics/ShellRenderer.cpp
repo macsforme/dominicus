@@ -68,10 +68,13 @@ ShellRenderer::~ShellRenderer() {
 
 void ShellRenderer::execute(DrawStackArgList arguments) {
 	// state
-	glEnable(GL_DEPTH_TEST);
+	glDisable(GL_BLEND);
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CW);
+	glEnable(GL_DEPTH_TEST);
 	if(gameGraphics->supportsMultisampling) glEnable(GL_MULTISAMPLE);
+	glDisable(GL_SCISSOR_TEST);
+	glDisable(GL_TEXTURE_2D);
 
 	// enable shader
 	glUseProgram(gameGraphics->getProgramID("colorLighting"));
@@ -120,9 +123,4 @@ void ShellRenderer::execute(DrawStackArgList arguments) {
 	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("colorLighting"), "position"));
 	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("colorLighting"), "normal"));
 	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("colorLighting"), "color"));
-
-	// undo state
-	glDisable(GL_DEPTH_TEST);
-	glDisable(GL_CULL_FACE);
-	if(gameGraphics->supportsMultisampling) glDisable(GL_MULTISAMPLE);
 }

@@ -129,8 +129,6 @@ void DrawRadar::reloadState() {
 			radarTexture->getDataPointer()
 	);
 
-	glDisable(GL_TEXTURE_2D);
-
 	delete radarTexture;
 
 	// create the progression texture (next power of 2)
@@ -155,8 +153,6 @@ void DrawRadar::reloadState() {
 		}
 	}
 
-	glEnable(GL_TEXTURE_2D);
-
 	if(glIsTexture(progressionTextureID))
 		glDeleteTextures(1, &progressionTextureID);
 
@@ -178,8 +174,6 @@ void DrawRadar::reloadState() {
 	);
 
 	glGenerateMipmap(GL_TEXTURE_2D);
-
-	glDisable(GL_TEXTURE_2D);
 
 	// clear the missile cache
 	missileCache.clear();
@@ -287,10 +281,11 @@ void DrawRadar::execute(DrawStackArgList argList) {
 		};
 
 	// state
-	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
+	glDisable(GL_CULL_FACE);
+	glDisable(GL_DEPTH_TEST);
+	if(gameGraphics->supportsMultisampling) glDisable(GL_MULTISAMPLE);
 	glEnable(GL_SCISSOR_TEST);
 	glScissor(
 			(GLint) (((metrics->position.x - actualSize.x / 2.0f + padding.x) + 1.0f) / 2.0f * (float) gameGraphics->resolutionX),
@@ -298,6 +293,7 @@ void DrawRadar::execute(DrawStackArgList argList) {
 			(GLsizei) ((actualSize.x - padding.x * 2.0f) / 2.0f * (float) gameGraphics->resolutionX),
 			(GLsizei) ((actualSize.y - padding.y * 2.0f) / 2.0f * (float) gameGraphics->resolutionY)
 		);
+	glEnable(GL_TEXTURE_2D);
 
 	// enable shader
 	glUseProgram(gameGraphics->getProgramID("colorTexture"));
@@ -342,9 +338,7 @@ void DrawRadar::execute(DrawStackArgList argList) {
 	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("colorTexture"), "texCoord"));
 	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("colorTexture"), "color"));
 
-	// undo state
-	glDisable(GL_TEXTURE_2D);
-	glDisable(GL_BLEND);
+	// more state
 	glDisable(GL_SCISSOR_TEST);
 
 	// draw view triangle

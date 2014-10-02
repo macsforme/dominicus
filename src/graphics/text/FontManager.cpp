@@ -153,13 +153,13 @@ void FontManager::rebuildFontTextureCache(unsigned int size) {
 	}
 
 	// send the texture to the GPU
+	glEnable(GL_TEXTURE_2D);
+
 	if(textureIDs.find(size) != textureIDs.end())
 		if(glIsTexture(textureIDs[size]))
 			glDeleteTextures(1, &textureIDs[size]);
 
 	glGenTextures(1, &textureIDs[size]);
-
-	glEnable(GL_TEXTURE_2D);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, textureIDs[size]);
@@ -175,8 +175,6 @@ void FontManager::rebuildFontTextureCache(unsigned int size) {
 			GL_UNSIGNED_BYTE,
 			thisFontCache->getDataPointer()
 		);
-
-	glDisable(GL_TEXTURE_2D);
 
 	// free memory
 	delete thisFontCache;
