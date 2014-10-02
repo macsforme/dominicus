@@ -34,12 +34,7 @@ void TerrainRenderer::reloadState() {
 
 	Mesh* terrainMesh = &(gameState->island);
 	std::vector<Mesh::Face>* faceGroup = &(terrainMesh->faceGroups.begin()->second);
-	size_t vertDataBufferArraySize =
-			24 *
-			faceGroup->size() *
-			sizeof(GLfloat); // 3 vertices + 3 normals + 2 texcoords * 3 per face
-
-	GLfloat* vertDataBufferArray = (GLfloat*) malloc(vertDataBufferArraySize);
+	GLfloat* vertDataBufferArray = new GLfloat[24 * faceGroup->size()];
 	for(size_t i = 0; i < faceGroup->size(); ++i) {
 		vertDataBufferArray[i * 24 + 0] = terrainMesh->vertices[(*faceGroup)[i].vertices[0]].x;
 		vertDataBufferArray[i * 24 + 1] = terrainMesh->vertices[(*faceGroup)[i].vertices[0]].y;
@@ -75,18 +70,16 @@ void TerrainRenderer::reloadState() {
 		vertDataBufferArray[i * 24 + 23] = terrainMesh->texCoords[(*faceGroup)[i].texCoords[2]].y;
 	}
 
-	size_t vertElementBufferArraySize = 3 * faceGroup->size() * sizeof(GLuint);
-	GLuint* vertElementBufferArray = (GLuint*) malloc(vertElementBufferArraySize);
+	GLuint* vertElementBufferArray = new GLuint[3 * faceGroup->size()];
 	for(size_t i = 0; i < faceGroup->size() * 3; ++i) {
 		vertElementBufferArray[i] = i;
 	}
 
-	glBufferData(GL_ARRAY_BUFFER, vertDataBufferArraySize, vertDataBufferArray, GL_STATIC_DRAW);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, vertElementBufferArraySize, vertElementBufferArray,
-			GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 24 * faceGroup->size() * sizeof(GLfloat), vertDataBufferArray, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 3 * faceGroup->size() * sizeof(GLuint), vertElementBufferArray, GL_STATIC_DRAW);
 
-	free(vertDataBufferArray);
-	free(vertElementBufferArray);
+	delete[] vertDataBufferArray;
+	delete[] vertElementBufferArray;
 
 	// send the noise texture
 	glEnable(GL_TEXTURE_2D);

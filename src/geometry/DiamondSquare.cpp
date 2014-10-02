@@ -9,9 +9,9 @@
 DiamondSquare::DiamondSquare(unsigned int size, float roughness) :
 		size(size) {
 	// initialize the memory
-	data = (float**) malloc(size * sizeof(float*));
+	data = new float*[size];
 	for(unsigned int i = 0; i < size; ++i)
-		data[i] = (float*) malloc(size * sizeof(float));
+		data[i] = new float[size];
 
 	// zero out the memory
 	for(unsigned int i = 0; i < size; ++i)
@@ -121,4 +121,12 @@ DiamondSquare::DiamondSquare(unsigned int size, float roughness) :
 	for(unsigned int i = 0; i < size; ++i)
 		for(unsigned int p = 0; p < size; ++p)
 			data[i][p] = (-min + data[i][p]) * 2.0f / range - 1.0f;
+}
+
+DiamondSquare::~DiamondSquare() {
+	// release the memory
+	for(unsigned int i = 0; i < size; ++i)
+		delete[] data[i];
+
+	delete[] data;
 }

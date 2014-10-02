@@ -87,10 +87,10 @@ GLuint GameGraphics::getShaderID(GLenum shaderType, std::string shaderName) {
 	for(size_t i = 0; i < fileLines.size(); ++i)
 		bytes += fileLines[i].size() + 1;
 
-	shaderSource = (GLchar**) malloc(fileLines.size() * sizeof(GLchar*));
+	shaderSource = new GLchar*[fileLines.size()];
 
 	for(size_t i = 0; i < fileLines.size(); ++i) {
-		shaderSource[i] = (GLchar*) malloc(fileLines[i].size() + 1);
+		shaderSource[i] = new GLchar[fileLines[i].size() + 1];
 		memcpy(
 				shaderSource[i],
 				fileLines[i].c_str(),
@@ -104,8 +104,8 @@ GLuint GameGraphics::getShaderID(GLenum shaderType, std::string shaderName) {
 	glShaderSource(shader, count, (const GLchar**) shaderSource, NULL);
 
 	for(int i = 0; i < count; ++i)
-		free(shaderSource[i]);
-	free(shaderSource);
+		delete[] shaderSource[i];
+	delete[] shaderSource;
 
 	glCompileShader(shader);
 
@@ -121,18 +121,18 @@ GLuint GameGraphics::getShaderID(GLenum shaderType, std::string shaderName) {
 
 		GLint sourceLength;
 		glGetShaderiv(shader, GL_SHADER_SOURCE_LENGTH, &sourceLength);
-		GLchar* sourceLines = (GLchar*) malloc(sourceLength);
+		GLchar* sourceLines = new GLchar[sourceLength];
 		glGetShaderSource(shader, sourceLength, NULL, sourceLines);
 
 		err << "SHADER SOURCE ON GPU" << std::endl
 				<< "--------------------" << std::endl
 				<< sourceLines
 				<< "--------------------" << std::endl << std::endl;
-		free(sourceLines);
+		delete[] sourceLines;
 
 		GLint logLength;
 		glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logLength);
-		GLchar* logLines = (GLchar*) malloc(logLength);
+		GLchar* logLines = new GLchar[logLength];
 		glGetShaderInfoLog(shader, logLength, NULL, logLines);
 
 		err << "ERROR LOG" << std::endl
@@ -140,7 +140,7 @@ GLuint GameGraphics::getShaderID(GLenum shaderType, std::string shaderName) {
 				<< logLines
 				<< "---------";
 
-		free(logLines);
+		delete[] logLines;
 
 		gameSystem->log(GameSystem::LOG_FATAL, err.str().c_str());
 	}
@@ -167,7 +167,7 @@ GLuint GameGraphics::makeProgram(std::vector<GLuint> shaders) {
 
 		GLint logLength;
 		glGetProgramiv(program, GL_INFO_LOG_LENGTH, &logLength);
-		GLchar* logLines = (GLchar*) malloc(logLength);
+		GLchar* logLines = new GLchar[logLength];
 		glGetProgramInfoLog(program, logLength, NULL, logLines);
 
 		err << "ERROR LOG" << std::endl
@@ -175,7 +175,7 @@ GLuint GameGraphics::makeProgram(std::vector<GLuint> shaders) {
 				<< logLines
 				<< "---------";
 
-		free(logLines);
+		delete[] logLines;
 
 		gameSystem->log(GameSystem::LOG_FATAL, err.str().c_str());
 	}
@@ -194,7 +194,7 @@ GameGraphics::GameGraphics(bool fullScreen, bool testSystem) :
 			atoi(gameSystem->getString("displayWindowedResolution").substr(gameSystem->getString("displayWindowedResolution").find('x') + 1, std::string::npos).c_str()));
 	aspectRatio = (float) resolutionX / (float) resolutionY;
 
-	Uint32 flags = SDL_OPENGL | (fullScreen ? SDL_FULLSCREEN : 0);
+	uint32_t flags = SDL_OPENGL | (fullScreen ? SDL_FULLSCREEN : 0);
 
 	if(! SDL_VideoModeOK(
 			resolutionX,

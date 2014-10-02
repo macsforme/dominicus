@@ -92,7 +92,7 @@ float Platform::getPreferenceFloat(const char* key) {
 
 void Platform::setPreference(const char* key, const char* value) {
 	CFStringRef keyRef = CFStringCreateWithCString(NULL, key, kCFStringEncodingASCII);
-	CFDataRef dataRef = CFDataCreate(NULL, (Uint8*) value, strlen(value));
+	CFDataRef dataRef = CFDataCreate(NULL, (uint8_t*) value, strlen(value));
 	CFPropertyListRef propertyList = CFPropertyListCreateWithData(NULL, dataRef, kCFPropertyListImmutable, NULL, NULL);
 	CFPreferencesSetAppValue(keyRef, propertyList, kCFPreferencesCurrentApplication);
 	CFPreferencesSynchronize(kCFPreferencesCurrentApplication, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);

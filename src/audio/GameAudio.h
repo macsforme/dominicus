@@ -12,8 +12,8 @@
 class GameAudio {
 public:
 	struct GameSound {
-		Uint8* buffer;
-		Uint32 length;
+		uint8_t* buffer;
+		uint32_t length;
 	};
 
 	std::map<std::string,GameSound> sounds;
@@ -21,7 +21,7 @@ public:
 	struct GameSoundPlaying {
 		GameSound* sound;
 		float volume;
-		Uint32 position;
+		uint32_t position;
 	};
 
 	GameSoundPlaying musicPlaying;

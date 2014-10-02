@@ -11,7 +11,7 @@
 
 class MouseButtonListener {
 public:
-	Uint8 listeningButton;
+	uint8_t listeningButton;
 	Vector2 ll;
 	Vector2 ur;
 	bool trap;
@@ -19,7 +19,7 @@ public:
 	bool buttonHit;
 
 	MouseButtonListener(
-			Uint8 button = SDL_BUTTON_LEFT,
+			uint8_t button = SDL_BUTTON_LEFT,
 			Vector2 ll = Vector2(-1.0f, -1.0f),
 			Vector2 ur = Vector2(1.0f, 1.0f),
 			bool trap = false

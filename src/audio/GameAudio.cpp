@@ -14,7 +14,7 @@ extern GameAudio* gameAudio;
 extern GameSystem* gameSystem;
 extern Platform* platform;
 
-void mixAudio(void* userData, Uint8* stream, int length) {
+void mixAudio(void* userData, uint8_t* stream, int length) {
 	// play the background music
 	if(gameAudio->musicPlaying.sound == NULL)
 		return;
@@ -22,7 +22,7 @@ void mixAudio(void* userData, Uint8* stream, int length) {
 	if(gameAudio->musicPlaying.position == gameAudio->musicPlaying.sound->length)
 		gameAudio->musicPlaying.position = 0;
 
-	Uint32 amount = gameAudio->musicPlaying.sound->length - gameAudio->musicPlaying.position;
+	uint32_t amount = gameAudio->musicPlaying.sound->length - gameAudio->musicPlaying.position;
 	if(amount > length)
 		amount = length;
 
@@ -100,8 +100,8 @@ GameAudio::~GameAudio() {
 
 void GameAudio::loadSound(std::string file, SDL_AudioSpec audioDeviceSpec) {
 	SDL_AudioSpec originalAudioSpec;
-	Uint8* buffer;
-	Uint32 length;
+	uint8_t* buffer;
+	uint32_t length;
 	std::stringstream fullFilePath;
 	fullFilePath << platform->dataPath << "/data/audio/" << file << ".wav";
 
@@ -122,7 +122,7 @@ void GameAudio::loadSound(std::string file, SDL_AudioSpec audioDeviceSpec) {
 		)
 		gameSystem->log(GameSystem::LOG_FATAL, std::string("Unable to convert audio file " + fullFilePath.str()));
 
-	conversionInfo.buf = (Uint8*) malloc(length * conversionInfo.len_mult);
+	conversionInfo.buf = (uint8_t*) malloc(length * conversionInfo.len_mult);
 	memcpy(conversionInfo.buf, buffer, length);
 	conversionInfo.len = length;
 	if(SDL_ConvertAudio(&conversionInfo) < 0)

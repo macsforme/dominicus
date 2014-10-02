@@ -12,6 +12,7 @@ public:
 	float** data;
 
 	DiamondSquare(unsigned int size, float roughness);
+	~DiamondSquare();
 };
 
 #endif // DIAMONDSQUARE_H

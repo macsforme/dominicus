@@ -7,7 +7,7 @@
 
 extern GameGraphics* gameGraphics;
 
-MouseButtonListener::MouseButtonListener(Uint8 button, Vector2 ll, Vector2 ur, bool trap) :
+MouseButtonListener::MouseButtonListener(uint8_t button, Vector2 ll, Vector2 ur, bool trap) :
 		listeningButton(button), ll(ll), ur(ur), trap(trap), buttonHit(false) { }
 
 bool MouseButtonListener::wasClicked() {
