@@ -31,6 +31,8 @@ private:
 
 	void syncButtonWidths(std::vector<DrawStackEntry*> buttons);
 
+	void reScheme();
+
 public:
 	// main menu
 	KeyListener* quitKeyListener;
@@ -201,19 +203,12 @@ public:
 	unsigned int lastDevelInfoUpdate;
 	unsigned int lastGameTimeUpdate;
 
-//FIXME probably delete this fugly functionality
-	Vector2 keyboardCursorPosition;
-
 	// time management
 	unsigned int lastUpdate;
 
 	// object management
 	GameLogic();
 	~GameLogic();
-
-//FIXME make this private again once schemes is incorporated herein
-public:
-	void reScheme();
 
 	unsigned int execute(bool unScheduled = false);
 };
