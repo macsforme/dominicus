@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		0303173213204F1F009B9AFD /* GameLogic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0303173013204F1F009B9AFD /* GameLogic.cpp */; };
-		0315B631134C2CF7002AD1CE /* Schemes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0315B630134C2CF7002AD1CE /* Schemes.cpp */; };
 		0330C498133A2AB6006199BE /* TextBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03BB9B83131F3F50009DFC8B /* TextBlock.cpp */; };
 		03365785195B6BCE00ED33DF /* Mesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03365784195B6BCE00ED33DF /* Mesh.cpp */; };
 		03365787195B6FD300ED33DF /* Sphere.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03365786195B6FD300ED33DF /* Sphere.cpp */; };
@@ -103,8 +102,6 @@
 		030F8F001264DBF300190225 /* libfreetype.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfreetype.a; path = /usr/local/lib/libfreetype.a; sourceTree = "<absolute>"; };
 		030F8F3C1264DD1300190225 /* Keyboard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Keyboard.cpp; sourceTree = "<group>"; };
 		030F8F3D1264DD1300190225 /* Keyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Keyboard.h; sourceTree = "<group>"; };
-		0315B62F134C2CF7002AD1CE /* Schemes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Schemes.h; path = src/logic/Schemes.h; sourceTree = "<group>"; };
-		0315B630134C2CF7002AD1CE /* Schemes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Schemes.cpp; path = src/logic/Schemes.cpp; sourceTree = "<group>"; };
 		03365784195B6BCE00ED33DF /* Mesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Mesh.cpp; sourceTree = "<group>"; };
 		03365786195B6FD300ED33DF /* Sphere.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Sphere.cpp; sourceTree = "<group>"; };
 		03365788195C9B1200ED33DF /* DrawStrikeEffect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawStrikeEffect.cpp; sourceTree = "<group>"; };
@@ -221,8 +218,6 @@
 				036CFFDF18EB5D4800C1B797 /* Camera.cpp */,
 				0303173113204F1F009B9AFD /* GameLogic.h */,
 				0303173013204F1F009B9AFD /* GameLogic.cpp */,
-				0315B62F134C2CF7002AD1CE /* Schemes.h */,
-				0315B630134C2CF7002AD1CE /* Schemes.cpp */,
 			);
 			name = logic;
 			sourceTree = "<group>";
@@ -563,7 +558,6 @@
 				0387C28D18F3E2A300565A43 /* GameAudio.cpp in Sources */,
 				035466661912C17200F4953E /* DrawProgressBar.cpp in Sources */,
 				035466671912C17200F4953E /* DrawRadar.cpp in Sources */,
-				0315B631134C2CF7002AD1CE /* Schemes.cpp in Sources */,
 				034AF1231936D67F00272390 /* ShellRenderer.cpp in Sources */,
 				03E508FA18FE1B340056ECE6 /* FortressRenderer.cpp in Sources */,
 				03C9206C13693A51000C4373 /* GameState.cpp in Sources */,

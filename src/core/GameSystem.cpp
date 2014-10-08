@@ -54,6 +54,8 @@ GameSystem::GameSystem() {
 
 	char fullDateString[11];
 	sprintf(fullDateString, "%04i-%02i-%02i", year, month, day);
+	buildDate = fullDateString;
+
 	versionStream << fullDateString;
 	versionString = versionStream.str();
 

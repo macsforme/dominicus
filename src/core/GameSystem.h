@@ -35,6 +35,8 @@ class GameSystem {
 	StandardEntry getStandard(const char* key);
 
 public:
+	std::string buildDate;
+
 	GameSystem();
 
 	enum LogDetail {

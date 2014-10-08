@@ -29,49 +29,68 @@ private:
 			SCHEME_ABOUT
 		} currentScheme;
 
-public:
-	// focus tracking
-	DrawStackEntry* activeMenuSelection;
+	void syncButtonWidths(std::vector<DrawStackEntry*> buttons);
 
+public:
 	// main menu
 	KeyListener* quitKeyListener;
 	KeyListener* fullScreenKeyListener;
 	KeyListener* mainMenuKeyListener;
+	DrawStackEntry* activeMenuSelection;
 	MouseMotionListener* mouseMotionListener;
 	DrawStackEntry splashEntry;
-	UIMetrics* mainMenuSpacer1Metrics;
-	DrawStackEntry titleEntry;
+	DrawStackEntry mainMenuTitleEntry;
 	DrawStackEntry logoEntry;
-	UIMetrics* mainMenuSpacer2Metrics;
+	UIMetrics* spacerMetrics;
 	DrawStackEntry playButtonEntry;
 	MouseZoneListener* playButtonZoneListener;
 	MouseButtonListener* playButtonClickListener;
 	DrawStackEntry settingsButtonEntry;
 	MouseZoneListener* settingsButtonZoneListener;
 	MouseButtonListener* settingsButtonClickListener;
-	DrawStackEntry helpButtonEntry;
-	MouseZoneListener* helpButtonZoneListener;
-	MouseButtonListener* helpButtonClickListener;
 	DrawStackEntry highScoresButtonEntry;
 	MouseZoneListener* highScoresButtonZoneListener;
 	MouseButtonListener* highScoresButtonClickListener;
+	DrawStackEntry helpButtonEntry;
+	MouseZoneListener* helpButtonZoneListener;
+	MouseButtonListener* helpButtonClickListener;
 	DrawStackEntry quitButtonEntry;
 	MouseZoneListener* quitButtonZoneListener;
 	MouseButtonListener* quitButtonClickListener;
 	DrawStackEntry menuTip1Entry;
 	DrawStackEntry menuTip2Entry;
 	DrawStackEntry menuTip3Entry;
-	DrawStackEntry develStatsTitleEntry;
-	DrawStackEntry develStatsContentEntry;
 	DrawStackEntry develStatsContainerEntry;
+	DrawStackEntry develStatsTitleEntry;
+	DrawStackEntry develStatsEntry;
 
 	// loading
 	DrawStackEntry loadingEntry;
 
 	// intro
 	KeyListener* introKeyListener;
-	MouseButtonListener* introMouseButtonListener;
-	DrawStackEntry introHintEntry;
+	DrawStackEntry skyEntry;
+	DrawStackEntry waterEntry;
+	DrawStackEntry shipEntry;
+	DrawStackEntry missileEntry;
+	DrawStackEntry missileTrailEntry;
+	DrawStackEntry shellEntry;
+	DrawStackEntry terrainEntry;
+	DrawStackEntry explosionEntry;
+	DrawStackEntry fortressEntry;
+
+	// paused
+	KeyListener* pausedMenuKeyListener;
+	DrawStackEntry grayOutEntry;
+	DrawStackEntry menuTitleEntry;
+	DrawStackEntry controlsTitleEntry;
+	DrawStackEntry controlsEntry;
+	DrawStackEntry resumeButtonEntry;
+	MouseZoneListener* resumeButtonZoneListener;
+	MouseButtonListener* resumeButtonClickListener;
+	DrawStackEntry endGameButtonEntry;
+	MouseZoneListener* endGameButtonZoneListener;
+	MouseButtonListener* endGameButtonClickListener;
 
 	// playing
 	KeyListener* playingKeyListener;
@@ -86,51 +105,26 @@ public:
 	MouseButtonListener* primaryFireClickListener3;
 	MouseButtonListener* secondaryFireClickListener;
 	MouseButtonListener* binocularsClickListener;
-	DrawStackEntry controlSpotEntry;
-	DrawStackEntry cursorEntry;
+	DrawStackEntry strikeEffectEntry;
 	DrawStackEntry missileIndicators;
 	DrawStackEntry scoreLabel;
-	DrawStackEntry playingTipEntry;
 	DrawStackEntry gaugePanelEntry;
 	DrawStackEntry radarEntry;
-	DrawStackEntry skyEntry;
-	DrawStackEntry waterEntry;
-	DrawStackEntry terrainEntry;
-	DrawStackEntry shipEntry;
-	DrawStackEntry fortressEntry;
-	DrawStackEntry missileTrailEntry;
-	DrawStackEntry missileEntry;
-	DrawStackEntry explosionEntry;
-	DrawStackEntry shellEntry;
-	DrawStackEntry strikeEffectEntry;
-	DrawStackEntry develControlsTitleEntry;
-	DrawStackEntry develControlsContentEntry;
 	DrawStackEntry develControlsContainerEntry;
-
-	// paused
-	KeyListener* pausedMenuKeyListener;
-	DrawStackEntry grayOutEntry;
-	DrawStackEntry pausedEntry;
-	DrawStackEntry controlsTitleEntry;
-	DrawStackEntry controlsEntry;
-	UIMetrics* pausedMenuSpacerMetrics;
-	DrawStackEntry resumeButtonEntry;
-	MouseZoneListener* resumeButtonZoneListener;
-	MouseButtonListener* resumeButtonClickListener;
-	DrawStackEntry endGameButtonEntry;
-	MouseZoneListener* endGameButtonZoneListener;
-	MouseButtonListener* endGameButtonClickListener;
-	DrawStackEntry pausedMenuTipEntry;
+	DrawStackEntry develControlsTitleEntry;
+	DrawStackEntry develControlsEntry;
+	DrawStackEntry controlSpotEntry;
+	DrawStackEntry cursorEntry;
 
 	// gameover
 	KeyListener* gameOverKeyListener;
 	KeyAbsoluteListener* deleteKeyListener;
-	DrawStackEntry gameOverTitleEntry;
 	DrawStackEntry yourScoreTitleEntry;
 	DrawStackEntry yourScoreEntry;
-	DrawStackEntry highScoresSectionEntry;
+	DrawStackEntry highScoresTitleEntry;
+	DrawStackEntry highScoresEntry;
+	DrawStackEntry newHighScoreTitleEntry;
 	DrawStackEntry newHighScoreContainer;
-	DrawStackEntry newHighScoreLabel;
 	DrawStackEntry newHighScoreNameLabel;
 	DrawStackEntry newHighScoreNameField;
 	DrawStackEntry gameOverContinueButton;
@@ -139,7 +133,6 @@ public:
 
 	// settings menu
 	KeyListener* settingsMenuKeyListener;
-	DrawStackEntry settingsMenuTitleEntry;
 	DrawStackEntry levelSettingEntry;
 	MouseZoneListener* levelButtonZoneListener;
 	MouseButtonListener* levelButtonClickListener;
@@ -170,27 +163,23 @@ public:
 	DrawStackEntry resetHighScoresEntry;
 	MouseZoneListener* resetHighScoresButtonZoneListener;
 	MouseButtonListener* resetHighScoresButtonClickListener;
-
-	// high scores menu
-	KeyListener* highScoresMenuKeyListener;
-	DrawStackEntry highScoresTitleEntry;
-	DrawStackEntry highScoresLabelEntry;
-
-	// help menu
-	KeyListener* helpMenuKeyListener;
-	DrawStackEntry helpTitleEntry;
-	DrawStackEntry instructionsTitleEntry;
-	DrawStackEntry instructionsEntry;
-	DrawStackEntry aboutButtonEntry;
 	DrawStackEntry backButtonEntry;
-	MouseZoneListener* aboutButtonZoneListener;
-	MouseButtonListener* aboutButtonClickListener;
 	MouseZoneListener* backButtonZoneListener;
 	MouseButtonListener* backButtonClickListener;
 
+	// high scores menu
+	KeyListener* highScoresMenuKeyListener;
+
+	// help menu
+	KeyListener* helpMenuKeyListener;
+	DrawStackEntry instructionsTitleEntry;
+	DrawStackEntry instructionsEntry;
+	DrawStackEntry aboutButtonEntry;
+	MouseZoneListener* aboutButtonZoneListener;
+	MouseButtonListener* aboutButtonClickListener;
+
 	// about menu
 	KeyListener* aboutMenuKeyListener;
-	DrawStackEntry aboutTitleEntry;
 	DrawStackEntry versionTitleEntry;
 	DrawStackEntry versionEntry;
 	DrawStackEntry creditsTitleEntry;
