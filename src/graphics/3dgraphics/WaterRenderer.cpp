@@ -71,7 +71,7 @@ void WaterRenderer::execute(DrawStackArgList arguments) {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glDisable(GL_CULL_FACE);
-	glEnable(GL_DEPTH_TEST);
+	glDisable(GL_DEPTH_TEST);
 	if(gameGraphics->supportsMultisampling) glDisable(GL_MULTISAMPLE);
 	glDisable(GL_SCISSOR_TEST);
 	glDisable(GL_TEXTURE_2D);

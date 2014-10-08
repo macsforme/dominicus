@@ -167,6 +167,8 @@ void MissileTrailRenderer::execute(DrawStackArgList arguments) {
 
 		// calculate the matrix for this missile trail position
 		Matrix4 mvMatrix; mvMatrix.identity();
+		if(gameState->missiles[i].position.y - gameSystem->getFloat("missileTrailLength") < 0.0f)
+			scaleMatrix(gameState->missiles[i].position.y / gameSystem->getFloat("missileTrailLength"), 1.0f, 1.0f, mvMatrix);
 		rotateMatrix(Vector3(0.0f, 0.0f, 1.0f), radians(gameState->missiles[i].tilt), mvMatrix);
 		rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(gameState->missiles[i].rotation), mvMatrix);
 		translateMatrix(gameState->missiles[i].position.x, gameState->missiles[i].position.y, gameState->missiles[i].position.z, mvMatrix);
