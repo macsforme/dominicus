@@ -210,6 +210,8 @@ void DrawField::execute(DrawStackArgList argList) {
 
 	labelDrawer->execute(labelArguments);
 
+	delete textBlock;
+
 	delete (std::string*) labelArguments["text"];
 	delete (UIMetrics*) labelArguments["metrics"];
 

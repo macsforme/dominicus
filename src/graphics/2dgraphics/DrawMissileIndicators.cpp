@@ -194,6 +194,8 @@ void DrawMissileIndicators::execute(DrawStackArgList argList) {
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, frontMissilePositions.size() * 4 * sizeof(GLushort), elementBufferArray,
 			GL_STATIC_DRAW);
 
+	delete[] elementBufferArray;
+
 	// state
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

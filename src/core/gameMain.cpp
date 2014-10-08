@@ -35,17 +35,11 @@ bool keepProgramAlive;
 
 // main game function
 int gameMain(int argc, char* argv[]) {
-	// nullify
-	gameAudio = NULL;
-	gameGraphics = NULL;
-	gameSystem = NULL;
-	inputHandler = NULL;
-	platform = NULL;
-
 	// finish SDL-related initialization
 	SDL_EnableUNICODE(1);
 
 	// initialize our common objects
+	gameState = NULL;
 	platform = new Platform();
 	gameSystem = new GameSystem();
 	gameAudio = new GameAudio();
