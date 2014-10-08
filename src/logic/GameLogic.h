@@ -5,6 +5,7 @@
 #define GAMELOGIC_H
 
 #include <string>
+#include <vector>
 
 #include "core/MainLoopMember.h"
 #include "graphics/DrawTypes.h"
@@ -12,7 +13,6 @@
 #include "input/Keyboard.h"
 #include "input/Mouse.h"
 #include "logic/Camera.h"
-#include "math/VectorMath.h"
 
 class GameLogic : public MainLoopMember {
 private:

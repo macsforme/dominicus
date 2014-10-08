@@ -10,7 +10,6 @@
 #include <SDL.h>
 #include <sstream>
 #include <utility>
-#include <vector>
 
 #include "audio/GameAudio.h"
 #include "core/GameSystem.h"
@@ -18,9 +17,10 @@
 #include "graphics/GameGraphics.h"
 #include "graphics/2dgraphics/DrawButton.h"
 #include "graphics/2dgraphics/DrawCircle.h"
+#include "graphics/2dgraphics/DrawContainer.h"
 #include "graphics/2dgraphics/DrawField.h"
-#include "graphics/2dgraphics/DrawGrayOut.h"
 #include "graphics/2dgraphics/DrawGaugePanel.h"
+#include "graphics/2dgraphics/DrawGrayOut.h"
 #include "graphics/2dgraphics/DrawLabel.h"
 #include "graphics/2dgraphics/DrawMissileIndicators.h"
 #include "graphics/2dgraphics/DrawRadar.h"
@@ -32,6 +32,7 @@
 #include "input/InputHandler.h"
 #include "math/MatrixMath.h"
 #include "math/ScalarMath.h"
+#include "math/VectorMath.h"
 #include "platform/Platform.h"
 #include "state/GameState.h"
 
@@ -68,1348 +69,1348 @@ void GameLogic::reScheme() {
 	// big scheme logic switch
 	switch (currentScheme) {
 	case SCHEME_MAINMENU:
-	{
-		// input
-		inputHandler->mouse.addListener(mouseMotionListener);
-		inputHandler->keyboard.addListener(quitKeyListener);
-		inputHandler->keyboard.addListener(fullScreenKeyListener);
-		inputHandler->keyboard.addListener(mainMenuKeyListener);
+		{
+			// input
+			inputHandler->mouse.addListener(mouseMotionListener);
+			inputHandler->keyboard.addListener(quitKeyListener);
+			inputHandler->keyboard.addListener(fullScreenKeyListener);
+			inputHandler->keyboard.addListener(mainMenuKeyListener);
 
-		// splash background
-		drawingMaster->drawStack.push_back(splashEntry);
+			// splash background
+			drawingMaster->drawStack.push_back(splashEntry);
 
-		// title label
-		*((float*) mainMenuTitleEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSuper");
-		((UIMetrics*) mainMenuTitleEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(mainMenuTitleEntry.second);
-		drawingMaster->drawStack.push_back(mainMenuTitleEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) mainMenuTitleEntry.second["metrics"]);
+			// title label
+			*((float*) mainMenuTitleEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSuper");
+			((UIMetrics*) mainMenuTitleEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(mainMenuTitleEntry.second);
+			drawingMaster->drawStack.push_back(mainMenuTitleEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) mainMenuTitleEntry.second["metrics"]);
 
-		// game logo
-		*((Vector2*) logoEntry.second["size"]) = Vector2(
-				gameSystem->getFloat("logoHeight") * gameGraphics->getTexture("branding/logo")->width / gameGraphics->getTexture("branding/logo")->height / (float) gameGraphics->resolutionX * 2.0f,
-				gameSystem->getFloat("logoHeight") / (float) gameGraphics->resolutionY * 2.0f
-			);
-		((UIMetrics*) logoEntry.second["metrics"])->size = ((DrawTexture*) drawingMaster->drawers["texture"])->getSize(logoEntry.second);
-		drawingMaster->drawStack.push_back(logoEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) logoEntry.second["metrics"]);
+			// game logo
+			*((Vector2*) logoEntry.second["size"]) = Vector2(
+					gameSystem->getFloat("logoHeight") * gameGraphics->getTexture("branding/logo")->width / gameGraphics->getTexture("branding/logo")->height / (float) gameGraphics->resolutionX * 2.0f,
+					gameSystem->getFloat("logoHeight") / (float) gameGraphics->resolutionY * 2.0f
+				);
+			((UIMetrics*) logoEntry.second["metrics"])->size = ((DrawTexture*) drawingMaster->drawers["texture"])->getSize(logoEntry.second);
+			drawingMaster->drawStack.push_back(logoEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) logoEntry.second["metrics"]);
 
-		// spacer
-		drawingMaster->uiLayoutAuthority->metrics.push_back(spacerMetrics);
+			// spacer
+			drawingMaster->uiLayoutAuthority->metrics.push_back(spacerMetrics);
 
-		// play button
-		*((float*) playButtonEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeLarge");
-		*((Vector4*) playButtonEntry.second["insideColor"]) = (
-				activeMenuSelection == &playButtonEntry ?
-				gameSystem->getColor("hudContainerHighlightColor") :
-				gameSystem->getColor("hudContainerInsideColor")
-			);
-		*((float*) playButtonEntry.second["padding"]) = gameSystem->getFloat("hudBigButtonPadding");
-		*((float*) playButtonEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
-		*((float*) playButtonEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
-		Vector2* playButtonSize = (Vector2*) playButtonEntry.second["size"];
-		playButtonEntry.second.erase(playButtonEntry.second.find("size"));
-		*playButtonSize = ((DrawButton*) drawingMaster->drawers["button"])->getSize(playButtonEntry.second);
-		playButtonEntry.second["size"] = playButtonSize;
-		((UIMetrics*) playButtonEntry.second["metrics"])->size = *playButtonSize;
-		drawingMaster->drawStack.push_back(playButtonEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) playButtonEntry.second["metrics"]);
+			// play button
+			*((float*) playButtonEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeLarge");
+			*((Vector4*) playButtonEntry.second["insideColor"]) = (
+					activeMenuSelection == &playButtonEntry ?
+					gameSystem->getColor("hudContainerHighlightColor") :
+					gameSystem->getColor("hudContainerInsideColor")
+				);
+			*((float*) playButtonEntry.second["padding"]) = gameSystem->getFloat("hudBigButtonPadding");
+			*((float*) playButtonEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
+			*((float*) playButtonEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
+			Vector2* playButtonSize = (Vector2*) playButtonEntry.second["size"];
+			playButtonEntry.second.erase(playButtonEntry.second.find("size"));
+			*playButtonSize = ((DrawButton*) drawingMaster->drawers["button"])->getSize(playButtonEntry.second);
+			playButtonEntry.second["size"] = playButtonSize;
+			((UIMetrics*) playButtonEntry.second["metrics"])->size = *playButtonSize;
+			drawingMaster->drawStack.push_back(playButtonEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) playButtonEntry.second["metrics"]);
 
-		// settings button
-		*((float*) settingsButtonEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeLarge");
-		*((Vector4*) settingsButtonEntry.second["insideColor"]) = (
-				activeMenuSelection == &settingsButtonEntry ?
-				gameSystem->getColor("hudContainerHighlightColor") :
-				gameSystem->getColor("hudContainerInsideColor")
-			);
-		*((float*) settingsButtonEntry.second["padding"]) = gameSystem->getFloat("hudBigButtonPadding");
-		*((float*) settingsButtonEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
-		*((float*) settingsButtonEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
-		Vector2* settingsButtonSize = (Vector2*) settingsButtonEntry.second["size"];
-		settingsButtonEntry.second.erase(settingsButtonEntry.second.find("size"));
-		*settingsButtonSize = ((DrawButton*) drawingMaster->drawers["button"])->getSize(settingsButtonEntry.second);
-		settingsButtonEntry.second["size"] = settingsButtonSize;
-		((UIMetrics*) settingsButtonEntry.second["metrics"])->size = *settingsButtonSize;
-		drawingMaster->drawStack.push_back(settingsButtonEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) settingsButtonEntry.second["metrics"]);
+			// settings button
+			*((float*) settingsButtonEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeLarge");
+			*((Vector4*) settingsButtonEntry.second["insideColor"]) = (
+					activeMenuSelection == &settingsButtonEntry ?
+					gameSystem->getColor("hudContainerHighlightColor") :
+					gameSystem->getColor("hudContainerInsideColor")
+				);
+			*((float*) settingsButtonEntry.second["padding"]) = gameSystem->getFloat("hudBigButtonPadding");
+			*((float*) settingsButtonEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
+			*((float*) settingsButtonEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
+			Vector2* settingsButtonSize = (Vector2*) settingsButtonEntry.second["size"];
+			settingsButtonEntry.second.erase(settingsButtonEntry.second.find("size"));
+			*settingsButtonSize = ((DrawButton*) drawingMaster->drawers["button"])->getSize(settingsButtonEntry.second);
+			settingsButtonEntry.second["size"] = settingsButtonSize;
+			((UIMetrics*) settingsButtonEntry.second["metrics"])->size = *settingsButtonSize;
+			drawingMaster->drawStack.push_back(settingsButtonEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) settingsButtonEntry.second["metrics"]);
 
-		// high scores button
-		*((float*) highScoresButtonEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeLarge");
-		*((Vector4*) highScoresButtonEntry.second["insideColor"]) = (
-				activeMenuSelection == &highScoresButtonEntry ?
-				gameSystem->getColor("hudContainerHighlightColor") :
-				gameSystem->getColor("hudContainerInsideColor")
-			);
-		*((float*) highScoresButtonEntry.second["padding"]) = gameSystem->getFloat("hudBigButtonPadding");
-		*((float*) highScoresButtonEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
-		*((float*) highScoresButtonEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
-		Vector2* highScoresButtonSize = (Vector2*) highScoresButtonEntry.second["size"];
-		highScoresButtonEntry.second.erase(highScoresButtonEntry.second.find("size"));
-		*highScoresButtonSize = ((DrawButton*) drawingMaster->drawers["button"])->getSize(highScoresButtonEntry.second);
-		highScoresButtonEntry.second["size"] = highScoresButtonSize;
-		((UIMetrics*) highScoresButtonEntry.second["metrics"])->size = *highScoresButtonSize;
-		drawingMaster->drawStack.push_back(highScoresButtonEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) highScoresButtonEntry.second["metrics"]);
+			// high scores button
+			*((float*) highScoresButtonEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeLarge");
+			*((Vector4*) highScoresButtonEntry.second["insideColor"]) = (
+					activeMenuSelection == &highScoresButtonEntry ?
+					gameSystem->getColor("hudContainerHighlightColor") :
+					gameSystem->getColor("hudContainerInsideColor")
+				);
+			*((float*) highScoresButtonEntry.second["padding"]) = gameSystem->getFloat("hudBigButtonPadding");
+			*((float*) highScoresButtonEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
+			*((float*) highScoresButtonEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
+			Vector2* highScoresButtonSize = (Vector2*) highScoresButtonEntry.second["size"];
+			highScoresButtonEntry.second.erase(highScoresButtonEntry.second.find("size"));
+			*highScoresButtonSize = ((DrawButton*) drawingMaster->drawers["button"])->getSize(highScoresButtonEntry.second);
+			highScoresButtonEntry.second["size"] = highScoresButtonSize;
+			((UIMetrics*) highScoresButtonEntry.second["metrics"])->size = *highScoresButtonSize;
+			drawingMaster->drawStack.push_back(highScoresButtonEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) highScoresButtonEntry.second["metrics"]);
 
-		// help button
-		*((float*) helpButtonEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeLarge");
-		*((Vector4*) helpButtonEntry.second["insideColor"]) = (
-				activeMenuSelection == &helpButtonEntry ?
-				gameSystem->getColor("hudContainerHighlightColor") :
-				gameSystem->getColor("hudContainerInsideColor")
-			);
-		*((float*) helpButtonEntry.second["padding"]) = gameSystem->getFloat("hudBigButtonPadding");
-		*((float*) helpButtonEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
-		*((float*) helpButtonEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
-		Vector2* helpButtonSize = (Vector2*) helpButtonEntry.second["size"];
-		highScoresButtonEntry.second.erase(helpButtonEntry.second.find("size"));
-		*helpButtonSize = ((DrawButton*) drawingMaster->drawers["button"])->getSize(helpButtonEntry.second);
-		helpButtonEntry.second["size"] = helpButtonSize;
-		((UIMetrics*) helpButtonEntry.second["metrics"])->size = *helpButtonSize;
-		drawingMaster->drawStack.push_back(helpButtonEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) helpButtonEntry.second["metrics"]);
+			// help button
+			*((float*) helpButtonEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeLarge");
+			*((Vector4*) helpButtonEntry.second["insideColor"]) = (
+					activeMenuSelection == &helpButtonEntry ?
+					gameSystem->getColor("hudContainerHighlightColor") :
+					gameSystem->getColor("hudContainerInsideColor")
+				);
+			*((float*) helpButtonEntry.second["padding"]) = gameSystem->getFloat("hudBigButtonPadding");
+			*((float*) helpButtonEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
+			*((float*) helpButtonEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
+			Vector2* helpButtonSize = (Vector2*) helpButtonEntry.second["size"];
+			highScoresButtonEntry.second.erase(helpButtonEntry.second.find("size"));
+			*helpButtonSize = ((DrawButton*) drawingMaster->drawers["button"])->getSize(helpButtonEntry.second);
+			helpButtonEntry.second["size"] = helpButtonSize;
+			((UIMetrics*) helpButtonEntry.second["metrics"])->size = *helpButtonSize;
+			drawingMaster->drawStack.push_back(helpButtonEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) helpButtonEntry.second["metrics"]);
 
-		// quit button
-		*((float*) quitButtonEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeLarge");
-		*((Vector4*) quitButtonEntry.second["insideColor"]) = (
-				activeMenuSelection == &quitButtonEntry ?
-				gameSystem->getColor("hudContainerHighlightColor") :
-				gameSystem->getColor("hudContainerInsideColor")
-			);
-		*((float*) quitButtonEntry.second["padding"]) = gameSystem->getFloat("hudBigButtonPadding");
-		*((float*) quitButtonEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
-		*((float*) quitButtonEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
-		Vector2* quitButtonSize = (Vector2*) quitButtonEntry.second["size"];
-		highScoresButtonEntry.second.erase(quitButtonEntry.second.find("size"));
-		*quitButtonSize = ((DrawButton*) drawingMaster->drawers["button"])->getSize(quitButtonEntry.second);
-		quitButtonEntry.second["size"] = quitButtonSize;
-		((UIMetrics*) quitButtonEntry.second["metrics"])->size = *quitButtonSize;
-		drawingMaster->drawStack.push_back(quitButtonEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) quitButtonEntry.second["metrics"]);
+			// quit button
+			*((float*) quitButtonEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeLarge");
+			*((Vector4*) quitButtonEntry.second["insideColor"]) = (
+					activeMenuSelection == &quitButtonEntry ?
+					gameSystem->getColor("hudContainerHighlightColor") :
+					gameSystem->getColor("hudContainerInsideColor")
+				);
+			*((float*) quitButtonEntry.second["padding"]) = gameSystem->getFloat("hudBigButtonPadding");
+			*((float*) quitButtonEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
+			*((float*) quitButtonEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
+			Vector2* quitButtonSize = (Vector2*) quitButtonEntry.second["size"];
+			highScoresButtonEntry.second.erase(quitButtonEntry.second.find("size"));
+			*quitButtonSize = ((DrawButton*) drawingMaster->drawers["button"])->getSize(quitButtonEntry.second);
+			quitButtonEntry.second["size"] = quitButtonSize;
+			((UIMetrics*) quitButtonEntry.second["metrics"])->size = *quitButtonSize;
+			drawingMaster->drawStack.push_back(quitButtonEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) quitButtonEntry.second["metrics"]);
 
-		// tips
-		*((float*) menuTip1Entry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-		*((std::string*) menuTip1Entry.second["text"]) = "Press ESC to return to the previous menu";
-		((UIMetrics*) menuTip1Entry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTip1Entry.second);
-		drawingMaster->drawStack.push_back(menuTip1Entry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTip1Entry.second["metrics"]);
+			// tips
+			*((float*) menuTip1Entry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+			*((std::string*) menuTip1Entry.second["text"]) = "Press ESC to return to the previous menu";
+			((UIMetrics*) menuTip1Entry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTip1Entry.second);
+			drawingMaster->drawStack.push_back(menuTip1Entry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTip1Entry.second["metrics"]);
 
-		*((float*) menuTip2Entry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-		((UIMetrics*) menuTip2Entry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTip2Entry.second);
-		drawingMaster->drawStack.push_back(menuTip2Entry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTip2Entry.second["metrics"]);
+			*((float*) menuTip2Entry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+			((UIMetrics*) menuTip2Entry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTip2Entry.second);
+			drawingMaster->drawStack.push_back(menuTip2Entry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTip2Entry.second["metrics"]);
 
-		*((float*) menuTip3Entry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-		((UIMetrics*) menuTip3Entry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTip3Entry.second);
-		drawingMaster->drawStack.push_back(menuTip3Entry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTip3Entry.second["metrics"]);
+			*((float*) menuTip3Entry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+			((UIMetrics*) menuTip3Entry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTip3Entry.second);
+			drawingMaster->drawStack.push_back(menuTip3Entry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTip3Entry.second["metrics"]);
 
-		// make all buttons the same width
-		std::vector<DrawStackEntry*> buttonsToSync;
-		buttonsToSync.push_back(&playButtonEntry);
-		buttonsToSync.push_back(&settingsButtonEntry);
-		buttonsToSync.push_back(&highScoresButtonEntry);
-		buttonsToSync.push_back(&helpButtonEntry);
-		buttonsToSync.push_back(&quitButtonEntry);
-		syncButtonWidths(buttonsToSync);
+			// make all buttons the same width
+			std::vector<DrawStackEntry*> buttonsToSync;
+			buttonsToSync.push_back(&playButtonEntry);
+			buttonsToSync.push_back(&settingsButtonEntry);
+			buttonsToSync.push_back(&highScoresButtonEntry);
+			buttonsToSync.push_back(&helpButtonEntry);
+			buttonsToSync.push_back(&quitButtonEntry);
+			syncButtonWidths(buttonsToSync);
 
-		// re-arrange the UI
-		drawingMaster->uiLayoutAuthority->rearrange();
+			// re-arrange the UI
+			drawingMaster->uiLayoutAuthority->rearrange();
 
-		// set up the button listeners with the new width and positions
-		playButtonZoneListener->ll = ((UIMetrics*) playButtonEntry.second["metrics"])->position - ((UIMetrics*) playButtonEntry.second["metrics"])->size / 2.0f;
-		playButtonZoneListener->ur = ((UIMetrics*) playButtonEntry.second["metrics"])->position + ((UIMetrics*) playButtonEntry.second["metrics"])->size / 2.0f;
-		inputHandler->mouse.addListener(playButtonZoneListener);
-		playButtonClickListener->ll = playButtonZoneListener->ll;
-		playButtonClickListener->ur = playButtonZoneListener->ur;
-		inputHandler->mouse.addListener(playButtonClickListener);
-		settingsButtonZoneListener->ll = ((UIMetrics*) settingsButtonEntry.second["metrics"])->position - ((UIMetrics*) settingsButtonEntry.second["metrics"])->size / 2.0f;
-		settingsButtonZoneListener->ur = ((UIMetrics*) settingsButtonEntry.second["metrics"])->position + ((UIMetrics*) settingsButtonEntry.second["metrics"])->size / 2.0f;
-		inputHandler->mouse.addListener(settingsButtonZoneListener);
-		settingsButtonClickListener->ll = settingsButtonZoneListener->ll;
-		settingsButtonClickListener->ur = settingsButtonZoneListener->ur;
-		inputHandler->mouse.addListener(settingsButtonClickListener);
-		helpButtonZoneListener->ll = ((UIMetrics*) helpButtonEntry.second["metrics"])->position - ((UIMetrics*) helpButtonEntry.second["metrics"])->size / 2.0f;
-		helpButtonZoneListener->ur = ((UIMetrics*) helpButtonEntry.second["metrics"])->position + ((UIMetrics*) helpButtonEntry.second["metrics"])->size / 2.0f;
-		inputHandler->mouse.addListener(helpButtonZoneListener);
-		helpButtonClickListener->ll = helpButtonZoneListener->ll;
-		helpButtonClickListener->ur = helpButtonZoneListener->ur;
-		inputHandler->mouse.addListener(helpButtonClickListener);
-		highScoresButtonZoneListener->ll = ((UIMetrics*) highScoresButtonEntry.second["metrics"])->position - ((UIMetrics*) highScoresButtonEntry.second["metrics"])->size / 2.0f;
-		highScoresButtonZoneListener->ur = ((UIMetrics*) highScoresButtonEntry.second["metrics"])->position + ((UIMetrics*) highScoresButtonEntry.second["metrics"])->size / 2.0f;
-		inputHandler->mouse.addListener(highScoresButtonZoneListener);
-		highScoresButtonClickListener->ll = highScoresButtonZoneListener->ll;
-		highScoresButtonClickListener->ur = highScoresButtonZoneListener->ur;
-		inputHandler->mouse.addListener(highScoresButtonClickListener);
-		quitButtonZoneListener->ll = ((UIMetrics*) quitButtonEntry.second["metrics"])->position - ((UIMetrics*) quitButtonEntry.second["metrics"])->size / 2.0f;
-		quitButtonZoneListener->ur = ((UIMetrics*) quitButtonEntry.second["metrics"])->position + ((UIMetrics*) quitButtonEntry.second["metrics"])->size / 2.0f;
-		inputHandler->mouse.addListener(quitButtonZoneListener);
-		quitButtonClickListener->ll = quitButtonZoneListener->ll;
-		quitButtonClickListener->ur = quitButtonZoneListener->ur;
-		inputHandler->mouse.addListener(quitButtonClickListener);
+			// set up the button listeners with the new width and positions
+			playButtonZoneListener->ll = ((UIMetrics*) playButtonEntry.second["metrics"])->position - ((UIMetrics*) playButtonEntry.second["metrics"])->size / 2.0f;
+			playButtonZoneListener->ur = ((UIMetrics*) playButtonEntry.second["metrics"])->position + ((UIMetrics*) playButtonEntry.second["metrics"])->size / 2.0f;
+			inputHandler->mouse.addListener(playButtonZoneListener);
+			playButtonClickListener->ll = playButtonZoneListener->ll;
+			playButtonClickListener->ur = playButtonZoneListener->ur;
+			inputHandler->mouse.addListener(playButtonClickListener);
+			settingsButtonZoneListener->ll = ((UIMetrics*) settingsButtonEntry.second["metrics"])->position - ((UIMetrics*) settingsButtonEntry.second["metrics"])->size / 2.0f;
+			settingsButtonZoneListener->ur = ((UIMetrics*) settingsButtonEntry.second["metrics"])->position + ((UIMetrics*) settingsButtonEntry.second["metrics"])->size / 2.0f;
+			inputHandler->mouse.addListener(settingsButtonZoneListener);
+			settingsButtonClickListener->ll = settingsButtonZoneListener->ll;
+			settingsButtonClickListener->ur = settingsButtonZoneListener->ur;
+			inputHandler->mouse.addListener(settingsButtonClickListener);
+			helpButtonZoneListener->ll = ((UIMetrics*) helpButtonEntry.second["metrics"])->position - ((UIMetrics*) helpButtonEntry.second["metrics"])->size / 2.0f;
+			helpButtonZoneListener->ur = ((UIMetrics*) helpButtonEntry.second["metrics"])->position + ((UIMetrics*) helpButtonEntry.second["metrics"])->size / 2.0f;
+			inputHandler->mouse.addListener(helpButtonZoneListener);
+			helpButtonClickListener->ll = helpButtonZoneListener->ll;
+			helpButtonClickListener->ur = helpButtonZoneListener->ur;
+			inputHandler->mouse.addListener(helpButtonClickListener);
+			highScoresButtonZoneListener->ll = ((UIMetrics*) highScoresButtonEntry.second["metrics"])->position - ((UIMetrics*) highScoresButtonEntry.second["metrics"])->size / 2.0f;
+			highScoresButtonZoneListener->ur = ((UIMetrics*) highScoresButtonEntry.second["metrics"])->position + ((UIMetrics*) highScoresButtonEntry.second["metrics"])->size / 2.0f;
+			inputHandler->mouse.addListener(highScoresButtonZoneListener);
+			highScoresButtonClickListener->ll = highScoresButtonZoneListener->ll;
+			highScoresButtonClickListener->ur = highScoresButtonZoneListener->ur;
+			inputHandler->mouse.addListener(highScoresButtonClickListener);
+			quitButtonZoneListener->ll = ((UIMetrics*) quitButtonEntry.second["metrics"])->position - ((UIMetrics*) quitButtonEntry.second["metrics"])->size / 2.0f;
+			quitButtonZoneListener->ur = ((UIMetrics*) quitButtonEntry.second["metrics"])->position + ((UIMetrics*) quitButtonEntry.second["metrics"])->size / 2.0f;
+			inputHandler->mouse.addListener(quitButtonZoneListener);
+			quitButtonClickListener->ll = quitButtonZoneListener->ll;
+			quitButtonClickListener->ur = quitButtonZoneListener->ur;
+			inputHandler->mouse.addListener(quitButtonClickListener);
 
-		break;
-	}
+			break;
+		}
 	case SCHEME_LOADING:
-	{
-		// input
-		inputHandler->keyboard.addListener(quitKeyListener);
-		inputHandler->keyboard.addListener(fullScreenKeyListener);
+		{
+			// input
+			inputHandler->keyboard.addListener(quitKeyListener);
+			inputHandler->keyboard.addListener(fullScreenKeyListener);
 
-		// splash background
-		drawingMaster->drawStack.push_back(splashEntry);
+			// splash background
+			drawingMaster->drawStack.push_back(splashEntry);
 
-		// loading label
-		*((float*) loadingEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeLarge");
-		((UIMetrics*) loadingEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(loadingEntry.second);
-		drawingMaster->drawStack.push_back(loadingEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) loadingEntry.second["metrics"]);
+			// loading label
+			*((float*) loadingEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeLarge");
+			((UIMetrics*) loadingEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(loadingEntry.second);
+			drawingMaster->drawStack.push_back(loadingEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) loadingEntry.second["metrics"]);
 
-		// re-arrange the UI
-		drawingMaster->uiLayoutAuthority->rearrange();
+			// re-arrange the UI
+			drawingMaster->uiLayoutAuthority->rearrange();
 
-		break;
-	}
+			break;
+		}
 	case SCHEME_INTRO:
-	{
-		// input
-		inputHandler->keyboard.addListener(quitKeyListener);
-		inputHandler->keyboard.addListener(fullScreenKeyListener);
-		inputHandler->keyboard.addListener(introKeyListener);
-		inputHandler->mouse.addListener(primaryFireClickListener1);
+		{
+			// input
+			inputHandler->keyboard.addListener(quitKeyListener);
+			inputHandler->keyboard.addListener(fullScreenKeyListener);
+			inputHandler->keyboard.addListener(introKeyListener);
+			inputHandler->mouse.addListener(primaryFireClickListener1);
 
-		// sky
-		drawingMaster->drawStack.push_back(skyEntry);
+			// sky
+			drawingMaster->drawStack.push_back(skyEntry);
 
-		// water
-		drawingMaster->drawStack.push_back(waterEntry);
+			// water
+			drawingMaster->drawStack.push_back(waterEntry);
 
-		// ships
-		drawingMaster->drawStack.push_back(shipEntry);
+			// ships
+			drawingMaster->drawStack.push_back(shipEntry);
 
-		// missiles
-		drawingMaster->drawStack.push_back(missileEntry);
+			// missiles
+			drawingMaster->drawStack.push_back(missileEntry);
 
-		// missile trails
-		drawingMaster->drawStack.push_back(missileTrailEntry);
+			// missile trails
+			drawingMaster->drawStack.push_back(missileTrailEntry);
 
-		// shells
-		drawingMaster->drawStack.push_back(shellEntry);
+			// shells
+			drawingMaster->drawStack.push_back(shellEntry);
 
-		// terrain
-		drawingMaster->drawStack.push_back(terrainEntry);
+			// terrain
+			drawingMaster->drawStack.push_back(terrainEntry);
 
-		// explosions
-		drawingMaster->drawStack.push_back(explosionEntry);
+			// explosions
+			drawingMaster->drawStack.push_back(explosionEntry);
 
-		// fortress
-		drawingMaster->drawStack.push_back(fortressEntry);
+			// fortress
+			drawingMaster->drawStack.push_back(fortressEntry);
 
-		// tip
-		*((float*) menuTip1Entry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-		*((std::string*) menuTip1Entry.second["text"]) = "LEFT CLICK or press SPACE to skip introduction";
-		((UIMetrics*) menuTip1Entry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTip1Entry.second);
-		drawingMaster->drawStack.push_back(menuTip1Entry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTip1Entry.second["metrics"]);
+			// tip
+			*((float*) menuTip1Entry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+			*((std::string*) menuTip1Entry.second["text"]) = "LEFT CLICK or press SPACE to skip introduction";
+			((UIMetrics*) menuTip1Entry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTip1Entry.second);
+			drawingMaster->drawStack.push_back(menuTip1Entry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTip1Entry.second["metrics"]);
 
-		// re-arrange the UI
-		drawingMaster->uiLayoutAuthority->rearrange();
+			// re-arrange the UI
+			drawingMaster->uiLayoutAuthority->rearrange();
 
-		break;
-	}
+			break;
+		}
 	case SCHEME_PLAYING:
-	{
-		// input
-		inputHandler->mouse.addListener(mouseMotionListener);
-		inputHandler->mouse.addListener(primaryFireClickListener1);
-		inputHandler->mouse.addListener(primaryFireClickListener2);
-		inputHandler->mouse.addListener(primaryFireClickListener3);
-		inputHandler->mouse.addListener(secondaryFireClickListener);
-		inputHandler->mouse.addListener(binocularsClickListener);
-		inputHandler->keyboard.addListener(quitKeyListener);
-		inputHandler->keyboard.addListener(fullScreenKeyListener);
-		if(gameSystem->getBool("developmentMode")) inputHandler->keyboard.addListener(playingDevelopmentModeKeyListener);
-		else inputHandler->keyboard.addListener(playingKeyListener);
-		inputHandler->keyboard.addListener(cameraAheadKeyListener);
-		inputHandler->keyboard.addListener(turretUpKeyListener);
-		inputHandler->keyboard.addListener(turretDownKeyListener);
-		inputHandler->keyboard.addListener(turretLeftKeyListener);
-		inputHandler->keyboard.addListener(turretRightKeyListener);
+		{
+			// input
+			inputHandler->mouse.addListener(mouseMotionListener);
+			inputHandler->mouse.addListener(primaryFireClickListener1);
+			inputHandler->mouse.addListener(primaryFireClickListener2);
+			inputHandler->mouse.addListener(primaryFireClickListener3);
+			inputHandler->mouse.addListener(secondaryFireClickListener);
+			inputHandler->mouse.addListener(binocularsClickListener);
+			inputHandler->keyboard.addListener(quitKeyListener);
+			inputHandler->keyboard.addListener(fullScreenKeyListener);
+			if(gameSystem->getBool("developmentMode")) inputHandler->keyboard.addListener(playingDevelopmentModeKeyListener);
+			else inputHandler->keyboard.addListener(playingKeyListener);
+			inputHandler->keyboard.addListener(cameraAheadKeyListener);
+			inputHandler->keyboard.addListener(turretUpKeyListener);
+			inputHandler->keyboard.addListener(turretDownKeyListener);
+			inputHandler->keyboard.addListener(turretLeftKeyListener);
+			inputHandler->keyboard.addListener(turretRightKeyListener);
 
-		// sky
-		drawingMaster->drawStack.push_back(skyEntry);
+			// sky
+			drawingMaster->drawStack.push_back(skyEntry);
 
-		// water
-		drawingMaster->drawStack.push_back(waterEntry);
+			// water
+			drawingMaster->drawStack.push_back(waterEntry);
 
-		// ships
-		drawingMaster->drawStack.push_back(shipEntry);
+			// ships
+			drawingMaster->drawStack.push_back(shipEntry);
 
-		// missiles
-		drawingMaster->drawStack.push_back(missileEntry);
+			// missiles
+			drawingMaster->drawStack.push_back(missileEntry);
 
-		// missile trails
-		drawingMaster->drawStack.push_back(missileTrailEntry);
+			// missile trails
+			drawingMaster->drawStack.push_back(missileTrailEntry);
 
-		// shells
-		drawingMaster->drawStack.push_back(shellEntry);
+			// shells
+			drawingMaster->drawStack.push_back(shellEntry);
 
-		// terrain
-		drawingMaster->drawStack.push_back(terrainEntry);
+			// terrain
+			drawingMaster->drawStack.push_back(terrainEntry);
 
-		// explosions
-		drawingMaster->drawStack.push_back(explosionEntry);
+			// explosions
+			drawingMaster->drawStack.push_back(explosionEntry);
 
-		// fortress
-		drawingMaster->drawStack.push_back(fortressEntry);
+			// fortress
+			drawingMaster->drawStack.push_back(fortressEntry);
 
-		// missile strike effect
-		drawingMaster->drawStack.push_back(strikeEffectEntry);
+			// missile strike effect
+			drawingMaster->drawStack.push_back(strikeEffectEntry);
 
-		// missile indicators
-		if(gameGraphics->currentCamera == &fortressCamera) {
-			*((Vector2*) missileIndicators.second["size"]) = Vector2(
-					gameSystem->getFloat("hudMissileIndicatorSize") * (gameState->binoculars ? gameSystem->getFloat("hudMissileIndicatorBinocularsFactor") : 1.0f) / (float) gameGraphics->resolutionX * 2.0f,
-					gameSystem->getFloat("hudMissileIndicatorSize") * (gameState->binoculars ? gameSystem->getFloat("hudMissileIndicatorBinocularsFactor") : 1.0f) / (float) gameGraphics->resolutionY * 2.0f
+			// missile indicators
+			if(gameGraphics->currentCamera == &fortressCamera) {
+				*((Vector2*) missileIndicators.second["size"]) = Vector2(
+						gameSystem->getFloat("hudMissileIndicatorSize") * (gameState->binoculars ? gameSystem->getFloat("hudMissileIndicatorBinocularsFactor") : 1.0f) / (float) gameGraphics->resolutionX * 2.0f,
+						gameSystem->getFloat("hudMissileIndicatorSize") * (gameState->binoculars ? gameSystem->getFloat("hudMissileIndicatorBinocularsFactor") : 1.0f) / (float) gameGraphics->resolutionY * 2.0f
+					);
+				*((Vector2*) missileIndicators.second["arrowSize"]) = Vector2(
+						gameSystem->getFloat("hudMissileArrowWidth") / (float) gameGraphics->resolutionX * 2.0f,
+						gameSystem->getFloat("hudMissileArrowHeight") / (float) gameGraphics->resolutionY * 2.0f
+					);
+				drawingMaster->drawStack.push_back(missileIndicators);
+			}
+
+			// score
+			*((float*) scoreLabel.second["fontSize"]) = gameSystem->getFloat("fontSizeLarge");
+			char scoreString[8]; scoreString[0] = '\0'; if(gameState->score <= 9999999) sprintf(scoreString, "%u", gameState->score);
+			*((std::string*) scoreLabel.second["text"]) = scoreString;
+			((UIMetrics*) scoreLabel.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(scoreLabel.second);
+			drawingMaster->drawStack.push_back(scoreLabel);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) scoreLabel.second["metrics"]);
+
+			// gauge panel
+			*((float*) gaugePanelEntry.second["padding"]) = gameSystem->getFloat("hudGaugePadding");
+			*((float*) gaugePanelEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
+			*((float*) gaugePanelEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
+			((std::vector<Vector2>*) gaugePanelEntry.second["textureSizes"])->at(0) = Vector2(
+					gameSystem->getFloat("gaugeImagesHeight") * gameGraphics->getTexture("gauge/heart")->width / gameGraphics->getTexture("gauge/heart")->height / (float) gameGraphics->resolutionX * 2.0f,
+					gameSystem->getFloat("gaugeImagesHeight") / (float) gameGraphics->resolutionY * 2.0f
 				);
-			*((Vector2*) missileIndicators.second["arrowSize"]) = Vector2(
-					gameSystem->getFloat("hudMissileArrowWidth") / (float) gameGraphics->resolutionX * 2.0f,
-					gameSystem->getFloat("hudMissileArrowHeight") / (float) gameGraphics->resolutionY * 2.0f
+			((std::vector<Vector2>*) gaugePanelEntry.second["textureSizes"])->at(1) = Vector2(
+					gameSystem->getFloat("gaugeImagesHeight") * gameGraphics->getTexture("gauge/shell")->width / gameGraphics->getTexture("gauge/shell")->height / (float) gameGraphics->resolutionX * 2.0f,
+					gameSystem->getFloat("gaugeImagesHeight") / (float) gameGraphics->resolutionY * 2.0f
 				);
-			drawingMaster->drawStack.push_back(missileIndicators);
+			((std::vector<Vector2>*) gaugePanelEntry.second["textureSizes"])->at(2) = Vector2(
+					gameSystem->getFloat("gaugeImagesHeight") * gameGraphics->getTexture("gauge/bolt")->width / gameGraphics->getTexture("gauge/bolt")->height / (float) gameGraphics->resolutionX * 2.0f,
+					gameSystem->getFloat("gaugeImagesHeight") / (float) gameGraphics->resolutionY * 2.0f
+				);
+			*((Vector2*) gaugePanelEntry.second["progressBarSize"]) = Vector2(gameSystem->getFloat("hudGaugeWidth"), gameSystem->getFloat("hudGaugeHeight"));
+			(*((std::vector<float>*) gaugePanelEntry.second["progressions"]))[0] = gameState->fortress.health;
+			(*((std::vector<float>*) gaugePanelEntry.second["progressions"]))[1] = gameState->fortress.ammunition;
+			(*((std::vector<float>*) gaugePanelEntry.second["progressions"]))[2] = (gameState->fortress.emp > 1.0f ? 2.0f - gameState->fortress.emp : gameState->fortress.emp);
+			(*((std::vector<Vector4>*) gaugePanelEntry.second["progressBarColorsTop"]))[0] = gameSystem->getColor("hudGaugeHealthBarColor");
+			(*((std::vector<Vector4>*) gaugePanelEntry.second["progressBarColorsTop"]))[1] = gameSystem->getColor("hudGaugeAmmoBarColor");
+			(*((std::vector<Vector4>*) gaugePanelEntry.second["progressBarColorsTop"]))[2] = gameSystem->getColor(gameState->fortress.emp > 1.0f ? "hudGaugeEMPChargingBarColor" : "hudGaugeEMPChargedBarColor");
+			(*((std::vector<Vector4>*) gaugePanelEntry.second["progressBarColorsBottom"]))[0] = Vector4(
+					gameSystem->getColor("hudGaugeHealthBarColor").x * gameSystem->getColor("hudGaugeColorFalloff").x,
+					gameSystem->getColor("hudGaugeHealthBarColor").y * gameSystem->getColor("hudGaugeColorFalloff").y,
+					gameSystem->getColor("hudGaugeHealthBarColor").z * gameSystem->getColor("hudGaugeColorFalloff").z,
+					gameSystem->getColor("hudGaugeHealthBarColor").w * gameSystem->getColor("hudGaugeColorFalloff").w
+				);
+			(*((std::vector<Vector4>*) gaugePanelEntry.second["progressBarColorsBottom"]))[1] = Vector4(
+					gameSystem->getColor("hudGaugeAmmoBarColor").x * gameSystem->getColor("hudGaugeColorFalloff").x,
+					gameSystem->getColor("hudGaugeAmmoBarColor").y * gameSystem->getColor("hudGaugeColorFalloff").y,
+					gameSystem->getColor("hudGaugeAmmoBarColor").z * gameSystem->getColor("hudGaugeColorFalloff").z,
+					gameSystem->getColor("hudGaugeAmmoBarColor").w * gameSystem->getColor("hudGaugeColorFalloff").w
+				);
+			(*((std::vector<Vector4>*) gaugePanelEntry.second["progressBarColorsBottom"]))[2] = Vector4(
+					gameSystem->getColor(gameState->fortress.emp > 1.0f ? "hudGaugeEMPChargingBarColor" : "hudGaugeEMPChargedBarColor").x * gameSystem->getColor("hudGaugeColorFalloff").x,
+					gameSystem->getColor(gameState->fortress.emp > 1.0f ? "hudGaugeEMPChargingBarColor" : "hudGaugeEMPChargedBarColor").y * gameSystem->getColor("hudGaugeColorFalloff").y,
+					gameSystem->getColor(gameState->fortress.emp > 1.0f ? "hudGaugeEMPChargingBarColor" : "hudGaugeEMPChargedBarColor").z * gameSystem->getColor("hudGaugeColorFalloff").z,
+					gameSystem->getColor(gameState->fortress.emp > 1.0f ? "hudGaugeEMPChargingBarColor" : "hudGaugeEMPChargedBarColor").w * gameSystem->getColor("hudGaugeColorFalloff").w
+				);
+			((UIMetrics*) gaugePanelEntry.second["metrics"])->size = ((DrawGaugePanel*) drawingMaster->drawers["gaugePanel"])->getSize(gaugePanelEntry.second);
+			drawingMaster->drawStack.push_back(gaugePanelEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) gaugePanelEntry.second["metrics"]);
+
+			// radar
+			*((float*) radarEntry.second["padding"]) = gameSystem->getFloat("hudGaugePadding");
+			*((float*) radarEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
+			*((float*) radarEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
+			((UIMetrics*) radarEntry.second["metrics"])->size = ((DrawRadar*) drawingMaster->drawers["radar"])->getSize(radarEntry.second);
+			drawingMaster->drawStack.push_back(radarEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) radarEntry.second["metrics"]);
+
+			// tip
+			*((float*) menuTip1Entry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+			*((std::string*) menuTip1Entry.second["text"]) = "Press ESC to pause and show options";
+			((UIMetrics*) menuTip1Entry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTip1Entry.second);
+			drawingMaster->drawStack.push_back(menuTip1Entry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTip1Entry.second["metrics"]);
+
+			// development mode controls
+			if(gameSystem->getBool("developmentMode")) {
+				*((float*) develControlsTitleEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+				((UIMetrics*) develControlsTitleEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(develControlsTitleEntry.second);
+
+				*((float*) develControlsEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+				((UIMetrics*) develControlsEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(develControlsEntry.second);
+
+				*((float*) develControlsContainerEntry.second["padding"]) = gameSystem->getFloat("hudContainerPadding");
+				*((float*) develControlsContainerEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
+				*((float*) develControlsContainerEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
+				*((Vector2*) develControlsContainerEntry.second["size"]) = Vector2(
+						(((DrawLabel*) drawingMaster->drawers["label"])->getSize(develControlsTitleEntry.second).x >
+								((DrawLabel*) drawingMaster->drawers["label"])->getSize(develControlsEntry.second).x ?
+								((DrawLabel*) drawingMaster->drawers["label"])->getSize(develControlsTitleEntry.second).x :
+								((DrawLabel*) drawingMaster->drawers["label"])->getSize(develControlsEntry.second).x) +
+								gameSystem->getFloat("hudContainerPadding") / (float) gameGraphics->resolutionX * 4.0f,
+						((DrawLabel*) drawingMaster->drawers["label"])->getSize(develControlsTitleEntry.second).y +
+								(float) gameGraphics->fontManager->lineHeights[gameSystem->getFloat("fontSizeSmall")] / gameGraphics->resolutionY * 2.0f +
+								((DrawLabel*) drawingMaster->drawers["label"])->getSize(develControlsEntry.second).y +
+								gameSystem->getFloat("hudContainerPadding") / (float) gameGraphics->resolutionY * 2.0f // half of container padding in y when rendering text
+					);
+				((UIMetrics*) develControlsContainerEntry.second["metrics"])->size = *((Vector2*) develControlsContainerEntry.second["size"]);
+				drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) develControlsContainerEntry.second["metrics"]);
+				drawingMaster->drawStack.push_back(develControlsContainerEntry);
+				drawingMaster->drawStack.push_back(develControlsTitleEntry);
+				drawingMaster->drawStack.push_back(develControlsEntry);
+			}
+
+			// control spot
+			*((Vector2*) controlSpotEntry.second["size"]) = Vector2(
+				gameSystem->getFloat("hudControlSpotSize") * 2.0f / (float) gameGraphics->resolutionX,
+				gameSystem->getFloat("hudControlSpotSize") * 2.0f / (float) gameGraphics->resolutionY
+			);
+			*((Vector2*) controlSpotEntry.second["position"]) = Vector2(0.0f, 0.0f);
+			*((float*) controlSpotEntry.second["border"]) = gameSystem->getFloat("hudControlSpotBorder");
+			*((float*) controlSpotEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
+			*((Vector4*) controlSpotEntry.second["insideColor"]) = Vector4(
+					gameSystem->getColor("hudControlSpotColor").x,
+					gameSystem->getColor("hudControlSpotColor").y,
+					gameSystem->getColor("hudControlSpotColor").z,
+					0.0f
+				);
+			drawingMaster->drawStack.push_back(controlSpotEntry);
+
+			// cursor
+			if(mouseActive) {
+				*((Vector2*) cursorEntry.second["size"]) = Vector2(
+					gameSystem->getFloat("hudCursorSize") * 2.0f / (float) gameGraphics->resolutionX,
+					gameSystem->getFloat("hudCursorSize") * 2.0f / (float) gameGraphics->resolutionY
+				);
+				*((Vector2*)cursorEntry.second["position"]) = inputHandler->mouse.position;
+				*((float*) cursorEntry.second["border"]) = 0.0f;
+				*((float*) cursorEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
+				drawingMaster->drawStack.push_back(cursorEntry);
+			}
+
+			// re-arrange the UI
+			drawingMaster->uiLayoutAuthority->rearrange();
+
+			// set post-UI arrangement container content locations
+			if(gameSystem->getBool("developmentMode")) {
+				((UIMetrics*) develControlsTitleEntry.second["metrics"])->position = Vector2(
+						((UIMetrics*) develControlsContainerEntry.second["metrics"])->position.x,
+						((UIMetrics*) develControlsContainerEntry.second["metrics"])->position.y +
+								((UIMetrics*) develControlsContainerEntry.second["metrics"])->size.y / 2.0f -
+								gameSystem->getFloat("hudContainerPadding") / (float) gameGraphics->resolutionY - // half of container padding in y when rendering text
+								((UIMetrics*) develControlsTitleEntry.second["metrics"])->size.y / 2.0f
+					);
+
+				((UIMetrics*) develControlsEntry.second["metrics"])->position = Vector2(
+						((UIMetrics*) develControlsContainerEntry.second["metrics"])->position.x -
+								((UIMetrics*) develControlsContainerEntry.second["metrics"])->size.x / 2.0f +
+								gameSystem->getFloat("hudContainerPadding") / (float) gameGraphics->resolutionX * 2.0f +
+								((UIMetrics*) develControlsEntry.second["metrics"])->size.x / 2.0f,
+						((UIMetrics*) develControlsContainerEntry.second["metrics"])->position.y -
+								((UIMetrics*) develControlsContainerEntry.second["metrics"])->size.y / 2.0f +
+								gameSystem->getFloat("hudContainerPadding") / (float) gameGraphics->resolutionY + // half of container padding in y when rendering text
+								((UIMetrics*) develControlsEntry.second["metrics"])->size.y / 2.0f
+					);
+			}
+
+			break;
 		}
-
-		// score
-		*((float*) scoreLabel.second["fontSize"]) = gameSystem->getFloat("fontSizeLarge");
-		char scoreString[8]; scoreString[0] = '\0'; if(gameState->score <= 9999999) sprintf(scoreString, "%u", gameState->score);
-		*((std::string*) scoreLabel.second["text"]) = scoreString;
-		((UIMetrics*) scoreLabel.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(scoreLabel.second);
-		drawingMaster->drawStack.push_back(scoreLabel);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) scoreLabel.second["metrics"]);
-
-		// gauge panel
-		*((float*) gaugePanelEntry.second["padding"]) = gameSystem->getFloat("hudGaugePadding");
-		*((float*) gaugePanelEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
-		*((float*) gaugePanelEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
-		((std::vector<Vector2>*) gaugePanelEntry.second["textureSizes"])->at(0) = Vector2(
-				gameSystem->getFloat("gaugeImagesHeight") * gameGraphics->getTexture("gauge/heart")->width / gameGraphics->getTexture("gauge/heart")->height / (float) gameGraphics->resolutionX * 2.0f,
-				gameSystem->getFloat("gaugeImagesHeight") / (float) gameGraphics->resolutionY * 2.0f
-			);
-		((std::vector<Vector2>*) gaugePanelEntry.second["textureSizes"])->at(1) = Vector2(
-				gameSystem->getFloat("gaugeImagesHeight") * gameGraphics->getTexture("gauge/shell")->width / gameGraphics->getTexture("gauge/shell")->height / (float) gameGraphics->resolutionX * 2.0f,
-				gameSystem->getFloat("gaugeImagesHeight") / (float) gameGraphics->resolutionY * 2.0f
-			);
-		((std::vector<Vector2>*) gaugePanelEntry.second["textureSizes"])->at(2) = Vector2(
-				gameSystem->getFloat("gaugeImagesHeight") * gameGraphics->getTexture("gauge/bolt")->width / gameGraphics->getTexture("gauge/bolt")->height / (float) gameGraphics->resolutionX * 2.0f,
-				gameSystem->getFloat("gaugeImagesHeight") / (float) gameGraphics->resolutionY * 2.0f
-			);
-		*((Vector2*) gaugePanelEntry.second["progressBarSize"]) = Vector2(gameSystem->getFloat("hudGaugeWidth"), gameSystem->getFloat("hudGaugeHeight"));
-		(*((std::vector<float>*) gaugePanelEntry.second["progressions"]))[0] = gameState->fortress.health;
-		(*((std::vector<float>*) gaugePanelEntry.second["progressions"]))[1] = gameState->fortress.ammunition;
-		(*((std::vector<float>*) gaugePanelEntry.second["progressions"]))[2] = (gameState->fortress.emp > 1.0f ? 2.0f - gameState->fortress.emp : gameState->fortress.emp);
-		(*((std::vector<Vector4>*) gaugePanelEntry.second["progressBarColorsTop"]))[0] = gameSystem->getColor("hudGaugeHealthBarColor");
-		(*((std::vector<Vector4>*) gaugePanelEntry.second["progressBarColorsTop"]))[1] = gameSystem->getColor("hudGaugeAmmoBarColor");
-		(*((std::vector<Vector4>*) gaugePanelEntry.second["progressBarColorsTop"]))[2] = gameSystem->getColor(gameState->fortress.emp > 1.0f ? "hudGaugeEMPChargingBarColor" : "hudGaugeEMPChargedBarColor");
-		(*((std::vector<Vector4>*) gaugePanelEntry.second["progressBarColorsBottom"]))[0] = Vector4(
-				gameSystem->getColor("hudGaugeHealthBarColor").x * gameSystem->getColor("hudGaugeColorFalloff").x,
-				gameSystem->getColor("hudGaugeHealthBarColor").y * gameSystem->getColor("hudGaugeColorFalloff").y,
-				gameSystem->getColor("hudGaugeHealthBarColor").z * gameSystem->getColor("hudGaugeColorFalloff").z,
-				gameSystem->getColor("hudGaugeHealthBarColor").w * gameSystem->getColor("hudGaugeColorFalloff").w
-			);
-		(*((std::vector<Vector4>*) gaugePanelEntry.second["progressBarColorsBottom"]))[1] = Vector4(
-				gameSystem->getColor("hudGaugeAmmoBarColor").x * gameSystem->getColor("hudGaugeColorFalloff").x,
-				gameSystem->getColor("hudGaugeAmmoBarColor").y * gameSystem->getColor("hudGaugeColorFalloff").y,
-				gameSystem->getColor("hudGaugeAmmoBarColor").z * gameSystem->getColor("hudGaugeColorFalloff").z,
-				gameSystem->getColor("hudGaugeAmmoBarColor").w * gameSystem->getColor("hudGaugeColorFalloff").w
-			);
-		(*((std::vector<Vector4>*) gaugePanelEntry.second["progressBarColorsBottom"]))[2] = Vector4(
-				gameSystem->getColor(gameState->fortress.emp > 1.0f ? "hudGaugeEMPChargingBarColor" : "hudGaugeEMPChargedBarColor").x * gameSystem->getColor("hudGaugeColorFalloff").x,
-				gameSystem->getColor(gameState->fortress.emp > 1.0f ? "hudGaugeEMPChargingBarColor" : "hudGaugeEMPChargedBarColor").y * gameSystem->getColor("hudGaugeColorFalloff").y,
-				gameSystem->getColor(gameState->fortress.emp > 1.0f ? "hudGaugeEMPChargingBarColor" : "hudGaugeEMPChargedBarColor").z * gameSystem->getColor("hudGaugeColorFalloff").z,
-				gameSystem->getColor(gameState->fortress.emp > 1.0f ? "hudGaugeEMPChargingBarColor" : "hudGaugeEMPChargedBarColor").w * gameSystem->getColor("hudGaugeColorFalloff").w
-			);
-		((UIMetrics*) gaugePanelEntry.second["metrics"])->size = ((DrawGaugePanel*) drawingMaster->drawers["gaugePanel"])->getSize(gaugePanelEntry.second);
-		drawingMaster->drawStack.push_back(gaugePanelEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) gaugePanelEntry.second["metrics"]);
-
-		// radar
-		*((float*) radarEntry.second["padding"]) = gameSystem->getFloat("hudGaugePadding");
-		*((float*) radarEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
-		*((float*) radarEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
-		((UIMetrics*) radarEntry.second["metrics"])->size = ((DrawRadar*) drawingMaster->drawers["radar"])->getSize(radarEntry.second);
-		drawingMaster->drawStack.push_back(radarEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) radarEntry.second["metrics"]);
-
-		// tip
-		*((float*) menuTip1Entry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-		*((std::string*) menuTip1Entry.second["text"]) = "Press ESC to pause and show options";
-		((UIMetrics*) menuTip1Entry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTip1Entry.second);
-		drawingMaster->drawStack.push_back(menuTip1Entry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTip1Entry.second["metrics"]);
-
-		// development mode controls
-		if(gameSystem->getBool("developmentMode")) {
-			*((float*) develControlsTitleEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-			((UIMetrics*) develControlsTitleEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(develControlsTitleEntry.second);
-
-			*((float*) develControlsEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-			((UIMetrics*) develControlsEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(develControlsEntry.second);
-
-			*((float*) develControlsContainerEntry.second["padding"]) = gameSystem->getFloat("hudContainerPadding");
-			*((float*) develControlsContainerEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
-			*((float*) develControlsContainerEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
-			*((Vector2*) develControlsContainerEntry.second["size"]) = Vector2(
-					(((DrawLabel*) drawingMaster->drawers["label"])->getSize(develControlsTitleEntry.second).x >
-							((DrawLabel*) drawingMaster->drawers["label"])->getSize(develControlsEntry.second).x ?
-							((DrawLabel*) drawingMaster->drawers["label"])->getSize(develControlsTitleEntry.second).x :
-							((DrawLabel*) drawingMaster->drawers["label"])->getSize(develControlsEntry.second).x) +
-							gameSystem->getFloat("hudContainerPadding") / (float) gameGraphics->resolutionX * 4.0f,
-					((DrawLabel*) drawingMaster->drawers["label"])->getSize(develControlsTitleEntry.second).y +
-							(float) gameGraphics->fontManager->lineHeights[gameSystem->getFloat("fontSizeSmall")] / gameGraphics->resolutionY * 2.0f +
-							((DrawLabel*) drawingMaster->drawers["label"])->getSize(develControlsEntry.second).y +
-							gameSystem->getFloat("hudContainerPadding") / (float) gameGraphics->resolutionY * 2.0f // half of container padding in y when rendering text
-				);
-			((UIMetrics*) develControlsContainerEntry.second["metrics"])->size = *((Vector2*) develControlsContainerEntry.second["size"]);
-			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) develControlsContainerEntry.second["metrics"]);
-			drawingMaster->drawStack.push_back(develControlsContainerEntry);
-			drawingMaster->drawStack.push_back(develControlsTitleEntry);
-			drawingMaster->drawStack.push_back(develControlsEntry);
-		}
-
-		// control spot
-		*((Vector2*) controlSpotEntry.second["size"]) = Vector2(
-			gameSystem->getFloat("hudControlSpotSize") * 2.0f / (float) gameGraphics->resolutionX,
-			gameSystem->getFloat("hudControlSpotSize") * 2.0f / (float) gameGraphics->resolutionY
-		);
-		*((Vector2*) controlSpotEntry.second["position"]) = Vector2(0.0f, 0.0f);
-		*((float*) controlSpotEntry.second["border"]) = gameSystem->getFloat("hudControlSpotBorder");
-		*((float*) controlSpotEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
-		*((Vector4*) controlSpotEntry.second["insideColor"]) = Vector4(
-				gameSystem->getColor("hudControlSpotColor").x,
-				gameSystem->getColor("hudControlSpotColor").y,
-				gameSystem->getColor("hudControlSpotColor").z,
-				0.0f
-			);
-		drawingMaster->drawStack.push_back(controlSpotEntry);
-
-		// cursor
-		if(mouseActive) {
-			*((Vector2*) cursorEntry.second["size"]) = Vector2(
-				gameSystem->getFloat("hudCursorSize") * 2.0f / (float) gameGraphics->resolutionX,
-				gameSystem->getFloat("hudCursorSize") * 2.0f / (float) gameGraphics->resolutionY
-			);
-			*((Vector2*)cursorEntry.second["position"]) = inputHandler->mouse.position;
-			*((float*) cursorEntry.second["border"]) = 0.0f;
-			*((float*) cursorEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
-			drawingMaster->drawStack.push_back(cursorEntry);
-		}
-
-		// re-arrange the UI
-		drawingMaster->uiLayoutAuthority->rearrange();
-
-		// set post-UI arrangement container content locations
-		if(gameSystem->getBool("developmentMode")) {
-			((UIMetrics*) develControlsTitleEntry.second["metrics"])->position = Vector2(
-					((UIMetrics*) develControlsContainerEntry.second["metrics"])->position.x,
-					((UIMetrics*) develControlsContainerEntry.second["metrics"])->position.y +
-							((UIMetrics*) develControlsContainerEntry.second["metrics"])->size.y / 2.0f -
-							gameSystem->getFloat("hudContainerPadding") / (float) gameGraphics->resolutionY - // half of container padding in y when rendering text
-							((UIMetrics*) develControlsTitleEntry.second["metrics"])->size.y / 2.0f
-				);
-
-			((UIMetrics*) develControlsEntry.second["metrics"])->position = Vector2(
-					((UIMetrics*) develControlsContainerEntry.second["metrics"])->position.x -
-							((UIMetrics*) develControlsContainerEntry.second["metrics"])->size.x / 2.0f +
-							gameSystem->getFloat("hudContainerPadding") / (float) gameGraphics->resolutionX * 2.0f +
-							((UIMetrics*) develControlsEntry.second["metrics"])->size.x / 2.0f,
-					((UIMetrics*) develControlsContainerEntry.second["metrics"])->position.y -
-							((UIMetrics*) develControlsContainerEntry.second["metrics"])->size.y / 2.0f +
-							gameSystem->getFloat("hudContainerPadding") / (float) gameGraphics->resolutionY + // half of container padding in y when rendering text
-							((UIMetrics*) develControlsEntry.second["metrics"])->size.y / 2.0f
-				);
-		}
-
-		break;
-	}
 	case SCHEME_PAUSED:
-	{
-		// input
-		inputHandler->mouse.addListener(mouseMotionListener);
-		inputHandler->keyboard.addListener(quitKeyListener);
-		inputHandler->keyboard.addListener(fullScreenKeyListener);
-		inputHandler->keyboard.addListener(pausedMenuKeyListener);
+		{
+			// input
+			inputHandler->mouse.addListener(mouseMotionListener);
+			inputHandler->keyboard.addListener(quitKeyListener);
+			inputHandler->keyboard.addListener(fullScreenKeyListener);
+			inputHandler->keyboard.addListener(pausedMenuKeyListener);
 
-		// sky
-		drawingMaster->drawStack.push_back(skyEntry);
+			// sky
+			drawingMaster->drawStack.push_back(skyEntry);
 
-		// water
-		drawingMaster->drawStack.push_back(waterEntry);
+			// water
+			drawingMaster->drawStack.push_back(waterEntry);
 
-		// ships
-		drawingMaster->drawStack.push_back(shipEntry);
+			// ships
+			drawingMaster->drawStack.push_back(shipEntry);
 
-		// missiles
-		drawingMaster->drawStack.push_back(missileEntry);
+			// missiles
+			drawingMaster->drawStack.push_back(missileEntry);
 
-		// missile trails
-		drawingMaster->drawStack.push_back(missileTrailEntry);
+			// missile trails
+			drawingMaster->drawStack.push_back(missileTrailEntry);
 
-		// shells
-		drawingMaster->drawStack.push_back(shellEntry);
+			// shells
+			drawingMaster->drawStack.push_back(shellEntry);
 
-		// terrain
-		drawingMaster->drawStack.push_back(terrainEntry);
+			// terrain
+			drawingMaster->drawStack.push_back(terrainEntry);
 
-		// explosions
-		drawingMaster->drawStack.push_back(explosionEntry);
+			// explosions
+			drawingMaster->drawStack.push_back(explosionEntry);
 
-		// fortress
-		drawingMaster->drawStack.push_back(fortressEntry);
+			// fortress
+			drawingMaster->drawStack.push_back(fortressEntry);
 
-		// gray out
-		drawingMaster->drawStack.push_back(grayOutEntry);
+			// gray out
+			drawingMaster->drawStack.push_back(grayOutEntry);
 
-		// paused title label
-		*((float*) menuTitleEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeLarge");
-		*((std::string*) menuTitleEntry.second["text"]) = "PAUSED";
-		((UIMetrics*) menuTitleEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTitleEntry.second);
-		drawingMaster->drawStack.push_back(menuTitleEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTitleEntry.second["metrics"]);
+			// paused title label
+			*((float*) menuTitleEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeLarge");
+			*((std::string*) menuTitleEntry.second["text"]) = "PAUSED";
+			((UIMetrics*) menuTitleEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTitleEntry.second);
+			drawingMaster->drawStack.push_back(menuTitleEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTitleEntry.second["metrics"]);
 
-		// controls title label
-		*((float*) controlsTitleEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
-		((UIMetrics*) controlsTitleEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(controlsTitleEntry.second);
-		drawingMaster->drawStack.push_back(controlsTitleEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) controlsTitleEntry.second["metrics"]);
+			// controls title label
+			*((float*) controlsTitleEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
+			((UIMetrics*) controlsTitleEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(controlsTitleEntry.second);
+			drawingMaster->drawStack.push_back(controlsTitleEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) controlsTitleEntry.second["metrics"]);
 
-		// controls label
-		*((float*) controlsEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-		((UIMetrics*) controlsEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(controlsEntry.second);
-		drawingMaster->drawStack.push_back(controlsEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) controlsEntry.second["metrics"]);
+			// controls label
+			*((float*) controlsEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+			((UIMetrics*) controlsEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(controlsEntry.second);
+			drawingMaster->drawStack.push_back(controlsEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) controlsEntry.second["metrics"]);
 
-		// spacer
-		drawingMaster->uiLayoutAuthority->metrics.push_back(spacerMetrics);
+			// spacer
+			drawingMaster->uiLayoutAuthority->metrics.push_back(spacerMetrics);
 
-		// resume button
-		*((float*) resumeButtonEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeLarge");
-		*((float*) resumeButtonEntry.second["padding"]) = gameSystem->getFloat("hudBigButtonPadding");
-		*((float*) resumeButtonEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
-		*((float*) resumeButtonEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
-		Vector2* resumeButtonSize = (Vector2*) resumeButtonEntry.second["size"];
-		resumeButtonEntry.second.erase(resumeButtonEntry.second.find("size"));
-		*resumeButtonSize = ((DrawButton*) drawingMaster->drawers["button"])->getSize(resumeButtonEntry.second);
-		resumeButtonEntry.second["size"] = resumeButtonSize;
-		((UIMetrics*) resumeButtonEntry.second["metrics"])->size = *resumeButtonSize;
-		*((Vector4*) resumeButtonEntry.second["insideColor"]) = (
-				activeMenuSelection == &resumeButtonEntry ?
-				gameSystem->getColor("hudContainerHighlightColor") :
-				gameSystem->getColor("hudContainerInsideColor")
-			);
-		drawingMaster->drawStack.push_back(resumeButtonEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) resumeButtonEntry.second["metrics"]);
+			// resume button
+			*((float*) resumeButtonEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeLarge");
+			*((float*) resumeButtonEntry.second["padding"]) = gameSystem->getFloat("hudBigButtonPadding");
+			*((float*) resumeButtonEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
+			*((float*) resumeButtonEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
+			Vector2* resumeButtonSize = (Vector2*) resumeButtonEntry.second["size"];
+			resumeButtonEntry.second.erase(resumeButtonEntry.second.find("size"));
+			*resumeButtonSize = ((DrawButton*) drawingMaster->drawers["button"])->getSize(resumeButtonEntry.second);
+			resumeButtonEntry.second["size"] = resumeButtonSize;
+			((UIMetrics*) resumeButtonEntry.second["metrics"])->size = *resumeButtonSize;
+			*((Vector4*) resumeButtonEntry.second["insideColor"]) = (
+					activeMenuSelection == &resumeButtonEntry ?
+					gameSystem->getColor("hudContainerHighlightColor") :
+					gameSystem->getColor("hudContainerInsideColor")
+				);
+			drawingMaster->drawStack.push_back(resumeButtonEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) resumeButtonEntry.second["metrics"]);
 
-		// end game button
-		*((float*) endGameButtonEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeLarge");
-		*((float*) endGameButtonEntry.second["padding"]) = gameSystem->getFloat("hudBigButtonPadding");
-		*((float*) endGameButtonEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
-		*((float*) endGameButtonEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
-		*((Vector4*) endGameButtonEntry.second["insideColor"]) = (
-				activeMenuSelection == &endGameButtonEntry ?
-				gameSystem->getColor("hudContainerHighlightColor") :
-				gameSystem->getColor("hudContainerInsideColor")
-			);
-		Vector2* endGameButtonSize = (Vector2*) endGameButtonEntry.second["size"];
-		resumeButtonEntry.second.erase(endGameButtonEntry.second.find("size"));
-		*endGameButtonSize = ((DrawButton*) drawingMaster->drawers["button"])->getSize(endGameButtonEntry.second);
-		endGameButtonEntry.second["size"] = endGameButtonSize;
-		((UIMetrics*) endGameButtonEntry.second["metrics"])->size = *endGameButtonSize;
-		drawingMaster->drawStack.push_back(endGameButtonEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) endGameButtonEntry.second["metrics"]);
+			// end game button
+			*((float*) endGameButtonEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeLarge");
+			*((float*) endGameButtonEntry.second["padding"]) = gameSystem->getFloat("hudBigButtonPadding");
+			*((float*) endGameButtonEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
+			*((float*) endGameButtonEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
+			*((Vector4*) endGameButtonEntry.second["insideColor"]) = (
+					activeMenuSelection == &endGameButtonEntry ?
+					gameSystem->getColor("hudContainerHighlightColor") :
+					gameSystem->getColor("hudContainerInsideColor")
+				);
+			Vector2* endGameButtonSize = (Vector2*) endGameButtonEntry.second["size"];
+			resumeButtonEntry.second.erase(endGameButtonEntry.second.find("size"));
+			*endGameButtonSize = ((DrawButton*) drawingMaster->drawers["button"])->getSize(endGameButtonEntry.second);
+			endGameButtonEntry.second["size"] = endGameButtonSize;
+			((UIMetrics*) endGameButtonEntry.second["metrics"])->size = *endGameButtonSize;
+			drawingMaster->drawStack.push_back(endGameButtonEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) endGameButtonEntry.second["metrics"]);
 
-		// tips
-		*((float*) menuTip1Entry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-		*((std::string*) menuTip1Entry.second["text"]) = "Press ESC to return to the game";
-		((UIMetrics*) menuTip1Entry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTip1Entry.second);
-		drawingMaster->drawStack.push_back(menuTip1Entry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTip1Entry.second["metrics"]);
+			// tips
+			*((float*) menuTip1Entry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+			*((std::string*) menuTip1Entry.second["text"]) = "Press ESC to return to the game";
+			((UIMetrics*) menuTip1Entry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTip1Entry.second);
+			drawingMaster->drawStack.push_back(menuTip1Entry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTip1Entry.second["metrics"]);
 
-		*((float*) menuTip2Entry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-		((UIMetrics*) menuTip2Entry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTip2Entry.second);
-		drawingMaster->drawStack.push_back(menuTip2Entry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTip2Entry.second["metrics"]);
+			*((float*) menuTip2Entry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+			((UIMetrics*) menuTip2Entry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTip2Entry.second);
+			drawingMaster->drawStack.push_back(menuTip2Entry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTip2Entry.second["metrics"]);
 
-		*((float*) menuTip3Entry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-		((UIMetrics*) menuTip3Entry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTip3Entry.second);
-		drawingMaster->drawStack.push_back(menuTip3Entry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTip3Entry.second["metrics"]);
+			*((float*) menuTip3Entry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+			((UIMetrics*) menuTip3Entry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTip3Entry.second);
+			drawingMaster->drawStack.push_back(menuTip3Entry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTip3Entry.second["metrics"]);
 
-		// make all buttons the same width
-		std::vector<DrawStackEntry*> buttonsToSync;
-		buttonsToSync.push_back(&resumeButtonEntry);
-		buttonsToSync.push_back(&endGameButtonEntry);
-		syncButtonWidths(buttonsToSync);
+			// make all buttons the same width
+			std::vector<DrawStackEntry*> buttonsToSync;
+			buttonsToSync.push_back(&resumeButtonEntry);
+			buttonsToSync.push_back(&endGameButtonEntry);
+			syncButtonWidths(buttonsToSync);
 
-		// re-arrange the UI
-		drawingMaster->uiLayoutAuthority->rearrange();
+			// re-arrange the UI
+			drawingMaster->uiLayoutAuthority->rearrange();
 
-		// set up button listeners with new position
-		resumeButtonZoneListener->ll = ((UIMetrics*) resumeButtonEntry.second["metrics"])->position -	((UIMetrics*) resumeButtonEntry.second["metrics"])->size / 2.0f;
-		resumeButtonZoneListener->ur = ((UIMetrics*) resumeButtonEntry.second["metrics"])->position + ((UIMetrics*) resumeButtonEntry.second["metrics"])->size / 2.0f;
-		inputHandler->mouse.addListener(resumeButtonZoneListener);
-		resumeButtonClickListener->ll = resumeButtonZoneListener->ll;
-		resumeButtonClickListener->ur = resumeButtonZoneListener->ur;
-		inputHandler->mouse.addListener(resumeButtonClickListener);
+			// set up button listeners with new position
+			resumeButtonZoneListener->ll = ((UIMetrics*) resumeButtonEntry.second["metrics"])->position -	((UIMetrics*) resumeButtonEntry.second["metrics"])->size / 2.0f;
+			resumeButtonZoneListener->ur = ((UIMetrics*) resumeButtonEntry.second["metrics"])->position + ((UIMetrics*) resumeButtonEntry.second["metrics"])->size / 2.0f;
+			inputHandler->mouse.addListener(resumeButtonZoneListener);
+			resumeButtonClickListener->ll = resumeButtonZoneListener->ll;
+			resumeButtonClickListener->ur = resumeButtonZoneListener->ur;
+			inputHandler->mouse.addListener(resumeButtonClickListener);
 
-		endGameButtonZoneListener->ll = ((UIMetrics*) endGameButtonEntry.second["metrics"])->position -	((UIMetrics*) endGameButtonEntry.second["metrics"])->size / 2.0f;
-		endGameButtonZoneListener->ur = ((UIMetrics*) endGameButtonEntry.second["metrics"])->position + ((UIMetrics*) endGameButtonEntry.second["metrics"])->size / 2.0f;
-		inputHandler->mouse.addListener(endGameButtonZoneListener);
-		endGameButtonClickListener->ll = endGameButtonZoneListener->ll;
-		endGameButtonClickListener->ur = endGameButtonZoneListener->ur;
-		inputHandler->mouse.addListener(endGameButtonClickListener);
+			endGameButtonZoneListener->ll = ((UIMetrics*) endGameButtonEntry.second["metrics"])->position -	((UIMetrics*) endGameButtonEntry.second["metrics"])->size / 2.0f;
+			endGameButtonZoneListener->ur = ((UIMetrics*) endGameButtonEntry.second["metrics"])->position + ((UIMetrics*) endGameButtonEntry.second["metrics"])->size / 2.0f;
+			inputHandler->mouse.addListener(endGameButtonZoneListener);
+			endGameButtonClickListener->ll = endGameButtonZoneListener->ll;
+			endGameButtonClickListener->ur = endGameButtonZoneListener->ur;
+			inputHandler->mouse.addListener(endGameButtonClickListener);
 
-		break;
-	}
+			break;
+		}
 	case SCHEME_GAMEOVER:
-	{
-		// input
-		inputHandler->mouse.addListener(mouseMotionListener);
-		inputHandler->keyboard.addListener(quitKeyListener);
-		inputHandler->keyboard.addListener(fullScreenKeyListener);
-		inputHandler->keyboard.addListener(gameOverKeyListener);
-		inputHandler->keyboard.addListener(deleteKeyListener);
+		{
+			// input
+			inputHandler->mouse.addListener(mouseMotionListener);
+			inputHandler->keyboard.addListener(quitKeyListener);
+			inputHandler->keyboard.addListener(fullScreenKeyListener);
+			inputHandler->keyboard.addListener(gameOverKeyListener);
+			inputHandler->keyboard.addListener(deleteKeyListener);
 
-		// splash background
-		drawingMaster->drawStack.push_back(splashEntry);
+			// splash background
+			drawingMaster->drawStack.push_back(splashEntry);
 
-		// game over title label
-		*((float*) menuTitleEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeLarge");
-		*((std::string*) menuTitleEntry.second["text"]) = "GAME OVER";
-		((UIMetrics*) menuTitleEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTitleEntry.second);
-		drawingMaster->drawStack.push_back(menuTitleEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTitleEntry.second["metrics"]);
+			// game over title label
+			*((float*) menuTitleEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeLarge");
+			*((std::string*) menuTitleEntry.second["text"]) = "GAME OVER";
+			((UIMetrics*) menuTitleEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTitleEntry.second);
+			drawingMaster->drawStack.push_back(menuTitleEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTitleEntry.second["metrics"]);
 
-		// score title label
-		*((float*) yourScoreTitleEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
-		((UIMetrics*) yourScoreTitleEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(yourScoreTitleEntry.second);
-		drawingMaster->drawStack.push_back(yourScoreTitleEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) yourScoreTitleEntry.second["metrics"]);
+			// score title label
+			*((float*) yourScoreTitleEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
+			((UIMetrics*) yourScoreTitleEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(yourScoreTitleEntry.second);
+			drawingMaster->drawStack.push_back(yourScoreTitleEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) yourScoreTitleEntry.second["metrics"]);
 
-		// score label
-		*((float*) yourScoreEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-		char scoreString[8]; scoreString[0] = '\0'; if(gameState->score <= 9999999) sprintf(scoreString, "%u", gameState->score);
-		*((std::string*) yourScoreEntry.second["text"]) = scoreString;
-		((UIMetrics*) yourScoreEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(yourScoreEntry.second);
-		drawingMaster->drawStack.push_back(yourScoreEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) yourScoreEntry.second["metrics"]);
+			// score label
+			*((float*) yourScoreEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+			char scoreString[8]; scoreString[0] = '\0'; if(gameState->score <= 9999999) sprintf(scoreString, "%u", gameState->score);
+			*((std::string*) yourScoreEntry.second["text"]) = scoreString;
+			((UIMetrics*) yourScoreEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(yourScoreEntry.second);
+			drawingMaster->drawStack.push_back(yourScoreEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) yourScoreEntry.second["metrics"]);
 
-		// high scores section label
-		*((float*) highScoresTitleEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
-		((UIMetrics*) highScoresTitleEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(highScoresTitleEntry.second);
-		drawingMaster->drawStack.push_back(highScoresTitleEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) highScoresTitleEntry.second["metrics"]);
+			// high scores section label
+			*((float*) highScoresTitleEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
+			((UIMetrics*) highScoresTitleEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(highScoresTitleEntry.second);
+			drawingMaster->drawStack.push_back(highScoresTitleEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) highScoresTitleEntry.second["metrics"]);
 
-		// high scores label
-		*((float*) highScoresEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-		// imperfect without a fixed-width font, but pad shorter numbers with invisible zeros so it lines up better
-		std::stringstream stringStream;
-		size_t scoreLength = 0;
-		if(gameSystem->highScores.size() > 0) {
-			stringStream << gameSystem->highScores[0].first;
-			scoreLength = stringStream.str().length();
-			stringStream.str("");
-		}
-		for(size_t i = 0; i < gameSystem->highScores.size(); ++i) {
-			std::stringstream originalNumber;
-			originalNumber << gameSystem->highScores[i].first;
-
-			stringStream << (i > 0 ? "\n" : "") << gameSystem->highScores[i].second << "\t";
-
-			for(size_t p = originalNumber.str().length(); p < scoreLength; ++p)
-				stringStream << "\\ffffff000"; // zero-alpha '0' character
-
-			stringStream << "\\" << gameSystem->getString("fontColorLight");
-			stringStream << gameSystem->highScores[i].first;
-		}
-		if(stringStream.str().length() == 0) stringStream.str("No high scores have been recorded yet.");
-		*((std::string*) highScoresEntry.second["text"]) = stringStream.str();
-		((UIMetrics*) highScoresEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(highScoresEntry.second);
-		drawingMaster->drawStack.push_back(highScoresEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) highScoresEntry.second["metrics"]);
-
-		if(gameState->score > 0 && (gameSystem->highScores.size() == 0 || gameState->score > gameSystem->highScores.back().first)) {
 			// high scores label
-			*((float*) newHighScoreTitleEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
-			((UIMetrics*) newHighScoreTitleEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(newHighScoreTitleEntry.second);
-			drawingMaster->drawStack.push_back(newHighScoreTitleEntry);
-			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) newHighScoreTitleEntry.second["metrics"]);
+			*((float*) highScoresEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+			// imperfect without a fixed-width font, but pad shorter numbers with invisible zeros so it lines up better
+			std::stringstream stringStream;
+			size_t scoreLength = 0;
+			if(gameSystem->highScores.size() > 0) {
+				stringStream << gameSystem->highScores[0].first;
+				scoreLength = stringStream.str().length();
+				stringStream.str("");
+			}
+			for(size_t i = 0; i < gameSystem->highScores.size(); ++i) {
+				std::stringstream originalNumber;
+				originalNumber << gameSystem->highScores[i].first;
 
-			// name prompt label
-			*((float*) newHighScoreNameLabel.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-			((UIMetrics*) newHighScoreNameLabel.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(newHighScoreNameLabel.second);
+				stringStream << (i > 0 ? "\n" : "") << gameSystem->highScores[i].second << "\t";
 
-			// name prompt field
-			*((float*) newHighScoreNameField.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-			*((std::string*) newHighScoreNameField.second["text"]) = "";
-			for(size_t i = 0; i < gameSystem->getFloat("hudFieldWidth") + 1; ++i) *((std::string*) newHighScoreNameField.second["text"]) += "#";
-			*((Vector2*) newHighScoreNameField.second["size"]) = ((DrawField*) drawingMaster->drawers["field"])->getSize(newHighScoreNameField.second);
-			((UIMetrics*) newHighScoreNameField.second["metrics"])->size = *((Vector2*) newHighScoreNameField.second["size"]);
-			*((std::string*) newHighScoreNameField.second["text"]) = "\\";
-			*((std::string*) newHighScoreNameField.second["text"]) += gameSystem->getString("fontColorLight");
-			*((std::string*) newHighScoreNameField.second["text"]) += playerName;
-//			*((std::string*) newHighScoreNameField.second["text"]) += "\\";
-//			*((std::string*) newHighScoreNameField.second["text"]) += gameSystem->getString("fontColorDark");
-//			*((std::string*) newHighScoreNameField.second["text"]) += "|";
+				for(size_t p = originalNumber.str().length(); p < scoreLength; ++p)
+					stringStream << "\\ffffff000"; // zero-alpha '0' character
 
-			// name prompt container
-			*((float*) newHighScoreContainer.second["padding"]) = gameSystem->getFloat("hudContainerPadding");
-			*((float*) newHighScoreContainer.second["border"]) = 0.0f;
-			*((float*) newHighScoreContainer.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
-			*((Vector2*) newHighScoreContainer.second["size"]) = Vector2(
-					((UIMetrics*) newHighScoreNameLabel.second["metrics"])->size.x +
-							((UIMetrics*) newHighScoreNameField.second["metrics"])->size.x +
-							gameSystem->getFloat("hudContainerPadding") / gameGraphics->resolutionX * 4.0f +
-							gameSystem->getFloat("hudElementMargin") / gameGraphics->resolutionX * 2.0f,
-					(((UIMetrics*) newHighScoreNameLabel.second["metrics"])->size.y >
-							((UIMetrics*) newHighScoreNameField.second["metrics"])->size.y ?
-							((UIMetrics*) newHighScoreNameLabel.second["metrics"])->size.y :
-							((UIMetrics*) newHighScoreNameField.second["metrics"])->size.y) +
-							gameSystem->getFloat("hudContainerPadding") / gameGraphics->resolutionY * 4.0f
+				stringStream << "\\" << gameSystem->getString("fontColorLight");
+				stringStream << gameSystem->highScores[i].first;
+			}
+			if(stringStream.str().length() == 0) stringStream.str("No high scores have been recorded yet.");
+			*((std::string*) highScoresEntry.second["text"]) = stringStream.str();
+			((UIMetrics*) highScoresEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(highScoresEntry.second);
+			drawingMaster->drawStack.push_back(highScoresEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) highScoresEntry.second["metrics"]);
+
+			if(gameState->score > 0 && (gameSystem->highScores.size() == 0 || gameState->score > gameSystem->highScores.back().first)) {
+				// high scores label
+				*((float*) newHighScoreTitleEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
+				((UIMetrics*) newHighScoreTitleEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(newHighScoreTitleEntry.second);
+				drawingMaster->drawStack.push_back(newHighScoreTitleEntry);
+				drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) newHighScoreTitleEntry.second["metrics"]);
+
+				// name prompt label
+				*((float*) newHighScoreNameLabel.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+				((UIMetrics*) newHighScoreNameLabel.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(newHighScoreNameLabel.second);
+
+				// name prompt field
+				*((float*) newHighScoreNameField.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+				*((std::string*) newHighScoreNameField.second["text"]) = "";
+				for(size_t i = 0; i < gameSystem->getFloat("hudFieldWidth") + 1; ++i) *((std::string*) newHighScoreNameField.second["text"]) += "#";
+				*((Vector2*) newHighScoreNameField.second["size"]) = ((DrawField*) drawingMaster->drawers["field"])->getSize(newHighScoreNameField.second);
+				((UIMetrics*) newHighScoreNameField.second["metrics"])->size = *((Vector2*) newHighScoreNameField.second["size"]);
+				*((std::string*) newHighScoreNameField.second["text"]) = "\\";
+				*((std::string*) newHighScoreNameField.second["text"]) += gameSystem->getString("fontColorLight");
+				*((std::string*) newHighScoreNameField.second["text"]) += playerName;
+//				*((std::string*) newHighScoreNameField.second["text"]) += "\\";
+//				*((std::string*) newHighScoreNameField.second["text"]) += gameSystem->getString("fontColorDark");
+//				*((std::string*) newHighScoreNameField.second["text"]) += "|";
+
+				// name prompt container
+				*((float*) newHighScoreContainer.second["padding"]) = gameSystem->getFloat("hudContainerPadding");
+				*((float*) newHighScoreContainer.second["border"]) = 0.0f;
+				*((float*) newHighScoreContainer.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
+				*((Vector2*) newHighScoreContainer.second["size"]) = Vector2(
+						((UIMetrics*) newHighScoreNameLabel.second["metrics"])->size.x +
+								((UIMetrics*) newHighScoreNameField.second["metrics"])->size.x +
+								gameSystem->getFloat("hudContainerPadding") / gameGraphics->resolutionX * 4.0f +
+								gameSystem->getFloat("hudElementMargin") / gameGraphics->resolutionX * 2.0f,
+						(((UIMetrics*) newHighScoreNameLabel.second["metrics"])->size.y >
+								((UIMetrics*) newHighScoreNameField.second["metrics"])->size.y ?
+								((UIMetrics*) newHighScoreNameLabel.second["metrics"])->size.y :
+								((UIMetrics*) newHighScoreNameField.second["metrics"])->size.y) +
+								gameSystem->getFloat("hudContainerPadding") / gameGraphics->resolutionY * 4.0f
+					);
+				((UIMetrics*) newHighScoreContainer.second["metrics"])->size = *((Vector2*) newHighScoreContainer.second["size"]);
+				drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) newHighScoreContainer.second["metrics"]);
+			}
+
+			// continue button
+			*((float*) gameOverContinueButton.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+			*((float*) gameOverContinueButton.second["padding"]) = gameSystem->getFloat("hudButtonPadding");
+			*((float*) gameOverContinueButton.second["border"]) = gameSystem->getFloat("hudContainerBorder");
+			*((float*) gameOverContinueButton.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
+			*((Vector4*) gameOverContinueButton.second["insideColor"]) = (
+					activeMenuSelection == &gameOverContinueButton ?
+					gameSystem->getColor("hudContainerHighlightColor") :
+					gameSystem->getColor("hudContainerInsideColor")
 				);
-			((UIMetrics*) newHighScoreContainer.second["metrics"])->size = *((Vector2*) newHighScoreContainer.second["size"]);
-			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) newHighScoreContainer.second["metrics"]);
+			((UIMetrics*) gameOverContinueButton.second["metrics"])->size = ((DrawButton*) drawingMaster->drawers["button"])->getSize(gameOverContinueButton.second);
+			drawingMaster->drawStack.push_back(gameOverContinueButton);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameOverContinueButton.second["metrics"]);
+
+			// re-arrange the UI
+			drawingMaster->uiLayoutAuthority->rearrange();
+
+			if(gameState->score > 0 && (gameSystem->highScores.size() == 0 || gameState->score > gameSystem->highScores.back().first)) {
+				// assemble prompt container contents
+				((UIMetrics*) newHighScoreNameLabel.second["metrics"])->position = Vector2(
+						((UIMetrics*) newHighScoreContainer.second["metrics"])->position.x -
+								((UIMetrics*) newHighScoreContainer.second["metrics"])->size.x / 2.0f +
+								gameSystem->getFloat("hudContainerPadding") / gameGraphics->resolutionX * 2.0f +
+								((UIMetrics*) newHighScoreNameLabel.second["metrics"])->size.x / 2.0f,
+						((UIMetrics*) newHighScoreContainer.second["metrics"])->position.y
+					);
+				((UIMetrics*) newHighScoreNameField.second["metrics"])->position = Vector2(
+						((UIMetrics*) newHighScoreContainer.second["metrics"])->position.x +
+								((UIMetrics*) newHighScoreContainer.second["metrics"])->size.x / 2.0f -
+								gameSystem->getFloat("hudContainerPadding") / gameGraphics->resolutionX * 2.0f -
+								((UIMetrics*) newHighScoreNameField.second["metrics"])->size.x / 2.0f,
+						((UIMetrics*) newHighScoreContainer.second["metrics"])->position.y
+					);
+				drawingMaster->drawStack.push_back(newHighScoreContainer);
+				drawingMaster->drawStack.push_back(newHighScoreNameLabel);
+				drawingMaster->drawStack.push_back(newHighScoreNameField);
+			}
+
+			// set up button listener with new position
+			gameOverContinueButtonZoneListener->ll = ((UIMetrics*) gameOverContinueButton.second["metrics"])->position -	((UIMetrics*) gameOverContinueButton.second["metrics"])->size / 2.0f;
+			gameOverContinueButtonZoneListener->ur = ((UIMetrics*) gameOverContinueButton.second["metrics"])->position + ((UIMetrics*) gameOverContinueButton.second["metrics"])->size / 2.0f;
+			inputHandler->mouse.addListener(gameOverContinueButtonZoneListener);
+			gameOverContinueButtonClickListener->ll = gameOverContinueButtonZoneListener->ll;
+			gameOverContinueButtonClickListener->ur = gameOverContinueButtonZoneListener->ur;
+			inputHandler->mouse.addListener(gameOverContinueButtonClickListener);
+
+			break;
 		}
-
-		// continue button
-		*((float*) gameOverContinueButton.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-		*((float*) gameOverContinueButton.second["padding"]) = gameSystem->getFloat("hudButtonPadding");
-		*((float*) gameOverContinueButton.second["border"]) = gameSystem->getFloat("hudContainerBorder");
-		*((float*) gameOverContinueButton.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
-		*((Vector4*) gameOverContinueButton.second["insideColor"]) = (
-				activeMenuSelection == &gameOverContinueButton ?
-				gameSystem->getColor("hudContainerHighlightColor") :
-				gameSystem->getColor("hudContainerInsideColor")
-			);
-		((UIMetrics*) gameOverContinueButton.second["metrics"])->size = ((DrawButton*) drawingMaster->drawers["button"])->getSize(gameOverContinueButton.second);
-		drawingMaster->drawStack.push_back(gameOverContinueButton);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) gameOverContinueButton.second["metrics"]);
-
-		// re-arrange the UI
-		drawingMaster->uiLayoutAuthority->rearrange();
-
-		if(gameState->score > 0 && (gameSystem->highScores.size() == 0 || gameState->score > gameSystem->highScores.back().first)) {
-			// assemble prompt container contents
-			((UIMetrics*) newHighScoreNameLabel.second["metrics"])->position = Vector2(
-					((UIMetrics*) newHighScoreContainer.second["metrics"])->position.x -
-							((UIMetrics*) newHighScoreContainer.second["metrics"])->size.x / 2.0f +
-							gameSystem->getFloat("hudContainerPadding") / gameGraphics->resolutionX * 2.0f +
-							((UIMetrics*) newHighScoreNameLabel.second["metrics"])->size.x / 2.0f,
-					((UIMetrics*) newHighScoreContainer.second["metrics"])->position.y
-				);
-			((UIMetrics*) newHighScoreNameField.second["metrics"])->position = Vector2(
-					((UIMetrics*) newHighScoreContainer.second["metrics"])->position.x +
-							((UIMetrics*) newHighScoreContainer.second["metrics"])->size.x / 2.0f -
-							gameSystem->getFloat("hudContainerPadding") / gameGraphics->resolutionX * 2.0f -
-							((UIMetrics*) newHighScoreNameField.second["metrics"])->size.x / 2.0f,
-					((UIMetrics*) newHighScoreContainer.second["metrics"])->position.y
-				);
-			drawingMaster->drawStack.push_back(newHighScoreContainer);
-			drawingMaster->drawStack.push_back(newHighScoreNameLabel);
-			drawingMaster->drawStack.push_back(newHighScoreNameField);
-		}
-
-		// set up button listener with new position
-		gameOverContinueButtonZoneListener->ll = ((UIMetrics*) gameOverContinueButton.second["metrics"])->position -	((UIMetrics*) gameOverContinueButton.second["metrics"])->size / 2.0f;
-		gameOverContinueButtonZoneListener->ur = ((UIMetrics*) gameOverContinueButton.second["metrics"])->position + ((UIMetrics*) gameOverContinueButton.second["metrics"])->size / 2.0f;
-		inputHandler->mouse.addListener(gameOverContinueButtonZoneListener);
-		gameOverContinueButtonClickListener->ll = gameOverContinueButtonZoneListener->ll;
-		gameOverContinueButtonClickListener->ur = gameOverContinueButtonZoneListener->ur;
-		inputHandler->mouse.addListener(gameOverContinueButtonClickListener);
-
-		break;
-	}
 	case SCHEME_SETTINGS:
-	{
-		// input
-		inputHandler->mouse.addListener(mouseMotionListener);
-		inputHandler->keyboard.addListener(quitKeyListener);
-		inputHandler->keyboard.addListener(fullScreenKeyListener);
-		inputHandler->keyboard.addListener(settingsMenuKeyListener);
+		{
+			// input
+			inputHandler->mouse.addListener(mouseMotionListener);
+			inputHandler->keyboard.addListener(quitKeyListener);
+			inputHandler->keyboard.addListener(fullScreenKeyListener);
+			inputHandler->keyboard.addListener(settingsMenuKeyListener);
 
-		// splash background
-		drawingMaster->drawStack.push_back(splashEntry);
+			// splash background
+			drawingMaster->drawStack.push_back(splashEntry);
 
-		// settings title label
-		*((float*) menuTitleEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeLarge");
-		*((std::string*) menuTitleEntry.second["text"]) = "SETTINGS";
-		((UIMetrics*) menuTitleEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTitleEntry.second);
-		drawingMaster->drawStack.push_back(menuTitleEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTitleEntry.second["metrics"]);
+			// settings title label
+			*((float*) menuTitleEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeLarge");
+			*((std::string*) menuTitleEntry.second["text"]) = "SETTINGS";
+			((UIMetrics*) menuTitleEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTitleEntry.second);
+			drawingMaster->drawStack.push_back(menuTitleEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTitleEntry.second["metrics"]);
 
-		// level setting control label
-		*((float*) levelSettingEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
-		*((Vector4*) levelSettingEntry.second["fontColor"]) = (activeMenuSelection == &levelSettingEntry ? gameSystem->getColor("fontColorLight") : gameSystem->getColor("fontColorDark"));
-		std::stringstream ss; ss << "Starting Level: " << gameSystem->getString("gameStartingLevel");
-		*((std::string*) levelSettingEntry.second["text"]) = ss.str().c_str();
-		((UIMetrics*) levelSettingEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(levelSettingEntry.second);
-		drawingMaster->drawStack.push_back(levelSettingEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) levelSettingEntry.second["metrics"]);
+			// level setting control label
+			*((float*) levelSettingEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
+			*((Vector4*) levelSettingEntry.second["fontColor"]) = (activeMenuSelection == &levelSettingEntry ? gameSystem->getColor("fontColorLight") : gameSystem->getColor("fontColorDark"));
+			std::stringstream ss; ss << "Starting Level: " << gameSystem->getString("gameStartingLevel");
+			*((std::string*) levelSettingEntry.second["text"]) = ss.str().c_str();
+			((UIMetrics*) levelSettingEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(levelSettingEntry.second);
+			drawingMaster->drawStack.push_back(levelSettingEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) levelSettingEntry.second["metrics"]);
 
-		// music setting control label
-		*((float*) musicSettingEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
-		*((Vector4*) musicSettingEntry.second["fontColor"]) = (activeMenuSelection == &musicSettingEntry ? gameSystem->getColor("fontColorLight") : gameSystem->getColor("fontColorDark"));
-		ss.str(""); ss << "Music Volume: ";
-		int musicLevelInt = (int) (gameSystem->getFloat("audioMusicVolume") * 10.0f);
-		std::string musicLevelString = "Off";
-		if(musicLevelInt > 0.0f) {
-			musicLevelString = "-----------";
-			musicLevelString.replace((size_t) (musicLevelInt), 1, "|");
-		}
-		ss << "[ " << musicLevelString << " ]";
-		*((std::string*) musicSettingEntry.second["text"]) = ss.str().c_str();
-		((UIMetrics*) musicSettingEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(musicSettingEntry.second);
-		drawingMaster->drawStack.push_back(musicSettingEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) musicSettingEntry.second["metrics"]);
+			// music setting control label
+			*((float*) musicSettingEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
+			*((Vector4*) musicSettingEntry.second["fontColor"]) = (activeMenuSelection == &musicSettingEntry ? gameSystem->getColor("fontColorLight") : gameSystem->getColor("fontColorDark"));
+			ss.str(""); ss << "Music Volume: ";
+			int musicLevelInt = (int) (gameSystem->getFloat("audioMusicVolume") * 10.0f);
+			std::string musicLevelString = "Off";
+			if(musicLevelInt > 0.0f) {
+				musicLevelString = "-----------";
+				musicLevelString.replace((size_t) (musicLevelInt), 1, "|");
+			}
+			ss << "[ " << musicLevelString << " ]";
+			*((std::string*) musicSettingEntry.second["text"]) = ss.str().c_str();
+			((UIMetrics*) musicSettingEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(musicSettingEntry.second);
+			drawingMaster->drawStack.push_back(musicSettingEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) musicSettingEntry.second["metrics"]);
 
-		// audio effects setting control label
-		*((float*) audioEffectsSettingEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
-		*((Vector4*) audioEffectsSettingEntry.second["fontColor"]) = (activeMenuSelection == &audioEffectsSettingEntry ? gameSystem->getColor("fontColorLight") : gameSystem->getColor("fontColorDark"));
-		ss.str(""); ss << "Audio Effects Volume: ";
-		int audioEffectsLevelInt = (int) (gameSystem->getFloat("audioEffectsVolume") * 10.0f);
-		std::string audioEffectsLevelString = "Off";
-		if(audioEffectsLevelInt > 0.0f) {
-			audioEffectsLevelString = "-----------";
-			audioEffectsLevelString.replace((size_t) (audioEffectsLevelInt), 1, "|");
-		}
-		ss << "[ " << audioEffectsLevelString << " ]";
-		*((std::string*) audioEffectsSettingEntry.second["text"]) = ss.str().c_str();
-		((UIMetrics*) audioEffectsSettingEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(audioEffectsSettingEntry.second);
-		drawingMaster->drawStack.push_back(audioEffectsSettingEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) audioEffectsSettingEntry.second["metrics"]);
+			// audio effects setting control label
+			*((float*) audioEffectsSettingEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
+			*((Vector4*) audioEffectsSettingEntry.second["fontColor"]) = (activeMenuSelection == &audioEffectsSettingEntry ? gameSystem->getColor("fontColorLight") : gameSystem->getColor("fontColorDark"));
+			ss.str(""); ss << "Audio Effects Volume: ";
+			int audioEffectsLevelInt = (int) (gameSystem->getFloat("audioEffectsVolume") * 10.0f);
+			std::string audioEffectsLevelString = "Off";
+			if(audioEffectsLevelInt > 0.0f) {
+				audioEffectsLevelString = "-----------";
+				audioEffectsLevelString.replace((size_t) (audioEffectsLevelInt), 1, "|");
+			}
+			ss << "[ " << audioEffectsLevelString << " ]";
+			*((std::string*) audioEffectsSettingEntry.second["text"]) = ss.str().c_str();
+			((UIMetrics*) audioEffectsSettingEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(audioEffectsSettingEntry.second);
+			drawingMaster->drawStack.push_back(audioEffectsSettingEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) audioEffectsSettingEntry.second["metrics"]);
 
-		// fullscreen setting control label
-		*((float*) fullscreenSettingEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
-		*((Vector4*) fullscreenSettingEntry.second["fontColor"]) = (activeMenuSelection == &fullscreenSettingEntry ? gameSystem->getColor("fontColorLight") : gameSystem->getColor("fontColorDark"));
-		*((std::string*) fullscreenSettingEntry.second["text"]) = (gameSystem->getBool("displayStartFullscreen") ? "Start Fullscreen: Yes" : "Start Fullscreen: No");
-		((UIMetrics*) fullscreenSettingEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(fullscreenSettingEntry.second);
-		drawingMaster->drawStack.push_back(fullscreenSettingEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) fullscreenSettingEntry.second["metrics"]);
+			// fullscreen setting control label
+			*((float*) fullscreenSettingEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
+			*((Vector4*) fullscreenSettingEntry.second["fontColor"]) = (activeMenuSelection == &fullscreenSettingEntry ? gameSystem->getColor("fontColorLight") : gameSystem->getColor("fontColorDark"));
+			*((std::string*) fullscreenSettingEntry.second["text"]) = (gameSystem->getBool("displayStartFullscreen") ? "Start Fullscreen: Yes" : "Start Fullscreen: No");
+			((UIMetrics*) fullscreenSettingEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(fullscreenSettingEntry.second);
+			drawingMaster->drawStack.push_back(fullscreenSettingEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) fullscreenSettingEntry.second["metrics"]);
 
-		// windowed screen resolution setting control label
-		*((float*) windowedScreenResolutionEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
-		*((Vector4*) windowedScreenResolutionEntry.second["fontColor"]) = (activeMenuSelection == &windowedScreenResolutionEntry ? gameSystem->getColor("fontColorLight") : gameSystem->getColor("fontColorDark"));
-		std::stringstream windowedResolutionSettingText; windowedResolutionSettingText << "Window Resolution: " << gameSystem->getString("displayWindowedResolution");
-		*((std::string*) windowedScreenResolutionEntry.second["text"]) = windowedResolutionSettingText.str();
-		((UIMetrics*) windowedScreenResolutionEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(windowedScreenResolutionEntry.second);
-		drawingMaster->drawStack.push_back(windowedScreenResolutionEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) windowedScreenResolutionEntry.second["metrics"]);
+			// windowed screen resolution setting control label
+			*((float*) windowedScreenResolutionEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
+			*((Vector4*) windowedScreenResolutionEntry.second["fontColor"]) = (activeMenuSelection == &windowedScreenResolutionEntry ? gameSystem->getColor("fontColorLight") : gameSystem->getColor("fontColorDark"));
+			std::stringstream windowedResolutionSettingText; windowedResolutionSettingText << "Window Resolution: " << gameSystem->getString("displayWindowedResolution");
+			*((std::string*) windowedScreenResolutionEntry.second["text"]) = windowedResolutionSettingText.str();
+			((UIMetrics*) windowedScreenResolutionEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(windowedScreenResolutionEntry.second);
+			drawingMaster->drawStack.push_back(windowedScreenResolutionEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) windowedScreenResolutionEntry.second["metrics"]);
 
-		// framerate limiting control label
-		*((float*) framerateLimitingEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
-		*((Vector4*) framerateLimitingEntry.second["fontColor"]) = (activeMenuSelection == &framerateLimitingEntry ? gameSystem->getColor("fontColorLight") : gameSystem->getColor("fontColorDark"));
-		*((std::string*) framerateLimitingEntry.second["text"]) = (
-				(int) gameSystem->getFloat("displayFramerateLimiting") == GameSystem::LIMIT_VSYNC ? "Framerate Limiting: Vsync" :
-				(int) gameSystem->getFloat("displayFramerateLimiting") == GameSystem::LIMIT_30 ? "Framerate Limiting: 30 FPS" :
-				(int) gameSystem->getFloat("displayFramerateLimiting") == GameSystem::LIMIT_60 ? "Framerate Limiting: 60 FPS" :
-				(int) gameSystem->getFloat("displayFramerateLimiting") == GameSystem::LIMIT_120 ? "Framerate Limiting: 120 FPS" :
-				"Framerate Limiting: Off"
-			);
-		((UIMetrics*) framerateLimitingEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(framerateLimitingEntry.second);
-		drawingMaster->drawStack.push_back(framerateLimitingEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) framerateLimitingEntry.second["metrics"]);
-
-		// multisampling level control label
-		if(gameGraphics->supportsMultisampling) {
-			*((float*) multisamplingLevelEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
-			*((Vector4*) multisamplingLevelEntry.second["fontColor"]) = (activeMenuSelection == &multisamplingLevelEntry ? gameSystem->getColor("fontColorLight") : gameSystem->getColor("fontColorDark"));
-			*((std::string*) multisamplingLevelEntry.second["text"]) = (
-					gameSystem->getFloat("displayMultisamplingLevel") == 2.0f ? "Multisampling Level: Low" :
-					gameSystem->getFloat("displayMultisamplingLevel") == 4.0f ? "Multisampling Level: High" :
-					"Multisampling Level: Off"
+			// framerate limiting control label
+			*((float*) framerateLimitingEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
+			*((Vector4*) framerateLimitingEntry.second["fontColor"]) = (activeMenuSelection == &framerateLimitingEntry ? gameSystem->getColor("fontColorLight") : gameSystem->getColor("fontColorDark"));
+			*((std::string*) framerateLimitingEntry.second["text"]) = (
+					(int) gameSystem->getFloat("displayFramerateLimiting") == GameSystem::LIMIT_VSYNC ? "Framerate Limiting: Vsync" :
+					(int) gameSystem->getFloat("displayFramerateLimiting") == GameSystem::LIMIT_30 ? "Framerate Limiting: 30 FPS" :
+					(int) gameSystem->getFloat("displayFramerateLimiting") == GameSystem::LIMIT_60 ? "Framerate Limiting: 60 FPS" :
+					(int) gameSystem->getFloat("displayFramerateLimiting") == GameSystem::LIMIT_120 ? "Framerate Limiting: 120 FPS" :
+					"Framerate Limiting: Off"
 				);
-			((UIMetrics*) multisamplingLevelEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(multisamplingLevelEntry.second);
-			drawingMaster->drawStack.push_back(multisamplingLevelEntry);
-			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) multisamplingLevelEntry.second["metrics"]);
+			((UIMetrics*) framerateLimitingEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(framerateLimitingEntry.second);
+			drawingMaster->drawStack.push_back(framerateLimitingEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) framerateLimitingEntry.second["metrics"]);
+
+			// multisampling level control label
+			if(gameGraphics->supportsMultisampling) {
+				*((float*) multisamplingLevelEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
+				*((Vector4*) multisamplingLevelEntry.second["fontColor"]) = (activeMenuSelection == &multisamplingLevelEntry ? gameSystem->getColor("fontColorLight") : gameSystem->getColor("fontColorDark"));
+				*((std::string*) multisamplingLevelEntry.second["text"]) = (
+						gameSystem->getFloat("displayMultisamplingLevel") == 2.0f ? "Multisampling Level: Low" :
+						gameSystem->getFloat("displayMultisamplingLevel") == 4.0f ? "Multisampling Level: High" :
+						"Multisampling Level: Off"
+					);
+				((UIMetrics*) multisamplingLevelEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(multisamplingLevelEntry.second);
+				drawingMaster->drawStack.push_back(multisamplingLevelEntry);
+				drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) multisamplingLevelEntry.second["metrics"]);
+			}
+
+			// island terrain detail control label
+			*((float*) terrainDetailEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
+			*((Vector4*) terrainDetailEntry.second["fontColor"]) = (activeMenuSelection == &terrainDetailEntry ? gameSystem->getColor("fontColorLight") : gameSystem->getColor("fontColorDark"));
+			*((std::string*) terrainDetailEntry.second["text"]) = (
+					gameSystem->getFloat("islandTerrainDetail") == 2.0f ? "Terrain Detail: Medium" :
+					gameSystem->getFloat("islandTerrainDetail") == 3.0f ? "Terrain Detail: High" :
+					"Terrain Detail: Low"
+				);
+			((UIMetrics*) terrainDetailEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(terrainDetailEntry.second);
+			drawingMaster->drawStack.push_back(terrainDetailEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) terrainDetailEntry.second["metrics"]);
+
+			// development mode control label
+			*((float*) developmentModeEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
+			*((Vector4*) developmentModeEntry.second["fontColor"]) = (activeMenuSelection == &developmentModeEntry ? gameSystem->getColor("fontColorLight") : gameSystem->getColor("fontColorDark"));
+			*((std::string*) developmentModeEntry.second["text"]) = (gameSystem->getBool("developmentMode") ? "Development Mode: On" : "Development Mode: Off");
+			((UIMetrics*) developmentModeEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(developmentModeEntry.second);
+			drawingMaster->drawStack.push_back(developmentModeEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) developmentModeEntry.second["metrics"]);
+
+			// high scores reset button
+			*((float*) resetHighScoresEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+			*((float*) resetHighScoresEntry.second["padding"]) = gameSystem->getFloat("hudButtonPadding");
+			*((float*) resetHighScoresEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
+			*((float*) resetHighScoresEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
+			*((Vector4*) resetHighScoresEntry.second["insideColor"]) = (
+					activeMenuSelection == &resetHighScoresEntry ?
+					gameSystem->getColor("hudContainerHighlightColor") :
+					gameSystem->getColor("hudContainerInsideColor")
+				);
+			Vector2* resetButtonSize = (Vector2*) resetHighScoresEntry.second["size"];
+			resetHighScoresEntry.second.erase(resetHighScoresEntry.second.find("size"));
+			*resetButtonSize = ((DrawButton*) drawingMaster->drawers["button"])->getSize(resetHighScoresEntry.second);
+			resetHighScoresEntry.second["size"] = resetButtonSize;
+			((UIMetrics*) resetHighScoresEntry.second["metrics"])->size = *resetButtonSize;
+			drawingMaster->drawStack.push_back(resetHighScoresEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) resetHighScoresEntry.second["metrics"]);
+
+			// back button
+			*((float*) backButtonEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+			*((float*) backButtonEntry.second["padding"]) = gameSystem->getFloat("hudButtonPadding");
+			*((float*) backButtonEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
+			*((float*) backButtonEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
+			*((Vector4*) backButtonEntry.second["insideColor"]) = (
+					activeMenuSelection == &backButtonEntry ?
+					gameSystem->getColor("hudContainerHighlightColor") :
+					gameSystem->getColor("hudContainerInsideColor")
+				);
+			Vector2* backButtonSize = (Vector2*) backButtonEntry.second["size"];
+			backButtonEntry.second.erase(backButtonEntry.second.find("size"));
+			*backButtonSize = ((DrawButton*) drawingMaster->drawers["button"])->getSize(backButtonEntry.second);
+			backButtonEntry.second["size"] = backButtonSize;
+			((UIMetrics*) backButtonEntry.second["metrics"])->size = *backButtonSize;
+			drawingMaster->drawStack.push_back(backButtonEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) backButtonEntry.second["metrics"]);
+
+			// tips
+			*((float*) menuTip1Entry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+			*((std::string*) menuTip1Entry.second["text"]) = "Press ESC to return to the previous menu";
+			((UIMetrics*) menuTip1Entry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTip1Entry.second);
+			drawingMaster->drawStack.push_back(menuTip1Entry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTip1Entry.second["metrics"]);
+
+			*((float*) menuTip2Entry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+			((UIMetrics*) menuTip2Entry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTip2Entry.second);
+			drawingMaster->drawStack.push_back(menuTip2Entry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTip2Entry.second["metrics"]);
+
+			*((float*) menuTip3Entry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+			((UIMetrics*) menuTip3Entry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTip3Entry.second);
+			drawingMaster->drawStack.push_back(menuTip3Entry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTip3Entry.second["metrics"]);
+
+			// make all buttons the same width
+			std::vector<DrawStackEntry*> buttonsToSync;
+			buttonsToSync.push_back(&resumeButtonEntry);
+			buttonsToSync.push_back(&endGameButtonEntry);
+			syncButtonWidths(buttonsToSync);
+
+			// re-arrange the UI
+			drawingMaster->uiLayoutAuthority->rearrange();
+
+			// set up button listeners with new positions
+			levelButtonZoneListener->ll = ((UIMetrics*) levelSettingEntry.second["metrics"])->position - ((UIMetrics*) levelSettingEntry.second["metrics"])->size / 2.0f;
+			levelButtonZoneListener->ur = ((UIMetrics*) levelSettingEntry.second["metrics"])->position + ((UIMetrics*) levelSettingEntry.second["metrics"])->size / 2.0f;
+			inputHandler->mouse.addListener(levelButtonZoneListener);
+			levelButtonClickListener->ll = levelButtonZoneListener->ll;
+			levelButtonClickListener->ur = levelButtonZoneListener->ur;
+			inputHandler->mouse.addListener(levelButtonClickListener);
+
+			musicButtonZoneListener->ll = ((UIMetrics*) musicSettingEntry.second["metrics"])->position - ((UIMetrics*) musicSettingEntry.second["metrics"])->size / 2.0f;
+			musicButtonZoneListener->ur = ((UIMetrics*) musicSettingEntry.second["metrics"])->position + ((UIMetrics*) musicSettingEntry.second["metrics"])->size / 2.0f;
+			inputHandler->mouse.addListener(musicButtonZoneListener);
+			musicButtonClickListener->ll = musicButtonZoneListener->ll;
+			musicButtonClickListener->ur = musicButtonZoneListener->ur;
+			inputHandler->mouse.addListener(musicButtonClickListener);
+
+			audioEffectsButtonZoneListener->ll = ((UIMetrics*) audioEffectsSettingEntry.second["metrics"])->position - ((UIMetrics*) audioEffectsSettingEntry.second["metrics"])->size / 2.0f;
+			audioEffectsButtonZoneListener->ur = ((UIMetrics*) audioEffectsSettingEntry.second["metrics"])->position + ((UIMetrics*) audioEffectsSettingEntry.second["metrics"])->size / 2.0f;
+			inputHandler->mouse.addListener(audioEffectsButtonZoneListener);
+			audioEffectsButtonClickListener->ll = audioEffectsButtonZoneListener->ll;
+			audioEffectsButtonClickListener->ur = audioEffectsButtonZoneListener->ur;
+			inputHandler->mouse.addListener(audioEffectsButtonClickListener);
+
+			fullscreenButtonZoneListener->ll = ((UIMetrics*) fullscreenSettingEntry.second["metrics"])->position - ((UIMetrics*) fullscreenSettingEntry.second["metrics"])->size / 2.0f;
+			fullscreenButtonZoneListener->ur = ((UIMetrics*) fullscreenSettingEntry.second["metrics"])->position + ((UIMetrics*) fullscreenSettingEntry.second["metrics"])->size / 2.0f;
+			inputHandler->mouse.addListener(fullscreenButtonZoneListener);
+			fullscreenButtonClickListener->ll = fullscreenButtonZoneListener->ll;
+			fullscreenButtonClickListener->ur = fullscreenButtonZoneListener->ur;
+			inputHandler->mouse.addListener(fullscreenButtonClickListener);
+
+			windowedScreenResolutionButtonZoneListener->ll = ((UIMetrics*) windowedScreenResolutionEntry.second["metrics"])->position - ((UIMetrics*) windowedScreenResolutionEntry.second["metrics"])->size / 2.0f;
+			windowedScreenResolutionButtonZoneListener->ur = ((UIMetrics*) windowedScreenResolutionEntry.second["metrics"])->position + ((UIMetrics*) windowedScreenResolutionEntry.second["metrics"])->size / 2.0f;
+			inputHandler->mouse.addListener(windowedScreenResolutionButtonZoneListener);
+			windowedScreenResolutionButtonClickListener->ll = windowedScreenResolutionButtonZoneListener->ll;
+			windowedScreenResolutionButtonClickListener->ur = windowedScreenResolutionButtonZoneListener->ur;
+			inputHandler->mouse.addListener(windowedScreenResolutionButtonClickListener);
+
+			framerateLimitingButtonZoneListener->ll = ((UIMetrics*) framerateLimitingEntry.second["metrics"])->position - ((UIMetrics*) framerateLimitingEntry.second["metrics"])->size / 2.0f;
+			framerateLimitingButtonZoneListener->ur = ((UIMetrics*) framerateLimitingEntry.second["metrics"])->position + ((UIMetrics*) framerateLimitingEntry.second["metrics"])->size / 2.0f;
+			inputHandler->mouse.addListener(framerateLimitingButtonZoneListener);
+			framerateLimitingButtonClickListener->ll = framerateLimitingButtonZoneListener->ll;
+			framerateLimitingButtonClickListener->ur = framerateLimitingButtonZoneListener->ur;
+			inputHandler->mouse.addListener(framerateLimitingButtonClickListener);
+
+			if(gameGraphics->supportsMultisampling) {
+				multisamplingButtonZoneListener->ll = ((UIMetrics*) multisamplingLevelEntry.second["metrics"])->position - ((UIMetrics*) multisamplingLevelEntry.second["metrics"])->size / 2.0f;
+				multisamplingButtonZoneListener->ur = ((UIMetrics*) multisamplingLevelEntry.second["metrics"])->position + ((UIMetrics*) multisamplingLevelEntry.second["metrics"])->size / 2.0f;
+				inputHandler->mouse.addListener(multisamplingButtonZoneListener);
+				multisamplingButtonClickListener->ll = multisamplingButtonZoneListener->ll;
+				multisamplingButtonClickListener->ur = multisamplingButtonZoneListener->ur;
+				inputHandler->mouse.addListener(multisamplingButtonClickListener);
+			}
+
+			terrainDetailButtonZoneListener->ll = ((UIMetrics*) terrainDetailEntry.second["metrics"])->position - ((UIMetrics*) terrainDetailEntry.second["metrics"])->size / 2.0f;
+			terrainDetailButtonZoneListener->ur = ((UIMetrics*) terrainDetailEntry.second["metrics"])->position + ((UIMetrics*) terrainDetailEntry.second["metrics"])->size / 2.0f;
+			inputHandler->mouse.addListener(terrainDetailButtonZoneListener);
+			terrainDetailButtonClickListener->ll = terrainDetailButtonZoneListener->ll;
+			terrainDetailButtonClickListener->ur = terrainDetailButtonZoneListener->ur;
+			inputHandler->mouse.addListener(terrainDetailButtonClickListener);
+
+			developmentModeButtonZoneListener->ll = ((UIMetrics*) developmentModeEntry.second["metrics"])->position - ((UIMetrics*) developmentModeEntry.second["metrics"])->size / 2.0f;
+			developmentModeButtonZoneListener->ur = ((UIMetrics*) developmentModeEntry.second["metrics"])->position + ((UIMetrics*) developmentModeEntry.second["metrics"])->size / 2.0f;
+			inputHandler->mouse.addListener(developmentModeButtonZoneListener);
+			developmentModeButtonClickListener->ll = developmentModeButtonZoneListener->ll;
+			developmentModeButtonClickListener->ur = developmentModeButtonZoneListener->ur;
+			inputHandler->mouse.addListener(developmentModeButtonClickListener);
+
+			backButtonZoneListener->ll = ((UIMetrics*) backButtonEntry.second["metrics"])->position - ((UIMetrics*) backButtonEntry.second["metrics"])->size / 2.0f;
+			backButtonZoneListener->ur = ((UIMetrics*) backButtonEntry.second["metrics"])->position + ((UIMetrics*) backButtonEntry.second["metrics"])->size / 2.0f;
+			inputHandler->mouse.addListener(backButtonZoneListener);
+			backButtonClickListener->ll = backButtonZoneListener->ll;
+			backButtonClickListener->ur = backButtonZoneListener->ur;
+			inputHandler->mouse.addListener(backButtonClickListener);
+
+			resetHighScoresButtonZoneListener->ll = ((UIMetrics*) resetHighScoresEntry.second["metrics"])->position - ((UIMetrics*) resetHighScoresEntry.second["metrics"])->size / 2.0f;
+			resetHighScoresButtonZoneListener->ur = ((UIMetrics*) resetHighScoresEntry.second["metrics"])->position + ((UIMetrics*) resetHighScoresEntry.second["metrics"])->size / 2.0f;
+			inputHandler->mouse.addListener(resetHighScoresButtonZoneListener);
+			resetHighScoresButtonClickListener->ll = resetHighScoresButtonZoneListener->ll;
+			resetHighScoresButtonClickListener->ur = resetHighScoresButtonZoneListener->ur;
+			inputHandler->mouse.addListener(resetHighScoresButtonClickListener);
+
+			break;
 		}
-
-		// island terrain detail control label
-		*((float*) terrainDetailEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
-		*((Vector4*) terrainDetailEntry.second["fontColor"]) = (activeMenuSelection == &terrainDetailEntry ? gameSystem->getColor("fontColorLight") : gameSystem->getColor("fontColorDark"));
-		*((std::string*) terrainDetailEntry.second["text"]) = (
-				gameSystem->getFloat("islandTerrainDetail") == 2.0f ? "Terrain Detail: Medium" :
-				gameSystem->getFloat("islandTerrainDetail") == 3.0f ? "Terrain Detail: High" :
-				"Terrain Detail: Low"
-			);
-		((UIMetrics*) terrainDetailEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(terrainDetailEntry.second);
-		drawingMaster->drawStack.push_back(terrainDetailEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) terrainDetailEntry.second["metrics"]);
-
-		// development mode control label
-		*((float*) developmentModeEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
-		*((Vector4*) developmentModeEntry.second["fontColor"]) = (activeMenuSelection == &developmentModeEntry ? gameSystem->getColor("fontColorLight") : gameSystem->getColor("fontColorDark"));
-		*((std::string*) developmentModeEntry.second["text"]) = (gameSystem->getBool("developmentMode") ? "Development Mode: On" : "Development Mode: Off");
-		((UIMetrics*) developmentModeEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(developmentModeEntry.second);
-		drawingMaster->drawStack.push_back(developmentModeEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) developmentModeEntry.second["metrics"]);
-
-		// high scores reset button
-		*((float*) resetHighScoresEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-		*((float*) resetHighScoresEntry.second["padding"]) = gameSystem->getFloat("hudButtonPadding");
-		*((float*) resetHighScoresEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
-		*((float*) resetHighScoresEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
-		*((Vector4*) resetHighScoresEntry.second["insideColor"]) = (
-				activeMenuSelection == &resetHighScoresEntry ?
-				gameSystem->getColor("hudContainerHighlightColor") :
-				gameSystem->getColor("hudContainerInsideColor")
-			);
-		Vector2* resetButtonSize = (Vector2*) resetHighScoresEntry.second["size"];
-		resetHighScoresEntry.second.erase(resetHighScoresEntry.second.find("size"));
-		*resetButtonSize = ((DrawButton*) drawingMaster->drawers["button"])->getSize(resetHighScoresEntry.second);
-		resetHighScoresEntry.second["size"] = resetButtonSize;
-		((UIMetrics*) resetHighScoresEntry.second["metrics"])->size = *resetButtonSize;
-		drawingMaster->drawStack.push_back(resetHighScoresEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) resetHighScoresEntry.second["metrics"]);
-
-		// back button
-		*((float*) backButtonEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-		*((float*) backButtonEntry.second["padding"]) = gameSystem->getFloat("hudButtonPadding");
-		*((float*) backButtonEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
-		*((float*) backButtonEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
-		*((Vector4*) backButtonEntry.second["insideColor"]) = (
-				activeMenuSelection == &backButtonEntry ?
-				gameSystem->getColor("hudContainerHighlightColor") :
-				gameSystem->getColor("hudContainerInsideColor")
-			);
-		Vector2* backButtonSize = (Vector2*) backButtonEntry.second["size"];
-		backButtonEntry.second.erase(backButtonEntry.second.find("size"));
-		*backButtonSize = ((DrawButton*) drawingMaster->drawers["button"])->getSize(backButtonEntry.second);
-		backButtonEntry.second["size"] = backButtonSize;
-		((UIMetrics*) backButtonEntry.second["metrics"])->size = *backButtonSize;
-		drawingMaster->drawStack.push_back(backButtonEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) backButtonEntry.second["metrics"]);
-
-		// tips
-		*((float*) menuTip1Entry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-		*((std::string*) menuTip1Entry.second["text"]) = "Press ESC to return to the previous menu";
-		((UIMetrics*) menuTip1Entry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTip1Entry.second);
-		drawingMaster->drawStack.push_back(menuTip1Entry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTip1Entry.second["metrics"]);
-
-		*((float*) menuTip2Entry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-		((UIMetrics*) menuTip2Entry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTip2Entry.second);
-		drawingMaster->drawStack.push_back(menuTip2Entry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTip2Entry.second["metrics"]);
-
-		*((float*) menuTip3Entry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-		((UIMetrics*) menuTip3Entry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTip3Entry.second);
-		drawingMaster->drawStack.push_back(menuTip3Entry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTip3Entry.second["metrics"]);
-
-		// make all buttons the same width
-		std::vector<DrawStackEntry*> buttonsToSync;
-		buttonsToSync.push_back(&resumeButtonEntry);
-		buttonsToSync.push_back(&endGameButtonEntry);
-		syncButtonWidths(buttonsToSync);
-
-		// re-arrange the UI
-		drawingMaster->uiLayoutAuthority->rearrange();
-
-		// set up button listeners with new positions
-		levelButtonZoneListener->ll = ((UIMetrics*) levelSettingEntry.second["metrics"])->position - ((UIMetrics*) levelSettingEntry.second["metrics"])->size / 2.0f;
-		levelButtonZoneListener->ur = ((UIMetrics*) levelSettingEntry.second["metrics"])->position + ((UIMetrics*) levelSettingEntry.second["metrics"])->size / 2.0f;
-		inputHandler->mouse.addListener(levelButtonZoneListener);
-		levelButtonClickListener->ll = levelButtonZoneListener->ll;
-		levelButtonClickListener->ur = levelButtonZoneListener->ur;
-		inputHandler->mouse.addListener(levelButtonClickListener);
-
-		musicButtonZoneListener->ll = ((UIMetrics*) musicSettingEntry.second["metrics"])->position - ((UIMetrics*) musicSettingEntry.second["metrics"])->size / 2.0f;
-		musicButtonZoneListener->ur = ((UIMetrics*) musicSettingEntry.second["metrics"])->position + ((UIMetrics*) musicSettingEntry.second["metrics"])->size / 2.0f;
-		inputHandler->mouse.addListener(musicButtonZoneListener);
-		musicButtonClickListener->ll = musicButtonZoneListener->ll;
-		musicButtonClickListener->ur = musicButtonZoneListener->ur;
-		inputHandler->mouse.addListener(musicButtonClickListener);
-
-		audioEffectsButtonZoneListener->ll = ((UIMetrics*) audioEffectsSettingEntry.second["metrics"])->position - ((UIMetrics*) audioEffectsSettingEntry.second["metrics"])->size / 2.0f;
-		audioEffectsButtonZoneListener->ur = ((UIMetrics*) audioEffectsSettingEntry.second["metrics"])->position + ((UIMetrics*) audioEffectsSettingEntry.second["metrics"])->size / 2.0f;
-		inputHandler->mouse.addListener(audioEffectsButtonZoneListener);
-		audioEffectsButtonClickListener->ll = audioEffectsButtonZoneListener->ll;
-		audioEffectsButtonClickListener->ur = audioEffectsButtonZoneListener->ur;
-		inputHandler->mouse.addListener(audioEffectsButtonClickListener);
-
-		fullscreenButtonZoneListener->ll = ((UIMetrics*) fullscreenSettingEntry.second["metrics"])->position - ((UIMetrics*) fullscreenSettingEntry.second["metrics"])->size / 2.0f;
-		fullscreenButtonZoneListener->ur = ((UIMetrics*) fullscreenSettingEntry.second["metrics"])->position + ((UIMetrics*) fullscreenSettingEntry.second["metrics"])->size / 2.0f;
-		inputHandler->mouse.addListener(fullscreenButtonZoneListener);
-		fullscreenButtonClickListener->ll = fullscreenButtonZoneListener->ll;
-		fullscreenButtonClickListener->ur = fullscreenButtonZoneListener->ur;
-		inputHandler->mouse.addListener(fullscreenButtonClickListener);
-
-		windowedScreenResolutionButtonZoneListener->ll = ((UIMetrics*) windowedScreenResolutionEntry.second["metrics"])->position - ((UIMetrics*) windowedScreenResolutionEntry.second["metrics"])->size / 2.0f;
-		windowedScreenResolutionButtonZoneListener->ur = ((UIMetrics*) windowedScreenResolutionEntry.second["metrics"])->position + ((UIMetrics*) windowedScreenResolutionEntry.second["metrics"])->size / 2.0f;
-		inputHandler->mouse.addListener(windowedScreenResolutionButtonZoneListener);
-		windowedScreenResolutionButtonClickListener->ll = windowedScreenResolutionButtonZoneListener->ll;
-		windowedScreenResolutionButtonClickListener->ur = windowedScreenResolutionButtonZoneListener->ur;
-		inputHandler->mouse.addListener(windowedScreenResolutionButtonClickListener);
-
-		framerateLimitingButtonZoneListener->ll = ((UIMetrics*) framerateLimitingEntry.second["metrics"])->position - ((UIMetrics*) framerateLimitingEntry.second["metrics"])->size / 2.0f;
-		framerateLimitingButtonZoneListener->ur = ((UIMetrics*) framerateLimitingEntry.second["metrics"])->position + ((UIMetrics*) framerateLimitingEntry.second["metrics"])->size / 2.0f;
-		inputHandler->mouse.addListener(framerateLimitingButtonZoneListener);
-		framerateLimitingButtonClickListener->ll = framerateLimitingButtonZoneListener->ll;
-		framerateLimitingButtonClickListener->ur = framerateLimitingButtonZoneListener->ur;
-		inputHandler->mouse.addListener(framerateLimitingButtonClickListener);
-
-		if(gameGraphics->supportsMultisampling) {
-			multisamplingButtonZoneListener->ll = ((UIMetrics*) multisamplingLevelEntry.second["metrics"])->position - ((UIMetrics*) multisamplingLevelEntry.second["metrics"])->size / 2.0f;
-			multisamplingButtonZoneListener->ur = ((UIMetrics*) multisamplingLevelEntry.second["metrics"])->position + ((UIMetrics*) multisamplingLevelEntry.second["metrics"])->size / 2.0f;
-			inputHandler->mouse.addListener(multisamplingButtonZoneListener);
-			multisamplingButtonClickListener->ll = multisamplingButtonZoneListener->ll;
-			multisamplingButtonClickListener->ur = multisamplingButtonZoneListener->ur;
-			inputHandler->mouse.addListener(multisamplingButtonClickListener);
-		}
-
-		terrainDetailButtonZoneListener->ll = ((UIMetrics*) terrainDetailEntry.second["metrics"])->position - ((UIMetrics*) terrainDetailEntry.second["metrics"])->size / 2.0f;
-		terrainDetailButtonZoneListener->ur = ((UIMetrics*) terrainDetailEntry.second["metrics"])->position + ((UIMetrics*) terrainDetailEntry.second["metrics"])->size / 2.0f;
-		inputHandler->mouse.addListener(terrainDetailButtonZoneListener);
-		terrainDetailButtonClickListener->ll = terrainDetailButtonZoneListener->ll;
-		terrainDetailButtonClickListener->ur = terrainDetailButtonZoneListener->ur;
-		inputHandler->mouse.addListener(terrainDetailButtonClickListener);
-
-		developmentModeButtonZoneListener->ll = ((UIMetrics*) developmentModeEntry.second["metrics"])->position - ((UIMetrics*) developmentModeEntry.second["metrics"])->size / 2.0f;
-		developmentModeButtonZoneListener->ur = ((UIMetrics*) developmentModeEntry.second["metrics"])->position + ((UIMetrics*) developmentModeEntry.second["metrics"])->size / 2.0f;
-		inputHandler->mouse.addListener(developmentModeButtonZoneListener);
-		developmentModeButtonClickListener->ll = developmentModeButtonZoneListener->ll;
-		developmentModeButtonClickListener->ur = developmentModeButtonZoneListener->ur;
-		inputHandler->mouse.addListener(developmentModeButtonClickListener);
-
-		backButtonZoneListener->ll = ((UIMetrics*) backButtonEntry.second["metrics"])->position - ((UIMetrics*) backButtonEntry.second["metrics"])->size / 2.0f;
-		backButtonZoneListener->ur = ((UIMetrics*) backButtonEntry.second["metrics"])->position + ((UIMetrics*) backButtonEntry.second["metrics"])->size / 2.0f;
-		inputHandler->mouse.addListener(backButtonZoneListener);
-		backButtonClickListener->ll = backButtonZoneListener->ll;
-		backButtonClickListener->ur = backButtonZoneListener->ur;
-		inputHandler->mouse.addListener(backButtonClickListener);
-
-		resetHighScoresButtonZoneListener->ll = ((UIMetrics*) resetHighScoresEntry.second["metrics"])->position - ((UIMetrics*) resetHighScoresEntry.second["metrics"])->size / 2.0f;
-		resetHighScoresButtonZoneListener->ur = ((UIMetrics*) resetHighScoresEntry.second["metrics"])->position + ((UIMetrics*) resetHighScoresEntry.second["metrics"])->size / 2.0f;
-		inputHandler->mouse.addListener(resetHighScoresButtonZoneListener);
-		resetHighScoresButtonClickListener->ll = resetHighScoresButtonZoneListener->ll;
-		resetHighScoresButtonClickListener->ur = resetHighScoresButtonZoneListener->ur;
-		inputHandler->mouse.addListener(resetHighScoresButtonClickListener);
-
-		break;
-	}
 	case SCHEME_HIGHSCORES:
-	{
-		// input
-		inputHandler->mouse.addListener(mouseMotionListener);
-		inputHandler->keyboard.addListener(quitKeyListener);
-		inputHandler->keyboard.addListener(fullScreenKeyListener);
-		inputHandler->keyboard.addListener(highScoresMenuKeyListener);
+		{
+			// input
+			inputHandler->mouse.addListener(mouseMotionListener);
+			inputHandler->keyboard.addListener(quitKeyListener);
+			inputHandler->keyboard.addListener(fullScreenKeyListener);
+			inputHandler->keyboard.addListener(highScoresMenuKeyListener);
 
-		// splash background
-		drawingMaster->drawStack.push_back(splashEntry);
+			// splash background
+			drawingMaster->drawStack.push_back(splashEntry);
 
-		// high scores title label
-		*((float*) menuTitleEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeLarge");
-		*((std::string*) menuTitleEntry.second["text"]) = "HIGH SCORES";
-		((UIMetrics*) menuTitleEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTitleEntry.second);
-		drawingMaster->drawStack.push_back(menuTitleEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTitleEntry.second["metrics"]);
+			// high scores title label
+			*((float*) menuTitleEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeLarge");
+			*((std::string*) menuTitleEntry.second["text"]) = "HIGH SCORES";
+			((UIMetrics*) menuTitleEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTitleEntry.second);
+			drawingMaster->drawStack.push_back(menuTitleEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTitleEntry.second["metrics"]);
 
-		// high scores label
-		*((float*) highScoresEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
-		// imperfect without a fixed-width font, but pad shorter numbers with invisible zeros so it lines up better
-		std::stringstream stringStream;
-		size_t scoreLength = 0;
-		if(gameSystem->highScores.size() > 0) {
-			stringStream << gameSystem->highScores[0].first;
-			scoreLength = stringStream.str().length();
-			stringStream.str("");
+			// high scores label
+			*((float*) highScoresEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
+			// imperfect without a fixed-width font, but pad shorter numbers with invisible zeros so it lines up better
+			std::stringstream stringStream;
+			size_t scoreLength = 0;
+			if(gameSystem->highScores.size() > 0) {
+				stringStream << gameSystem->highScores[0].first;
+				scoreLength = stringStream.str().length();
+				stringStream.str("");
+			}
+			for(size_t i = 0; i < gameSystem->highScores.size(); ++i) {
+				std::stringstream originalNumber;
+				originalNumber << gameSystem->highScores[i].first;
+
+				stringStream << (i > 0 ? "\n" : "") << gameSystem->highScores[i].second << "\t";
+
+				for(size_t p = originalNumber.str().length(); p < scoreLength; ++p)
+					stringStream << "\\ffffff000"; // zero-alpha '0' character
+
+				stringStream << "\\" << gameSystem->getString("fontColorLight");
+				stringStream << gameSystem->highScores[i].first;
+			}
+			if(stringStream.str().length() == 0) stringStream.str("No high scores have been recorded yet.");
+			*((std::string*) highScoresEntry.second["text"]) = stringStream.str();
+			((UIMetrics*) highScoresEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(highScoresEntry.second);
+			drawingMaster->drawStack.push_back(highScoresEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) highScoresEntry.second["metrics"]);
+
+
+			// back button
+			*((float*) backButtonEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+			*((float*) backButtonEntry.second["padding"]) = gameSystem->getFloat("hudButtonPadding");
+			*((float*) backButtonEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
+			*((float*) backButtonEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
+			*((Vector4*) backButtonEntry.second["insideColor"]) = (
+					activeMenuSelection == &backButtonEntry ?
+					gameSystem->getColor("hudContainerHighlightColor") :
+					gameSystem->getColor("hudContainerInsideColor")
+				);
+			Vector2* backButtonSize = (Vector2*) backButtonEntry.second["size"];
+			backButtonEntry.second.erase(backButtonEntry.second.find("size"));
+			*backButtonSize = ((DrawButton*) drawingMaster->drawers["button"])->getSize(backButtonEntry.second);
+			backButtonEntry.second["size"] = backButtonSize;
+			((UIMetrics*) backButtonEntry.second["metrics"])->size = *backButtonSize;
+			drawingMaster->drawStack.push_back(backButtonEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) backButtonEntry.second["metrics"]);
+
+			// tips
+			*((float*) menuTip1Entry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+			*((std::string*) menuTip1Entry.second["text"]) = "Press ESC to return to the previous menu";
+			((UIMetrics*) menuTip1Entry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTip1Entry.second);
+			drawingMaster->drawStack.push_back(menuTip1Entry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTip1Entry.second["metrics"]);
+
+			*((float*) menuTip2Entry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+			((UIMetrics*) menuTip2Entry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTip2Entry.second);
+			drawingMaster->drawStack.push_back(menuTip2Entry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTip2Entry.second["metrics"]);
+
+			*((float*) menuTip3Entry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+			((UIMetrics*) menuTip3Entry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTip3Entry.second);
+			drawingMaster->drawStack.push_back(menuTip3Entry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTip3Entry.second["metrics"]);
+
+			// re-arrange the UI
+			drawingMaster->uiLayoutAuthority->rearrange();
+
+			// set up button listener with new position
+			backButtonZoneListener->ll = ((UIMetrics*) backButtonEntry.second["metrics"])->position -	((UIMetrics*) backButtonEntry.second["metrics"])->size / 2.0f;
+			backButtonZoneListener->ur = ((UIMetrics*) backButtonEntry.second["metrics"])->position + ((UIMetrics*) backButtonEntry.second["metrics"])->size / 2.0f;
+			inputHandler->mouse.addListener(backButtonZoneListener);
+			backButtonClickListener->ll = backButtonZoneListener->ll;
+			backButtonClickListener->ur = backButtonZoneListener->ur;
+			inputHandler->mouse.addListener(backButtonClickListener);
+
+			break;
 		}
-		for(size_t i = 0; i < gameSystem->highScores.size(); ++i) {
-			std::stringstream originalNumber;
-			originalNumber << gameSystem->highScores[i].first;
-
-			stringStream << (i > 0 ? "\n" : "") << gameSystem->highScores[i].second << "\t";
-
-			for(size_t p = originalNumber.str().length(); p < scoreLength; ++p)
-				stringStream << "\\ffffff000"; // zero-alpha '0' character
-
-			stringStream << "\\" << gameSystem->getString("fontColorLight");
-			stringStream << gameSystem->highScores[i].first;
-		}
-		if(stringStream.str().length() == 0) stringStream.str("No high scores have been recorded yet.");
-		*((std::string*) highScoresEntry.second["text"]) = stringStream.str();
-		((UIMetrics*) highScoresEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(highScoresEntry.second);
-		drawingMaster->drawStack.push_back(highScoresEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) highScoresEntry.second["metrics"]);
-
-
-		// back button
-		*((float*) backButtonEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-		*((float*) backButtonEntry.second["padding"]) = gameSystem->getFloat("hudButtonPadding");
-		*((float*) backButtonEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
-		*((float*) backButtonEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
-		*((Vector4*) backButtonEntry.second["insideColor"]) = (
-				activeMenuSelection == &backButtonEntry ?
-				gameSystem->getColor("hudContainerHighlightColor") :
-				gameSystem->getColor("hudContainerInsideColor")
-			);
-		Vector2* backButtonSize = (Vector2*) backButtonEntry.second["size"];
-		backButtonEntry.second.erase(backButtonEntry.second.find("size"));
-		*backButtonSize = ((DrawButton*) drawingMaster->drawers["button"])->getSize(backButtonEntry.second);
-		backButtonEntry.second["size"] = backButtonSize;
-		((UIMetrics*) backButtonEntry.second["metrics"])->size = *backButtonSize;
-		drawingMaster->drawStack.push_back(backButtonEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) backButtonEntry.second["metrics"]);
-
-		// tips
-		*((float*) menuTip1Entry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-		*((std::string*) menuTip1Entry.second["text"]) = "Press ESC to return to the previous menu";
-		((UIMetrics*) menuTip1Entry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTip1Entry.second);
-		drawingMaster->drawStack.push_back(menuTip1Entry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTip1Entry.second["metrics"]);
-
-		*((float*) menuTip2Entry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-		((UIMetrics*) menuTip2Entry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTip2Entry.second);
-		drawingMaster->drawStack.push_back(menuTip2Entry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTip2Entry.second["metrics"]);
-
-		*((float*) menuTip3Entry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-		((UIMetrics*) menuTip3Entry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTip3Entry.second);
-		drawingMaster->drawStack.push_back(menuTip3Entry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTip3Entry.second["metrics"]);
-
-		// re-arrange the UI
-		drawingMaster->uiLayoutAuthority->rearrange();
-
-		// set up button listener with new position
-		backButtonZoneListener->ll = ((UIMetrics*) backButtonEntry.second["metrics"])->position -	((UIMetrics*) backButtonEntry.second["metrics"])->size / 2.0f;
-		backButtonZoneListener->ur = ((UIMetrics*) backButtonEntry.second["metrics"])->position + ((UIMetrics*) backButtonEntry.second["metrics"])->size / 2.0f;
-		inputHandler->mouse.addListener(backButtonZoneListener);
-		backButtonClickListener->ll = backButtonZoneListener->ll;
-		backButtonClickListener->ur = backButtonZoneListener->ur;
-		inputHandler->mouse.addListener(backButtonClickListener);
-
-		break;
-	}
 	case SCHEME_HELP:
-	{
-		// input
-		inputHandler->mouse.addListener(mouseMotionListener);
-		inputHandler->keyboard.addListener(quitKeyListener);
-		inputHandler->keyboard.addListener(fullScreenKeyListener);
-		inputHandler->keyboard.addListener(helpMenuKeyListener);
+		{
+			// input
+			inputHandler->mouse.addListener(mouseMotionListener);
+			inputHandler->keyboard.addListener(quitKeyListener);
+			inputHandler->keyboard.addListener(fullScreenKeyListener);
+			inputHandler->keyboard.addListener(helpMenuKeyListener);
 
-		// splash background
-		drawingMaster->drawStack.push_back(splashEntry);
+			// splash background
+			drawingMaster->drawStack.push_back(splashEntry);
 
-		// help title label
-		*((float*) menuTitleEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeLarge");
-		*((std::string*) menuTitleEntry.second["text"]) = "HELP";
-		((UIMetrics*) menuTitleEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTitleEntry.second);
-		drawingMaster->drawStack.push_back(menuTitleEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTitleEntry.second["metrics"]);
+			// help title label
+			*((float*) menuTitleEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeLarge");
+			*((std::string*) menuTitleEntry.second["text"]) = "HELP";
+			((UIMetrics*) menuTitleEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTitleEntry.second);
+			drawingMaster->drawStack.push_back(menuTitleEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTitleEntry.second["metrics"]);
 
-		// controls title label
-		*((float*) controlsTitleEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
-		((UIMetrics*) controlsTitleEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(controlsTitleEntry.second);
-		drawingMaster->drawStack.push_back(controlsTitleEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) controlsTitleEntry.second["metrics"]);
+			// controls title label
+			*((float*) controlsTitleEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
+			((UIMetrics*) controlsTitleEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(controlsTitleEntry.second);
+			drawingMaster->drawStack.push_back(controlsTitleEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) controlsTitleEntry.second["metrics"]);
 
-		// controls label
-		*((float*) controlsEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-		((UIMetrics*) controlsEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(controlsEntry.second);
-		drawingMaster->drawStack.push_back(controlsEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) controlsEntry.second["metrics"]);
+			// controls label
+			*((float*) controlsEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+			((UIMetrics*) controlsEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(controlsEntry.second);
+			drawingMaster->drawStack.push_back(controlsEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) controlsEntry.second["metrics"]);
 
-		// instructions title label
-		*((float*) instructionsTitleEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
-		((UIMetrics*) instructionsTitleEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(instructionsTitleEntry.second);
-		drawingMaster->drawStack.push_back(instructionsTitleEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) instructionsTitleEntry.second["metrics"]);
+			// instructions title label
+			*((float*) instructionsTitleEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
+			((UIMetrics*) instructionsTitleEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(instructionsTitleEntry.second);
+			drawingMaster->drawStack.push_back(instructionsTitleEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) instructionsTitleEntry.second["metrics"]);
 
-		// instructions label
-		*((float*) instructionsEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-		*((float*) instructionsEntry.second["wrap"]) = 2.0f * (gameSystem->getFloat("helpTextScreenPortion")) - (gameSystem->getFloat("hudElementMargin") * 2.0f / (float) gameGraphics->resolutionX);
-		((UIMetrics*) instructionsEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(instructionsEntry.second);
-		drawingMaster->drawStack.push_back(instructionsEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) instructionsEntry.second["metrics"]);
+			// instructions label
+			*((float*) instructionsEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+			*((float*) instructionsEntry.second["wrap"]) = 2.0f * (gameSystem->getFloat("helpTextScreenPortion")) - (gameSystem->getFloat("hudElementMargin") * 2.0f / (float) gameGraphics->resolutionX);
+			((UIMetrics*) instructionsEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(instructionsEntry.second);
+			drawingMaster->drawStack.push_back(instructionsEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) instructionsEntry.second["metrics"]);
 
-		// about button
-		*((float*) aboutButtonEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-		*((float*) aboutButtonEntry.second["padding"]) = gameSystem->getFloat("hudButtonPadding");
-		*((float*) aboutButtonEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
-		*((float*) aboutButtonEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
-		*((Vector4*) aboutButtonEntry.second["insideColor"]) = (
-				activeMenuSelection == &aboutButtonEntry ?
-				gameSystem->getColor("hudContainerHighlightColor") :
-				gameSystem->getColor("hudContainerInsideColor")
-			);
-		Vector2* aboutButtonSize = (Vector2*) aboutButtonEntry.second["size"];
-		backButtonEntry.second.erase(aboutButtonEntry.second.find("size"));
-		*aboutButtonSize = ((DrawButton*) drawingMaster->drawers["button"])->getSize(aboutButtonEntry.second);
-		aboutButtonEntry.second["size"] = aboutButtonSize;
-		((UIMetrics*) aboutButtonEntry.second["metrics"])->size = *aboutButtonSize;
-		drawingMaster->drawStack.push_back(aboutButtonEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) aboutButtonEntry.second["metrics"]);
+			// about button
+			*((float*) aboutButtonEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+			*((float*) aboutButtonEntry.second["padding"]) = gameSystem->getFloat("hudButtonPadding");
+			*((float*) aboutButtonEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
+			*((float*) aboutButtonEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
+			*((Vector4*) aboutButtonEntry.second["insideColor"]) = (
+					activeMenuSelection == &aboutButtonEntry ?
+					gameSystem->getColor("hudContainerHighlightColor") :
+					gameSystem->getColor("hudContainerInsideColor")
+				);
+			Vector2* aboutButtonSize = (Vector2*) aboutButtonEntry.second["size"];
+			backButtonEntry.second.erase(aboutButtonEntry.second.find("size"));
+			*aboutButtonSize = ((DrawButton*) drawingMaster->drawers["button"])->getSize(aboutButtonEntry.second);
+			aboutButtonEntry.second["size"] = aboutButtonSize;
+			((UIMetrics*) aboutButtonEntry.second["metrics"])->size = *aboutButtonSize;
+			drawingMaster->drawStack.push_back(aboutButtonEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) aboutButtonEntry.second["metrics"]);
 
-		// back button
-		*((float*) backButtonEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-		*((float*) backButtonEntry.second["padding"]) = gameSystem->getFloat("hudButtonPadding");
-		*((float*) backButtonEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
-		*((float*) backButtonEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
-		*((Vector4*) backButtonEntry.second["insideColor"]) = (
-				activeMenuSelection == &backButtonEntry ?
-				gameSystem->getColor("hudContainerHighlightColor") :
-				gameSystem->getColor("hudContainerInsideColor")
-			);
-		Vector2* backButtonSize = (Vector2*) backButtonEntry.second["size"];
-		backButtonEntry.second.erase(backButtonEntry.second.find("size"));
-		*backButtonSize = ((DrawButton*) drawingMaster->drawers["button"])->getSize(backButtonEntry.second);
-		backButtonEntry.second["size"] = backButtonSize;
-		((UIMetrics*) backButtonEntry.second["metrics"])->size = *backButtonSize;
-		drawingMaster->drawStack.push_back(backButtonEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) backButtonEntry.second["metrics"]);
+			// back button
+			*((float*) backButtonEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+			*((float*) backButtonEntry.second["padding"]) = gameSystem->getFloat("hudButtonPadding");
+			*((float*) backButtonEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
+			*((float*) backButtonEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
+			*((Vector4*) backButtonEntry.second["insideColor"]) = (
+					activeMenuSelection == &backButtonEntry ?
+					gameSystem->getColor("hudContainerHighlightColor") :
+					gameSystem->getColor("hudContainerInsideColor")
+				);
+			Vector2* backButtonSize = (Vector2*) backButtonEntry.second["size"];
+			backButtonEntry.second.erase(backButtonEntry.second.find("size"));
+			*backButtonSize = ((DrawButton*) drawingMaster->drawers["button"])->getSize(backButtonEntry.second);
+			backButtonEntry.second["size"] = backButtonSize;
+			((UIMetrics*) backButtonEntry.second["metrics"])->size = *backButtonSize;
+			drawingMaster->drawStack.push_back(backButtonEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) backButtonEntry.second["metrics"]);
 
-		// tips
-		*((float*) menuTip1Entry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-		*((std::string*) menuTip1Entry.second["text"]) = "Press ESC to return to the previous menu";
-		((UIMetrics*) menuTip1Entry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTip1Entry.second);
-		drawingMaster->drawStack.push_back(menuTip1Entry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTip1Entry.second["metrics"]);
+			// tips
+			*((float*) menuTip1Entry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+			*((std::string*) menuTip1Entry.second["text"]) = "Press ESC to return to the previous menu";
+			((UIMetrics*) menuTip1Entry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTip1Entry.second);
+			drawingMaster->drawStack.push_back(menuTip1Entry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTip1Entry.second["metrics"]);
 
-		*((float*) menuTip2Entry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-		((UIMetrics*) menuTip2Entry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTip2Entry.second);
-		drawingMaster->drawStack.push_back(menuTip2Entry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTip2Entry.second["metrics"]);
+			*((float*) menuTip2Entry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+			((UIMetrics*) menuTip2Entry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTip2Entry.second);
+			drawingMaster->drawStack.push_back(menuTip2Entry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTip2Entry.second["metrics"]);
 
-		*((float*) menuTip3Entry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-		((UIMetrics*) menuTip3Entry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTip3Entry.second);
-		drawingMaster->drawStack.push_back(menuTip3Entry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTip3Entry.second["metrics"]);
+			*((float*) menuTip3Entry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+			((UIMetrics*) menuTip3Entry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTip3Entry.second);
+			drawingMaster->drawStack.push_back(menuTip3Entry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTip3Entry.second["metrics"]);
 
-		// make all buttons the same width
-		std::vector<DrawStackEntry*> buttonsToSync;
-		buttonsToSync.push_back(&aboutButtonEntry);
-		buttonsToSync.push_back(&backButtonEntry);
-		syncButtonWidths(buttonsToSync);
+			// make all buttons the same width
+			std::vector<DrawStackEntry*> buttonsToSync;
+			buttonsToSync.push_back(&aboutButtonEntry);
+			buttonsToSync.push_back(&backButtonEntry);
+			syncButtonWidths(buttonsToSync);
 
-		// re-arrange the UI
-		drawingMaster->uiLayoutAuthority->rearrange();
+			// re-arrange the UI
+			drawingMaster->uiLayoutAuthority->rearrange();
 
-		// set up button listeners with new position
-		aboutButtonZoneListener->ll = ((UIMetrics*) aboutButtonEntry.second["metrics"])->position -	((UIMetrics*) aboutButtonEntry.second["metrics"])->size / 2.0f;
-		aboutButtonZoneListener->ur = ((UIMetrics*) aboutButtonEntry.second["metrics"])->position + ((UIMetrics*) aboutButtonEntry.second["metrics"])->size / 2.0f;
-		inputHandler->mouse.addListener(aboutButtonZoneListener);
-		aboutButtonClickListener->ll = aboutButtonZoneListener->ll;
-		aboutButtonClickListener->ur = aboutButtonZoneListener->ur;
-		inputHandler->mouse.addListener(aboutButtonClickListener);
-		backButtonZoneListener->ll = ((UIMetrics*) backButtonEntry.second["metrics"])->position -	((UIMetrics*) backButtonEntry.second["metrics"])->size / 2.0f;
-		backButtonZoneListener->ur = ((UIMetrics*) backButtonEntry.second["metrics"])->position + ((UIMetrics*) backButtonEntry.second["metrics"])->size / 2.0f;
-		inputHandler->mouse.addListener(backButtonZoneListener);
-		backButtonClickListener->ll = backButtonZoneListener->ll;
-		backButtonClickListener->ur = backButtonZoneListener->ur;
-		inputHandler->mouse.addListener(backButtonClickListener);
+			// set up button listeners with new position
+			aboutButtonZoneListener->ll = ((UIMetrics*) aboutButtonEntry.second["metrics"])->position -	((UIMetrics*) aboutButtonEntry.second["metrics"])->size / 2.0f;
+			aboutButtonZoneListener->ur = ((UIMetrics*) aboutButtonEntry.second["metrics"])->position + ((UIMetrics*) aboutButtonEntry.second["metrics"])->size / 2.0f;
+			inputHandler->mouse.addListener(aboutButtonZoneListener);
+			aboutButtonClickListener->ll = aboutButtonZoneListener->ll;
+			aboutButtonClickListener->ur = aboutButtonZoneListener->ur;
+			inputHandler->mouse.addListener(aboutButtonClickListener);
+			backButtonZoneListener->ll = ((UIMetrics*) backButtonEntry.second["metrics"])->position -	((UIMetrics*) backButtonEntry.second["metrics"])->size / 2.0f;
+			backButtonZoneListener->ur = ((UIMetrics*) backButtonEntry.second["metrics"])->position + ((UIMetrics*) backButtonEntry.second["metrics"])->size / 2.0f;
+			inputHandler->mouse.addListener(backButtonZoneListener);
+			backButtonClickListener->ll = backButtonZoneListener->ll;
+			backButtonClickListener->ur = backButtonZoneListener->ur;
+			inputHandler->mouse.addListener(backButtonClickListener);
 
-		break;
-	}
+			break;
+		}
 	case SCHEME_ABOUT:
-	{
-		// input
-		inputHandler->mouse.addListener(mouseMotionListener);
-		inputHandler->keyboard.addListener(quitKeyListener);
-		inputHandler->keyboard.addListener(fullScreenKeyListener);
-		inputHandler->keyboard.addListener(helpMenuKeyListener);
+		{
+			// input
+			inputHandler->mouse.addListener(mouseMotionListener);
+			inputHandler->keyboard.addListener(quitKeyListener);
+			inputHandler->keyboard.addListener(fullScreenKeyListener);
+			inputHandler->keyboard.addListener(helpMenuKeyListener);
 
-		// splash background
-		drawingMaster->drawStack.push_back(splashEntry);
+			// splash background
+			drawingMaster->drawStack.push_back(splashEntry);
 
-		// about title label
-		*((float*) menuTitleEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeLarge");
-		*((std::string*) menuTitleEntry.second["text"]) = "HELP";
-		((UIMetrics*) menuTitleEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTitleEntry.second);
-		drawingMaster->drawStack.push_back(menuTitleEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTitleEntry.second["metrics"]);
+			// about title label
+			*((float*) menuTitleEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeLarge");
+			*((std::string*) menuTitleEntry.second["text"]) = "HELP";
+			((UIMetrics*) menuTitleEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTitleEntry.second);
+			drawingMaster->drawStack.push_back(menuTitleEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTitleEntry.second["metrics"]);
 
-		// version title label
-		*((float*) versionTitleEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
-		((UIMetrics*) versionTitleEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(versionTitleEntry.second);
-		drawingMaster->drawStack.push_back(versionTitleEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) versionTitleEntry.second["metrics"]);
+			// version title label
+			*((float*) versionTitleEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
+			((UIMetrics*) versionTitleEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(versionTitleEntry.second);
+			drawingMaster->drawStack.push_back(versionTitleEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) versionTitleEntry.second["metrics"]);
 
-		// version label
-		*((float*) versionEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-		*((float*) versionEntry.second["wrap"]) = 2.0f * (gameGraphics->resolutionX > 1024 ? 1024.0f / (float) gameGraphics->resolutionX : 1.0f) - (gameSystem->getFloat("hudElementMargin") * 2.0f / (float) gameGraphics->resolutionX);
-//		*((std::string*) versionEntry.second["text"]) = gameSystem->versionString;
-		std::stringstream sstream;
-		sstream << "Version:\t" << PROGRAM_VERSION << "\n";
-		sstream << "Status:\t" << PROGRAM_BUILDSTRING << "\n";
-		sstream << "Architecture:\t" << PROGRAM_ARCH_STR << "\n";
-		sstream << "Build Date:\t" << gameSystem->buildDate;
-		*((std::string*) versionEntry.second["text"]) = sstream.str();
-		((UIMetrics*) versionEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(versionEntry.second);
-		drawingMaster->drawStack.push_back(versionEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) versionEntry.second["metrics"]);
+			// version label
+			*((float*) versionEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+			*((float*) versionEntry.second["wrap"]) = 2.0f * (gameGraphics->resolutionX > 1024 ? 1024.0f / (float) gameGraphics->resolutionX : 1.0f) - (gameSystem->getFloat("hudElementMargin") * 2.0f / (float) gameGraphics->resolutionX);
+//			*((std::string*) versionEntry.second["text"]) = gameSystem->versionString;
+			std::stringstream sstream;
+			sstream << "Version:\t" << PROGRAM_VERSION << "\n";
+			sstream << "Status:\t" << PROGRAM_BUILDSTRING << "\n";
+			sstream << "Architecture:\t" << PROGRAM_ARCH_STR << "\n";
+			sstream << "Build Date:\t" << gameSystem->buildDate;
+			*((std::string*) versionEntry.second["text"]) = sstream.str();
+			((UIMetrics*) versionEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(versionEntry.second);
+			drawingMaster->drawStack.push_back(versionEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) versionEntry.second["metrics"]);
 
-		// credits title label
-		*((float*) creditsTitleEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
-		((UIMetrics*) creditsTitleEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(creditsTitleEntry.second);
-		drawingMaster->drawStack.push_back(creditsTitleEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) creditsTitleEntry.second["metrics"]);
+			// credits title label
+			*((float*) creditsTitleEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
+			((UIMetrics*) creditsTitleEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(creditsTitleEntry.second);
+			drawingMaster->drawStack.push_back(creditsTitleEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) creditsTitleEntry.second["metrics"]);
 
-		// credits label
-		*((float*) creditsEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-		*((float*) creditsEntry.second["wrap"]) = 2.0f * (gameGraphics->resolutionX > 1024 ? 1024.0f / (float) gameGraphics->resolutionX : 1.0f) - (gameSystem->getFloat("hudElementMargin") * 2.0f / (float) gameGraphics->resolutionX);
-		((UIMetrics*) creditsEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(creditsEntry.second);
-		drawingMaster->drawStack.push_back(creditsEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) creditsEntry.second["metrics"]);
+			// credits label
+			*((float*) creditsEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+			*((float*) creditsEntry.second["wrap"]) = 2.0f * (gameGraphics->resolutionX > 1024 ? 1024.0f / (float) gameGraphics->resolutionX : 1.0f) - (gameSystem->getFloat("hudElementMargin") * 2.0f / (float) gameGraphics->resolutionX);
+			((UIMetrics*) creditsEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(creditsEntry.second);
+			drawingMaster->drawStack.push_back(creditsEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) creditsEntry.second["metrics"]);
 
-		// back button
-		*((float*) backButtonEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-		*((float*) backButtonEntry.second["padding"]) = gameSystem->getFloat("hudButtonPadding");
-		*((float*) backButtonEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
-		*((float*) backButtonEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
-		*((Vector4*) backButtonEntry.second["insideColor"]) = (
-				activeMenuSelection == &backButtonEntry ?
-				gameSystem->getColor("hudContainerHighlightColor") :
-				gameSystem->getColor("hudContainerInsideColor")
-			);
-		Vector2* backButtonSize = (Vector2*) backButtonEntry.second["size"];
-		backButtonEntry.second.erase(backButtonEntry.second.find("size"));
-		*backButtonSize = ((DrawButton*) drawingMaster->drawers["button"])->getSize(backButtonEntry.second);
-		backButtonEntry.second["size"] = backButtonSize;
-		((UIMetrics*) backButtonEntry.second["metrics"])->size = *backButtonSize;
-		drawingMaster->drawStack.push_back(backButtonEntry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) backButtonEntry.second["metrics"]);
+			// back button
+			*((float*) backButtonEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+			*((float*) backButtonEntry.second["padding"]) = gameSystem->getFloat("hudButtonPadding");
+			*((float*) backButtonEntry.second["border"]) = gameSystem->getFloat("hudContainerBorder");
+			*((float*) backButtonEntry.second["softEdge"]) = gameSystem->getFloat("hudContainerSoftEdge");
+			*((Vector4*) backButtonEntry.second["insideColor"]) = (
+					activeMenuSelection == &backButtonEntry ?
+					gameSystem->getColor("hudContainerHighlightColor") :
+					gameSystem->getColor("hudContainerInsideColor")
+				);
+			Vector2* backButtonSize = (Vector2*) backButtonEntry.second["size"];
+			backButtonEntry.second.erase(backButtonEntry.second.find("size"));
+			*backButtonSize = ((DrawButton*) drawingMaster->drawers["button"])->getSize(backButtonEntry.second);
+			backButtonEntry.second["size"] = backButtonSize;
+			((UIMetrics*) backButtonEntry.second["metrics"])->size = *backButtonSize;
+			drawingMaster->drawStack.push_back(backButtonEntry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) backButtonEntry.second["metrics"]);
 
-		// tips
-		*((float*) menuTip1Entry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-		*((std::string*) menuTip1Entry.second["text"]) = "Press ESC to return to the previous menu";
-		((UIMetrics*) menuTip1Entry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTip1Entry.second);
-		drawingMaster->drawStack.push_back(menuTip1Entry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTip1Entry.second["metrics"]);
+			// tips
+			*((float*) menuTip1Entry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+			*((std::string*) menuTip1Entry.second["text"]) = "Press ESC to return to the previous menu";
+			((UIMetrics*) menuTip1Entry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTip1Entry.second);
+			drawingMaster->drawStack.push_back(menuTip1Entry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTip1Entry.second["metrics"]);
 
-		*((float*) menuTip2Entry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-		((UIMetrics*) menuTip2Entry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTip2Entry.second);
-		drawingMaster->drawStack.push_back(menuTip2Entry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTip2Entry.second["metrics"]);
+			*((float*) menuTip2Entry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+			((UIMetrics*) menuTip2Entry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTip2Entry.second);
+			drawingMaster->drawStack.push_back(menuTip2Entry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTip2Entry.second["metrics"]);
 
-		*((float*) menuTip3Entry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-		((UIMetrics*) menuTip3Entry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTip3Entry.second);
-		drawingMaster->drawStack.push_back(menuTip3Entry);
-		drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTip3Entry.second["metrics"]);
+			*((float*) menuTip3Entry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
+			((UIMetrics*) menuTip3Entry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTip3Entry.second);
+			drawingMaster->drawStack.push_back(menuTip3Entry);
+			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTip3Entry.second["metrics"]);
 
-		// re-arrange the UI
-		drawingMaster->uiLayoutAuthority->rearrange();
+			// re-arrange the UI
+			drawingMaster->uiLayoutAuthority->rearrange();
 
-		// set up button listener with new position
-		backButtonZoneListener->ll = ((UIMetrics*) backButtonEntry.second["metrics"])->position -	((UIMetrics*) backButtonEntry.second["metrics"])->size / 2.0f;
-		backButtonZoneListener->ur = ((UIMetrics*) backButtonEntry.second["metrics"])->position + ((UIMetrics*) backButtonEntry.second["metrics"])->size / 2.0f;
-		inputHandler->mouse.addListener(backButtonZoneListener);
-		backButtonClickListener->ll = backButtonZoneListener->ll;
-		backButtonClickListener->ur = backButtonZoneListener->ur;
-		inputHandler->mouse.addListener(backButtonClickListener);
+			// set up button listener with new position
+			backButtonZoneListener->ll = ((UIMetrics*) backButtonEntry.second["metrics"])->position -	((UIMetrics*) backButtonEntry.second["metrics"])->size / 2.0f;
+			backButtonZoneListener->ur = ((UIMetrics*) backButtonEntry.second["metrics"])->position + ((UIMetrics*) backButtonEntry.second["metrics"])->size / 2.0f;
+			inputHandler->mouse.addListener(backButtonZoneListener);
+			backButtonClickListener->ll = backButtonZoneListener->ll;
+			backButtonClickListener->ur = backButtonZoneListener->ur;
+			inputHandler->mouse.addListener(backButtonClickListener);
 
-		break;
-	}
+			break;
+		}
 	}
 
 	// add development statistics to every scheme if enabled
