@@ -1497,6 +1497,381 @@ void GameLogic::reScheme() {
 	}
 }
 
+void GameLogic::startNewGame() {
+	currentScheme = SCHEME_LOADING;
+	reScheme();
+	drawingMaster->execute(true);
+
+	gameAudio->playSound("selectEffect");
+
+	gameState = new GameState();
+	mainLoopModules[gameState] = 0;
+
+	mainLoopModules[drawingMaster] = 0;
+	((DrawRadar*) drawingMaster->drawers["radar"])->reloadState();
+	((ExplosionRenderer*) drawingMaster->drawers["explosionRenderer"])->reloadState();
+	((TerrainRenderer*) drawingMaster->drawers["terrainRenderer"])->reloadState();
+	gameGraphics->currentCamera = &introCamera;
+
+	currentScheme = SCHEME_INTRO;
+	activeMenuSelection = NULL;
+	reScheme();
+
+	gameAudio->setBackgroundMusic("playingSong");
+}
+
+void GameLogic::bumpStartFromIntro() {
+	gameState->bumpStart();
+	gameGraphics->currentCamera = &fortressCamera;
+	currentScheme = SCHEME_PLAYING;
+	reScheme();
+
+	SDL_WM_GrabInput(SDL_GRAB_ON);
+	SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
+	SDL_ShowCursor(0);
+	mouseActive = false;
+
+	inputHandler->execute();
+	mouseMotionListener->wasMoved();
+}
+
+void GameLogic::pauseGame() {
+	gameState->pause();
+	mainLoopModules.erase(mainLoopModules.find(drawingMaster));
+
+	currentScheme = SCHEME_PAUSED;
+	activeMenuSelection = &resumeButtonEntry;
+	reScheme();
+	drawingMaster->execute(true);
+
+	SDL_WM_GrabInput(SDL_GRAB_OFF);
+	SDL_ShowCursor(1);
+
+	gameAudio->playSound("backEffect");
+}
+
+void GameLogic::resumeGame() {
+	if(gameGraphics->currentCamera == &introCamera) {
+		currentScheme = SCHEME_INTRO;
+	} else {
+		currentScheme = SCHEME_PLAYING;
+		SDL_WM_GrabInput(SDL_GRAB_ON);
+		SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
+		SDL_ShowCursor(0);
+		mouseActive = false;
+
+		inputHandler->execute();
+		mouseMotionListener->wasMoved();
+	}
+
+	activeMenuSelection = NULL;
+	reScheme();
+
+	mainLoopModules[drawingMaster] = 0;
+
+	gameState->resume();
+
+	gameAudio->playSound("selectEffect");
+}
+
+void GameLogic::endGameFromPause() {
+	inputHandler->keyboard.listenUnicode = true;
+	inputHandler->keyboard.unicodeChars = "";
+
+	playerName = "";
+
+	currentScheme = SCHEME_GAMEOVER;
+	activeMenuSelection = &gameOverContinueButton;
+	reScheme();
+	drawingMaster->execute(true);
+
+	gameAudio->playSound("selectEffect");
+
+	gameAudio->setBackgroundMusic("menuSong");
+}
+
+void GameLogic::continueFromGameOver() {
+	if(gameState->score > 0 && (gameSystem->highScores.size() == 0 || gameState->score > gameSystem->highScores.back().first)) {
+		if(playerName != "") {
+			size_t position = 0;
+			while(position < gameSystem->highScores.size() && gameSystem->highScores[position].first >= gameState->score)
+				++position;
+
+			if(position == gameSystem->highScores.size())
+				gameSystem->highScores.push_back(std::make_pair(gameState->score, playerName));
+			else
+				gameSystem->highScores.insert(gameSystem->highScores.begin() + position, std::make_pair(gameState->score, playerName));
+			while(gameSystem->highScores.size() > (size_t) gameSystem->getFloat("gameMaximumHighScores"))
+				gameSystem->highScores.erase(gameSystem->highScores.end());
+
+			gameSystem->flushPreferences();
+		}
+	}
+
+	mainLoopModules.erase(mainLoopModules.find(gameState));
+	delete gameState;
+	gameState = NULL;
+
+	currentScheme = SCHEME_MAINMENU;
+	activeMenuSelection = &playButtonEntry;
+	reScheme();
+	drawingMaster->execute(true);
+
+	gameAudio->playSound("selectEffect");
+}
+
+void GameLogic::alterGameLevel(bool increase) {
+	if(gameSystem->getString("gameStartingLevel") == "Easy") {
+		gameSystem->setStandard("gameStartingLevel", (increase ? "Medium" : "Hard"), "");
+	} else if(gameSystem->getString("gameStartingLevel") == "Medium") {
+		gameSystem->setStandard("gameStartingLevel", (increase ? "Hard" : "Easy"), "");
+	} else if(gameSystem->getString("gameStartingLevel") == "Hard") {
+		gameSystem->setStandard("gameStartingLevel", (increase ? "Easy" : "Medium"), "");
+	}
+	gameSystem->flushPreferences();
+
+	reScheme();
+	drawingMaster->execute(true);
+
+	if(increase)
+		gameAudio->playSound("alterUpEffect");
+	else
+		gameAudio->playSound("alterDownEffect");
+}
+
+void GameLogic::alterMusicLevel(bool increase) {
+	float value = gameSystem->getFloat("audioMusicVolume");
+	value += (increase ? 0.1f : -0.1f);
+	if(value > 1.0f) value = 0.0f;
+	if(value < 0.0f) value = 1.0f;
+	SDL_LockAudio();
+	gameSystem->setStandard("audioMusicVolume", value, "");
+	SDL_UnlockAudio();
+	gameSystem->flushPreferences();
+
+	reScheme();
+	drawingMaster->execute(true);
+
+	if(increase)
+		gameAudio->playSound("alterUpEffect");
+	else
+		gameAudio->playSound("alterDownEffect");
+}
+
+void GameLogic::alterAudioEffectsLevel(bool increase) {
+	float value = gameSystem->getFloat("audioEffectsVolume");
+	value += (increase ? 0.1f : -0.1f);
+	if(value > 1.0f) value = 0.0f;
+	if(value < 0.0f) value = 1.0f;
+	gameSystem->setStandard("audioEffectsVolume", value, "");
+	gameSystem->flushPreferences();
+
+	reScheme();
+	drawingMaster->execute(true);
+
+	if(increase)
+		gameAudio->playSound("alterUpEffect");
+	else
+		gameAudio->playSound("alterDownEffect");
+}
+
+void GameLogic::alterFullscreenSetting(bool increase) {
+	gameSystem->setStandard("displayStartFullscreen", ! gameSystem->getBool("displayStartFullscreen"));
+	gameSystem->flushPreferences();
+
+	reScheme();
+	drawingMaster->execute();
+
+	if(increase)
+		gameAudio->playSound("alterUpEffect");
+	else
+		gameAudio->playSound("alterDownEffect");
+}
+
+void GameLogic::alterWindowedResolution(bool increase) {
+	std::vector< std::pair<unsigned int, unsigned int> > allowedResolutions = gameSystem->getAllowedWindowResolutions();
+
+	size_t i = 0;
+	while(i < allowedResolutions.size()) {
+		std::stringstream resolutionText;
+		resolutionText << allowedResolutions[i].first << "x" << allowedResolutions[i].second;
+
+		if(resolutionText.str() == gameSystem->getString("displayWindowedResolution"))
+			break;
+
+		++i;
+	}
+
+	if(increase) {
+		++i;
+		if(i >= allowedResolutions.size())
+			i = 0;
+	} else {
+		if(i == 0)
+			i = allowedResolutions.size() - 1;
+		else
+			--i;
+	}
+	std::stringstream resolutionText;
+	resolutionText << allowedResolutions[i].first << "x" << allowedResolutions[i].second;
+
+	// only update it if more than one resolution is allowed
+	if(resolutionText.str() != gameSystem->getString("displayWindowedResolution")) {
+		gameSystem->setStandard("displayWindowedResolution", resolutionText.str().c_str());
+		gameSystem->flushPreferences();
+
+		if(! gameGraphics->fullScreen) {
+			// recreate the window
+			delete gameGraphics;
+
+			gameGraphics = new GameGraphics(false);
+
+			drawingMaster->newGraphics();
+
+			inputHandler->execute();
+			mouseMotionListener->wasMoved();
+		}
+
+		reScheme();
+		drawingMaster->execute(true);
+	}
+
+	if(increase)
+		gameAudio->playSound("alterUpEffect");
+	else
+		gameAudio->playSound("alterDownEffect");
+}
+
+void GameLogic::alterFramerateLimiting(bool increase) {
+	if((int) gameSystem->getFloat("displayFramerateLimiting") == GameSystem::LIMIT_VSYNC) {
+		if(increase)
+			gameSystem->setStandard("displayFramerateLimiting", (float) GameSystem::LIMIT_30);
+		else
+			gameSystem->setStandard("displayFramerateLimiting", (float) GameSystem::LIMIT_OFF);
+	} else if((int) gameSystem->getFloat("displayFramerateLimiting") == GameSystem::LIMIT_30) {
+		if(increase)
+			gameSystem->setStandard("displayFramerateLimiting", (float) GameSystem::LIMIT_60);
+		else
+			gameSystem->setStandard("displayFramerateLimiting", (float) GameSystem::LIMIT_VSYNC);
+	} else if((int) gameSystem->getFloat("displayFramerateLimiting") == GameSystem::LIMIT_60) {
+		if(increase)
+			gameSystem->setStandard("displayFramerateLimiting", (float) GameSystem::LIMIT_120);
+		else
+			gameSystem->setStandard("displayFramerateLimiting", (float) GameSystem::LIMIT_30);
+	} else if((int) gameSystem->getFloat("displayFramerateLimiting") == GameSystem::LIMIT_120) {
+		if(increase)
+			gameSystem->setStandard("displayFramerateLimiting", (float) GameSystem::LIMIT_OFF);
+		else
+			gameSystem->setStandard("displayFramerateLimiting", (float) GameSystem::LIMIT_60);
+	} else {
+		if(increase)
+			gameSystem->setStandard("displayFramerateLimiting", (float) GameSystem::LIMIT_VSYNC);
+		else
+			gameSystem->setStandard("displayFramerateLimiting", (float) GameSystem::LIMIT_120);
+	}
+
+	gameSystem->flushPreferences();
+
+	bool fullScreen = gameGraphics->fullScreen;
+	delete gameGraphics;
+	gameGraphics = new GameGraphics(fullScreen);
+	drawingMaster->newGraphics();
+	inputHandler->execute();
+
+	mouseMotionListener->wasMoved();
+	reScheme();
+	drawingMaster->execute(true);
+
+	if(increase)
+		gameAudio->playSound("alterUpEffect");
+	else
+		gameAudio->playSound("alterDownEffect");
+}
+
+void GameLogic::alterMultiSamplingLevel(bool increase) {
+	if(gameSystem->getFloat("displayMultisamplingLevel") == 0.0f) {
+		if(increase)
+			gameSystem->setStandard("displayMultisamplingLevel", 2.0f);
+		else
+			gameSystem->setStandard("displayMultisamplingLevel", 4.0f);
+	} else if(gameSystem->getFloat("displayMultisamplingLevel") == 2.0f) {
+		if(increase)
+			gameSystem->setStandard("displayMultisamplingLevel", 4.0f);
+		else
+			gameSystem->setStandard("displayMultisamplingLevel", 0.0f);
+	} else {
+		if(increase)
+			gameSystem->setStandard("displayMultisamplingLevel", 0.0f);
+		else
+			gameSystem->setStandard("displayMultisamplingLevel", 2.0f);
+	}
+
+	gameSystem->flushPreferences();
+
+	bool fullScreen = gameGraphics->fullScreen;
+	delete gameGraphics;
+	gameGraphics = new GameGraphics(fullScreen);
+	drawingMaster->newGraphics();
+	inputHandler->execute();
+	mouseMotionListener->wasMoved();
+
+	reScheme();
+	drawingMaster->execute(true);
+
+	if(increase)
+		gameAudio->playSound("alterUpEffect");
+	else
+		gameAudio->playSound("alterDownEffect");
+}
+
+void GameLogic::alterTerrainDetail(bool increase) {
+	if(gameSystem->getFloat("islandTerrainDetail") == 1.0f) {
+		if(increase)
+			gameSystem->setStandard("islandTerrainDetail", 2.0f);
+		else
+			gameSystem->setStandard("islandTerrainDetail", 3.0f);
+	} else if(gameSystem->getFloat("islandTerrainDetail") == 2.0f) {
+		if(increase)
+			gameSystem->setStandard("islandTerrainDetail", 3.0f);
+		else
+			gameSystem->setStandard("islandTerrainDetail", 1.0f);
+	} else {
+		if(increase)
+			gameSystem->setStandard("islandTerrainDetail", 1.0f);
+		else
+			gameSystem->setStandard("islandTerrainDetail", 2.0f);
+	}
+
+	gameSystem->flushPreferences();
+
+	reScheme();
+	drawingMaster->execute(true);
+
+	if(increase)
+		gameAudio->playSound("alterUpEffect");
+	else
+		gameAudio->playSound("alterDownEffect");
+}
+
+void GameLogic::alterDevelopmentMode(bool increase) {
+	gameSystem->setStandard("developmentMode", ! gameSystem->getBool("developmentMode"), "");
+	gameSystem->flushPreferences();
+
+	reScheme();
+	drawingMaster->execute(true);
+
+	if(increase)
+		gameAudio->playSound("alterUpEffect");
+	else
+		gameAudio->playSound("alterDownEffect");
+}
+
+void GameLogic::resetHighScores() {
+	gameSystem->highScores.clear();
+	gameSystem->flushPreferences();
+	gameAudio->playSound("selectEffect");
+}
+
 GameLogic::GameLogic() :
 		MainLoopMember((unsigned int) gameSystem->getFloat("logicUpdateFrequency")),
 		currentScheme(SCHEME_MAINMENU),
@@ -2331,23 +2706,6 @@ GameLogic::~GameLogic() {
 }
 
 unsigned int GameLogic::execute(bool unScheduled) {
-	bool needReScheme = false;
-	bool needRedraw = false;
-
-	// see if we need to update the development mode info panel
-	if(
-			gameSystem->getBool("developmentMode") &&
-			(lastDevelInfoUpdate / 100 != platform->getExecMills() / 100 ||
-					(gameState != NULL && lastGameTimeUpdate / 100 != gameState->lastUpdateGameTime / 100) ||
-					lastDevelInfoUpdate + 1000 < platform->getExecMills())
-		) {
-		needReScheme = true;
-		needRedraw = true;
-
-		lastDevelInfoUpdate = platform->getExecMills();
-		if(gameState != NULL) lastGameTimeUpdate = gameState->lastUpdateGameTime;
-	}
-
 	// get a delta time for schemes that need it
 	float deltaTime = 0.0f;
 	if(gameState != NULL && ! gameState->isPaused && currentScheme == SCHEME_PLAYING) {
@@ -2356,21 +2714,21 @@ unsigned int GameLogic::execute(bool unScheduled) {
 		lastUpdate = currentGameTime;
 	}
 
+	// rescheme/redraw once per frame only (except when we need to draw immediately)
+	bool needReScheme = false;
+	bool needRedraw = false;
+
 	// universal logic
 	if(quitKeyListener->popKey() != SDLK_UNKNOWN )
 		keepProgramAlive = false;
 
 	if(fullScreenKeyListener->popKey() != SDLK_UNKNOWN) {
 		bool fullScreenGraphics = ! gameGraphics->fullScreen;
-
 		Camera* currentCamera = gameGraphics->currentCamera;
-
 		delete gameGraphics;
 
 		gameGraphics = new GameGraphics(fullScreenGraphics);
-
 		gameGraphics->currentCamera = currentCamera;
-
 		drawingMaster->newGraphics();
 
 		inputHandler->execute();
@@ -2384,6 +2742,19 @@ unsigned int GameLogic::execute(bool unScheduled) {
 
 		needReScheme = true;
 		needRedraw = true;
+	}
+
+	if(
+			gameSystem->getBool("developmentMode") &&
+			(lastDevelInfoUpdate / 100 != platform->getExecMills() / 100 ||
+					(gameState != NULL && lastGameTimeUpdate / 100 != gameState->lastUpdateGameTime / 100) ||
+					lastDevelInfoUpdate + 1000 < platform->getExecMills())
+		) {
+		needReScheme = true;
+		needRedraw = true;
+
+		lastDevelInfoUpdate = platform->getExecMills();
+		if(gameState != NULL) lastGameTimeUpdate = gameState->lastUpdateGameTime;
 	}
 
 	// scheme-specific logic
@@ -2434,25 +2805,7 @@ unsigned int GameLogic::execute(bool unScheduled) {
 
 		// button clicks
 		if(playButtonClickListener->wasClicked()) {
-			currentScheme = SCHEME_LOADING;
-			reScheme();
-			drawingMaster->execute(true);
-
-			gameAudio->playSound("selectEffect");
-
-			gameState = new GameState();
-			mainLoopModules[gameState] = 0;
-
-			mainLoopModules[drawingMaster] = 0;
-			((DrawRadar*) drawingMaster->drawers["radar"])->reloadState();
-			((ExplosionRenderer*) drawingMaster->drawers["explosionRenderer"])->reloadState();
-			((TerrainRenderer*) drawingMaster->drawers["terrainRenderer"])->reloadState();
-			gameGraphics->currentCamera = &introCamera;
-
-			currentScheme = SCHEME_INTRO;
-			activeMenuSelection = NULL;
-			needReScheme = true;
-			gameAudio->setBackgroundMusic("playingSong");
+			startNewGame();
 		} else if(settingsButtonClickListener->wasClicked()) {
 			currentScheme = SCHEME_SETTINGS;
 			activeMenuSelection = &levelSettingEntry;
@@ -2533,26 +2886,7 @@ unsigned int GameLogic::execute(bool unScheduled) {
 				}
 			} else if(key == SDLK_RETURN) {
 				if(activeMenuSelection == &playButtonEntry) {
-					currentScheme = SCHEME_LOADING;
-					reScheme();
-					drawingMaster->execute(true);
-
-					gameAudio->playSound("selectEffect");
-
-					gameState = new GameState();
-					mainLoopModules[gameState] = 0;
-
-					mainLoopModules[drawingMaster] = 0;
-					((DrawRadar*) drawingMaster->drawers["radar"])->reloadState();
-					((ExplosionRenderer*) drawingMaster->drawers["explosionRenderer"])->reloadState();
-					((TerrainRenderer*) drawingMaster->drawers["terrainRenderer"])->reloadState();
-					gameGraphics->currentCamera = &introCamera;
-
-					currentScheme = SCHEME_INTRO;
-					activeMenuSelection = NULL;
-					needReScheme = true;
-
-					gameAudio->setBackgroundMusic("playingSong");
+					startNewGame();
 				} else if(activeMenuSelection == &settingsButtonEntry) {
 					currentScheme = SCHEME_SETTINGS;
 					activeMenuSelection = &levelSettingEntry;
@@ -2579,42 +2913,15 @@ unsigned int GameLogic::execute(bool unScheduled) {
 	} else if(currentScheme == SCHEME_INTRO) {
 		// button clicks
 		if(primaryFireClickListener1->wasClicked()) {
-			gameState->bumpStart();
-			gameGraphics->currentCamera = &fortressCamera;
-			currentScheme = SCHEME_PLAYING;
-			needReScheme = true;
-			SDL_WM_GrabInput(SDL_GRAB_ON);
-			SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
-			SDL_ShowCursor(0);
-			inputHandler->execute();
-			mouseMotionListener->wasMoved();
+			bumpStartFromIntro();
 		}
 
 		// key hits
 		for(SDLKey key = introKeyListener->popKey(); key != SDLK_UNKNOWN; key = introKeyListener->popKey()) {
 			if(key == SDLK_SPACE) {
-				gameState->bumpStart();
-				gameGraphics->currentCamera = &fortressCamera;
-				currentScheme = SCHEME_PLAYING;
-				needReScheme = true;
-				SDL_WM_GrabInput(SDL_GRAB_ON);
-				SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
-				SDL_ShowCursor(0);
-				inputHandler->execute();
-				mouseMotionListener->wasMoved();
+				bumpStartFromIntro();
 			} else if(key == SDLK_ESCAPE) {
-				gameState->pause();
-
-				mainLoopModules.erase(mainLoopModules.find(drawingMaster));
-
-				currentScheme = SCHEME_PAUSED;
-				activeMenuSelection = &resumeButtonEntry;
-				needReScheme = true;
-				needRedraw = true;
-				SDL_WM_GrabInput(SDL_GRAB_OFF);
-				SDL_ShowCursor(1);
-
-				gameAudio->playSound("backEffect");
+				pauseGame();
 			}
 		}
 
@@ -2630,27 +2937,6 @@ unsigned int GameLogic::execute(bool unScheduled) {
 			SDL_ShowCursor(0);
 		}
 	} else if(currentScheme == SCHEME_PLAYING) {
-		// see if we're dead
-		if(gameState->fortress.health == 0.0f) {
-			gameState->pause();
-
-			mainLoopModules.erase(mainLoopModules.find(drawingMaster));
-
-			playerName = "";
-
-			currentScheme = SCHEME_GAMEOVER;
-			activeMenuSelection = &gameOverContinueButton;
-			inputHandler->keyboard.listenUnicode = true;
-			inputHandler->keyboard.unicodeChars = "";
-
-			needReScheme = true;
-			needRedraw = true;
-			SDL_WM_GrabInput(SDL_GRAB_OFF);
-			SDL_ShowCursor(1);
-
-			gameAudio->setBackgroundMusic("menuSong");
-		}
-
 		// check score
 		if(atoi(((std::string*) scoreLabel.second["text"])->c_str()) != gameState->score)
 			needReScheme = true;
@@ -2716,77 +3002,6 @@ unsigned int GameLogic::execute(bool unScheduled) {
 		// update mouse position for the cursor element if active
 		if(mouseActive)
 			*((Vector2*)cursorEntry.second["position"]) = inputHandler->mouse.position;
-
-		// button clicks
-		if(
-				primaryFireClickListener1->wasClicked() ||
-				primaryFireClickListener2->wasClicked() ||
-				primaryFireClickListener3->wasClicked()
-			) {
-			gameState->fireShell();
-		}
-		if(secondaryFireClickListener->wasClicked()) {
-			gameState->empIsCharging = ! gameState->empIsCharging;
-		}
-
-		if(binocularsClickListener->wasClicked()) {
-			gameState->binoculars = ! gameState->binoculars;
-			needReScheme = true;
-		}
-
-		// key hits
-		KeyListener* activeKeyListener = gameSystem->getBool("developmentMode") ? playingDevelopmentModeKeyListener : playingKeyListener;
-		for(SDLKey key = activeKeyListener->popKey(); key != SDLK_UNKNOWN; key = activeKeyListener->popKey()) {
-			if(key == SDLK_SPACE && gameGraphics->currentCamera == &fortressCamera) {
-				gameState->fireShell();
-			} else if(key == SDLK_TAB) {
-				gameState->empIsCharging = ! gameState->empIsCharging;
-			} else if(key == SDLK_RETURN) {
-				mainLoopModules.erase(mainLoopModules.find(gameState));
-				delete gameState;
-				gameState = new GameState();
-				mainLoopModules[gameState] = 0;
-
-				((DrawRadar*) drawingMaster->drawers["radar"])->reloadState();
-				((ExplosionRenderer*) drawingMaster->drawers["explosionRenderer"])->reloadState();
-				((TerrainRenderer*) drawingMaster->drawers["terrainRenderer"])->reloadState();
-			} else if(key == SDLK_BACKSLASH) {
-				if(gameGraphics->currentCamera == &fortressCamera) {
-					gameGraphics->currentCamera = &orbitCamera;
-					needReScheme = true;
-				} else if(gameGraphics->currentCamera == &orbitCamera) {
-					gameGraphics->currentCamera = &presentationCamera;
-					needReScheme = true;
-				} else if(gameGraphics->currentCamera == &presentationCamera) {
-					gameGraphics->currentCamera = &roamingCamera;
-					needReScheme = true;
-				} else if(gameGraphics->currentCamera == &roamingCamera) {
-					gameGraphics->currentCamera = &fortressCamera;
-					needReScheme = true;
-				}
-			} else if(key == SDLK_ESCAPE) {
-				gameState->pause();
-
-				mainLoopModules.erase(mainLoopModules.find(drawingMaster));
-
-				currentScheme = SCHEME_PAUSED;
-				activeMenuSelection = &resumeButtonEntry;
-				needReScheme = true;
-				needRedraw = true;
-				SDL_WM_GrabInput(SDL_GRAB_OFF);
-				SDL_ShowCursor(1);
-
-				gameAudio->playSound("backEffect");
-			} else if(key == SDLK_BACKQUOTE) {
-				if(gameState->isPaused)
-					gameState->resume();
-				else
-					gameState->pause();
-			} else if((key == SDLK_LSHIFT || key == SDLK_RSHIFT) && gameGraphics->currentCamera == &fortressCamera) {
-				gameState->binoculars = ! gameState->binoculars;
-				needReScheme = true;
-			}
-		}
 
 		// arrow key dampening; this will actually put the time behind by one frame
 		if(! turretLeftKeyListener->isDown) leftArrowPressTime = gameState->lastUpdateGameTime;
@@ -2862,6 +3077,87 @@ unsigned int GameLogic::execute(bool unScheduled) {
 				mouseActive = false;
 			}
 		}
+
+		// see if we're dead
+		if(gameState->fortress.health == 0.0f) {
+			gameState->pause();
+
+			mainLoopModules.erase(mainLoopModules.find(drawingMaster));
+
+			playerName = "";
+
+			currentScheme = SCHEME_GAMEOVER;
+			activeMenuSelection = &gameOverContinueButton;
+			inputHandler->keyboard.listenUnicode = true;
+			inputHandler->keyboard.unicodeChars = "";
+
+			needReScheme = true;
+			needRedraw = true;
+			SDL_WM_GrabInput(SDL_GRAB_OFF);
+			SDL_ShowCursor(1);
+
+			gameAudio->setBackgroundMusic("menuSong");
+		}
+
+		// button clicks
+		if(
+				primaryFireClickListener1->wasClicked() ||
+				primaryFireClickListener2->wasClicked() ||
+				primaryFireClickListener3->wasClicked()
+			) {
+			gameState->fireShell();
+		}
+		if(secondaryFireClickListener->wasClicked()) {
+			gameState->empIsCharging = ! gameState->empIsCharging;
+		}
+
+		if(binocularsClickListener->wasClicked()) {
+			gameState->binoculars = ! gameState->binoculars;
+			needReScheme = true;
+		}
+
+		// key hits
+		KeyListener* activeKeyListener = gameSystem->getBool("developmentMode") ? playingDevelopmentModeKeyListener : playingKeyListener;
+		for(SDLKey key = activeKeyListener->popKey(); key != SDLK_UNKNOWN; key = activeKeyListener->popKey()) {
+			if(key == SDLK_SPACE && gameGraphics->currentCamera == &fortressCamera) {
+				gameState->fireShell();
+			} else if(key == SDLK_TAB) {
+				gameState->empIsCharging = ! gameState->empIsCharging;
+			} else if(key == SDLK_RETURN) {
+				mainLoopModules.erase(mainLoopModules.find(gameState));
+				delete gameState;
+				gameState = new GameState();
+				mainLoopModules[gameState] = 0;
+
+				((DrawRadar*) drawingMaster->drawers["radar"])->reloadState();
+				((ExplosionRenderer*) drawingMaster->drawers["explosionRenderer"])->reloadState();
+				((TerrainRenderer*) drawingMaster->drawers["terrainRenderer"])->reloadState();
+			} else if(key == SDLK_BACKSLASH) {
+				if(gameGraphics->currentCamera == &fortressCamera) {
+					gameGraphics->currentCamera = &orbitCamera;
+					needReScheme = true;
+				} else if(gameGraphics->currentCamera == &orbitCamera) {
+					gameGraphics->currentCamera = &presentationCamera;
+					needReScheme = true;
+				} else if(gameGraphics->currentCamera == &presentationCamera) {
+					gameGraphics->currentCamera = &roamingCamera;
+					needReScheme = true;
+				} else if(gameGraphics->currentCamera == &roamingCamera) {
+					gameGraphics->currentCamera = &fortressCamera;
+					needReScheme = true;
+				}
+			} else if(key == SDLK_ESCAPE) {
+				pauseGame();
+			} else if(key == SDLK_BACKQUOTE) {
+				if(gameState->isPaused)
+					gameState->resume();
+				else
+					gameState->pause();
+			} else if((key == SDLK_LSHIFT || key == SDLK_RSHIFT) && gameGraphics->currentCamera == &fortressCamera) {
+				gameState->binoculars = ! gameState->binoculars;
+				needReScheme = true;
+			}
+		}
 	} else if(currentScheme == SCHEME_PAUSED) {
 		// button highlight
 		if(mouseMotionListener->wasMoved()) {
@@ -2888,40 +3184,9 @@ unsigned int GameLogic::execute(bool unScheduled) {
 
 		// button clicks
 		if(resumeButtonClickListener->wasClicked()) {
-			if(gameGraphics->currentCamera == &introCamera) {
-				currentScheme = SCHEME_INTRO;
-			} else {
-				currentScheme = SCHEME_PLAYING;
-				SDL_WM_GrabInput(SDL_GRAB_ON);
-				SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
-				SDL_ShowCursor(0);
-
-				inputHandler->execute();
-				mouseMotionListener->wasMoved();
-			}
-
-			activeMenuSelection = NULL;
-			needReScheme = true;
-
-			mainLoopModules[drawingMaster] = 0;
-
-			gameState->resume();
-
-			gameAudio->playSound("selectEffect");
+			resumeGame();
 		} else if(endGameButtonClickListener->wasClicked()) {
-				inputHandler->keyboard.listenUnicode = true;
-				inputHandler->keyboard.unicodeChars = "";
-
-				playerName = "";
-
-				currentScheme = SCHEME_GAMEOVER;
-				activeMenuSelection = &gameOverContinueButton;
-				needReScheme = true;
-				needRedraw = true;
-
-				gameAudio->playSound("selectEffect");
-
-				gameAudio->setBackgroundMusic("menuSong");
+			endGameFromPause();
 		}
 
 		// key hits
@@ -2952,43 +3217,9 @@ unsigned int GameLogic::execute(bool unScheduled) {
 				}
 			} else if(key == SDLK_RETURN || key == SDLK_ESCAPE) {
 				if(activeMenuSelection == &resumeButtonEntry || key == SDLK_ESCAPE) {
-					if(gameGraphics->currentCamera == &introCamera) {
-						currentScheme = SCHEME_INTRO;
-					} else {
-						currentScheme = SCHEME_PLAYING;
-						SDL_WM_GrabInput(SDL_GRAB_ON);
-						SDL_WarpMouse(gameGraphics->resolutionX / 2, gameGraphics->resolutionY / 2);
-						SDL_ShowCursor(0);
-
-						inputHandler->execute();
-						mouseMotionListener->wasMoved();
-					}
-
-					activeMenuSelection = NULL;
-					needReScheme = true;
-
-					mainLoopModules[drawingMaster] = 0;
-
-					gameState->resume();
-
-					if(key == SDLK_RETURN)
-						gameAudio->playSound("selectEffect");
-					else
-						gameAudio->playSound("backEffect");
+					resumeGame();
 				} else if(activeMenuSelection == &endGameButtonEntry) {
-					inputHandler->keyboard.listenUnicode = true;
-					inputHandler->keyboard.unicodeChars = "";
-
-					playerName = "";
-
-					currentScheme = SCHEME_GAMEOVER;
-					activeMenuSelection = &gameOverContinueButton;
-					needReScheme = true;
-					needRedraw = true;
-
-					gameAudio->playSound("selectEffect");
-
-					gameAudio->setBackgroundMusic("menuSong");
+					endGameFromPause();
 				}
 			}
 		}
@@ -3057,33 +3288,7 @@ unsigned int GameLogic::execute(bool unScheduled) {
 
 		// button clicks
 		if(gameOverContinueButtonClickListener->wasClicked()) {
-			if(gameState->score > 0 && (gameSystem->highScores.size() == 0 || gameState->score > gameSystem->highScores.back().first)) {
-				if(playerName != "") {
-					size_t position = 0;
-					while(position < gameSystem->highScores.size() && gameSystem->highScores[position].first >= gameState->score)
-						++position;
-
-					if(position == gameSystem->highScores.size())
-						gameSystem->highScores.push_back(std::make_pair(gameState->score, playerName));
-					else
-						gameSystem->highScores.insert(gameSystem->highScores.begin() + position, std::make_pair(gameState->score, playerName));
-					while(gameSystem->highScores.size() > (size_t) gameSystem->getFloat("gameMaximumHighScores"))
-						gameSystem->highScores.erase(gameSystem->highScores.end());
-
-					gameSystem->flushPreferences();
-				}
-			}
-
-			mainLoopModules.erase(mainLoopModules.find(gameState));
-			delete gameState;
-			gameState = NULL;
-
-			currentScheme = SCHEME_MAINMENU;
-			activeMenuSelection = &playButtonEntry;
-			needReScheme = true;
-			needRedraw = true;
-
-			gameAudio->playSound("selectEffect");
+			continueFromGameOver();
 		}
 
 		// key hits
@@ -3099,35 +3304,7 @@ unsigned int GameLogic::execute(bool unScheduled) {
 						gameAudio->playSound("alterDownEffect");
 				}
 			} else if(key == SDLK_RETURN) {
-				if(activeMenuSelection == &gameOverContinueButton) {
-					if(gameState->score > 0 && (gameSystem->highScores.size() == 0 || gameState->score > gameSystem->highScores.back().first)) {
-						if(playerName != "") {
-							size_t position = 0;
-							while(position < gameSystem->highScores.size() && gameSystem->highScores[position].first >= gameState->score)
-								++position;
-
-							if(position == gameSystem->highScores.size())
-								gameSystem->highScores.push_back(std::make_pair(gameState->score, playerName));
-							else
-								gameSystem->highScores.insert(gameSystem->highScores.begin() + position, std::make_pair(gameState->score, playerName));
-							while(gameSystem->highScores.size() > (size_t) gameSystem->getFloat("gameMaximumHighScores"))
-								gameSystem->highScores.erase(gameSystem->highScores.end());
-
-							gameSystem->flushPreferences();
-						}
-					}
-
-					mainLoopModules.erase(mainLoopModules.find(gameState));
-					delete gameState;
-					gameState = NULL;
-
-					currentScheme = SCHEME_MAINMENU;
-					activeMenuSelection = &playButtonEntry;
-					needReScheme = true;
-					needRedraw = true;
-
-					gameAudio->playSound("selectEffect");
-				}
+				continueFromGameOver();
 			} else if(key == SDLK_ESCAPE) {
 				mainLoopModules.erase(mainLoopModules.find(gameState));
 				delete gameState;
@@ -3230,166 +3407,23 @@ unsigned int GameLogic::execute(bool unScheduled) {
 
 		// button clicks
 		if(levelButtonClickListener->wasClicked()) {
-			if(gameSystem->getString("gameStartingLevel") == "Easy") {
-				gameSystem->setStandard("gameStartingLevel", "Medium", "");
-			} else if(gameSystem->getString("gameStartingLevel") == "Medium") {
-				gameSystem->setStandard("gameStartingLevel", "Hard", "");
-			} else if(gameSystem->getString("gameStartingLevel") == "Hard") {
-				gameSystem->setStandard("gameStartingLevel", "Easy", "");
-			}
-			gameSystem->flushPreferences();
-
-			needReScheme = true;
-			needRedraw = true;
-
-			gameAudio->playSound("alterDownEffect");
+			alterGameLevel();
 		} else if(musicButtonClickListener->wasClicked()) {
-			float value = gameSystem->getFloat("audioMusicVolume");
-			value += 0.1f;
-			if(value > 1.0f) value = 0.0f;
-			SDL_LockAudio();
-			gameSystem->setStandard("audioMusicVolume", value, "");
-			SDL_UnlockAudio();
-
-			gameSystem->flushPreferences();
-
-			needReScheme = true;
-			needRedraw = true;
-
-			gameAudio->playSound("alterDownEffect");
+			alterMusicLevel();
 		} else if(audioEffectsButtonClickListener->wasClicked()) {
-			float value = gameSystem->getFloat("audioEffectsVolume");
-			value += 0.1f;
-			if(value > 1.0f) value = 0.0f;
-			gameSystem->setStandard("audioEffectsVolume", value, "");
-			gameSystem->flushPreferences();
-
-			needReScheme = true;
-			needRedraw = true;
-
-			gameAudio->playSound("alterDownEffect");
+			alterAudioEffectsLevel();
 		} else if(fullscreenButtonClickListener->wasClicked()) {
-			gameSystem->setStandard("displayStartFullscreen", ! gameSystem->getBool("displayStartFullscreen"));
-			gameSystem->flushPreferences();
-
-			needReScheme = true;
-			needRedraw = true;
-
-			gameAudio->playSound("alterDownEffect");
+			alterFullscreenSetting();
 		} else if(windowedScreenResolutionButtonClickListener->wasClicked()) {
-			std::vector< std::pair<unsigned int, unsigned int> > allowedResolutions = gameSystem->getAllowedWindowResolutions();
-
-			size_t i = 0;
-			while(i < allowedResolutions.size()) {
-				std::stringstream resolutionText;
-				resolutionText << allowedResolutions[i].first << "x" << allowedResolutions[i].second;
-
-				if(resolutionText.str() == gameSystem->getString("displayWindowedResolution"))
-					break;
-
-				++i;
-			}
-
-			++i;
-			if(i >= allowedResolutions.size())
-				i = 0;
-
-			std::stringstream resolutionText;
-			resolutionText << allowedResolutions[i].first << "x" << allowedResolutions[i].second;
-
-			// only update it if more than one resolution is allowed
-			if(resolutionText.str() != gameSystem->getString("displayWindowedResolution")) {
-				gameSystem->setStandard("displayWindowedResolution", resolutionText.str().c_str());
-				gameSystem->flushPreferences();
-
-				if(! gameGraphics->fullScreen) {
-					// recreate the window
-					delete gameGraphics;
-
-					gameGraphics = new GameGraphics(false);
-
-					drawingMaster->newGraphics();
-
-					inputHandler->execute();
-					mouseMotionListener->wasMoved();
-				}
-
-				needReScheme = true;
-				needRedraw = true;
-			}
-
-			gameAudio->playSound("alterDownEffect");
+			alterWindowedResolution();
 		} else if(framerateLimitingButtonClickListener->wasClicked()) {
-			if((int) gameSystem->getFloat("displayFramerateLimiting") == GameSystem::LIMIT_VSYNC) {
-				gameSystem->setStandard("displayFramerateLimiting", (float) GameSystem::LIMIT_30);
-			} else if((int) gameSystem->getFloat("displayFramerateLimiting") == GameSystem::LIMIT_30) {
-				gameSystem->setStandard("displayFramerateLimiting", (float) GameSystem::LIMIT_60);
-			} else if((int) gameSystem->getFloat("displayFramerateLimiting") == GameSystem::LIMIT_60) {
-				gameSystem->setStandard("displayFramerateLimiting", (float) GameSystem::LIMIT_120);
-			} else if((int) gameSystem->getFloat("displayFramerateLimiting") == GameSystem::LIMIT_120) {
-				gameSystem->setStandard("displayFramerateLimiting", (float) GameSystem::LIMIT_OFF);
-			} else {
-				gameSystem->setStandard("displayFramerateLimiting", (float) GameSystem::LIMIT_VSYNC);
-			}
-
-			gameSystem->flushPreferences();
-
-			bool fullScreen = gameGraphics->fullScreen;
-			delete gameGraphics;
-			gameGraphics = new GameGraphics(fullScreen);
-			drawingMaster->newGraphics();
-			inputHandler->execute();
-			mouseMotionListener->wasMoved();
-
-			needReScheme = true;
-			needRedraw = true;
-
-			gameAudio->playSound("alterDownEffect");
+			alterFramerateLimiting();
 		} else if(multisamplingButtonClickListener->wasClicked()) {
-			if(gameSystem->getFloat("displayMultisamplingLevel") == 0.0f) {
-				gameSystem->setStandard("displayMultisamplingLevel", 2.0f);
-			} else if(gameSystem->getFloat("displayMultisamplingLevel") == 2.0f) {
-				gameSystem->setStandard("displayMultisamplingLevel", 4.0f);
-			} else {
-				gameSystem->setStandard("displayMultisamplingLevel", 0.0f);
-			}
-
-			gameSystem->flushPreferences();
-
-			bool fullScreen = gameGraphics->fullScreen;
-			delete gameGraphics;
-			gameGraphics = new GameGraphics(fullScreen);
-			drawingMaster->newGraphics();
-			inputHandler->execute();
-			mouseMotionListener->wasMoved();
-
-			needReScheme = true;
-			needRedraw = true;
-
-			gameAudio->playSound("alterDownEffect");
+			alterMultiSamplingLevel();
 		} else if(terrainDetailButtonClickListener->wasClicked()) {
-			if(gameSystem->getFloat("islandTerrainDetail") == 1.0f) {
-				gameSystem->setStandard("islandTerrainDetail", 2.0f);
-			} else if(gameSystem->getFloat("islandTerrainDetail") == 2.0f) {
-				gameSystem->setStandard("islandTerrainDetail", 3.0f);
-			} else {
-				gameSystem->setStandard("islandTerrainDetail", 1.0f);
-			}
-
-			gameSystem->flushPreferences();
-
-			needReScheme = true;
-			needRedraw = true;
-
-			gameAudio->playSound("selectEffect");
+			alterTerrainDetail();
 		} else if(developmentModeButtonClickListener->wasClicked()) {
-			gameSystem->setStandard("developmentMode", ! gameSystem->getBool("developmentMode"));
-			gameSystem->flushPreferences();
-
-			needReScheme = true;
-			needRedraw = true;
-
-			gameAudio->playSound("alterDownEffect");
+			alterDevelopmentMode();
 		} else if(backButtonClickListener->wasClicked()) {
 			currentScheme = SCHEME_MAINMENU;
 			activeMenuSelection = NULL;
@@ -3398,10 +3432,7 @@ unsigned int GameLogic::execute(bool unScheduled) {
 
 			gameAudio->playSound("selectEffect");
 		} else if(resetHighScoresButtonClickListener->wasClicked()) {
-			gameSystem->highScores.clear();
-			gameSystem->flushPreferences();
-
-			gameAudio->playSound("selectEffect");
+			resetHighScores();
 		}
 
 		// key hits
@@ -3528,239 +3559,27 @@ unsigned int GameLogic::execute(bool unScheduled) {
 				}
 			} else if(key == SDLK_LEFT || key == SDLK_RIGHT) {
 				if(activeMenuSelection == &levelSettingEntry) {
-					if(gameSystem->getString("gameStartingLevel") == "Easy") {
-						gameSystem->setStandard("gameStartingLevel", (key == SDLK_RIGHT ? "Medium" : "Hard"), "");
-					} else if(gameSystem->getString("gameStartingLevel") == "Medium") {
-						gameSystem->setStandard("gameStartingLevel", (key == SDLK_RIGHT ? "Hard" : "Easy"), "");
-					} else if(gameSystem->getString("gameStartingLevel") == "Hard") {
-						gameSystem->setStandard("gameStartingLevel", (key == SDLK_RIGHT ? "Easy" : "Medium"), "");
-					}
-					gameSystem->flushPreferences();
-
-					needReScheme = true;
-					needRedraw = true;
-
-					if(key == SDLK_RIGHT)
-						gameAudio->playSound("alterUpEffect");
-					else
-						gameAudio->playSound("alterDownEffect");
+					alterGameLevel(key == SDLK_RIGHT ? true : false);
 				} else if(activeMenuSelection == &musicSettingEntry) {
-					float value = gameSystem->getFloat("audioMusicVolume");
-					value += (key == SDLK_RIGHT ? 0.1f : -0.1f);
-					if(value > 1.0f) value = 0.0f;
-					if(value < 0.0f) value = 1.0f;
-					SDL_LockAudio();
-					gameSystem->setStandard("audioMusicVolume", value, "");
-					SDL_UnlockAudio();
-					gameSystem->flushPreferences();
-
-					needReScheme = true;
-					needRedraw = true;
-
-					if(key == SDLK_RIGHT)
-						gameAudio->playSound("alterUpEffect");
-					else
-						gameAudio->playSound("alterDownEffect");
+					alterMusicLevel(key == SDLK_RIGHT ? true : false);
 				} else if(activeMenuSelection == &audioEffectsSettingEntry) {
-					float value = gameSystem->getFloat("audioEffectsVolume");
-					value += (key == SDLK_RIGHT ? 0.1f : -0.1f);
-					if(value > 1.0f) value = 0.0f;
-					if(value < 0.0f) value = 1.0f;
-					gameSystem->setStandard("audioEffectsVolume", value, "");
-					gameSystem->flushPreferences();
-
-					needReScheme = true;
-					needRedraw = true;
-
-					if(key == SDLK_RIGHT)
-						gameAudio->playSound("alterUpEffect");
-					else
-						gameAudio->playSound("alterDownEffect");
+					alterAudioEffectsLevel(key == SDLK_RIGHT ? true : false);
 				} else if(activeMenuSelection == &fullscreenSettingEntry) {
-					gameSystem->setStandard("displayStartFullscreen", ! gameSystem->getBool("displayStartFullscreen"));
-					gameSystem->flushPreferences();
-
-					needReScheme = true;
-					needRedraw = true;
-
-					if(key == SDLK_RIGHT)
-						gameAudio->playSound("alterUpEffect");
-					else
-						gameAudio->playSound("alterDownEffect");
+					alterFullscreenSetting(key == SDLK_RIGHT ? true : false);
 				} else if(activeMenuSelection == &windowedScreenResolutionEntry) {
-					std::vector< std::pair<unsigned int, unsigned int> > allowedResolutions = gameSystem->getAllowedWindowResolutions();
-
-					size_t i = 0;
-					while(i < allowedResolutions.size()) {
-						std::stringstream resolutionText;
-						resolutionText << allowedResolutions[i].first << "x" << allowedResolutions[i].second;
-
-						if(resolutionText.str() == gameSystem->getString("displayWindowedResolution"))
-							break;
-
-						++i;
-					}
-
-					if(key == SDLK_RIGHT) {
-						++i;
-						if(i >= allowedResolutions.size())
-							i = 0;
-					} else {
-						if(i == 0)
-							i = allowedResolutions.size() - 1;
-						else
-							--i;
-					}
-					std::stringstream resolutionText;
-					resolutionText << allowedResolutions[i].first << "x" << allowedResolutions[i].second;
-
-					// only update it if more than one resolution is allowed
-					if(resolutionText.str() != gameSystem->getString("displayWindowedResolution")) {
-						gameSystem->setStandard("displayWindowedResolution", resolutionText.str().c_str());
-						gameSystem->flushPreferences();
-
-						if(! gameGraphics->fullScreen) {
-							// recreate the window
-							delete gameGraphics;
-
-							gameGraphics = new GameGraphics(false);
-
-							drawingMaster->newGraphics();
-
-							inputHandler->execute();
-							mouseMotionListener->wasMoved();
-						}
-
-						needReScheme = true;
-						needRedraw = true;
-					}
-
-					if(key == SDLK_RIGHT)
-						gameAudio->playSound("alterUpEffect");
-					else
-						gameAudio->playSound("alterDownEffect");
+					alterWindowedResolution(key == SDLK_RIGHT ? true : false);
 				} else if(activeMenuSelection == &framerateLimitingEntry) {
-					if((int) gameSystem->getFloat("displayFramerateLimiting") == GameSystem::LIMIT_VSYNC) {
-						if(key == SDLK_LEFT)
-							gameSystem->setStandard("displayFramerateLimiting", (float) GameSystem::LIMIT_OFF);
-						else
-							gameSystem->setStandard("displayFramerateLimiting", (float) GameSystem::LIMIT_30);
-					} else if((int) gameSystem->getFloat("displayFramerateLimiting") == GameSystem::LIMIT_30) {
-						if(key == SDLK_LEFT)
-							gameSystem->setStandard("displayFramerateLimiting", (float) GameSystem::LIMIT_VSYNC);
-						else
-							gameSystem->setStandard("displayFramerateLimiting", (float) GameSystem::LIMIT_60);
-					} else if((int) gameSystem->getFloat("displayFramerateLimiting") == GameSystem::LIMIT_60) {
-						if(key == SDLK_LEFT)
-							gameSystem->setStandard("displayFramerateLimiting", (float) GameSystem::LIMIT_30);
-						else
-							gameSystem->setStandard("displayFramerateLimiting", (float) GameSystem::LIMIT_120);
-					} else if((int) gameSystem->getFloat("displayFramerateLimiting") == GameSystem::LIMIT_120) {
-						if(key == SDLK_LEFT)
-							gameSystem->setStandard("displayFramerateLimiting", (float) GameSystem::LIMIT_60);
-						else
-							gameSystem->setStandard("displayFramerateLimiting", (float) GameSystem::LIMIT_OFF);
-					} else {
-						if(key == SDLK_LEFT)
-							gameSystem->setStandard("displayFramerateLimiting", (float) GameSystem::LIMIT_120);
-						else
-							gameSystem->setStandard("displayFramerateLimiting", (float) GameSystem::LIMIT_VSYNC);
-					}
-
-					gameSystem->flushPreferences();
-
-					bool fullScreen = gameGraphics->fullScreen;
-					delete gameGraphics;
-					gameGraphics = new GameGraphics(fullScreen);
-					drawingMaster->newGraphics();
-					inputHandler->execute();
-					mouseMotionListener->wasMoved();
-
-					needReScheme = true;
-					needRedraw = true;
-
-					if(key == SDLK_RIGHT)
-						gameAudio->playSound("alterUpEffect");
-					else
-						gameAudio->playSound("alterDownEffect");
+					alterFramerateLimiting(key == SDLK_RIGHT ? true : false);
 				} else if(activeMenuSelection == &multisamplingLevelEntry) {
-					if(gameSystem->getFloat("displayMultisamplingLevel") == 0.0f) {
-						if(key == SDLK_LEFT)
-							gameSystem->setStandard("displayMultisamplingLevel", 4.0f);
-						else
-							gameSystem->setStandard("displayMultisamplingLevel", 2.0f);
-					} else if(gameSystem->getFloat("displayMultisamplingLevel") == 2.0f) {
-						if(key == SDLK_LEFT)
-							gameSystem->setStandard("displayMultisamplingLevel", 0.0f);
-						else
-							gameSystem->setStandard("displayMultisamplingLevel", 4.0f);
-					} else {
-						if(key == SDLK_LEFT)
-							gameSystem->setStandard("displayMultisamplingLevel", 2.0f);
-						else
-							gameSystem->setStandard("displayMultisamplingLevel", 0.0f);
-					}
-
-					gameSystem->flushPreferences();
-
-					bool fullScreen = gameGraphics->fullScreen;
-					delete gameGraphics;
-					gameGraphics = new GameGraphics(fullScreen);
-					drawingMaster->newGraphics();
-					inputHandler->execute();
-					mouseMotionListener->wasMoved();
-
-					needReScheme = true;
-					needRedraw = true;
-
-					if(key == SDLK_RIGHT)
-						gameAudio->playSound("alterUpEffect");
-					else
-						gameAudio->playSound("alterDownEffect");
+					alterMultiSamplingLevel(key == SDLK_RIGHT ? true : false);
 				} else if(activeMenuSelection == &terrainDetailEntry) {
-					if(gameSystem->getFloat("islandTerrainDetail") == 1.0f) {
-						if(key == SDLK_LEFT)
-							gameSystem->setStandard("islandTerrainDetail", 3.0f);
-						else
-							gameSystem->setStandard("islandTerrainDetail", 2.0f);
-					} else if(gameSystem->getFloat("islandTerrainDetail") == 2.0f) {
-						if(key == SDLK_LEFT)
-							gameSystem->setStandard("islandTerrainDetail", 1.0f);
-						else
-							gameSystem->setStandard("islandTerrainDetail", 3.0f);
-					} else {
-						if(key == SDLK_LEFT)
-							gameSystem->setStandard("islandTerrainDetail", 2.0f);
-						else
-							gameSystem->setStandard("islandTerrainDetail", 1.0f);
-					}
-
-					gameSystem->flushPreferences();
-
-					needReScheme = true;
-					needRedraw = true;
-
-					if(key == SDLK_RIGHT)
-						gameAudio->playSound("alterUpEffect");
-					else
-						gameAudio->playSound("alterDownEffect");
+					alterTerrainDetail(key == SDLK_RIGHT ? true : false);
 				} else if(activeMenuSelection == &developmentModeEntry) {
-					gameSystem->setStandard("developmentMode", ! gameSystem->getBool("developmentMode"), "");
-					gameSystem->flushPreferences();
-
-					needReScheme = true;
-					needRedraw = true;
-
-					if(key == SDLK_RIGHT)
-						gameAudio->playSound("alterUpEffect");
-					else
-						gameAudio->playSound("alterDownEffect");
+					alterDevelopmentMode(key == SDLK_RIGHT ? true : false);
 				}
 			} else if(key == SDLK_RETURN) {
 				if(activeMenuSelection == &resetHighScoresEntry) {
-					gameSystem->highScores.clear();
-					gameSystem->flushPreferences();
-					gameAudio->playSound("selectEffect");
+					resetHighScores();
 				} else if(activeMenuSelection == &backButtonEntry) {
 					currentScheme = SCHEME_MAINMENU;
 					activeMenuSelection = &playButtonEntry;
@@ -3957,7 +3776,7 @@ unsigned int GameLogic::execute(bool unScheduled) {
 		}
 	}
 
-	// rescheme once per execution if we need to
+	// rescheme once per execution if we need to (helper functions don't participate in this)
 	if(needReScheme)
 		reScheme();
 

@@ -33,6 +33,24 @@ private:
 
 	void reScheme();
 
+	// logic helper functions resulting from clicks or enter key
+	void startNewGame();
+	void bumpStartFromIntro();
+	void pauseGame();
+	void resumeGame();
+	void endGameFromPause();
+	void continueFromGameOver();
+	void alterGameLevel(bool increase = true);
+	void alterMusicLevel(bool increase = true);
+	void alterAudioEffectsLevel(bool increase = true);
+	void alterFullscreenSetting(bool increase = true);
+	void alterWindowedResolution(bool increase = true);
+	void alterFramerateLimiting(bool increase = true);
+	void alterMultiSamplingLevel(bool increase = true);
+	void alterTerrainDetail(bool increase = true);
+	void alterDevelopmentMode(bool increase = true);
+	void resetHighScores();
+
 public:
 	// main menu
 	KeyListener* quitKeyListener;
