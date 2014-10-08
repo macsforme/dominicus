@@ -4,6 +4,7 @@
 #ifndef GAMELOGIC_H
 #define GAMELOGIC_H
 
+#include <cstdlib>
 #include <string>
 #include <vector>
 
@@ -50,6 +51,8 @@ private:
 	void alterTerrainDetail(bool increase = true);
 	void alterDevelopmentMode(bool increase = true);
 	void resetHighScores();
+
+	void playEffectAtDistance(std::string effect, float distance);
 
 public:
 	// main menu
@@ -211,6 +214,9 @@ public:
 	OrbitCamera orbitCamera;
 	PresentationCamera presentationCamera;
 	RoamingCamera roamingCamera;
+
+	// missile cache for audio effects
+	std::vector<size_t> missileCache;
 
 	// general logic info
 	bool mouseActive;

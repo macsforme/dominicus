@@ -5,7 +5,6 @@
 
 #include <cmath>
 #include <cstdio>
-#include <cstdlib>
 #include <map>
 #include <SDL.h>
 #include <sstream>
@@ -1872,6 +1871,18 @@ void GameLogic::resetHighScores() {
 	gameAudio->playSound("selectEffect");
 }
 
+void GameLogic::playEffectAtDistance(std::string effect, float distance) {
+	float maxDistance = gameSystem->getFloat("audioVolumeDropOffDistance");
+
+	if(distance > maxDistance)
+		return;
+
+	gameAudio->playSound(
+			effect,
+			(maxDistance - distance) / maxDistance
+		);
+}
+
 GameLogic::GameLogic() :
 		MainLoopMember((unsigned int) gameSystem->getFloat("logicUpdateFrequency")),
 		currentScheme(SCHEME_MAINMENU),
@@ -3078,6 +3089,39 @@ unsigned int GameLogic::execute(bool unScheduled) {
 			}
 		}
 
+		// update missile cache and play effects if necessary
+		for(size_t i = 0; i < gameState->missiles.size(); ++i) {
+			if(! gameState->missiles[i].alive)
+				continue;
+
+			bool isInCache = false;
+
+			for(size_t p = 0; p < missileCache.size(); ++p) {
+				if(p == i) {
+					isInCache = true;
+
+					break;
+				}
+			}
+
+			if(! isInCache) {
+				missileCache.push_back(i);
+
+				playEffectAtDistance("missileEffect", distance(gameState->fortress.position, gameState->missiles[i].position));
+			}
+		}
+
+		size_t i = 0;
+		while(i < missileCache.size()) {
+			if(! gameState->missiles[missileCache[i]].alive) {
+				playEffectAtDistance("explosionEffect", distance(gameState->fortress.position, gameState->missiles[missileCache[i]].position));
+
+				missileCache.erase(missileCache.begin() + i);
+			} else {
+				++i;
+			}
+		}
+
 		// see if we're dead
 		if(gameState->fortress.health == 0.0f) {
 			gameState->pause();
@@ -3106,9 +3150,13 @@ unsigned int GameLogic::execute(bool unScheduled) {
 				primaryFireClickListener3->wasClicked()
 			) {
 			gameState->fireShell();
+			gameAudio->playSound("shellEffect");
 		}
 		if(secondaryFireClickListener->wasClicked()) {
 			gameState->empIsCharging = ! gameState->empIsCharging;
+
+			if(! gameState->empIsCharging && gameState->fortress.emp == 1.0f)
+				gameAudio->playSound("empEffect");
 		}
 
 		if(binocularsClickListener->wasClicked()) {
@@ -3121,8 +3169,12 @@ unsigned int GameLogic::execute(bool unScheduled) {
 		for(SDLKey key = activeKeyListener->popKey(); key != SDLK_UNKNOWN; key = activeKeyListener->popKey()) {
 			if(key == SDLK_SPACE && gameGraphics->currentCamera == &fortressCamera) {
 				gameState->fireShell();
+				gameAudio->playSound("shellEffect");
 			} else if(key == SDLK_TAB) {
 				gameState->empIsCharging = ! gameState->empIsCharging;
+
+				if(! gameState->empIsCharging && gameState->fortress.emp == 1.0f)
+					gameAudio->playSound("empEffect");
 			} else if(key == SDLK_RETURN) {
 				mainLoopModules.erase(mainLoopModules.find(gameState));
 				delete gameState;

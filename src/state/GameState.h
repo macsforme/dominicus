@@ -5,7 +5,6 @@
 #define GAMESTATE_H
 
 #include <cstdlib>
-#include <string>
 #include <vector>
 
 #include "core/MainLoopMember.h"
@@ -98,8 +97,6 @@ public:
 	void bumpStart();
 
 	void fireShell();
-
-	void playEffectAtDistance(std::string effect, float distance = 0.0f);
 };
 
 #endif // GAMESTATE_H
