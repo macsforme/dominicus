@@ -379,7 +379,7 @@ void DrawLabel::execute(DrawStackArgList argList) {
 		vertexBufferArray[i * 9 + 3] = quadVertices[i].texCoord.x;
 		vertexBufferArray[i * 9 + 4] = quadVertices[i].texCoord.y;
 
-		if(quadVertices[i].color == Vector4(0.0f, 0.0f, 0.0f, 0.0f)) { // FIXME this can be a legitimate color...
+		if(quadVertices[i].color == Vector4(0.0f, 0.0f, 0.0f, 0.0f)) { // this could be a legitimate color, so... uh... oh well
 			vertexBufferArray[i * 9 + 5] = fontColor->x;
 			vertexBufferArray[i * 9 + 6] = fontColor->y;
 			vertexBufferArray[i * 9 + 7] = fontColor->z;
