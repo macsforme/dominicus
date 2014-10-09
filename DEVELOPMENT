@@ -1,0 +1,60 @@
+This file details some important information relevant to developers of this project. If you contribute to this project (even if you plan to submit a patch), please familiarize yourself with this information.
+
+
+///////////////////////////// CODING CONVENTIONS //////////////////////////////
+
+This project contains a validation script to check for certain conditions which may be incorrect. This includes checking for things like improper whitespace, malformed header inclusion, file layout deviations, etc. Due to rudimentary parsing, the script will issue false positives, so check the errors carefully. This script may be run from the root source directory as follows:
+
+$ php tools/codecheck.php
+
+
+/////////////////////////////// VERSION NUMBERS ///////////////////////////////
+
+Version numbers for this software consist of a single incrementing integer, plus a suffix indicating that version's status as follows:
+
+* d   Development (pre-alpha unstable code)
+* a#  Alpha (unstable public releases)
+* b#  Beta (unstable public releases)
+* s   Stable (stable public releases)
+
+The source code version progression may therefore go something like this:
+
+* 1d
+* 1a1
+* 1a2
+* 1b1
+* 1b2
+* 1s
+* 2d
+* 2a1
+* 2b1
+* 2s
+
+There are no major versus minor releases; all releases increment the release version by one. This version scheme satisfies this project's needs for the time being. Stable releases implementing significant new features may be preceded by alpha and beta releases as needed. Stable releases involving bug fixes or other small changes shall immediately proceed from development to stable status.
+
+Alpha releases shall be considered when the project meets the following general criteria:
+
+* The majority of essential features have been completed
+* Limited developer testing of the software has begun
+* The software is ready be delivered to a limited number of volunteer testers
+* The software may be unstable, have glitches, and crash
+
+Beta releases shall be considered when the project meets the following general criteria:
+
+* A feature freeze has been implemented (with very few exceptions)
+* The software is ready for demonstration and public usability testing
+* The software is ready for extensive functionality testing, static and dynamic code analysis, and performance optimizations
+* Some undiscovered issues and bugs may remain
+
+
+///////////////////////////// RELEASE PROCEDURES //////////////////////////////
+
+To prepare for a release, run the script in the tools/ directory which automates version number changes in the source code and IDE project files:
+
+$ php tools/updateversion.php <version>
+
+The script will report whether this was successful, and suggest commands to issue to git to commit and tag the changes. These commands should be executed exactly as given for consistency in wording for commits and consistent tag names. Once these commands are issued, the repository is ready to be pushed to GitHub.
+
+To create the Mac OS X binary, after running the above script, enter the Xcode project and build as usual. Locate the build product in the Finder (activate the Utilities pane and select the application in the Navigator pane, then click the arrow next to the "Full Path" listing in the Utilities pane). Right-click the application and select "Compress." Rename the resulting .zip file "CI" followed by the version number and extension (for example, "CI4a2.zip"). This file is then ready to be uploaded to GitHub.
+
+Subsequent to any release version commit, the source version should be returned to development status (for the same version number if an unstable release, or the next version number if a stable release) during the following commit, unless the following commit is a new release as well.
