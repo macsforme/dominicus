@@ -1511,6 +1511,7 @@ void GameLogic::startNewGame() {
 	((ExplosionRenderer*) drawingMaster->drawers["explosionRenderer"])->reloadState();
 	((TerrainRenderer*) drawingMaster->drawers["terrainRenderer"])->reloadState();
 	gameGraphics->currentCamera = &introCamera;
+	missileCache.clear();
 
 	currentScheme = SCHEME_INTRO;
 	activeMenuSelection = NULL;
