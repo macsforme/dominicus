@@ -107,6 +107,7 @@ if(exec("git status src/core/GameSystem.h crucible\ island.plist COPYING") == "n
 	echo "\n";
 	echo "Execute? [yes/NO]: ";
 	$execution = trim(fgets(STDIN));
+	echo "\n";
 	if(strtolower($execution) == "yes" || strtolower($execution) == "y") {
 		exec($commitCommand);
 		if($matches[2] != "d")
