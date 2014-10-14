@@ -1337,7 +1337,7 @@ void GameLogic::reScheme() {
 
 			// version label
 			*((float*) versionEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-			*((float*) versionEntry.second["wrap"]) = 2.0f * (gameGraphics->resolutionX > 1024 ? 1024.0f / (float) gameGraphics->resolutionX : 1.0f) - (gameSystem->getFloat("hudElementMargin") * 2.0f / (float) gameGraphics->resolutionX);
+			*((float*) versionEntry.second["wrap"]) = 2.0f * (gameSystem->getFloat("helpTextScreenPortion")) - (gameSystem->getFloat("hudElementMargin") * 2.0f / (float) gameGraphics->resolutionX);
 //			*((std::string*) versionEntry.second["text"]) = gameSystem->versionString;
 			std::stringstream sstream;
 			sstream << "Version:\t" << PROGRAM_VERSION << "\n";
@@ -1357,7 +1357,7 @@ void GameLogic::reScheme() {
 
 			// credits label
 			*((float*) creditsEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-			*((float*) creditsEntry.second["wrap"]) = 2.0f * (gameGraphics->resolutionX > 1024 ? 1024.0f / (float) gameGraphics->resolutionX : 1.0f) - (gameSystem->getFloat("hudElementMargin") * 2.0f / (float) gameGraphics->resolutionX);
+			*((float*) creditsEntry.second["wrap"]) = 2.0f * (gameSystem->getFloat("helpTextScreenPortion")) - (gameSystem->getFloat("hudElementMargin") * 2.0f / (float) gameGraphics->resolutionX);
 			((UIMetrics*) creditsEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(creditsEntry.second);
 			drawingMaster->drawStack.push_back(creditsEntry);
 			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) creditsEntry.second["metrics"]);
