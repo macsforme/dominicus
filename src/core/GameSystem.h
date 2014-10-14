@@ -11,7 +11,7 @@
 #define PROGRAM_VERSION "1"
 
 // Build identifier string (DEVEL | ALPHA# | BETA# | STABLE)
-#define PROGRAM_BUILDSTRING "DEVEL"
+#define PROGRAM_BUILDSTRING "ALPHA1"
 
 #include <cstdlib>
 #include <map>
