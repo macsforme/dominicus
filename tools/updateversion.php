@@ -13,16 +13,9 @@ if(! preg_match("/^(\d+)(d|a|b|s)(\d*)$/", $argv[1], $matches) || (($matches[2] 
 if(! is_file("src/core/GameSystem.h") || ! is_file("COPYING"))
      exit("Please run this script from the main source directory\n");
 
-// ensure no uncommitted changes to the required files
-if(exec("git status src/core/GameSystem.h") != "nothing to commit, working directory clean")
-     exit("Source file has uncommitted changes\n");
-
-// ensure no uncommitted changes to the required files
-if(exec("git status crucible\ island.plist") != "nothing to commit, working directory clean")
-     exit("Mac plist file has uncommitted changes\n");
-
-if(exec("git status COPYING") != "nothing to commit, working directory clean")
-     exit("Copyrights file has uncommitted changes\n");
+// ensure no uncommitted changes to any files
+if(exec("git status") != "nothing to commit, working directory clean")
+     exit("Source tree has uncommitted changes\n");
 
 $gameSystemFile = file_get_contents("src/core/GameSystem.h");
 
@@ -78,7 +71,7 @@ if(! $replacementCount)
 if(! file_put_contents("COPYING", $copyingFile))
 	exit("Unable to write updated copyrights file\n");
 
-// suggest committing the tag to git
+// prompt to commit the updates and the tag to git
 $prettyVersion = "";
 if($matches[2] == "d") $prettyVersion = $matches[1]." Development";
 else if($matches[2] == "a") $prettyVersion = $matches[1]." Alpha ".$matches[3];
@@ -88,12 +81,40 @@ echo "Source code version updated to ".$prettyVersion."\n";
 if(exec("git status src/core/GameSystem.h crucible\ island.plist COPYING") == "nothing to commit, working directory clean") {
 	echo "However, no changes resulted from this update.\n";
 } else {
-	echo "Run the following command to commit ".($matches[2] != "d" ? "and tag " : "")."the changes:\n";
+	$commitCommand = "git commit src/core/GameSystem.h crucible\ island.plist COPYING -m \"Version updated to ".$prettyVersion.".\"\n";
+	$tagCommand = "git tag -a v".$matches[0]." -m \"Version ".$prettyVersion;
+	if($matches[2] == "s") {
+		echo "This is a stable commit/tag. Please enter a list of changes to be logged.\n";
+		echo "Capitalize the first letter of each line, and omit the period at the end of each line.\n";
+		echo "When all lines have been entered, enter a blank line to proceed:\n";
+		echo "======================================================================================\n";
+		$logLines = Array();
+		do {
+			array_push($logLines, trim(fgets(STDIN)));
+		} while(count($logLines) > 0 && $logLines[count($logLines) - 1] != "");
+		if(count($logLines) > 0 && $logLines[0] != "") {
+			$tagCommand .= "\n\n";
+			for($i = 0; $i < count($logLines) - 1; ++$i)
+				$tagCommand .= "* ".$logLines[$i].($i < count($logLines) - 2 ? "\n" : "");
+		}
+	}
+	$tagCommand .= "\"\n";
+	echo "The following command".($matches[2] != "d" ? "s" : "")." should be executed to commit ".($matches[2] != "d" ? "and tag " : "")."the changes:\n";
 	echo "\n";
-	echo "git commit src/core/GameSystem.h crucible\ island.plist COPYING -m \"Source version updated to ".$prettyVersion.".\"\n";
+	echo $commitCommand;
 	if($matches[2] != "d")
-		echo "git tag -a v".$matches[0]." -m \"Version ".$prettyVersion.".\"\n";
+		echo $tagCommand;
 	echo "\n";
+	echo "Execute? [yes/NO]: ";
+	$execution = trim(fgets(STDIN));
+	if(strtolower($execution) == "yes" || strtolower($execution) == "y") {
+		exec($commitCommand);
+		if($matches[2] != "d")
+			exec($tagCommand);
+		echo "Command".($matches[2] != "d" ? "s" : "")." executed. Repository is ready to be pushed to origin and for binaries to be built.\n";
+	} else {
+		echo "Aborted. Please execute commit ".($matches[2] != "d" ? "and tag " : "")."command".($matches[2] != "d" ? "s" : "")." manually.\n";
+	}
 }
 
 ?>

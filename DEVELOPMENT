@@ -53,7 +53,9 @@ To prepare for a release, run the script in the tools/ directory which automates
 
 $ php tools/updateversion.php <version>
 
-The script will report whether this was successful, and suggest commands to issue to git to commit and tag the changes. These commands should be executed exactly as given for consistency in wording for commits and consistent tag names. Once these commands are issued, the repository is ready to be pushed to GitHub.
+The script will report whether this was successful, suggest commands to issue to git to commit and tag the changes, and give you the option to automatically commit and tag the version change. If given a stable release number, the script will prompt you for a list of changes for the log. A concise list of major changes should be entered for every stable release, so that a change log can be automatically generated from these tag messages. The automatic execution of these commands should be affirmed when prompted, or else the commands should be executed manually. Once these commands are issued, the repository is ready to be pushed to GitHub. Use:
+
+$ git push --follow-tags
 
 To create the Mac OS X binary, after running the above script, enter the Xcode project and build as usual. Locate the build product in the Finder (activate the Utilities pane and select the application in the Navigator pane, then click the arrow next to the "Full Path" listing in the Utilities pane). Right-click the application and select "Compress." Rename the resulting .zip file "CI" followed by the version number and extension (for example, "CI4a2.zip"). This file is then ready to be uploaded to GitHub.
 
