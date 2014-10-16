@@ -4,9 +4,9 @@ https://github.com/macsforme/crucibleisland
 
 //////////////////////////////// INTRODUCTION /////////////////////////////////
 
-Crucible Island is a first-person shooter tower defense game. The goal of the game is to defend your tower by shooting down missiles fired at you by enemy ships, and to accumulate as many points as possible. Crucible island is currently only available on Mac OS X 10.6 and up.
+Crucible Island is a first-person shooter tower defense game. The goal of the game is to defend your tower by shooting down missiles fired at you by enemy ships, and to accumulate as many points as possible. Crucible island is currently available on Mac OS X 10.6 and up.
 
-This game evolved out of the author's attempt to learn how to program 3D simulation using OpenGL. It has been in development in one form or another since March 2010. Crucible Island has been designed to be OpenGL 2.0 compatible, meaning that the game should run on most dedicated graphics cards made around or after 2006 (assuming full operating system and driver support for the required features), while allowing for the flexibility of modern shader-based drawing pipelines. While the author hopes players find the game enjoyable, the game began as and continues to be an exercise, experiment, and learning experience for implementing new graphical effects and techniques.
+This game evolved out of the author's attempt to learn how to program 3D simulation using OpenGL. It has been in development in one form or another since March of 2010. Crucible Island has been designed to be OpenGL 2.0 compatible, meaning that the game should run on most dedicated graphics cards made around or after 2006 (assuming full operating system and driver support for the required features), while allowing for the flexibility of modern shader-based drawing pipelines. While the author hopes players find the game enjoyable, the game began as and continues to be an exercise, experiment, and learning experience for implementing new graphical effects and techniques.
 
 Although it has been primarily created by a single author, Crucible Island is free and open-source software. The source code is available on GitHub at the address at the top of this file.
 
@@ -33,7 +33,7 @@ Crucible Island build project files are currently maintained for Mac OS X using 
 * Simple DirectMedia Layer (SDL) 1.2
 * FreeType 2
 
-Crucible Island should build with the most current stable release for these libraries. If it does not, please create an issue on GitHub at https://github.com/macsforme/crucibleisland/issues and I will take a look.
+Crucible Island should build successfully with the most current stable version of these libraries. If it does not, please create an issue on GitHub at https://github.com/macsforme/crucibleisland/issues and I will take a look.
 
 The Xcode project file is set to look for required library files in certain locations. If you install them elsewhere, you will need to edit the project file.
 
