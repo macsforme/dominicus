@@ -1518,6 +1518,12 @@ void GameLogic::startNewGame() {
 	reScheme();
 
 	gameAudio->setBackgroundMusic("playingSong");
+
+	turretUpKeyListener->isDown = false;
+	turretDownKeyListener->isDown = false;
+	turretLeftKeyListener->isDown = false;
+	turretRightKeyListener->isDown = false;
+	cameraAheadKeyListener->isDown = false;
 }
 
 void GameLogic::bumpStartFromIntro() {
