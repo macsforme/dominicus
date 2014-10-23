@@ -2953,6 +2953,7 @@ unsigned int GameLogic::execute(bool unScheduled) {
 			mouseMotionListener->wasMoved();
 			SDL_WM_GrabInput(SDL_GRAB_ON);
 			SDL_ShowCursor(0);
+			mouseActive = false;
 		}
 	} else if(currentScheme == SCHEME_PLAYING) {
 		// check score
