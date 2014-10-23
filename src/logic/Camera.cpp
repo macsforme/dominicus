@@ -69,24 +69,12 @@ void IntroCamera::execute() {
 		return;
 
 	float progression = gameState->lastUpdateGameTime / 1000.0f / gameSystem->getFloat("stateShipEntryTime");
+
 	mvMatrix.identity();
 	lightMatrix.identity();
 
-	if(progression < 2.0f / 20.0f) {
-		float segmentProgression = progression / (2.0f / 20.0f);
-
-		translateMatrix(
-				-gameState->ships[0].position.x,
-				-gameState->ships[0].position.y,
-				-gameState->ships[0].position.z,
-				mvMatrix
-			);
-		rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(-90.0f), mvMatrix);
-		translateMatrix(0.0f, -10.0f, (1.0f - segmentProgression) * 800.0f + 400.0f, mvMatrix);
-
-		rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(-90.0f), lightMatrix);
-	} else if(progression < 4.0f / 20.0f) {
-		float segmentProgression = (progression - 2.0f / 20.0f) / (2.0f / 20.0f);
+	if(progression < 2.5f / 20.0f) {
+		float segmentProgression = progression / (2.5f / 20.0f);
 
 		translateMatrix(
 				-gameState->ships[0].position.x,
@@ -95,13 +83,11 @@ void IntroCamera::execute() {
 				mvMatrix
 			);
 		rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians((1.0f - segmentProgression) * -90.0f), mvMatrix);
-		rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(segmentProgression * -30.0f), mvMatrix);
-		translateMatrix(0.0f, -10.0f, 400.0f, mvMatrix);
+		translateMatrix(0.0f, -30.0f, pow(1.0f - segmentProgression, 2.0f) * 1200.0f + 400.0f, mvMatrix);
 
 		rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians((1.0f - segmentProgression) * -90.0f), lightMatrix);
-		rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(segmentProgression * -30.0f), lightMatrix);
-	} else if(progression < 6.0f / 20.0f) {
-		float segmentProgression = (progression - 4.0f / 20.0f) / (2.0f / 20.0f);
+	} else if(progression < 5.0f / 20.0f) {
+		float segmentProgression = (progression - 2.5f / 20.0f) / (2.5f / 20.0f);
 
 		translateMatrix(
 				-gameState->ships[0].position.x,
@@ -109,124 +95,183 @@ void IntroCamera::execute() {
 				-gameState->ships[0].position.z,
 				mvMatrix
 			);
-		rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(segmentProgression * 180.0f), mvMatrix);
-		rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(-30.0f), mvMatrix);
-		translateMatrix(0.0f, -10.0f, segmentProgression * 200.0f + 400.0f, mvMatrix);
+		rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(segmentProgression * 90.0f), mvMatrix);
+		translateMatrix(0.0f, -30.0f, 400.0f, mvMatrix);
 
-		rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(segmentProgression * 180.0f), lightMatrix);
-		rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(-30.0f), lightMatrix);
-	} else if(progression < 9.0f / 20.0f) {
-		float segmentProgression = (progression - 6.0f / 20.0f) / (3.0f / 20.0f);
+		rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(segmentProgression * 90.0f), lightMatrix);
+	} else if(progression < 7.5f / 20.0f) {
+		float segmentProgression = (progression - 5.0f / 20.0f) / (2.5f / 20.0f);
 
 		translateMatrix(
-				(1.0f - segmentProgression) * -gameState->ships[0].position.x,
-				(1.0f - segmentProgression) * -gameState->ships[0].position.y + segmentProgression * -gameState->fortress.position.y,
-				(1.0f - segmentProgression) * -gameState->ships[0].position.z,
+				-gameState->ships[0].position.x,
+				-gameState->ships[0].position.y,
+				-gameState->ships[0].position.z,
+				mvMatrix
+			);
+		rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(90.0f + segmentProgression * 90.0f), mvMatrix);
+		rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(pow(segmentProgression, 2.0f) * -15.0f), mvMatrix);
+		translateMatrix(0.0f, -30.0f, pow(segmentProgression, 2.0f) * -50.0f + 400.0f, mvMatrix);
+
+		rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(90.0f + segmentProgression * 90.0f), lightMatrix);
+		rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(pow(segmentProgression, 2.0f) * -15.0f), lightMatrix);
+	} else if(progression < 10.0f / 20.0f) {
+		float segmentProgression = (progression - 7.5f / 20.0f) / (2.5f / 20.0f);
+
+		translateMatrix(
+				-gameState->ships[0].position.x,
+				-gameState->ships[0].position.y,
+				-gameState->ships[0].position.z,
 				mvMatrix
 			);
 		rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(180.0f + segmentProgression * 90.0f), mvMatrix);
-		rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians((1.0f - segmentProgression) * -30.0f), mvMatrix);
-		translateMatrix(
-				0.0f,
-				(1.0f - segmentProgression) * -10.0f,
-				(1.0f - segmentProgression) * 100.0f + 500.0f,
-				mvMatrix
-			);
+		rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(pow(1.0f - segmentProgression, 2.0f) * 15.0f - 30.0f), mvMatrix);
+		translateMatrix(0.0f, pow(segmentProgression, 2.0f) * 15.0f - 30.0f, pow(1.0f - segmentProgression, 2.0f) * 50.0f + 300.0f, mvMatrix);
 
 		rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(180.0f + segmentProgression * 90.0f), lightMatrix);
-		rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians((1.0f - segmentProgression) * -30.0f), lightMatrix);
-	} else if(progression < 12.0f / 20.0f) {
-		float segmentProgression = (progression - 9.0f / 20.0f) / (3.0f / 20.0f);
+		rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(pow(1.0f - segmentProgression, 2.0f) * 15.0f - 30.0f), lightMatrix);
+	} else if(progression < 11.25f / 20.0f) {
+		float segmentProgression = (progression - 10.0f / 20.0f) / (1.25f / 20.0f);
 
 		translateMatrix(
-				segmentProgression * -gameState->fortress.position.x,
+				-gameState->fortress.position.x,
 				-gameState->fortress.position.y,
-				segmentProgression * -gameState->fortress.position.z,
+				-gameState->fortress.position.z,
 				mvMatrix
 			);
-		rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(270.0f + segmentProgression * 135.0f), mvMatrix);
-		rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(segmentProgression * -30.0f), mvMatrix);
+		rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(270.0f + segmentProgression * 45.0f), mvMatrix);
 		translateMatrix(
-				0.0f,
-				0.0f,
-				(1.0f - segmentProgression) * 450.0f + 50.0f,
+				(gameState->ships[0].position.z - gameState->fortress.position.z) * (1.0f - pow(segmentProgression, 2.0f) / 2.0f),
+				-(gameState->ships[0].position.y - gameState->fortress.position.y) * (1.0f - pow(segmentProgression, 2.0f) / 2.0f),
+				-(gameState->ships[0].position.x - gameState->fortress.position.x) * (1.0f - pow(segmentProgression, 2.0f) / 2.0f),
 				mvMatrix
 			);
+		rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(pow(segmentProgression / 2.0f, 2.0) * 15.0f - 30.0f), mvMatrix);
+		translateMatrix(0.0f, pow(1.0f - segmentProgression, 2.0f) * -7.5f - 7.5f, pow(segmentProgression, 2.0f) * -150.0f + 300.0f + pow(segmentProgression, 2.0f) * 25.0f, mvMatrix);
 
-		rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(270.0f + segmentProgression * 135.0f), lightMatrix);
-		rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(segmentProgression * -30.0f), lightMatrix);
-	} else if(progression < 16.0f / 20.0f) {
-		float segmentProgression = (progression - 12.0f / 20.0f) / (4.0f / 20.0f);
 
-		translateMatrix(-gameState->fortress.position.x, -gameState->fortress.position.y, -gameState->fortress.position.z, mvMatrix);
-		rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(45.0f + segmentProgression * 90.0f), mvMatrix);
-		rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(-30.0f), mvMatrix);
+		rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(270.0f + segmentProgression * 45.0f), lightMatrix);
+		rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(pow(segmentProgression / 2.0f, 2.0) * 15.0f - 30.0f), lightMatrix);
+	} else if(progression < 12.5f / 20.0f) {
+		float segmentProgression = (progression - 11.25f / 20.0f) / (1.25f / 20.0f);
+
 		translateMatrix(
-				0.0f,
-				0.0f,
-				50.0f,
+				-gameState->fortress.position.x,
+				-gameState->fortress.position.y,
+				-gameState->fortress.position.z,
 				mvMatrix
 			);
-
-		rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(45.0f + segmentProgression * 90.0f), lightMatrix);
-		rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(-30.0f), lightMatrix);
-	} else if(progression < 18.0f / 20.0f) {
-		float segmentProgression = (progression - 16.0f / 20.0f) / (2.0f / 20.0f);
-
-		translateMatrix(-gameState->fortress.position.x, -gameState->fortress.position.y, -gameState->fortress.position.z, mvMatrix);
-		rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(135.0f + segmentProgression * 135.0f), mvMatrix);
-		rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(-30.0f + segmentProgression * -60.0f), mvMatrix);
+		rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(315.0f + segmentProgression * 45.0f), mvMatrix);
 		translateMatrix(
-				0.0f,
-				0.0f,
-				(1.0f - segmentProgression) * 25.0f + 25.0f,
+				(gameState->ships[0].position.z - gameState->fortress.position.z) * pow(1.0f - segmentProgression, 2.0f) / 2.0f,
+				-(gameState->ships[0].position.y - gameState->fortress.position.y) * pow(1.0f - segmentProgression, 2.0f) / 2.0f,
+				-(gameState->ships[0].position.x - gameState->fortress.position.x) * pow(1.0f - segmentProgression, 2.0f) / 2.0f,
 				mvMatrix
 			);
+		rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(pow(segmentProgression / 2.0f + 0.5f, 2.0) * 15.0f - 30.0f), mvMatrix);
+		translateMatrix(0.0f, pow(1.0f - segmentProgression, 2.0f) * -7.5f, pow(1.0f - segmentProgression, 2.0f) * 150.0f + pow(1.0f - segmentProgression, 2.0f) * -25.0f + 50.0f, mvMatrix);
 
-		rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(135.0f + segmentProgression * 135.0f), lightMatrix);
-		rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(-30.0f + segmentProgression * -60.0f), lightMatrix);
-	} else if(progression < 19.5f / 20.0f) {
-		float segmentProgression = (progression - 18.0f / 20.0f) / (1.5f / 20.0f);
+		rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(315.0f + segmentProgression * 45.0f), lightMatrix);
+		rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(pow(segmentProgression / 2.0f + 0.5f, 2.0) * 15.0f - 30.0f), lightMatrix);
+	} else if(progression < 15.0f / 20.0f) {
+		float segmentProgression = (progression - 12.5f / 20.0f) / (2.5f / 20.0f);
 
-		translateMatrix(-gameState->fortress.position.x, -gameState->fortress.position.y, -gameState->fortress.position.z, mvMatrix);
 		translateMatrix(
-				segmentProgression * -((FortressRenderer*) drawingMaster->drawers["fortressRenderer"])->cameraOrigin.x,
-				segmentProgression * -((FortressRenderer*) drawingMaster->drawers["fortressRenderer"])->cameraOrigin.y,
-				segmentProgression * -((FortressRenderer*) drawingMaster->drawers["fortressRenderer"])->cameraOrigin.z,
+				-gameState->fortress.position.x,
+				-gameState->fortress.position.y,
+				-gameState->fortress.position.z,
 				mvMatrix
 			);
-		rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(270.0f), mvMatrix);
-		rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians((1.0f - segmentProgression) * -90.0f), mvMatrix);
-		translateMatrix(
-				0.0f,
-				segmentProgression * -5.0f,
-				(1.0f - segmentProgression) * 25.0f,
-				mvMatrix
-			);
+		rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(segmentProgression * 90.0f), mvMatrix);
+		rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(pow(1.0f - segmentProgression, 2.0) * -15.0f), mvMatrix);
+		translateMatrix(0.0f, 0.0f, 50.0f, mvMatrix);
 
-		rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(270.0f), lightMatrix);
-		rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians((1.0f - segmentProgression) * -90.0f), lightMatrix);
+		rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(segmentProgression * 90.0f), lightMatrix);
+		rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(pow(1.0f - segmentProgression, 2.0) * -15.0f), lightMatrix);
+	} else if(progression < 16.25f / 20.0f) {
+		float segmentProgression = (progression - 15.0f / 20.0f) / (1.25f / 20.0f);
+
+		translateMatrix(
+				-gameState->fortress.position.x,
+				-gameState->fortress.position.y,
+				-gameState->fortress.position.z,
+				mvMatrix
+			);
+		rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(90.0f + segmentProgression * 45.0f), mvMatrix);
+		rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(pow(segmentProgression, 2.0) * -45.0f), mvMatrix);
+		translateMatrix(0.0f, 0.0f, 50.0f, mvMatrix);
+
+		rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(90.0f + segmentProgression * 45.0f), lightMatrix);
+		rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(pow(segmentProgression, 2.0) * -45.0f), lightMatrix);
+	} else if(progression < 17.5f / 20.0f) {
+		float segmentProgression = (progression - 16.25f / 20.0f) / (1.25f / 20.0f);
+
+		translateMatrix(
+				-gameState->fortress.position.x,
+				-gameState->fortress.position.y,
+				-gameState->fortress.position.z,
+				mvMatrix
+			);
+		translateMatrix(
+				pow(segmentProgression / 2.0f, 2.0f) * -((FortressRenderer*) drawingMaster->drawers["fortressRenderer"])->cameraOrigin.x,
+				pow(segmentProgression / 2.0f, 2.0f) * -((FortressRenderer*) drawingMaster->drawers["fortressRenderer"])->cameraOrigin.y,
+				pow(segmentProgression / 2.0f, 2.0f) * -((FortressRenderer*) drawingMaster->drawers["fortressRenderer"])->cameraOrigin.z,
+				mvMatrix
+			);
+		rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(135.0f + segmentProgression * 45.0f), mvMatrix);
+		rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(pow(1.0f - segmentProgression, 2.0) * 45.0f - 90.0f), mvMatrix);
+		translateMatrix(0.0f, 0.0f, 50.0f, mvMatrix);
+
+		rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(135.0f + segmentProgression * 45.0f), lightMatrix);
+		rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(pow(1.0f - segmentProgression, 2.0) * 45.0f - 90.0f), lightMatrix);
+	} else if(progression < 18.75f / 20.0f) {
+		float segmentProgression = (progression - 17.5f / 20.0f) / (1.25f / 20.0f);
+
+		translateMatrix(
+				-gameState->fortress.position.x,
+				-gameState->fortress.position.y,
+				-gameState->fortress.position.z,
+				mvMatrix
+			);
+		translateMatrix(
+				pow(segmentProgression / 2.0f + 0.5f, 2.0f) * -((FortressRenderer*) drawingMaster->drawers["fortressRenderer"])->cameraOrigin.x,
+				pow(segmentProgression / 2.0f + 0.5f, 2.0f) * -((FortressRenderer*) drawingMaster->drawers["fortressRenderer"])->cameraOrigin.y,
+				pow(segmentProgression / 2.0f + 0.5f, 2.0f) * -((FortressRenderer*) drawingMaster->drawers["fortressRenderer"])->cameraOrigin.z,
+				mvMatrix
+			);
+		rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(180.0f + segmentProgression * 45.0f), mvMatrix);
+		translateMatrix(0.0f, pow(segmentProgression, 2.0f) * 25.0f - 50.0f, 0.0f, mvMatrix);
+		rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(pow(segmentProgression, 2.0) * 45.0f - 90.0f), mvMatrix);
+
+		rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(180.0f + segmentProgression * 45.0f), lightMatrix);
+		rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(pow(segmentProgression, 2.0) * 45.0f - 90.0f), lightMatrix);
 	} else if(progression < 20.0f / 20.0f) {
-		float segmentProgression = (progression - 19.5f / 20.0f) / (0.5f / 20.0f);
+		float segmentProgression = (progression - 18.75f / 20.0f) / (1.25f / 20.0f);
 
-		translateMatrix(-gameState->fortress.position.x, -gameState->fortress.position.y, -gameState->fortress.position.z, mvMatrix);
+		translateMatrix(
+				-gameState->fortress.position.x,
+				-gameState->fortress.position.y,
+				-gameState->fortress.position.z,
+				mvMatrix
+			);
 		translateMatrix(
 				-((FortressRenderer*) drawingMaster->drawers["fortressRenderer"])->cameraOrigin.x,
 				-((FortressRenderer*) drawingMaster->drawers["fortressRenderer"])->cameraOrigin.y,
 				-((FortressRenderer*) drawingMaster->drawers["fortressRenderer"])->cameraOrigin.z,
 				mvMatrix
 			);
-		rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(270.0f), mvMatrix);
+		rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(225.0f + segmentProgression * 45.0f), mvMatrix);
+		translateMatrix(0.0f, pow(1.0f - segmentProgression, 2.0f) * -25.0f, 0.0f, mvMatrix);
+		rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(pow(1.0f - segmentProgression, 2.0) * -45.0f), mvMatrix);
+
+		rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(225.0f + segmentProgression * 45.0f), lightMatrix);
+		rotateMatrix(Vector3(1.0f, 0.0f, 0.0f), radians(pow(1.0f - segmentProgression, 2.0) * -45.0f), lightMatrix);
+	} else {
 		translateMatrix(
-				0.0f,
-				(1.0f - segmentProgression) * -5.0f,
-				0.0f,
+				-gameState->fortress.position.x,
+				-gameState->fortress.position.y,
+				-gameState->fortress.position.z,
 				mvMatrix
 			);
-
-		rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(270.0f), lightMatrix);
-	} else {
-		translateMatrix(-gameState->fortress.position.x, -gameState->fortress.position.y, -gameState->fortress.position.z, mvMatrix);
 		translateMatrix(
 				-((FortressRenderer*) drawingMaster->drawers["fortressRenderer"])->cameraOrigin.x,
 				-((FortressRenderer*) drawingMaster->drawers["fortressRenderer"])->cameraOrigin.y,
