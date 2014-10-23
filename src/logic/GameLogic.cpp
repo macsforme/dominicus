@@ -1599,6 +1599,12 @@ void GameLogic::endGameFromPause() {
 void GameLogic::continueFromGameOver() {
 	if(gameState->score > 0 && (gameSystem->highScores.size() == 0 || gameState->score > gameSystem->highScores.back().first)) {
 		if(playerName != "") {
+			// trim
+			while(playerName.size() > 0 && playerName.substr(playerName.size() - 1, 1) == " ")
+				playerName = playerName.substr(0, playerName.size() - 1);
+			while(playerName.size() > 0 && playerName.substr(0, 1) == " ")
+				playerName = playerName.substr(1);
+
 			size_t position = 0;
 			while(position < gameSystem->highScores.size() && gameSystem->highScores[position].first >= gameState->score)
 				++position;
