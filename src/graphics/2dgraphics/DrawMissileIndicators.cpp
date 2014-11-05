@@ -52,7 +52,7 @@ void DrawMissileIndicators::execute(DrawStackArgList argList) {
 	// collect arguments
 	Vector4 color = *((Vector4*) argList["color"]);
 	Vector2 size = *((Vector2*) argList["size"]);
-	Vector4 arrowInsideColor = *((Vector4*) argList["arrowColor"]);
+	Vector4 arrowBorderColor = *((Vector4*) argList["arrowColor"]);
 	Vector2 arrowSize = *((Vector2*) argList["arrowSize"]);
 
 	// determine active missile screen positions
@@ -101,23 +101,26 @@ void DrawMissileIndicators::execute(DrawStackArgList argList) {
 	}
 
 	// draw locator arrows
-	Vector4 arrowOutsideColor(
-			arrowInsideColor.x,
-			arrowInsideColor.y,
-			arrowInsideColor.z,
+	Vector4 arrowInsideOutsideColor(
+			arrowBorderColor.x,
+			arrowBorderColor.y,
+			arrowBorderColor.z,
 			0.0f
 		);
 	Vector2 arrowPosition(0.0f, 0.0f);
 	float arrowRotation = 0.0f;
-	float arrowSoftEdge = 2.0f;
+	float arrowSoftEdge = gameSystem->getFloat("hudContainerSoftEdge");
+	float arrowBorder = gameSystem->getFloat("hudContainerBorder");
 
 	DrawStackArgList drawerArguments;
 	drawerArguments["size"] = (void*) &arrowSize;
 	drawerArguments["position"] = (void*) &arrowPosition;
 	drawerArguments["rotation"] = (void*) &arrowRotation;
 	drawerArguments["softEdge"] = (void*) &arrowSoftEdge;
-	drawerArguments["insideColor"] = (void*) &arrowInsideColor;
-	drawerArguments["outsideColor"] = (void*) &arrowOutsideColor;
+	drawerArguments["border"] = (void*) &arrowBorder;
+	drawerArguments["insideColor"] = (void*) &arrowInsideOutsideColor;
+	drawerArguments["borderColor"] = (void*) &arrowBorderColor;
+	drawerArguments["outsideColor"] = (void*) &arrowInsideOutsideColor;
 
 	float arrowPositionRadius = gameSystem->getFloat("hudControlAreaRadius") * 2.0f / (float) gameGraphics->resolutionY;
 	for(size_t i = 0; i < allMissilePositions.size(); ++i) {

@@ -18,8 +18,8 @@ extern GameGraphics* gameGraphics;
 DrawStackArgList DrawRoundedTriangle::instantiateArgList() {
 	DrawStackArgList argList;
 
-//	argList["border"] = (void*) new float;			// thickness of border in pixels
-//	argList["borderColor"] = (void*) new Vector4;	// color of border of shape
+	argList["border"] = (void*) new float;			// thickness of border in pixels
+	argList["borderColor"] = (void*) new Vector4;	// color of border of shape
 	argList["insideColor"] = (void*) new Vector4;	// color of inside of shape
 	argList["outsideColor"] = (void*) new Vector4;	// color of outside of shape
 	argList["position"] = (void*) new Vector2;		// position in screen dimensions
@@ -31,8 +31,8 @@ DrawStackArgList DrawRoundedTriangle::instantiateArgList() {
 }
 
 void DrawRoundedTriangle::deleteArgList(DrawStackArgList argList) {
-//	if(argList.find("border") != argList.end()) delete (float*) argList["border"];
-//	if(argList.find("borderColor") != argList.end()) delete (Vector4*) argList["borderColor"];
+	if(argList.find("border") != argList.end()) delete (float*) argList["border"];
+	if(argList.find("borderColor") != argList.end()) delete (Vector4*) argList["borderColor"];
 	if(argList.find("insideColor") != argList.end()) delete (Vector4*) argList["insideColor"];
 	if(argList.find("outsideColor") != argList.end()) delete (Vector4*) argList["outsideColor"];
 	if(argList.find("position") != argList.end()) delete (Vector2*) argList["position"];
@@ -48,65 +48,98 @@ void DrawRoundedTriangle::execute(DrawStackArgList argList) {
 	Vector2 size = *((Vector2*) argList["size"]);
 
 	float triangleHeight = cos(asin(size.x * gameGraphics->aspectRatio * 0.5f / size.y)) * size.y;
-
-	VertexEntry entry;
-	entry.curveOriginCoord = Vector2(0.0f, 0.0f);
-	entry.highlight = false;
-	entry.concave = false;
+	float cutOutHeight = tan(asin(triangleHeight / size.y) - radians(45.0f)) * (size.x * gameGraphics->aspectRatio * 0.5f);
 
 	std::vector<VertexEntry> triangleVertices;
 
+	VertexEntry entry;
+	entry.highlight = false;
+	entry.concave = false;
+	entry.curveOriginCoord = Vector2(0.0f, 0.0f);
+
 	entry.position = Vector2(-size.x / 2.0f, -size.y / 2.0f + (size.y - triangleHeight));
-	entry.primCoord = Vector2(-2.0f, 0.0f);
-	triangleVertices.push_back(entry);
-
-	entry.position = Vector2(-size.x / 2.0f, size.y / 2.0f);
-	entry.primCoord = Vector2(-4.0f, 0.0f);
-	triangleVertices.push_back(entry);
-
-	entry.position = Vector2(0.0f, size.y / 2.0f);
-	entry.primCoord = Vector2(-2.0f, 0.0f);
-	triangleVertices.push_back(entry);
-
-	entry.position = Vector2(0.0f, -size.y / 2.0f + (size.y - triangleHeight));
-	entry.primCoord = Vector2(0.0f, 0.0f);
-	triangleVertices.push_back(entry);
-
-	entry.position = Vector2(0.0f, -size.y / 2.0f + (size.y - triangleHeight));
-	entry.primCoord = Vector2(0.0f, 0.0f);
+	entry.primCoord = Vector2(
+			cos(atan(triangleHeight / (size.x * (float) gameGraphics->aspectRatio / 2.0f)) + radians(90.0f)) * 2.0f,
+			sin(atan(triangleHeight / (size.x * (float) gameGraphics->aspectRatio / 2.0f)) + radians(90.0f)) * 2.0f
+		);
 	triangleVertices.push_back(entry);
 
 	entry.position = Vector2(0.0f, size.y / 2.0f);
-	entry.primCoord = Vector2(2.0f, 0.0f);
 	triangleVertices.push_back(entry);
 
-	entry.position = Vector2(size.x / 2.0f, size.y / 2.0f);
-	entry.primCoord = Vector2(4.0f, 0.0f);
+	entry.position = Vector2(0.0f, -size.y / 2.0f + (size.y - (triangleHeight - cutOutHeight)));
+	entry.primCoord = Vector2(
+			entry.primCoord.x / 2.0f * (2.0f - sin(atan(size.x * (float) gameGraphics->aspectRatio / 2.0f / triangleHeight)) * (triangleHeight - cutOutHeight) / size.y * 2.0f),
+			entry.primCoord.y / 2.0f * (2.0f - sin(atan(size.x * (float) gameGraphics->aspectRatio / 2.0f / triangleHeight)) * (triangleHeight - cutOutHeight) / size.y * 2.0f)
+		);
+	triangleVertices.push_back(entry);
+
+	entry.position = Vector2(0.0f, size.y / 2.0f);
+	entry.primCoord = Vector2(
+			-cos(atan(triangleHeight / (size.x * (float) gameGraphics->aspectRatio / 2.0f)) + radians(90.0f)) * 2.0f,
+			sin(atan(triangleHeight / (size.x * (float) gameGraphics->aspectRatio / 2.0f)) + radians(90.0f)) * 2.0f
+		);
 	triangleVertices.push_back(entry);
 
 	entry.position = Vector2(size.x / 2.0f, -size.y / 2.0f + (size.y - triangleHeight));
-	entry.primCoord = Vector2(2.0f, 0.0f);
+	triangleVertices.push_back(entry);
+
+	entry.position = Vector2(0.0f, -size.y / 2.0f + (size.y - (triangleHeight - cutOutHeight)));
+	entry.primCoord = Vector2(
+			entry.primCoord.x / 2.0f * (2.0f - sin(atan(size.x * (float) gameGraphics->aspectRatio / 2.0f / triangleHeight)) * (triangleHeight - cutOutHeight) / size.y * 2.0f),
+			entry.primCoord.y / 2.0f * (2.0f - sin(atan(size.x * (float) gameGraphics->aspectRatio / 2.0f / triangleHeight)) * (triangleHeight - cutOutHeight) / size.y * 2.0f)
+		);
 	triangleVertices.push_back(entry);
 
 	entry.curveOriginCoord = Vector2(0.0f, 1.0f);
 
-	std::vector<VertexEntry> curveVertices;
-
-	entry.position = Vector2(-size.x / 2.0f, -size.y / 2.0f);
-	entry.primCoord = Vector2(-2.0f * size.x / 2.0f / size.y, -1.0f);
-	curveVertices.push_back(entry);
-
 	entry.position = Vector2(-size.x / 2.0f, -size.y / 2.0f + (size.y - triangleHeight));
-	entry.primCoord = Vector2(-2.0f * size.x / 2.0f / size.y, 1.0f - 2.0f * cos(asin(size.x / 2.0f / size.y)));
-	curveVertices.push_back(entry);
+	entry.primCoord = Vector2(-2.0f * size.x * (float) gameGraphics->aspectRatio / 2.0f / size.y, 1.0f - 2.0f * cos(asin(size.x * (float) gameGraphics->aspectRatio / 2.0f / size.y)));
+	triangleVertices.push_back(entry);
+
+	entry.position = Vector2(0.0f, -size.y / 2.0f + (size.y - (triangleHeight - cutOutHeight)));
+	entry.primCoord = Vector2(0.0f, 1.0f - 2.0f * (triangleHeight - cutOutHeight) / size.y);
+	triangleVertices.push_back(entry);
+
+	entry.position = Vector2(0.0f, -size.y / 2.0f);
+	entry.primCoord = Vector2(0.0f, -1.0f);
+	triangleVertices.push_back(entry);
+
+	entry.position = Vector2(0.0f, -size.y / 2.0f);
+	entry.primCoord = Vector2(0.0f, -1.0f);
+	triangleVertices.push_back(entry);
+
+	entry.position = Vector2(0.0f, -size.y / 2.0f + (size.y - (triangleHeight - cutOutHeight)));
+	entry.primCoord = Vector2(0.0f, 1.0f - 2.0f * (triangleHeight - cutOutHeight) / size.y);
+	triangleVertices.push_back(entry);
 
 	entry.position = Vector2(size.x / 2.0f, -size.y / 2.0f + (size.y - triangleHeight));
-	entry.primCoord = Vector2(2.0f * size.x / 2.0f / size.y, 1.0f - 2.0f * cos(asin(size.x / 2.0f / size.y)));
-	curveVertices.push_back(entry);
+	entry.primCoord = Vector2(2.0f * size.x * (float) gameGraphics->aspectRatio / 2.0f / size.y, 1.0f - 2.0f * cos(asin(size.x * (float) gameGraphics->aspectRatio / 2.0f / size.y)));
+	triangleVertices.push_back(entry);
+
+	entry.position = Vector2(-size.x / 2.0f, -size.y / 2.0f);
+	entry.primCoord = Vector2(-2.0f * size.x * (float) gameGraphics->aspectRatio / 2.0f / size.y, -1.0f);
+	triangleVertices.push_back(entry);
+
+	entry.position = Vector2(-size.x / 2.0f, -size.y / 2.0f + (size.y - triangleHeight));
+	entry.primCoord = Vector2(-2.0f * size.x * (float) gameGraphics->aspectRatio / 2.0f / size.y, 1.0f - 2.0f * cos(asin(size.x * (float) gameGraphics->aspectRatio / 2.0f / size.y)));
+	triangleVertices.push_back(entry);
+
+	entry.position = Vector2(0.0f, -size.y / 2.0f);
+	entry.primCoord = Vector2(0.0f, -1.0f);
+	triangleVertices.push_back(entry);
+
+	entry.position = Vector2(size.x / 2.0f, -size.y / 2.0f + (size.y - triangleHeight));
+	entry.primCoord = Vector2(2.0f * size.x * (float) gameGraphics->aspectRatio / 2.0f / size.y, 1.0f - 2.0f * cos(asin(size.x * (float) gameGraphics->aspectRatio / 2.0f / size.y)));
+	triangleVertices.push_back(entry);
 
 	entry.position = Vector2(size.x / 2.0f, -size.y / 2.0f);
-	entry.primCoord = Vector2(2.0f * size.x / 2.0f / size.y, -1.0f);
-	curveVertices.push_back(entry);
+	entry.primCoord = Vector2(2.0f * size.x * (float) gameGraphics->aspectRatio / 2.0f / size.y, -1.0f);
+	triangleVertices.push_back(entry);
+
+	entry.position = Vector2(0.0f, -size.y / 2.0f);
+	entry.primCoord = Vector2(0.0f, -1.0f);
+	triangleVertices.push_back(entry);
 
 	// apply rotation
 	Matrix4 rotationMatrix; rotationMatrix.identity();
@@ -118,12 +151,6 @@ void DrawRoundedTriangle::execute(DrawStackArgList argList) {
 		Vector4 oldPosition(triangleVertices[i].position.x, triangleVertices[i].position.y, 0.0f, 0.0f);
 		oldPosition = oldPosition * rotationMatrix;
 		triangleVertices[i].position = Vector2(oldPosition.x, oldPosition.y);
-	}
-
-	for(int i = 0; i < curveVertices.size(); ++i) {
-		Vector4 oldPosition(curveVertices[i].position.x, curveVertices[i].position.y, 0.0f, 0.0f);
-		oldPosition = oldPosition * rotationMatrix;
-		curveVertices[i].position = Vector2(oldPosition.x, oldPosition.y);
 	}
 
 	// update vertex buffers
@@ -141,8 +168,7 @@ void DrawRoundedTriangle::execute(DrawStackArgList argList) {
 		triangleVertexBufferArray[i * 8 + 3] = triangleVertices[i].primCoord.y;
 		triangleVertexBufferArray[i * 8 + 4] = triangleVertices[i].curveOriginCoord.x;
 		triangleVertexBufferArray[i * 8 + 5] = triangleVertices[i].curveOriginCoord.y;
-//		triangleVertexBufferArray[i * 8 + 6] = 2.0f - *((float*) argList["border"]) * 4.0f / (((Vector2*) argList["size"])->x / 2.0f * (float) gameGraphics->resolutionX);
-		triangleVertexBufferArray[i * 8 + 6] = 2.0f;
+		triangleVertexBufferArray[i * 8 + 6] = 2.0f - *((float*) argList["border"]) * 2.0f / (size.y / 2.0f * (float) gameGraphics->resolutionY);
 		triangleVertexBufferArray[i * 8 + 7] = 2.0f;
 	}
 
@@ -160,25 +186,6 @@ void DrawRoundedTriangle::execute(DrawStackArgList argList) {
 
 	delete[] triangleVertexBufferArray;
 
-	GLuint* curveElementBufferArray = new GLuint[curveVertices.size()];
-	for(size_t i = 0; i < curveVertices.size(); ++i)
-		curveElementBufferArray[i] = i;
-
-	size_t curveVertexBufferArraySize = curveVertices.size() * 8;
-	GLfloat* curveVertexBufferArray = new GLfloat[curveVertexBufferArraySize];
-
-	for(size_t i = 0; i < curveVertices.size(); ++i) {
-		curveVertexBufferArray[i * 8 + 0] = curveVertices[i].position.x + position.x;
-		curveVertexBufferArray[i * 8 + 1] = curveVertices[i].position.y + position.y;
-		curveVertexBufferArray[i * 8 + 2] = curveVertices[i].primCoord.x;
-		curveVertexBufferArray[i * 8 + 3] = curveVertices[i].primCoord.y;
-		curveVertexBufferArray[i * 8 + 4] = curveVertices[i].curveOriginCoord.x;
-		curveVertexBufferArray[i * 8 + 5] = curveVertices[i].curveOriginCoord.y;
-//		curveVertexBufferArray[i * 8 + 6] = 2.0f - *((float*) argList["border"]) / ((2.0f - triangleHeight) / 2.0f * (float) gameGraphics->resolutionY) / 2.0f / (size.y / (2.0f - triangleHeight)) * 2.0f;
-		curveVertexBufferArray[i * 8 + 6] = 2.0f;
-		curveVertexBufferArray[i * 8 + 7] = 2.0f;
-	}
-
 	// state
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -193,12 +200,12 @@ void DrawRoundedTriangle::execute(DrawStackArgList argList) {
 
 	// set uniforms
 	Vector4 insideColor = *((Vector4*) argList["insideColor"]);
-//	Vector4 borderColor = *((Vector4*) argList["borderColor"]);
+	Vector4 borderColor = *((Vector4*) argList["borderColor"]);
 	Vector4 outsideColor = *((Vector4*) argList["outsideColor"]);
 	glUniform4f(glGetUniformLocation(gameGraphics->getProgramID("hudContainer"), "insideColor"), insideColor.x, insideColor.y, insideColor.z, insideColor.w);
-	glUniform4f(glGetUniformLocation(gameGraphics->getProgramID("hudContainer"), "borderColor"), outsideColor.x, outsideColor.y, outsideColor.z, outsideColor.w);
+	glUniform4f(glGetUniformLocation(gameGraphics->getProgramID("hudContainer"), "borderColor"), borderColor.x, borderColor.y, borderColor.z, borderColor.w);
 	glUniform4f(glGetUniformLocation(gameGraphics->getProgramID("hudContainer"), "outsideColor"), outsideColor.x, outsideColor.y, outsideColor.z, outsideColor.w);
-	glUniform1f(glGetUniformLocation(gameGraphics->getProgramID("hudContainer"), "softEdge"), *((float*) argList["softEdge"]) * 4.0f / (((Vector2*) argList["size"])->x / 2.0f * (float) gameGraphics->resolutionX));
+	glUniform1f(glGetUniformLocation(gameGraphics->getProgramID("hudContainer"), "softEdge"), *((float*) argList["softEdge"]) * 2.0f / (size.y / 2.0f * (float) gameGraphics->resolutionY));
 
 	// draw the data stored in GPU memory
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers["vertices"]);
@@ -216,31 +223,7 @@ void DrawRoundedTriangle::execute(DrawStackArgList argList) {
 	glEnableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("hudContainer"), "border1Dist"));
 	glEnableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("hudContainer"), "border2Dist"));
 
-	glDrawElements(GL_QUADS, triangleVertices.size(), GL_UNSIGNED_INT, NULL);
-
-	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("hudContainer"), "position"));
-	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("hudContainer"), "primCoord"));
-	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("hudContainer"), "curveOriginCoord"));
-	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("hudContainer"), "border1Dist"));
-	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("hudContainer"), "border2Dist"));
-
-	// update buffers with curve geometry
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, curveVertices.size() * sizeof(GLuint), curveElementBufferArray, GL_STREAM_DRAW);
-	delete[] curveElementBufferArray;
-
-	glBufferData(GL_ARRAY_BUFFER, curveVertexBufferArraySize * sizeof(GLfloat), curveVertexBufferArray, GL_STREAM_DRAW);
-	delete[] curveVertexBufferArray;
-
-	// draw curve geometry
-	glUniform1f(glGetUniformLocation(gameGraphics->getProgramID("hudContainer"), "softEdge"), *((float*) argList["softEdge"]) / ((2.0f - triangleHeight) / 2.0f * (float) gameGraphics->resolutionY) / 2.0f / (size.y / (2.0f - triangleHeight)) * 2.0f);
-
-	glEnableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("hudContainer"), "position"));
-	glEnableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("hudContainer"), "primCoord"));
-	glEnableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("hudContainer"), "curveOriginCoord"));
-	glEnableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("hudContainer"), "border1Dist"));
-	glEnableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("hudContainer"), "border2Dist"));
-
-	glDrawElements(GL_QUADS, curveVertices.size(), GL_UNSIGNED_INT, NULL);
+	glDrawElements(GL_TRIANGLES, triangleVertices.size(), GL_UNSIGNED_INT, NULL);
 
 	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("hudContainer"), "position"));
 	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("hudContainer"), "primCoord"));

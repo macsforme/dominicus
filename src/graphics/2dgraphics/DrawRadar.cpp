@@ -352,20 +352,23 @@ void DrawRadar::execute(DrawStackArgList argList) {
 	Vector2 trianglePosition(metrics->position.x, metrics->position.y + triangleSize.y / 2.0f);
 	float triangleRotation = 180.0f;
 	float triangleEdge = gameSystem->getFloat("hudContainerSoftEdge");
+	float triangleBorder = gameSystem->getFloat("hudContainerBorder");
 	Vector4 triangleInsideColor = gameSystem->getColor("radarViewConeColor");
+	Vector4 triangleBorderColor = gameSystem->getColor("radarViewConeBorderColor");
 	Vector4 triangleOutsideColor(
-			gameSystem->getColor("radarViewConeColor").x,
-			gameSystem->getColor("radarViewConeColor").y,
-			gameSystem->getColor("radarViewConeColor").z,
+			gameSystem->getColor("radarViewConeBorderColor").x,
+			gameSystem->getColor("radarViewConeBorderColor").y,
+			gameSystem->getColor("radarViewConeBorderColor").z,
 			0.0f
 		);
-
 	DrawStackArgList drawerArguments;
 	drawerArguments["size"] = (void*) &triangleSize;
 	drawerArguments["position"] = (void*) &trianglePosition;
 	drawerArguments["rotation"] = (void*) &triangleRotation;
 	drawerArguments["softEdge"] = (void*) &triangleEdge;
+	drawerArguments["border"] = (void*) &triangleBorder;
 	drawerArguments["insideColor"] = (void*) &triangleInsideColor;
+	drawerArguments["borderColor"] = (void*) &triangleBorderColor;
 	drawerArguments["outsideColor"] = (void*) &triangleOutsideColor;
 
 	roundedTriangleDrawer->execute(drawerArguments);

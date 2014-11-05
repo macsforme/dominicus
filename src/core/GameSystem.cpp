@@ -181,6 +181,7 @@ GameSystem::GameSystem() {
 	setStandard("radarEMPColor", Vector4(1.0f, 1.0f, 1.0f, 0.5f), "Color of radar missile spots.");
 	setStandard("radarRadius", 1500.0f, "Radius of radar coverage.");
 	setStandard("radarViewConeColor", Vector4(1.0f, 1.0f, 1.0f, 0.2f), "Color of radar view cone.");
+	setStandard("radarViewConeBorderColor", Vector4(1.0f, 1.0f, 1.0f, 0.5f), "Color of border of radar view cone.");
 	setStandard("hudContainerBorder", 2.0f, "Thickness in pixels of HUD container element borders.");
 	setStandard("hudContainerSoftEdge", 2.0f, "Thickness in pixels of HUD container element border antialiased portion.");
 	setStandard("hudContainerInsideColor", Vector4(0.15f, 0.15f, 0.15f, 0.75f), "Background color of HUD container elements.");
@@ -202,8 +203,8 @@ GameSystem::GameSystem() {
 	setStandard("hudMissileIndicatorBinocularsFactor", 3.0f, "Factor to multiply missile indicator size by when in binoculars mode.");
 	setStandard("hudMissileIndicatorColor", Vector4(1.0f, 0.0f, 0.0f, 1.0f), "Color of missile indicator box.");
 	setStandard("hudMissileArrowColor", Vector4(1.0f, 0.0f, 0.0f, 0.75f), "Color of missile indicator arrows.");
-	setStandard("hudMissileArrowWidth", 12.0f, "Width of missile indicator arrows in pixels.");
-	setStandard("hudMissileArrowHeight", 20.0f, "Height of missile indicator arrows in pixels.");
+	setStandard("hudMissileArrowWidth", 14.0f, "Width of missile indicator arrows in pixels.");
+	setStandard("hudMissileArrowHeight", 22.0f, "Height of missile indicator arrows in pixels.");
 //	setStandard("hudMissileArrowBlinkRate", 0.5f, "Blink rate for missile indicator arrows behind player.");
 
 	// font standards
