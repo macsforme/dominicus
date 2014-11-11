@@ -495,7 +495,7 @@ unsigned int GameState::execute(bool unScheduled) {
 				missiles[i].position += missileTravelVec;
 				missiles[i].alive = false;
 				shells.erase(shells.begin() + p);
-				++score;
+				score += gameSystem->getFloat("gameStartingLevel");
 
 				break;
 			}
@@ -585,7 +585,7 @@ unsigned int GameState::execute(bool unScheduled) {
 
 			if(distance(fortress.position, missiles[i].position) < (1.0f - fortress.emp) * gameSystem->getFloat("stateEMPRange")) {
 				missiles[i].alive = false;
-				++score;
+				score += gameSystem->getFloat("gameStartingLevel");
 			}
 		}
 	}

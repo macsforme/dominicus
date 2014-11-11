@@ -697,7 +697,9 @@ void GameLogic::reScheme() {
 			// score label
 			*((float*) yourScoreEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
 			char scoreString[8]; scoreString[0] = '\0'; if(gameState->score <= 9999999) sprintf(scoreString, "%u", gameState->score);
-			*((std::string*) yourScoreEntry.second["text"]) = scoreString;
+			*((std::string*) yourScoreEntry.second["text"]) = (gameSystem->getFloat("gameStartingLevel") == 1.0f ? "Easy" : gameSystem->getFloat("gameStartingLevel") == 2.0f ? "Medium" : "Hard");
+			*((std::string*) yourScoreEntry.second["text"]) += "\t";
+			*((std::string*) yourScoreEntry.second["text"]) += scoreString;
 			((UIMetrics*) yourScoreEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(yourScoreEntry.second);
 			drawingMaster->drawStack.push_back(yourScoreEntry);
 			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) yourScoreEntry.second["metrics"]);
@@ -1644,6 +1646,10 @@ void GameLogic::continueFromGameOver() {
 				playerName = playerName.substr(0, playerName.size() - 1);
 			while(playerName.size() > 0 && playerName.substr(0, 1) == " ")
 				playerName = playerName.substr(1);
+
+			// add difficulty level
+			playerName += "\t";
+			playerName += (gameSystem->getFloat("gameStartingLevel") == 1.0f ? "Easy" : gameSystem->getFloat("gameStartingLevel") == 2.0f ? "Medium" : "Hard");
 
 			size_t position = 0;
 			while(position < gameSystem->highScores.size() && gameSystem->highScores[position].first >= gameState->score)

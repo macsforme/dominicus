@@ -228,7 +228,7 @@ GameSystem::GameSystem() {
 	setStandard("audioVolumeDropOffDistance", 1500.0f, "Distance it takes for an object's effect volume to fade to zero.");
 
 	// general game standards
-	setStandard("preferencesVersion", 4.0f, "Version of preferences file format.");
+	setStandard("preferencesVersion", 5.0f, "Version of preferences file format.");
 	setStandard("developmentMode", false, "Whether to enable extra development features.");
 	setStandard("gameStartingLevel", 1.0f, "Starting difficulty level.");
 	setStandard("gameMaximumHighScores", 5.0f, "Maximum number of high scores to track.");
@@ -243,7 +243,7 @@ GameSystem::GameSystem() {
 
 	// text strings
 	setStandard("textControls", "Move Turret:\tArrow Keys / Mouse Movement\nFire Cannon:\tSpace / Left Mouse Button / Mouse Wheel\nCharge / Fire EMP:\tTab / Right Mouse Button\nToggle Binoculars:\tShift / Middle Mouse Button\nPause / Resume:\tesc\nToggle Fullscreen:\tF1\nFast Quit:\tF12", "Controls help text.");
-	setStandard("textInstructions", "Welcome to Crucible Island. You occupy a tower atop an island mountain range. Enemy ships orbit the island firing missiles at you. You must shoot down these missiles using your cannon or by firing electromagnetic pulses. Firing cannon shells depletes your ammunition reservoir, and firing electromagnetic pulses requires a charging period and depletes both your ammunition and health reservoirs. A missile impact will deplete your health reservoir. Your ammunition and health reservoirs will constantly recharge. As the game goes on, additional enemy ships will join the others, causing the rate of fire to increase. Your health level, ammunition level, and electromagnetic pulse charging indicators are shown on gauges on your screen. Your radar and heads-up display show incoming missile positions. You gain one point for every enemy missile you destroy. When your health level drops below zero, the game is over. Good luck!", "Instruction text.");
+	setStandard("textInstructions", "Welcome to Crucible Island. You occupy a tower atop an island mountain range. Enemy ships orbit the island firing missiles at you, which you must shoot down using your cannon or by firing electromagnetic pulses. Firing cannon shells depletes your ammunition reservoir, and firing electromagnetic pulses requires a charging period and depletes both your ammunition and health reservoirs. A missile impact will deplete your health reservoir. Your ammunition and health reservoirs will constantly recharge. As the game goes on, additional enemy ships will join the others, causing the rate of fire to increase. Your health level, ammunition level, and electromagnetic pulse charging indicators are shown on gauges on your screen. Your radar and heads-up display show incoming missile positions. You gain a certain number of points (based on the difficulty setting) for every enemy missile you destroy. When your health level drops below zero, the game is over.", "Instruction text.");
 	setStandard("textCredits", "Dedicated to Sergeant Sean Drenth #6894 of the Phoenix Police Department; EOW October 18, 2010.\n\nCreated by Joshua Bodine.\n\nMusic and sound effects by Michael Birch (http://flexstylemusic.com).\n\nThis software uses the Titillium Web font by Accademia di Belle Arti di Urbino and students of MA course of Visual design.\n\nThis software uses the Simple DirectMedia Layer library (http://www.libsdl.org/).\n\nPortions of this software are copyright (c) 2014 The FreeType Project (www.freetype.org). All rights reserved.", "Credits text.");
 
 	// load standards from preferences (or save standard preferences if no file)
@@ -259,7 +259,7 @@ GameSystem::GameSystem() {
 		setStandard("islandTerrainDetail", platform->getPreferenceFloat("islandTerrainDetail"));
 		setStandard("developmentMode", platform->getPreferenceFloat("developmentMode") == 1.0f ? true : false);
 		std::string highScoresString = platform->getPreferenceString("highScores");
-		size_t i = highScoresString.find('\t');
+		size_t i = highScoresString.rfind('\t');
 		while(i != std::string::npos) {
 			std::string highScoreName = highScoresString.substr(0, i);
 			highScoresString = highScoresString.substr(i + 1);
