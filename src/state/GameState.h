@@ -76,6 +76,7 @@ public:
 	Vector3 shipMissileOrigin;
 	Vector3 turretOrigin;
 	Vector3 shellOrigin;
+	bool invertShipOrbit;
 	float shellRadius;
 	float missileLength;
 	float missileRadius;

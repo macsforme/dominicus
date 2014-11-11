@@ -45,6 +45,7 @@ unsigned int GameState::getGameMills() {
 
 GameState::GameState() : MainLoopMember((unsigned int) gameSystem->getFloat("stateUpdateFrequency")),
 		score(0),
+		invertShipOrbit(rand() % 2 == 1 ? true : false),
 		binoculars(false),
 		recoil(false),
 		empIsCharging(false),
@@ -299,10 +300,10 @@ unsigned int GameState::execute(bool unScheduled) {
 			// orbit phase
 			ships[i].position = Vector3(-shipOrbitDistance - gameSystem->getFloat("stateShipMargin") * (float) i, 0.0f, 0.0f);
 			Matrix3 rotationMatrix; rotationMatrix.identity();
-			rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians((45.0f + (shipLifeTime - gameSystem->getFloat("stateShipEntryTime")) * gameSystem->getFloat("stateShipSpeed") / (2.0f * PI * (shipOrbitDistance + gameSystem->getFloat("stateShipMargin") * (float) i)) * 360.0f) * (i % 2 == 0 ? 1.0f : -1.0f) + ships[i].originAngle), rotationMatrix);
+			rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians((45.0f + (shipLifeTime - gameSystem->getFloat("stateShipEntryTime")) * gameSystem->getFloat("stateShipSpeed") / (2.0f * PI * (shipOrbitDistance + gameSystem->getFloat("stateShipMargin") * (float) i)) * 360.0f) * (i % 2 == 0 ? 1.0f : -1.0f) * (invertShipOrbit ? -1.0f : 1.0f) + ships[i].originAngle), rotationMatrix);
 			ships[i].position = ships[i].position * rotationMatrix;
 
-			ships[i].rotation = (45.0f + (shipLifeTime - gameSystem->getFloat("stateShipEntryTime")) * gameSystem->getFloat("stateShipSpeed") / (2.0f * PI * (shipOrbitDistance + gameSystem->getFloat("stateShipMargin") * (float) i)) * 360.0f - 90.0f) * (i % 2 == 0 ? 1.0f : -1.0f) + ships[i].originAngle;
+			ships[i].rotation = (45.0f + (shipLifeTime - gameSystem->getFloat("stateShipEntryTime")) * gameSystem->getFloat("stateShipSpeed") / (2.0f * PI * (shipOrbitDistance + gameSystem->getFloat("stateShipMargin") * (float) i)) * 360.0f - 90.0f) * (i % 2 == 0 ? 1.0f : -1.0f) * (invertShipOrbit ? -1.0f : 1.0f) + ships[i].originAngle;
 		} else {
 			float outerCircleRadius = -(shipOrbitDistance + gameSystem->getFloat("stateShipMargin") * (float) i) / (cos(radians(45.0f)) - 1.0f) - (shipOrbitDistance + gameSystem->getFloat("stateShipMargin") * (float) i);
 			float entryPhaseDistance = outerCircleRadius * 2.0f * PI / 8.0f;
@@ -310,15 +311,15 @@ unsigned int GameState::execute(bool unScheduled) {
 
 			if((gameSystem->getFloat("stateShipEntryTime") - shipLifeTime) * gameSystem->getFloat("stateShipSpeed") <= entryPhaseDistance) {
 				// entry turn phase
-				ships[i].position = Vector3(0.0f, 0.0f, -outerCircleRadius * (i % 2 == 0 ? 1.0f : -1.0f));
+				ships[i].position = Vector3(0.0f, 0.0f, -outerCircleRadius * (i % 2 == 0 ? 1.0f : -1.0f) * (invertShipOrbit ? -1.0f : 1.0f));
 				Matrix3 rotationMatrix; rotationMatrix.identity();
-				rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), -radians((shipLifeTime - (gameSystem->getFloat("stateShipEntryTime") - entryPhaseTime)) / entryPhaseTime * 45.0f) * (i % 2 == 0 ? 1.0f : -1.0f), rotationMatrix);
+				rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), -radians((shipLifeTime - (gameSystem->getFloat("stateShipEntryTime") - entryPhaseTime)) / entryPhaseTime * 45.0f) * (i % 2 == 0 ? 1.0f : -1.0f) * (invertShipOrbit ? -1.0f : 1.0f), rotationMatrix);
 				ships[i].position = ships[i].position * rotationMatrix;
-				ships[i].position += Vector3(-outerCircleRadius, 0.0f, outerCircleRadius * (i % 2 == 0 ? 1.0f : -1.0f));
+				ships[i].position += Vector3(-outerCircleRadius, 0.0f, outerCircleRadius * (i % 2 == 0 ? 1.0f : -1.0f) * (invertShipOrbit ? -1.0f : 1.0f));
 				rotationMatrix.identity(); rotateMatrix(Vector3(0.0f, 1.0f, 0.0f), radians(ships[i].originAngle), rotationMatrix);
 				ships[i].position = ships[i].position * rotationMatrix;
 
-				ships[i].rotation = -((shipLifeTime - (gameSystem->getFloat("stateShipEntryTime") - entryPhaseTime)) / entryPhaseTime * 45.0f) * (i % 2 == 0 ? 1.0f : -1.0f) + ships[i].originAngle;
+				ships[i].rotation = -((shipLifeTime - (gameSystem->getFloat("stateShipEntryTime") - entryPhaseTime)) / entryPhaseTime * 45.0f) * (i % 2 == 0 ? 1.0f : -1.0f) * (invertShipOrbit ? -1.0f : 1.0f) + ships[i].originAngle;
 			} else {
 				// approach phase
 				ships[i].position = Vector3(-outerCircleRadius - gameSystem->getFloat("stateShipSpeed") * (gameSystem->getFloat("stateShipEntryTime") - entryPhaseTime - shipLifeTime), 0.0f, 0.0f);
