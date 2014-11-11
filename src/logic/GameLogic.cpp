@@ -848,7 +848,13 @@ void GameLogic::reScheme() {
 			// level setting control label
 			*((float*) levelSettingEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
 			*((Vector4*) levelSettingEntry.second["fontColor"]) = (activeMenuSelection == &levelSettingEntry ? gameSystem->getColor("fontColorLight") : gameSystem->getColor("fontColorDark"));
-			std::stringstream ss; ss << "Starting Level: " << gameSystem->getString("gameStartingLevel");
+			std::stringstream ss; ss << "Starting Level: ";
+			if(gameSystem->getFloat("gameStartingLevel") == 1)
+				ss << "Easy";
+			else if(gameSystem->getFloat("gameStartingLevel") == 2)
+				ss << "Medium";
+			else
+				ss << "Hard";
 			*((std::string*) levelSettingEntry.second["text"]) = ss.str().c_str();
 			((UIMetrics*) levelSettingEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(levelSettingEntry.second);
 			drawingMaster->drawStack.push_back(levelSettingEntry);
@@ -1434,7 +1440,7 @@ void GameLogic::reScheme() {
 		stringStream << "\n";
 		stringStream << "Game Time:\t";
 		if(gameState == NULL) {
-			stringStream << "NULL\n";
+			stringStream << "NULL";
 		} else {
 			stringStream << (gameState->lastUpdateGameTime / 3600000);
 			stringStream << ":";
@@ -1446,8 +1452,42 @@ void GameLogic::reScheme() {
 					(gameState->lastUpdateGameTime % 1000) / 100
 				);
 			stringStream << minuteSecondString;
-			stringStream << "\n";
 		}
+		stringStream << "\n";
+		stringStream << "Orbiting Ships:\t";
+		unsigned int activeShips = 0;
+		if(gameState == NULL) {
+			stringStream << "NULL";
+		} else {
+			for(size_t i = 0; i < gameState->ships.size(); ++i)
+				if((float) (gameState->lastUpdateGameTime - gameState->ships[i].originTime) / 1000.0f > gameSystem->getFloat("stateShipEntryTime"))
+					++activeShips;
+			stringStream << activeShips;
+		}
+		stringStream << "\n";
+		stringStream << "Live Missiles:\t";
+		if(gameState == NULL) {
+			stringStream << "NULL";
+		} else {
+			unsigned int liveMissileCount = 0;
+			for(size_t i = 0; i < gameState->missiles.size(); ++i)
+				if(gameState->missiles[i].alive)
+					++liveMissileCount;
+			stringStream << liveMissileCount;
+		}
+		stringStream << "\n";
+		stringStream << "Missiles Fired:\t";
+		if(gameState == NULL)
+			stringStream << "NULL";
+		else
+			stringStream << gameState->missiles.size();
+		stringStream << "\n";
+		stringStream << "Firing Interval:\t";
+		if(gameState == NULL)
+			stringStream << "NULL";
+		else
+			stringStream << (float) ((unsigned int) ((gameState->getFiringInterval() / 1000.0f / (float) activeShips) * 100.0f)) / 100.0f;
+		stringStream << "\n";
 		stringStream << "FPS:\t";
 		stringStream << drawingMaster->runRate;
 		*((std::string*) develStatsEntry.second["text"]) = stringStream.str().c_str();
@@ -1633,13 +1673,13 @@ void GameLogic::continueFromGameOver() {
 }
 
 void GameLogic::alterGameLevel(bool increase) {
-	if(gameSystem->getString("gameStartingLevel") == "Easy") {
-		gameSystem->setStandard("gameStartingLevel", (increase ? "Medium" : "Hard"), "");
-	} else if(gameSystem->getString("gameStartingLevel") == "Medium") {
-		gameSystem->setStandard("gameStartingLevel", (increase ? "Hard" : "Easy"), "");
-	} else if(gameSystem->getString("gameStartingLevel") == "Hard") {
-		gameSystem->setStandard("gameStartingLevel", (increase ? "Easy" : "Medium"), "");
-	}
+	float gameLevel = gameSystem->getFloat("gameStartingLevel") + (increase ? 1.0f : -1.0f);
+	if(gameLevel > 3.0f)
+		gameLevel = 1.0f;
+	else if(gameLevel < 1.0f)
+		gameLevel = 3.0f;
+
+	gameSystem->setStandard("gameStartingLevel", gameLevel);
 	gameSystem->flushPreferences();
 
 	reScheme();
@@ -3163,8 +3203,10 @@ unsigned int GameLogic::execute(bool unScheduled) {
 				primaryFireClickListener2->wasClicked() ||
 				primaryFireClickListener3->wasClicked()
 			) {
-			gameState->fireShell();
-			gameAudio->playSound("shellEffect");
+			if(gameState->fortress.ammunition >= gameSystem->getFloat("stateAmmoFiringCost")) {
+				gameState->fireShell();
+				gameAudio->playSound("shellEffect");
+			}
 		}
 		if(secondaryFireClickListener->wasClicked()) {
 			gameState->empIsCharging = ! gameState->empIsCharging;
@@ -3182,8 +3224,10 @@ unsigned int GameLogic::execute(bool unScheduled) {
 		KeyListener* activeKeyListener = gameSystem->getBool("developmentMode") ? playingDevelopmentModeKeyListener : playingKeyListener;
 		for(SDLKey key = activeKeyListener->popKey(); key != SDLK_UNKNOWN; key = activeKeyListener->popKey()) {
 			if(key == SDLK_SPACE && gameGraphics->currentCamera == &fortressCamera) {
-				gameState->fireShell();
-				gameAudio->playSound("shellEffect");
+				if(gameState->fortress.ammunition >= gameSystem->getFloat("stateAmmoFiringCost")) {
+					gameState->fireShell();
+					gameAudio->playSound("shellEffect");
+				}
 			} else if(key == SDLK_TAB) {
 				gameState->empIsCharging = ! gameState->empIsCharging;
 
@@ -3198,6 +3242,7 @@ unsigned int GameLogic::execute(bool unScheduled) {
 				((DrawRadar*) drawingMaster->drawers["radar"])->reloadState();
 				((ExplosionRenderer*) drawingMaster->drawers["explosionRenderer"])->reloadState();
 				((TerrainRenderer*) drawingMaster->drawers["terrainRenderer"])->reloadState();
+				missileCache.clear();
 			} else if(key == SDLK_BACKSLASH) {
 				if(gameGraphics->currentCamera == &fortressCamera) {
 					gameGraphics->currentCamera = &orbitCamera;

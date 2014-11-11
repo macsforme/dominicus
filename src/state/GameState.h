@@ -46,6 +46,7 @@ public:
 	Vector3 position;
 	float rotation;
 	float originAngle;
+	unsigned int originTime;
 };
 
 class Missile {
@@ -97,6 +98,12 @@ public:
 	void bumpStart();
 
 	void fireShell();
+
+	unsigned int getFiringInterval();
+	unsigned int getShipAdditionInterval();
+	unsigned int getCriticalTime();
+	unsigned int getNumberOfShipsAtTime(unsigned int time);
+	unsigned int getShipOriginTime(size_t ship);
 };
 
 #endif // GAMESTATE_H

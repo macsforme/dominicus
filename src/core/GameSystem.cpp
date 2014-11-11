@@ -99,11 +99,19 @@ GameSystem::GameSystem() {
 	setStandard("stateUpdateFrequency", 120.0f, "Number of times per second the core state updates.");
 	setStandard("stateShipOrbitMargin", 500.0f, "Radius of margin between maximum edge of island and first ship orbit.");
 	setStandard("stateShipMargin", 150.0f, "Lateral distance between ships orbiting island.");
-	setStandard("stateShipSpeed", 100.0f, "Ship speed in world units per second.");
+	setStandard("stateShipSpeed", 120.0f, "Ship speed in world units per second.");
 	setStandard("stateShipEntryTime", 20.0f, "Time it takes between ship introduction and beginning of orbit.");
-	setStandard("stateShipAddRate", 17.0f, "Time between ships being added to the world.");
+	setStandard("stateShipAddIntervalEasy", 150.0f, "Time for easy level between ships being added to the world.");
+	setStandard("stateShipAddIntervalMedium", 90.0f, "Time for medium level between ships being added to the world.");
+	setStandard("stateShipAddIntervalHard", 75.0f, "Time for hard level between ships being added to the world.");
+	setStandard("stateShipAddIntervalLogarithmicScaleEasy", 1800.0f, "Time in seconds for easy level that it takes to reach critical ship addition rate.");
+	setStandard("stateShipAddIntervalLogarithmicScaleMedium", 900.0f, "Time in seconds for medium level that it takes to reach critical ship addition rate.");
+	setStandard("stateShipAddIntervalLogarithmicScaleHard", 600.0f, "Time in seconds for hard level that it takes to reach critical ship addition rate.");
+	setStandard("stateShipAddIntervalLogarithmicScaleExponent", 4.0f, "Exponent of 2 for logarithmic scale for ship addition rate.");
 	setStandard("stateMissileSpeed", 100.0f, "Missile speed in world units per second.");
-	setStandard("stateMissileFiringRate", 12.0f, "Wait time in between missile firings for each ship.");
+	setStandard("stateMissileFiringIntervalEasy", 12.0f, "Wait time for easy level in between missile firings for each ship.");
+	setStandard("stateMissileFiringIntervalMedium", 10.0f, "Wait time for medium level in between missile firings for each ship.");
+	setStandard("stateMissileFiringIntervalHard", 8.0f, "Wait time for hard level in between missile firings for each ship.");
 	setStandard("stateMissileRadiusMultiplier", 1.5f, "Multiplier of missile radius for actual collision area.");
 	setStandard("stateFortressMinimumTilt", 0.0f, "Minimum tilt angle of fortress turret.");
 	setStandard("stateFortressMaximumTilt", 45.0f, "Maximum tilt angle of fortress turret.");
@@ -220,9 +228,9 @@ GameSystem::GameSystem() {
 	setStandard("audioVolumeDropOffDistance", 1500.0f, "Distance it takes for an object's effect volume to fade to zero.");
 
 	// general game standards
-	setStandard("preferencesVersion", 3.0f, "Version of preferences file format.");
+	setStandard("preferencesVersion", 4.0f, "Version of preferences file format.");
 	setStandard("developmentMode", false, "Whether to enable extra development features.");
-	setStandard("gameStartingLevel", "Easy", "Starting difficulty level.");
+	setStandard("gameStartingLevel", 1.0f, "Starting difficulty level.");
 	setStandard("gameMaximumHighScores", 5.0f, "Maximum number of high scores to track.");
 	setStandard("islandMaximumWidth", 1000.0f, "Maximum island width.");
 	setStandard("islandMaximumHeight", 100.0f, "Maximum island height.");
@@ -247,7 +255,7 @@ GameSystem::GameSystem() {
 		setStandard("displayStartFullscreen", platform->getPreferenceFloat("displayStartFullscreen") == 1.0f ? true : false);
 		setStandard("audioMusicVolume", platform->getPreferenceFloat("audioMusicVolume"));
 		setStandard("audioEffectsVolume", platform->getPreferenceFloat("audioEffectsVolume"));
-		setStandard("gameStartingLevel", platform->getPreferenceString("gameStartingLevel").c_str());
+		setStandard("gameStartingLevel", platform->getPreferenceFloat("gameStartingLevel"));
 		setStandard("islandTerrainDetail", platform->getPreferenceFloat("islandTerrainDetail"));
 		setStandard("developmentMode", platform->getPreferenceFloat("developmentMode") == 1.0f ? true : false);
 		std::string highScoresString = platform->getPreferenceString("highScores");
@@ -350,7 +358,7 @@ void GameSystem::flushPreferences() {
 	platform->setPreference("displayMultisamplingLevel", getFloat("displayMultisamplingLevel"));
 	platform->setPreference("audioMusicVolume", getFloat("audioMusicVolume"));
 	platform->setPreference("audioEffectsVolume", getFloat("audioEffectsVolume"));
-	platform->setPreference("gameStartingLevel", getString("gameStartingLevel").c_str());
+	platform->setPreference("gameStartingLevel", getFloat("gameStartingLevel"));
 	platform->setPreference("islandTerrainDetail", getFloat("islandTerrainDetail"));
 	platform->setPreference("developmentMode", (getBool("developmentMode") == true ? 1.0f : 0.0f));
 	if(highScores.size() == 0) {

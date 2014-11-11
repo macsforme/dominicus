@@ -284,15 +284,16 @@ unsigned int GameState::execute(bool unScheduled) {
 	// update/add ships as appropriate
 	float shipOrbitDistance = (gameSystem->getFloat("islandMaximumWidth") * 0.5f + gameSystem->getFloat("stateShipOrbitMargin"));
 
-	while(lastUpdateGameTime / 1000 / gameSystem->getFloat("stateShipAddRate") + 1 > ships.size()) {
+	while(getNumberOfShipsAtTime(lastUpdateGameTime) > ships.size()) {
 		Ship ship;
 		ship.originAngle = fortress.rotation;
+		ship.originTime = getShipOriginTime(ships.size());
 		ships.push_back(ship);
 	}
 
 	for(size_t i = 0; i < ships.size(); ++i) {
 		// determine phase
-		float shipLifeTime = (float) (lastUpdateGameTime - i * gameSystem->getFloat("stateShipAddRate") * 1000) / 1000.0f;
+		float shipLifeTime = (float) (lastUpdateGameTime - ships[i].originTime) / 1000.0f;
 
 		if(shipLifeTime > gameSystem->getFloat("stateShipEntryTime")) {
 			// orbit phase
@@ -346,11 +347,11 @@ unsigned int GameState::execute(bool unScheduled) {
 	}
 
 	for(size_t i = 0; i < ships.size(); ++i) {
-		float shipLifeTime = (float) (lastUpdateGameTime - i * gameSystem->getFloat("stateShipAddRate") * 1000) / 1000.0f;
+		float shipLifeTime = (float) (lastUpdateGameTime - ships[i].originTime) / 1000.0f;
 
 		if(
 				shipLifeTime > gameSystem->getFloat("stateShipEntryTime") &&
-				(shipLifeTime - gameSystem->getFloat("stateShipEntryTime")) / gameSystem->getFloat("stateMissileFiringRate") > (float) shipMissiles[i]
+				(shipLifeTime - gameSystem->getFloat("stateShipEntryTime")) / ((float) getFiringInterval() / 1000.0f) > (float) shipMissiles[i]
 			) {
 			// this ship is due to fire a missile
 			Missile missile;
@@ -572,7 +573,7 @@ unsigned int GameState::execute(bool unScheduled) {
 			deltaTime *
 			gameSystem->getFloat("stateAmmoFiringCost") *
 			(float) ships.size() /
-			gameSystem->getFloat("stateMissileFiringRate") *
+			(getFiringInterval() / 1000.0f) *
 			gameSystem->getFloat("stateAmmoReloadMultiplier");
 	if(fortress.ammunition > 1.0f) fortress.ammunition = 1.0f;
 
@@ -667,4 +668,61 @@ void GameState::fireShell() {
 	} else {
 		recoil = 2.0f;
 	}
+}
+
+unsigned int GameState::getFiringInterval() {
+	return (unsigned int) (gameSystem->getFloat(
+			gameSystem->getFloat("gameStartingLevel") == 1.0f ? "stateMissileFiringIntervalEasy" :
+			gameSystem->getFloat("gameStartingLevel") == 2.0f ? "stateMissileFiringIntervalMedium" :
+			"stateMissileFiringIntervalHard"
+		)) * 1000;
+}
+
+unsigned int GameState::getShipAdditionInterval() {
+	return (unsigned int) (gameSystem->getFloat(
+			gameSystem->getFloat("gameStartingLevel") == 1.0f ? "stateShipAddIntervalEasy" :
+			gameSystem->getFloat("gameStartingLevel") == 2.0f ? "stateShipAddIntervalMedium" :
+			"stateShipAddIntervalHard"
+		)) * 1000;
+}
+
+unsigned int GameState::getCriticalTime() {
+	// since one missile is added at game time = 0, the time returned is actually the moment one ship more than critical is added
+	return (unsigned int) (gameSystem->getFloat(
+			gameSystem->getFloat("gameStartingLevel") == 1.0f ? "stateShipAddIntervalLogarithmicScaleEasy" :
+			gameSystem->getFloat("gameStartingLevel") == 2.0f ? "stateShipAddIntervalLogarithmicScaleMedium" :
+			"stateShipAddIntervalLogarithmicScaleHard"
+		)) * 1000;
+}
+
+unsigned int GameState::getNumberOfShipsAtTime(unsigned int time) {
+	return (unsigned int) (
+			log2(
+					(float) time /
+					(float) getCriticalTime() *
+					(pow(2.0f, gameSystem->getFloat("stateShipAddIntervalLogarithmicScaleExponent")) - 1.0f) +
+					1.0f
+				) /
+			gameSystem->getFloat("stateShipAddIntervalLogarithmicScaleExponent") *
+			getCriticalTime() /
+			getShipAdditionInterval() +
+			1
+		);
+}
+
+unsigned int GameState::getShipOriginTime(size_t ship) {
+	return (unsigned int) (
+			getCriticalTime() /
+			(pow(2.0f, gameSystem->getFloat("stateShipAddIntervalLogarithmicScaleExponent")) - 1.0f) *
+			(
+					pow(
+							2.0f,
+							ship * // the formula is (ship - 1) but we have to add one since the array index is one lower than the ship number
+							gameSystem->getFloat("stateShipAddIntervalLogarithmicScaleExponent") *
+							getShipAdditionInterval() /
+							getCriticalTime()
+						) -
+					1.0f
+				)
+		);
 }
