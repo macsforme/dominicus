@@ -1332,7 +1332,7 @@ void GameLogic::reScheme() {
 
 			// about title label
 			*((float*) menuTitleEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeLarge");
-			*((std::string*) menuTitleEntry.second["text"]) = "HELP";
+			*((std::string*) menuTitleEntry.second["text"]) = "ABOUT";
 			((UIMetrics*) menuTitleEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(menuTitleEntry.second);
 			drawingMaster->drawStack.push_back(menuTitleEntry);
 			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) menuTitleEntry.second["metrics"]);
