@@ -24,10 +24,10 @@ private:
 			SCHEME_PLAYING,
 			SCHEME_PAUSED,
 			SCHEME_GAMEOVER,
-			SCHEME_SETTINGS,
-			SCHEME_HIGHSCORES,
 			SCHEME_HELP,
-			SCHEME_ABOUT
+			SCHEME_ABOUT,
+			SCHEME_HIGHSCORES,
+			SCHEME_SETTINGS
 		} currentScheme;
 
 	void syncButtonWidths(std::vector<DrawStackEntry*> buttons);
@@ -68,15 +68,15 @@ public:
 	DrawStackEntry playButtonEntry;
 	MouseZoneListener* playButtonZoneListener;
 	MouseButtonListener* playButtonClickListener;
-	DrawStackEntry settingsButtonEntry;
-	MouseZoneListener* settingsButtonZoneListener;
-	MouseButtonListener* settingsButtonClickListener;
-	DrawStackEntry highScoresButtonEntry;
-	MouseZoneListener* highScoresButtonZoneListener;
-	MouseButtonListener* highScoresButtonClickListener;
 	DrawStackEntry helpButtonEntry;
 	MouseZoneListener* helpButtonZoneListener;
 	MouseButtonListener* helpButtonClickListener;
+	DrawStackEntry highScoresButtonEntry;
+	MouseZoneListener* highScoresButtonZoneListener;
+	MouseButtonListener* highScoresButtonClickListener;
+	DrawStackEntry settingsButtonEntry;
+	MouseZoneListener* settingsButtonZoneListener;
+	MouseButtonListener* settingsButtonClickListener;
 	DrawStackEntry quitButtonEntry;
 	MouseZoneListener* quitButtonZoneListener;
 	MouseButtonListener* quitButtonClickListener;
@@ -154,6 +154,27 @@ public:
 	MouseZoneListener* gameOverContinueButtonZoneListener;
 	MouseButtonListener* gameOverContinueButtonClickListener;
 
+	// help menu
+	KeyListener* helpMenuKeyListener;
+	DrawStackEntry instructionsTitleEntry;
+	DrawStackEntry instructionsEntry;
+	DrawStackEntry aboutButtonEntry;
+	MouseZoneListener* aboutButtonZoneListener;
+	MouseButtonListener* aboutButtonClickListener;
+	DrawStackEntry backButtonEntry;
+	MouseZoneListener* backButtonZoneListener;
+	MouseButtonListener* backButtonClickListener;
+
+	// about menu
+	KeyListener* aboutMenuKeyListener;
+	DrawStackEntry versionTitleEntry;
+	DrawStackEntry versionEntry;
+	DrawStackEntry creditsTitleEntry;
+	DrawStackEntry creditsEntry;
+
+	// high scores menu
+	KeyListener* highScoresMenuKeyListener;
+
 	// settings menu
 	KeyListener* settingsMenuKeyListener;
 	DrawStackEntry levelSettingEntry;
@@ -186,27 +207,6 @@ public:
 	DrawStackEntry resetHighScoresEntry;
 	MouseZoneListener* resetHighScoresButtonZoneListener;
 	MouseButtonListener* resetHighScoresButtonClickListener;
-	DrawStackEntry backButtonEntry;
-	MouseZoneListener* backButtonZoneListener;
-	MouseButtonListener* backButtonClickListener;
-
-	// high scores menu
-	KeyListener* highScoresMenuKeyListener;
-
-	// help menu
-	KeyListener* helpMenuKeyListener;
-	DrawStackEntry instructionsTitleEntry;
-	DrawStackEntry instructionsEntry;
-	DrawStackEntry aboutButtonEntry;
-	MouseZoneListener* aboutButtonZoneListener;
-	MouseButtonListener* aboutButtonClickListener;
-
-	// about menu
-	KeyListener* aboutMenuKeyListener;
-	DrawStackEntry versionTitleEntry;
-	DrawStackEntry versionEntry;
-	DrawStackEntry creditsTitleEntry;
-	DrawStackEntry creditsEntry;
 
 	// cameras
 	IntroCamera introCamera;
