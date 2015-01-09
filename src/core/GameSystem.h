@@ -62,7 +62,8 @@ public:
 
 	void flushPreferences();
 
-	std::vector< std::pair<unsigned int, std::string> > highScores;
+	std::vector<std::string> highScores;
+	unsigned int extractScoreFromLine(std::string scoreString);
 
 	std::vector< std::pair<unsigned int, unsigned int> > getAllowedWindowResolutions();
 	void applyScreenResolution(std::string resolution);

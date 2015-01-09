@@ -228,7 +228,7 @@ GameSystem::GameSystem() {
 	setStandard("audioVolumeDropOffDistance", 1500.0f, "Distance it takes for an object's effect volume to fade to zero.");
 
 	// general game standards
-	setStandard("preferencesVersion", 5.0f, "Version of preferences file format.");
+	setStandard("preferencesVersion", 6.0f, "Version of preferences file format.");
 	setStandard("developmentMode", false, "Whether to enable extra development features.");
 	setStandard("gameStartingLevel", 1.0f, "Starting difficulty level.");
 	setStandard("gameMaximumHighScores", 5.0f, "Maximum number of high scores to track.");
@@ -258,16 +258,15 @@ GameSystem::GameSystem() {
 		setStandard("gameStartingLevel", platform->getPreferenceFloat("gameStartingLevel"));
 		setStandard("islandTerrainDetail", platform->getPreferenceFloat("islandTerrainDetail"));
 		setStandard("developmentMode", platform->getPreferenceFloat("developmentMode") == 1.0f ? true : false);
+
 		std::string highScoresString = platform->getPreferenceString("highScores");
-		size_t i = highScoresString.rfind('\t');
-		while(i != std::string::npos) {
-			std::string highScoreName = highScoresString.substr(0, i);
-			highScoresString = highScoresString.substr(i + 1);
-			i = highScoresString.find('\n');
-			std::string highScoreScore = highScoresString.substr(0, i);
-			highScoresString = highScoresString.substr(i + 1);
-			i = highScoresString.find('\t');
-			highScores.push_back(std::make_pair((unsigned int) atoi(highScoreScore.c_str()), highScoreName));
+		size_t i = 0;
+		while(i < highScoresString.length() - 1 && i != std::string::npos) {
+			if(i > 0) ++i;
+
+			highScores.push_back(highScoresString.substr(i, highScoresString.find('\n', i) - i));
+
+			i = highScoresString.find('\n', i);
 		}
 	} else {
 		flushPreferences();
@@ -367,10 +366,22 @@ void GameSystem::flushPreferences() {
 		std::stringstream stringStream;
 		stringStream << "\"";
 		for(size_t i = 0; i < highScores.size(); ++i)
-			stringStream << (i > 0 ? "\n" : "") << highScores[i].second << "\t" << highScores[i].first;
+			stringStream << highScores[i] << "\n";
 		stringStream << "\"";
 		platform->setPreference("highScores", stringStream.str().c_str());
 	}
+}
+
+unsigned int GameSystem::extractScoreFromLine(std::string scoreString) {
+	size_t scoreBeginning = scoreString.find('\t');
+	if(scoreBeginning == std::string::npos)
+		log(GameSystem::LOG_FATAL, "Could not locate score beginning of high score line: " + scoreString);
+
+	size_t scoreEnd = scoreString.substr(scoreBeginning + 1, std::string::npos).find('\t');
+	if(scoreEnd == std::string::npos)
+		log(GameSystem::LOG_FATAL, "Could not locate score end of high score line: " + scoreString);
+
+	return (unsigned int) atoi(scoreString.substr(scoreBeginning + 1, scoreEnd - scoreBeginning - 1).c_str());
 }
 
 std::vector< std::pair<unsigned int, unsigned int> > GameSystem::getAllowedWindowResolutions() {

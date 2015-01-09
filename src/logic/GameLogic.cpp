@@ -697,9 +697,9 @@ void GameLogic::reScheme() {
 			// score label
 			*((float*) yourScoreEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
 			char scoreString[8]; scoreString[0] = '\0'; if(gameState->score <= 9999999) sprintf(scoreString, "%u", gameState->score);
-			*((std::string*) yourScoreEntry.second["text"]) = (gameSystem->getFloat("gameStartingLevel") == 1.0f ? "Easy" : gameSystem->getFloat("gameStartingLevel") == 2.0f ? "Medium" : "Hard");
+			*((std::string*) yourScoreEntry.second["text"]) = scoreString;
 			*((std::string*) yourScoreEntry.second["text"]) += "\t";
-			*((std::string*) yourScoreEntry.second["text"]) += scoreString;
+			*((std::string*) yourScoreEntry.second["text"]) += (gameSystem->getFloat("gameStartingLevel") == 1.0f ? "Easy" : gameSystem->getFloat("gameStartingLevel") == 2.0f ? "Medium" : "Hard");
 			((UIMetrics*) yourScoreEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(yourScoreEntry.second);
 			drawingMaster->drawStack.push_back(yourScoreEntry);
 			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) yourScoreEntry.second["metrics"]);
@@ -712,33 +712,12 @@ void GameLogic::reScheme() {
 
 			// high scores label
 			*((float*) highScoresEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeSmall");
-			// imperfect without a fixed-width font, but pad shorter numbers with invisible zeros so it lines up better
-			std::stringstream stringStream;
-			size_t scoreLength = 0;
-			if(gameSystem->highScores.size() > 0) {
-				stringStream << gameSystem->highScores[0].first;
-				scoreLength = stringStream.str().length();
-				stringStream.str("");
-			}
-			for(size_t i = 0; i < gameSystem->highScores.size(); ++i) {
-				std::stringstream originalNumber;
-				originalNumber << gameSystem->highScores[i].first;
-
-				stringStream << (i > 0 ? "\n" : "") << gameSystem->highScores[i].second << "\t";
-
-				for(size_t p = originalNumber.str().length(); p < scoreLength; ++p)
-					stringStream << "\\ffffff000"; // zero-alpha '0' character
-
-				stringStream << "\\" << gameSystem->getString("fontColorLight");
-				stringStream << gameSystem->highScores[i].first;
-			}
-			if(stringStream.str().length() == 0) stringStream.str("No high scores have been recorded yet.");
-			*((std::string*) highScoresEntry.second["text"]) = stringStream.str();
+			*((std::string*) highScoresEntry.second["text"]) = getZeroPaddedHighScoresList();
 			((UIMetrics*) highScoresEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(highScoresEntry.second);
 			drawingMaster->drawStack.push_back(highScoresEntry);
 			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) highScoresEntry.second["metrics"]);
 
-			if(gameState->score > 0 && (gameSystem->highScores.size() == 0 || gameState->score > gameSystem->highScores.back().first)) {
+			if(gameState->score > 0 && (gameSystem->highScores.size() == 0 || gameState->score > gameSystem->extractScoreFromLine(gameSystem->highScores.back()))) {
 				// high scores label
 				*((float*) newHighScoreTitleEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
 				((UIMetrics*) newHighScoreTitleEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(newHighScoreTitleEntry.second);
@@ -798,7 +777,7 @@ void GameLogic::reScheme() {
 			// re-arrange the UI
 			drawingMaster->uiLayoutAuthority->rearrange();
 
-			if(gameState->score > 0 && (gameSystem->highScores.size() == 0 || gameState->score > gameSystem->highScores.back().first)) {
+			if(gameState->score > 0 && (gameSystem->highScores.size() == 0 || gameState->score > gameSystem->extractScoreFromLine(gameSystem->highScores.back()))) {
 				// assemble prompt container contents
 				((UIMetrics*) newHighScoreNameLabel.second["metrics"])->position = Vector2(
 						((UIMetrics*) newHighScoreContainer.second["metrics"])->position.x -
@@ -1069,28 +1048,7 @@ void GameLogic::reScheme() {
 
 			// high scores label
 			*((float*) highScoresEntry.second["fontSize"]) = gameSystem->getFloat("fontSizeMedium");
-			// imperfect without a fixed-width font, but pad shorter numbers with invisible zeros so it lines up better
-			std::stringstream stringStream;
-			size_t scoreLength = 0;
-			if(gameSystem->highScores.size() > 0) {
-				stringStream << gameSystem->highScores[0].first;
-				scoreLength = stringStream.str().length();
-				stringStream.str("");
-			}
-			for(size_t i = 0; i < gameSystem->highScores.size(); ++i) {
-				std::stringstream originalNumber;
-				originalNumber << gameSystem->highScores[i].first;
-
-				stringStream << (i > 0 ? "\n" : "") << gameSystem->highScores[i].second << "\t";
-
-				for(size_t p = originalNumber.str().length(); p < scoreLength; ++p)
-					stringStream << "\\ffffff000"; // zero-alpha '0' character
-
-				stringStream << "\\" << gameSystem->getString("fontColorLight");
-				stringStream << gameSystem->highScores[i].first;
-			}
-			if(stringStream.str().length() == 0) stringStream.str("No high scores have been recorded yet.");
-			*((std::string*) highScoresEntry.second["text"]) = stringStream.str();
+			*((std::string*) highScoresEntry.second["text"]) = getZeroPaddedHighScoresList();
 			((UIMetrics*) highScoresEntry.second["metrics"])->size = ((DrawLabel*) drawingMaster->drawers["label"])->getSize(highScoresEntry.second);
 			drawingMaster->drawStack.push_back(highScoresEntry);
 			drawingMaster->uiLayoutAuthority->metrics.push_back((UIMetrics*) highScoresEntry.second["metrics"]);
@@ -1639,26 +1597,31 @@ void GameLogic::endGameFromPause() {
 }
 
 void GameLogic::continueFromGameOver() {
-	if(gameState->score > 0 && (gameSystem->highScores.size() == 0 || gameState->score > gameSystem->highScores.back().first)) {
+	if(gameState->score > 0 && (gameSystem->highScores.size() == 0 || gameState->score > gameSystem->extractScoreFromLine(gameSystem->highScores.back()))) {
 		if(playerName != "") {
+			std::stringstream ss;
+
 			// trim
 			while(playerName.size() > 0 && playerName.substr(playerName.size() - 1, 1) == " ")
 				playerName = playerName.substr(0, playerName.size() - 1);
 			while(playerName.size() > 0 && playerName.substr(0, 1) == " ")
 				playerName = playerName.substr(1);
+			ss << playerName;
+
+			// add score
+			ss << "\t" << gameState->score;
 
 			// add difficulty level
-			playerName += "\t";
-			playerName += (gameSystem->getFloat("gameStartingLevel") == 1.0f ? "Easy" : gameSystem->getFloat("gameStartingLevel") == 2.0f ? "Medium" : "Hard");
+			ss << "\t" << (gameSystem->getFloat("gameStartingLevel") == 1.0f ? "Easy" : gameSystem->getFloat("gameStartingLevel") == 2.0f ? "Medium" : "Hard");
 
 			size_t position = 0;
-			while(position < gameSystem->highScores.size() && gameSystem->highScores[position].first >= gameState->score)
+			while(position < gameSystem->highScores.size() && gameSystem->extractScoreFromLine(gameSystem->highScores[position]) >= gameState->score)
 				++position;
 
 			if(position == gameSystem->highScores.size())
-				gameSystem->highScores.push_back(std::make_pair(gameState->score, playerName));
+				gameSystem->highScores.push_back(ss.str());
 			else
-				gameSystem->highScores.insert(gameSystem->highScores.begin() + position, std::make_pair(gameState->score, playerName));
+				gameSystem->highScores.insert(gameSystem->highScores.begin() + position, ss.str());
 			while(gameSystem->highScores.size() > (size_t) gameSystem->getFloat("gameMaximumHighScores"))
 				gameSystem->highScores.erase(gameSystem->highScores.end());
 
@@ -1940,6 +1903,44 @@ void GameLogic::playEffectAtDistance(std::string effect, float distance) {
 			effect,
 			(maxDistance - distance) / maxDistance
 		);
+}
+
+std::string GameLogic::	getZeroPaddedHighScoresList()  {
+	std::stringstream ss;
+
+	// imperfect without a fixed-width font, but pad shorter numbers with invisible zeros so it lines up better
+	size_t scoreLength = 0;
+
+	if(gameSystem->highScores.size() > 0) {
+		ss << gameSystem->extractScoreFromLine(gameSystem->highScores[0]);
+		scoreLength = ss.str().length();
+		ss.str("");
+	}
+
+	for(size_t i = 0; i < gameSystem->highScores.size(); ++i) {
+		// add name
+		ss << gameSystem->highScores[i].substr(0, gameSystem->highScores[i].find('\t')) << "\t";
+
+		// add score
+		std::stringstream originalNumber;
+		originalNumber << gameSystem->extractScoreFromLine(gameSystem->highScores[i]);
+
+		for(size_t p = originalNumber.str().length(); p < scoreLength; ++p)
+			ss << "\\ffffff000"; // zero-alpha '0' character
+
+		ss << "\\" << gameSystem->getString("fontColorLight");
+		ss << gameSystem->extractScoreFromLine(gameSystem->highScores[i]);
+
+		// add difficulty
+		ss << "\t" << "\\" << gameSystem->getString("fontColorLight");
+		ss << gameSystem->highScores[i].substr(gameSystem->highScores[i].rfind('\t') + 1);
+
+		ss << (i < gameSystem->highScores.size() - 1 ? "\n" : "");
+	}
+
+	if(ss.str().length() == 0) ss.str("No high scores have been recorded yet.");
+
+	return ss.str();
 }
 
 GameLogic::GameLogic() :

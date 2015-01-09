@@ -53,6 +53,7 @@ private:
 	void resetHighScores();
 
 	void playEffectAtDistance(std::string effect, float distance);
+	std::string getZeroPaddedHighScoresList();
 
 public:
 	// main menu
