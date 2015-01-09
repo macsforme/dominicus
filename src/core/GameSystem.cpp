@@ -232,6 +232,8 @@ GameSystem::GameSystem() {
 	setStandard("developmentMode", false, "Whether to enable extra development features.");
 	setStandard("gameStartingLevel", 1.0f, "Starting difficulty level.");
 	setStandard("gameMaximumHighScores", 5.0f, "Maximum number of high scores to track.");
+	setStandard("gameDefaultHighScoreName", "Anonymous", "Default player name for new high score entry.");
+	setStandard("gameHighScoreName", "", "Stored player name for new high score entry.");
 	setStandard("islandMaximumWidth", 1000.0f, "Maximum island width.");
 	setStandard("islandMaximumHeight", 100.0f, "Maximum island height.");
 	setStandard("islandTerrainBaseDensity", 128.0f, "Density of island terrain tessellation.");
@@ -256,12 +258,14 @@ GameSystem::GameSystem() {
 		setStandard("audioMusicVolume", platform->getPreferenceFloat("audioMusicVolume"));
 		setStandard("audioEffectsVolume", platform->getPreferenceFloat("audioEffectsVolume"));
 		setStandard("gameStartingLevel", platform->getPreferenceFloat("gameStartingLevel"));
+		setStandard("gameHighScoreName", platform->getPreferenceString("gameHighScoreName").c_str());
 		setStandard("islandTerrainDetail", platform->getPreferenceFloat("islandTerrainDetail"));
 		setStandard("developmentMode", platform->getPreferenceFloat("developmentMode") == 1.0f ? true : false);
 
 		std::string highScoresString = platform->getPreferenceString("highScores");
+
 		size_t i = 0;
-		while(i < highScoresString.length() - 1 && i != std::string::npos) {
+		while(highScoresString.length() > 0 && i < highScoresString.length() - 1 && i != std::string::npos) {
 			if(i > 0) ++i;
 
 			highScores.push_back(highScoresString.substr(i, highScoresString.find('\n', i) - i));
@@ -358,6 +362,7 @@ void GameSystem::flushPreferences() {
 	platform->setPreference("audioMusicVolume", getFloat("audioMusicVolume"));
 	platform->setPreference("audioEffectsVolume", getFloat("audioEffectsVolume"));
 	platform->setPreference("gameStartingLevel", getFloat("gameStartingLevel"));
+	platform->setPreference("gameHighScoreName", getString("gameHighScoreName").c_str());
 	platform->setPreference("islandTerrainDetail", getFloat("islandTerrainDetail"));
 	platform->setPreference("developmentMode", (getBool("developmentMode") == true ? 1.0f : 0.0f));
 	if(highScores.size() == 0) {

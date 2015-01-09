@@ -40,7 +40,7 @@ private:
 	void pauseGame();
 	void resumeGame();
 	void endGameFromPause();
-	void continueFromGameOver();
+	void continueFromGameOver(bool forward = true);
 	void alterGameLevel(bool increase = true);
 	void alterMusicLevel(bool increase = true);
 	void alterAudioEffectsLevel(bool increase = true);

@@ -1584,8 +1584,6 @@ void GameLogic::endGameFromPause() {
 	inputHandler->keyboard.listenUnicode = true;
 	inputHandler->keyboard.unicodeChars = "";
 
-	playerName = "";
-
 	currentScheme = SCHEME_GAMEOVER;
 	activeMenuSelection = &gameOverContinueButton;
 	reScheme();
@@ -1596,37 +1594,44 @@ void GameLogic::endGameFromPause() {
 	gameAudio->setBackgroundMusic("menuSong");
 }
 
-void GameLogic::continueFromGameOver() {
+void GameLogic::continueFromGameOver(bool forward) {
 	if(gameState->score > 0 && (gameSystem->highScores.size() == 0 || gameState->score > gameSystem->extractScoreFromLine(gameSystem->highScores.back()))) {
-		if(playerName != "") {
-			std::stringstream ss;
-
-			// trim
-			while(playerName.size() > 0 && playerName.substr(playerName.size() - 1, 1) == " ")
-				playerName = playerName.substr(0, playerName.size() - 1);
-			while(playerName.size() > 0 && playerName.substr(0, 1) == " ")
-				playerName = playerName.substr(1);
-			ss << playerName;
-
-			// add score
-			ss << "\t" << gameState->score;
-
-			// add difficulty level
-			ss << "\t" << (gameSystem->getFloat("gameStartingLevel") == 1.0f ? "Easy" : gameSystem->getFloat("gameStartingLevel") == 2.0f ? "Medium" : "Hard");
-
-			size_t position = 0;
-			while(position < gameSystem->highScores.size() && gameSystem->extractScoreFromLine(gameSystem->highScores[position]) >= gameState->score)
-				++position;
-
-			if(position == gameSystem->highScores.size())
-				gameSystem->highScores.push_back(ss.str());
-			else
-				gameSystem->highScores.insert(gameSystem->highScores.begin() + position, ss.str());
-			while(gameSystem->highScores.size() > (size_t) gameSystem->getFloat("gameMaximumHighScores"))
-				gameSystem->highScores.erase(gameSystem->highScores.end());
-
-			gameSystem->flushPreferences();
+		if(playerName == "") {
+			playerName = gameSystem->getString("gameDefaultHighScoreName");
+			gameSystem->setStandard("gameHighScoreName", "");
+		} else {
+			gameSystem->setStandard("gameHighScoreName", playerName.c_str());
 		}
+
+		std::stringstream ss;
+
+		// trim
+		while(playerName.size() > 0 && playerName.substr(playerName.size() - 1, 1) == " ")
+			playerName = playerName.substr(0, playerName.size() - 1);
+		while(playerName.size() > 0 && playerName.substr(0, 1) == " ")
+			playerName = playerName.substr(1);
+		ss << playerName;
+
+		// add score
+		ss << "\t" << gameState->score;
+
+		// add difficulty level
+		ss << "\t" << (gameSystem->getFloat("gameStartingLevel") == 1.0f ? "Easy" : gameSystem->getFloat("gameStartingLevel") == 2.0f ? "Medium" : "Hard");
+
+		size_t position = 0;
+		while(position < gameSystem->highScores.size() && gameSystem->extractScoreFromLine(gameSystem->highScores[position]) >= gameState->score)
+			++position;
+
+		if(position == gameSystem->highScores.size())
+			gameSystem->highScores.push_back(ss.str());
+		else
+			gameSystem->highScores.insert(gameSystem->highScores.begin() + position, ss.str());
+		while(gameSystem->highScores.size() > (size_t) gameSystem->getFloat("gameMaximumHighScores"))
+			gameSystem->highScores.erase(gameSystem->highScores.end());
+
+		gameSystem->flushPreferences();
+
+		playerName = gameSystem->getString("gameHighScoreName");
 	}
 
 	mainLoopModules.erase(mainLoopModules.find(gameState));
@@ -1638,7 +1643,7 @@ void GameLogic::continueFromGameOver() {
 	reScheme();
 	drawingMaster->execute(true);
 
-	gameAudio->playSound("selectEffect");
+	gameAudio->playSound(forward ? "selectEffect" : "backEffect");
 }
 
 void GameLogic::alterGameLevel(bool increase) {
@@ -1948,7 +1953,7 @@ GameLogic::GameLogic() :
 		currentScheme(SCHEME_MAINMENU),
 		activeMenuSelection(&playButtonEntry),
 		mouseActive(false),
-		playerName(""),
+		playerName(gameSystem->getString("gameHighScoreName")),
 		deleteKeyPressTime(-1),
 		lastCharacterDeletionTime(0),
 		leftArrowPressTime(0),
@@ -3189,8 +3194,6 @@ unsigned int GameLogic::execute(bool unScheduled) {
 
 			mainLoopModules.erase(mainLoopModules.find(drawingMaster));
 
-			playerName = "";
-
 			currentScheme = SCHEME_GAMEOVER;
 			activeMenuSelection = &gameOverContinueButton;
 			inputHandler->keyboard.listenUnicode = true;
@@ -3424,16 +3427,8 @@ unsigned int GameLogic::execute(bool unScheduled) {
 			} else if(key == SDLK_RETURN) {
 				continueFromGameOver();
 			} else if(key == SDLK_ESCAPE) {
-				mainLoopModules.erase(mainLoopModules.find(gameState));
-				delete gameState;
-				gameState = NULL;
-
-				currentScheme = SCHEME_MAINMENU;
-				activeMenuSelection = &playButtonEntry;
-				needReScheme = true;
-				needRedraw = true;
-
-				gameAudio->playSound("backEffect");
+				playerName = "";
+				continueFromGameOver(false);
 			}
 		}
 	} else if(currentScheme == SCHEME_SETTINGS) {
