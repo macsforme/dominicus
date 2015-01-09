@@ -2906,23 +2906,23 @@ unsigned int GameLogic::execute(bool unScheduled) {
 					needReScheme = true;
 					needRedraw = true;
 					gameAudio->playSound("alterUpEffect");
-				} else if(activeMenuSelection == &settingsButtonEntry) {
+				} else if(activeMenuSelection == &helpButtonEntry) {
 					activeMenuSelection = &playButtonEntry;
 					needReScheme = true;
 					needRedraw = true;
 					gameAudio->playSound("alterUpEffect");
 				} else if(activeMenuSelection == &highScoresButtonEntry) {
-					activeMenuSelection = &settingsButtonEntry;
+					activeMenuSelection = &helpButtonEntry;
 					needReScheme = true;
 					needRedraw = true;
 					gameAudio->playSound("alterUpEffect");
-				} else if(activeMenuSelection == &helpButtonEntry) {
+				} else if(activeMenuSelection == &settingsButtonEntry) {
 					activeMenuSelection = &highScoresButtonEntry;
 					needReScheme = true;
 					needRedraw = true;
 					gameAudio->playSound("alterUpEffect");
 				} else if(activeMenuSelection == &quitButtonEntry) {
-					activeMenuSelection = &helpButtonEntry;
+					activeMenuSelection = &settingsButtonEntry;
 					needReScheme = true;
 					needRedraw = true;
 					gameAudio->playSound("alterUpEffect");
@@ -2934,21 +2934,21 @@ unsigned int GameLogic::execute(bool unScheduled) {
 					needRedraw = true;
 					gameAudio->playSound("alterDownEffect");
 				} else if(activeMenuSelection == &playButtonEntry) {
-					activeMenuSelection = &settingsButtonEntry;
-					needReScheme = true;
-					needRedraw = true;
-					gameAudio->playSound("alterDownEffect");
-				} else if(activeMenuSelection == &settingsButtonEntry) {
-					activeMenuSelection = &highScoresButtonEntry;
-					needReScheme = true;
-					needRedraw = true;
-					gameAudio->playSound("alterDownEffect");
-				} else if(activeMenuSelection == &highScoresButtonEntry) {
 					activeMenuSelection = &helpButtonEntry;
 					needReScheme = true;
 					needRedraw = true;
 					gameAudio->playSound("alterDownEffect");
 				} else if(activeMenuSelection == &helpButtonEntry) {
+					activeMenuSelection = &highScoresButtonEntry;
+					needReScheme = true;
+					needRedraw = true;
+					gameAudio->playSound("alterDownEffect");
+				} else if(activeMenuSelection == &highScoresButtonEntry) {
+					activeMenuSelection = &settingsButtonEntry;
+					needReScheme = true;
+					needRedraw = true;
+					gameAudio->playSound("alterDownEffect");
+				} else if(activeMenuSelection == &settingsButtonEntry) {
 					activeMenuSelection = &quitButtonEntry;
 					needReScheme = true;
 					needRedraw = true;
