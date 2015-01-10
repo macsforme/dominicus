@@ -3,7 +3,7 @@ This file details some important information relevant to developers of this proj
 
 ///////////////////////////// CODING CONVENTIONS //////////////////////////////
 
-This project contains a validation script to check for certain conditions which may be incorrect. This includes checking for things like improper whitespace, malformed header inclusion, file layout deviations, etc. Due to rudimentary parsing, the script will issue false positives, so check the errors carefully. This script may be run from the root source directory as follows:
+This project contains a validation script to check for certain conditions which may be incorrect. This includes checking for things like improper whitespace, malformed header inclusion, file layout deviations, etc. Due to rudimentary parsing, the script can issue false positives, so there is a list of whitelisted files and lines for certain conditions. This list may need to be updated when the listed files are altered and lines are inserted or removed. This script may be run from the root source directory as follows:
 
 $ php tools/codecheck.php
 

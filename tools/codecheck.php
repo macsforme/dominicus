@@ -42,6 +42,22 @@ $projectName = "Crucible Island";
 $headerSearchDirectory = "src/";
 $fileExtensions = Array(".h", ".cpp" /*, ".glsl"*/);
 $ignoreFiles = Array(".git/", "src/platform/macosx/SDLMain.h", "src/platform/macosx/SDLMain.m");
+$headerSectionFileWhitelist = Array("src/graphics/text/FontManager.h", "src/platform/OpenGLHeaders.h");
+$fileLineWhitelist = Array(
+	"src/graphics/3dgraphics/FortressRenderer.cpp:181",
+	"src/graphics/3dgraphics/MissileRenderer.cpp:117",
+	"src/graphics/3dgraphics/ShellRenderer.cpp:87",
+	"src/graphics/3dgraphics/ShipRenderer.cpp:115",
+	"src/graphics/UILayoutAuthority.h:27",
+	"src/graphics/UILayoutAuthority.h:28",
+	"src/graphics/UILayoutAuthority.h:46",
+	"src/graphics/UILayoutAuthority.h:47",
+	"src/input/Mouse.h:24",
+	"src/input/Mouse.h:25",
+	"src/input/Mouse.h:59",
+	"src/input/Mouse.h:60",
+	"src/state/GameState.cpp:644"
+);
 $systemHeaders = Array(
 	"string" => Array("std::string"),
 	"vector" => Array("std::vector"),
@@ -189,222 +205,224 @@ foreach($fileArray as $file) {
 	}
 
 	// check for proper header inclusion (including order, format, all required, and only required)
-	$includes = Array();
-	$firstIncludeLine = 0;
-	$lastIncludeLine = 0;
-	for($i = 0; $i < count($fileContentsArray); ++$i) {
-		if(preg_match("/^\s*(\#include\s(?:\<|\")\S+(?:\>|\"))\s*$/", $fileContentsArray[$i], $matches)) {
-			array_push($includes, $matches[1]);
-			if(count($includes) == 1)
-				$firstIncludeLine = $i;
-			$lastIncludeLine = $i;
+	if(! in_array(substr($file, 2), $headerSectionFileWhitelist)) {
+		$includes = Array();
+		$firstIncludeLine = 0;
+		$lastIncludeLine = 0;
+		for($i = 0; $i < count($fileContentsArray); ++$i) {
+			if(preg_match("/^\s*(\#include\s(?:\<|\")\S+(?:\>|\"))\s*$/", $fileContentsArray[$i], $matches)) {
+				array_push($includes, $matches[1]);
+				if(count($includes) == 1)
+					$firstIncludeLine = $i;
+				$lastIncludeLine = $i;
+			}
 		}
-	}
-	$improperIncludes = FALSE;
-	if(count($includes) > 0) {
-		// check for an associated header in the right spot
-		$hasAssocHeader = FALSE;
-		$assocHeader = "";
-		if(! preg_match("/\\.h\s*$/", $file) && preg_match("/^\.\/".preg_replace("/\//", "\/", $headerSearchDirectory)."(.*)\.\w+$/", $file, $matches))
-			$assocHeader = $matches[1].".h";
+		$improperIncludes = FALSE;
+		if(count($includes) > 0) {
+			// check for an associated header in the right spot
+			$hasAssocHeader = FALSE;
+			$assocHeader = "";
+			if(! preg_match("/\\.h\s*$/", $file) && preg_match("/^\.\/".preg_replace("/\//", "\/", $headerSearchDirectory)."(.*)\.\w+$/", $file, $matches))
+				$assocHeader = $matches[1].".h";
 
-		if($assocHeader) {
-			for($i = 0; $i < count($includes); ++$i) {
-				if($includes[$i] == "#include \"".$assocHeader."\"") {
-					if($i != 0) {
-						echo $file." has associated header in wrong place.\n";
-						$improperIncludes = TRUE;
+			if($assocHeader) {
+				for($i = 0; $i < count($includes); ++$i) {
+					if($includes[$i] == "#include \"".$assocHeader."\"") {
+						if($i != 0) {
+							echo $file." has associated header in wrong place.\n";
+							$improperIncludes = TRUE;
+						}
+						$hasAssocHeader = TRUE;
+						array_splice($includes, $i, 1);
+						break;
 					}
-					$hasAssocHeader = TRUE;
-					array_splice($includes, $i, 1);
+				}
+			}
+
+			// check for system/library headers before local headers
+			$localHeadersBeginning = count($includes);
+			for($i = 0; $i < count($includes); ++$i) {
+				if(preg_match("/^\#include\s\"/", $includes[$i])) {
+					$localHeadersBeginning = $i;
 					break;
 				}
 			}
-		}
-
-		// check for system/library headers before local headers
-		$localHeadersBeginning = count($includes);
-		for($i = 0; $i < count($includes); ++$i) {
-			if(preg_match("/^\#include\s\"/", $includes[$i])) {
-				$localHeadersBeginning = $i;
-				break;
-			}
-		}
-		for($i = $localHeadersBeginning + 1; $i < count($includes) && $localHeadersBeginning < count($includes); ++$i) {
-			if(preg_match("/^\#include\s\</", $includes[$i])) {
-				echo $file." does not list all system/library headers before local headers.\n";
-				$improperIncludes = TRUE;
-				break;
-			}
-		}
-
-		// check for alphabetical listing of headers
-		$fileSystemHeaders = Array();
-		$fileLocalHeaders = Array();
-		for($i = 0; $i < count($includes); ++$i)
-			if(preg_match("/\#include\s\</", $includes[$i]))
-				array_push($fileSystemHeaders, $includes[$i]);
-			else
-				array_push($fileLocalHeaders, $includes[$i]);
-		$unsortedFileSystemHeaders = $fileSystemHeaders;
-		$unsortedFileLocalHeaders = $fileLocalHeaders;
-		usort($fileSystemHeaders, "customSort");
-		usort($fileLocalHeaders, "customSort");
-
-		for($i = 0; $i < count($fileSystemHeaders); ++$i) {
-			if($fileSystemHeaders[$i] != $unsortedFileSystemHeaders[$i]) {
-				echo $file." does not list system/library headers in alphabetical order.\n";
-				$improperIncludes = TRUE;
-				break;
-			}
-		}
-		for($i = 0; $i < count($fileLocalHeaders); ++$i) {
-			if($fileLocalHeaders[$i] != $unsortedFileLocalHeaders[$i]) {
-				echo $file." does not list local headers in alphabetical order.\n";
-				$improperIncludes = TRUE;
-				break;
-			}
-		}
-
-		// check that all required headers (and only required headers) are included
-		for($i = 0; $i < count($fileSystemHeaders); ++$i)
-			$fileSystemHeaders[$i] = preg_replace("/^\#include\s\<(.*)\>\s*$/", "<$1>", $fileSystemHeaders[$i]);
-		for($i = 0; $i < count($fileLocalHeaders); ++$i)
-			$fileLocalHeaders[$i] = preg_replace("/^\#include\s\"(.*)\"\s*$/", "\"".$headerSearchDirectory."$1\"", $fileLocalHeaders[$i]);
-
-		$assocHeaderSystemHeaders = Array();
-		$assocHeaderLocalHeaders = Array();
-		if($hasAssocHeader) {
-			$assocHeaderContents = file_get_contents("./".$headerSearchDirectory.$assocHeader);
-			$matches = Array();
-			if(preg_match_all("/\s*\#include\s(\<.*\>)\s*$/m", $assocHeaderContents, $matches))
-				$assocHeaderSystemHeaders = $matches[1];
-			if(preg_match_all("/\s*\#include\s(\".*\")\s*$/m", $assocHeaderContents, $matches))
-				foreach($matches[1] as $header)
-					array_push($assocHeaderLocalHeaders, "\"".$headerSearchDirectory.preg_replace("/\"(.*)\"/", "$1", $header)."\"");
-
-			// check for duplicate includes and splice them out of the primary file
-			foreach($assocHeaderSystemHeaders as $header) {
-				if(in_array($header, $fileSystemHeaders)) {
-					echo $file." duplicates inclusion of file ".$header." with it's associated header file.\n";
-					array_splice($fileSystemHeaders, array_search($header, $fileSystemHeaders), 1);
-				}
-			}
-			foreach($assocHeaderLocalHeaders as $header) {
-				if(in_array($header, $fileLocalHeaders)) {
-					echo $file." duplicates inclusion of file ".$header." with it's associated header file.\n";
-					array_splice($fileLocalHeaders, array_search($header, $fileLocalHeaders), 1);
-				}
-			}
-		}
-
-		// remove comments and whitespace
-		$fileContents = implode("", $fileContentsArray);
-		$fileContents = preg_replace("/\/\/.*\n/", "\n", $fileContents);
-		$matches = Array(); $matches2 = Array();
-		while(preg_match_all("/(\/\*.*?\*\/)/s", $fileContents, $matches)) {
-			$newLines = preg_match_all("/\n/", $matches[1][0], $matches2);
-			$replacementString = ""; for($i = 0; $i < $newLines; ++$i) $replacementString .= "\n";
-			$fileContents = preg_replace("/(\/\*.*?\*\/)/s", $replacementString, $fileContents, 1);
-		}
-		$fileContents = preg_replace("/\".*?\"/", "\"\"", $fileContents);
-
-		// check by type
-		foreach($headersByType as $type => $header) {
-			$escapedType = preg_replace("/\:/", "\:", $type);
-			$escapedType = preg_replace("/\(\)/", "\(", $escapedType);
-			if(preg_match("/[^\(]$/", $escapedType)) $escapedType .= "[^\w]";
-			$escapedType = "[^\w]".$escapedType;
-
-			if(preg_match("/".$escapedType."/", $fileContents)) {
-				if(
-					! (substr($header, 0, 1) == "<" && (in_array($header, $fileSystemHeaders) || in_array($header, $assocHeaderSystemHeaders))) && // doesn't include system header
-					! (substr($header, 0, 1) == "\"" && (in_array($header, $fileLocalHeaders) || in_array($header, $assocHeaderLocalHeaders))) && // doesn't include local header
-					! ($hasAssocHeader && $header == "\"".$headerSearchDirectory.$assocHeader."\"") && // isn't our own associated header
-					$file != "./".preg_replace("/\"(.*)\"/", "$1", $header) // doesn't define the type within
-				) {
-					echo $file." needs to incorporate header ".$header." for type ".$type."\n";
-					if(substr($header, 0, 1) == "<") array_push($fileSystemHeaders, $header);
-					else array_push($fileLocalHeaders, $header);
+			for($i = $localHeadersBeginning + 1; $i < count($includes) && $localHeadersBeginning < count($includes); ++$i) {
+				if(preg_match("/^\#include\s\</", $includes[$i])) {
+					echo $file." does not list all system/library headers before local headers.\n";
 					$improperIncludes = TRUE;
+					break;
 				}
 			}
-		}
-		usort($fileSystemHeaders, "customSort");
-		usort($fileLocalHeaders, "customSort");
 
-		// check by existing headers
-		$unneededHeaders = Array();
-		foreach(array_merge($fileSystemHeaders, $fileLocalHeaders) as $header) {
-			$types = array_keys($headersByType, $header);
-			$needsHeader = FALSE;
+			// check for alphabetical listing of headers
+			$fileSystemHeaders = Array();
+			$fileLocalHeaders = Array();
+			for($i = 0; $i < count($includes); ++$i)
+				if(preg_match("/\#include\s\</", $includes[$i]))
+					array_push($fileSystemHeaders, $includes[$i]);
+				else
+					array_push($fileLocalHeaders, $includes[$i]);
+			$unsortedFileSystemHeaders = $fileSystemHeaders;
+			$unsortedFileLocalHeaders = $fileLocalHeaders;
+			usort($fileSystemHeaders, "customSort");
+			usort($fileLocalHeaders, "customSort");
 
-			// skip headers that don't define any types (they must serve some other purpose)
-			if(! count($types))
-				continue;
+			for($i = 0; $i < count($fileSystemHeaders); ++$i) {
+				if($fileSystemHeaders[$i] != $unsortedFileSystemHeaders[$i]) {
+					echo $file." does not list system/library headers in alphabetical order.\n";
+					$improperIncludes = TRUE;
+					break;
+				}
+			}
+			for($i = 0; $i < count($fileLocalHeaders); ++$i) {
+				if($fileLocalHeaders[$i] != $unsortedFileLocalHeaders[$i]) {
+					echo $file." does not list local headers in alphabetical order.\n";
+					$improperIncludes = TRUE;
+					break;
+				}
+			}
 
-			foreach($types as $type) {
+			// check that all required headers (and only required headers) are included
+			for($i = 0; $i < count($fileSystemHeaders); ++$i)
+				$fileSystemHeaders[$i] = preg_replace("/^\#include\s\<(.*)\>\s*$/", "<$1>", $fileSystemHeaders[$i]);
+			for($i = 0; $i < count($fileLocalHeaders); ++$i)
+				$fileLocalHeaders[$i] = preg_replace("/^\#include\s\"(.*)\"\s*$/", "\"".$headerSearchDirectory."$1\"", $fileLocalHeaders[$i]);
+
+			$assocHeaderSystemHeaders = Array();
+			$assocHeaderLocalHeaders = Array();
+			if($hasAssocHeader) {
+				$assocHeaderContents = file_get_contents("./".$headerSearchDirectory.$assocHeader);
+				$matches = Array();
+				if(preg_match_all("/\s*\#include\s(\<.*\>)\s*$/m", $assocHeaderContents, $matches))
+					$assocHeaderSystemHeaders = $matches[1];
+				if(preg_match_all("/\s*\#include\s(\".*\")\s*$/m", $assocHeaderContents, $matches))
+					foreach($matches[1] as $header)
+						array_push($assocHeaderLocalHeaders, "\"".$headerSearchDirectory.preg_replace("/\"(.*)\"/", "$1", $header)."\"");
+
+				// check for duplicate includes and splice them out of the primary file
+				foreach($assocHeaderSystemHeaders as $header) {
+					if(in_array($header, $fileSystemHeaders)) {
+						echo $file." duplicates inclusion of file ".$header." with it's associated header file.\n";
+						array_splice($fileSystemHeaders, array_search($header, $fileSystemHeaders), 1);
+					}
+				}
+				foreach($assocHeaderLocalHeaders as $header) {
+					if(in_array($header, $fileLocalHeaders)) {
+						echo $file." duplicates inclusion of file ".$header." with it's associated header file.\n";
+						array_splice($fileLocalHeaders, array_search($header, $fileLocalHeaders), 1);
+					}
+				}
+			}
+
+			// remove comments and whitespace
+			$fileContents = implode("", $fileContentsArray);
+			$fileContents = preg_replace("/\/\/.*\n/", "\n", $fileContents);
+			$matches = Array(); $matches2 = Array();
+			while(preg_match_all("/(\/\*.*?\*\/)/s", $fileContents, $matches)) {
+				$newLines = preg_match_all("/\n/", $matches[1][0], $matches2);
+				$replacementString = ""; for($i = 0; $i < $newLines; ++$i) $replacementString .= "\n";
+				$fileContents = preg_replace("/(\/\*.*?\*\/)/s", $replacementString, $fileContents, 1);
+			}
+			$fileContents = preg_replace("/\".*?\"/", "\"\"", $fileContents);
+
+			// check by type
+			foreach($headersByType as $type => $header) {
 				$escapedType = preg_replace("/\:/", "\:", $type);
 				$escapedType = preg_replace("/\(\)/", "\(", $escapedType);
 				if(preg_match("/[^\(]$/", $escapedType)) $escapedType .= "[^\w]";
 				$escapedType = "[^\w]".$escapedType;
+
+				if(preg_match("/".$escapedType."/", $fileContents)) {
+					if(
+						! (substr($header, 0, 1) == "<" && (in_array($header, $fileSystemHeaders) || in_array($header, $assocHeaderSystemHeaders))) && // doesn't include system header
+						! (substr($header, 0, 1) == "\"" && (in_array($header, $fileLocalHeaders) || in_array($header, $assocHeaderLocalHeaders))) && // doesn't include local header
+						! ($hasAssocHeader && $header == "\"".$headerSearchDirectory.$assocHeader."\"") && // isn't our own associated header
+						$file != "./".preg_replace("/\"(.*)\"/", "$1", $header) // doesn't define the type within
+					) {
+						echo $file." needs to incorporate header ".$header." for type ".$type."\n";
+						if(substr($header, 0, 1) == "<") array_push($fileSystemHeaders, $header);
+						else array_push($fileLocalHeaders, $header);
+						$improperIncludes = TRUE;
+					}
+				}
+			}
+			usort($fileSystemHeaders, "customSort");
+			usort($fileLocalHeaders, "customSort");
+
+			// check by existing headers
+			$unneededHeaders = Array();
+			foreach(array_merge($fileSystemHeaders, $fileLocalHeaders) as $header) {
+				$types = array_keys($headersByType, $header);
+				$needsHeader = FALSE;
+
+				// skip headers that don't define any types (they must serve some other purpose)
+				if(! count($types))
+					continue;
+
+				foreach($types as $type) {
+					$escapedType = preg_replace("/\:/", "\:", $type);
+					$escapedType = preg_replace("/\(\)/", "\(", $escapedType);
+					if(preg_match("/[^\(]$/", $escapedType)) $escapedType .= "[^\w]";
+					$escapedType = "[^\w]".$escapedType;
 				
-				if(preg_match("/".$escapedType."/", preg_replace("/^\#.*$/m", "", $fileContents))) {
-					$needsHeader = TRUE;
-					break;
+					if(preg_match("/".$escapedType."/", preg_replace("/^\#.*$/m", "", $fileContents))) {
+						$needsHeader = TRUE;
+						break;
+					}
 				}
-			}
 
-			if(! $needsHeader) {
-				echo $file." incorporates header ".$header." unnecessarily.\n";
-				array_push($unneededHeaders, $header);
-				$improperIncludes = TRUE;
-			}
-		}
-
-		foreach($unneededHeaders as $header)
-			if(preg_match("/^\<.*\>$/", $header))
-				array_splice($fileSystemHeaders, array_search($header, $fileSystemHeaders), 1);
-			else
-				array_splice($fileLocalHeaders, array_search($header, $fileLocalHeaders), 1);
-
-		// compare header section to what it should be if no problems yet
-		$properIncludeSection = Array();
-		if($hasAssocHeader) {
-			array_push($properIncludeSection, "#include \"".$assocHeader."\"\n");
-			if(count($fileSystemHeaders))
-				array_push($properIncludeSection, "\n");
-		}
-		for($i = 0; $i < count($fileSystemHeaders); ++$i) {
-			array_push($properIncludeSection, "#include ".$fileSystemHeaders[$i]."\n");
-		}
-		if((count($fileSystemHeaders) || $hasAssocHeader) && count($fileLocalHeaders))
-			array_push($properIncludeSection, "\n");
-		for($i = 0; $i < count($fileLocalHeaders); ++$i)
-			array_push($properIncludeSection, "#include ".preg_replace("/^\"".preg_replace("/\//", "\/", $headerSearchDirectory)."(.*)\"$/", "\"$1\"", $fileLocalHeaders[$i])."\n");
-
-		if(! $improperIncludes) {
-			for($i = 0; $i < count($properIncludeSection) && $i + $firstIncludeLine < count($fileContentsArray); ++$i) {
-				if($fileContentsArray[$firstIncludeLine + $i] != $properIncludeSection[$i]) {
-					echo $file." header section has other incorrect formatting.\n";
+				if(! $needsHeader) {
+					echo $file." incorporates header ".$header." unnecessarily.\n";
+					array_push($unneededHeaders, $header);
 					$improperIncludes = TRUE;
-					break;
 				}
 			}
-		}
 
-		// if there are issues, suggest the proper set
-		if($improperIncludes) {
-			echo $file." has malformed header inclusion section. Recommended (fix headers before source files!):\n";
-			$maxLength = 10;
-			for($i = 0; $i < count($properIncludeSection); ++$i)
-				if(strlen($properIncludeSection[$i]) > $maxLength)
-					$maxLength = strlen($properIncludeSection[$i]);
-			$borderString = ""; for($i = 0; $i < $maxLength; ++$i) $borderString .= "="; $borderString .= "\n";
-			echo $borderString;
-			for($i = 0; $i < count($properIncludeSection); ++$i)
-				echo $properIncludeSection[$i];
-			echo $borderString;
+			foreach($unneededHeaders as $header)
+				if(preg_match("/^\<.*\>$/", $header))
+					array_splice($fileSystemHeaders, array_search($header, $fileSystemHeaders), 1);
+				else
+					array_splice($fileLocalHeaders, array_search($header, $fileLocalHeaders), 1);
+
+			// compare header section to what it should be if no problems yet
+			$properIncludeSection = Array();
+			if($hasAssocHeader) {
+				array_push($properIncludeSection, "#include \"".$assocHeader."\"\n");
+				if(count($fileSystemHeaders))
+					array_push($properIncludeSection, "\n");
+			}
+			for($i = 0; $i < count($fileSystemHeaders); ++$i) {
+				array_push($properIncludeSection, "#include ".$fileSystemHeaders[$i]."\n");
+			}
+			if((count($fileSystemHeaders) || $hasAssocHeader) && count($fileLocalHeaders))
+				array_push($properIncludeSection, "\n");
+			for($i = 0; $i < count($fileLocalHeaders); ++$i)
+				array_push($properIncludeSection, "#include ".preg_replace("/^\"".preg_replace("/\//", "\/", $headerSearchDirectory)."(.*)\"$/", "\"$1\"", $fileLocalHeaders[$i])."\n");
+
+			if(! $improperIncludes) {
+				for($i = 0; $i < count($properIncludeSection) && $i + $firstIncludeLine < count($fileContentsArray); ++$i) {
+					if($fileContentsArray[$firstIncludeLine + $i] != $properIncludeSection[$i]) {
+						echo $file." header section has other incorrect formatting.\n";
+						$improperIncludes = TRUE;
+						break;
+					}
+				}
+			}
+
+			// if there are issues, suggest the proper set
+			if($improperIncludes) {
+				echo $file." has malformed header inclusion section. Recommended (fix headers before source files!):\n";
+				$maxLength = 10;
+				for($i = 0; $i < count($properIncludeSection); ++$i)
+					if(strlen($properIncludeSection[$i]) > $maxLength)
+						$maxLength = strlen($properIncludeSection[$i]);
+				$borderString = ""; for($i = 0; $i < $maxLength; ++$i) $borderString .= "="; $borderString .= "\n";
+				echo $borderString;
+				for($i = 0; $i < count($properIncludeSection); ++$i)
+					echo $properIncludeSection[$i];
+				echo $borderString;
+			}
 		}
 	}
 
@@ -420,7 +438,8 @@ foreach($fileArray as $file) {
 
 	// check for single newline at end of file
 	if(! preg_match("/\S\n$/", $fileContentsArray[count($fileContentsArray) - 1]))
-		echo $file." does not end in single newline.\n";
+		if(! in_array(substr($file, 2).":".($i + 1), $fileLineWhitelist))
+			echo $file." does not end in single newline.\n";
 
 	// check for spaces before opening parenthesis during if/for/while call
 	for($i = 0; $i < count($fileContentsArray); ++$i)
@@ -435,7 +454,8 @@ foreach($fileArray as $file) {
 	// check for double initialization of objects
 	for($i = 0; $i < count($fileContentsArray); ++$i)
 		if(preg_match("/(\w+)\s\w+\s=\s\\1\(/", $fileContentsArray[$i]))
-			echo $file.":".($i + 1)." may have an improper object initialization.\n";
+			if(! in_array(substr($file, 2).":".($i + 1), $fileLineWhitelist))
+				echo $file.":".($i + 1)." may have an improper object initialization.\n";
 
 	// check for forward declarations
 	for($i = 0; $i < count($fileContentsArray); ++$i)
