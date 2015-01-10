@@ -1910,7 +1910,7 @@ void GameLogic::playEffectAtDistance(std::string effect, float distance) {
 		);
 }
 
-std::string GameLogic::	getZeroPaddedHighScoresList()  {
+std::string GameLogic::getZeroPaddedHighScoresList() {
 	std::stringstream ss;
 
 	// imperfect without a fixed-width font, but pad shorter numbers with invisible zeros so it lines up better
