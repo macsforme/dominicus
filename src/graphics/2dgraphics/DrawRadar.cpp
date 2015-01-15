@@ -405,7 +405,7 @@ void DrawRadar::execute(DrawStackArgList argList) {
 		if(missileAngle > lastRotation && missileAngle <= (currentRotation > lastRotation ? currentRotation : currentRotation + 360.0f))
 			missileCache.push_back(gameState->missiles[i]);
 	}
-//missileCache.clear(); for(size_t i = 0; i < gameState->missiles.size(); ++i) if(gameState->missiles[i].alive) missileCache.push_back(gameState->missiles[i]);
+
 	lastRotation = currentRotation;
 
 	Vector2 spotSize(
@@ -460,7 +460,42 @@ void DrawRadar::execute(DrawStackArgList argList) {
 
 		circleDrawer->execute(drawerArguments);
 	}
+/*
+	// draw current missile positions for debugging
+	insideColor = Vector4(1.0f, 1.0f, 0.0f, 1.0f);
 
+	for(size_t i = 0; i < gameState->missiles.size(); ++i) {
+		if(! gameState->missiles[i].alive)
+			continue;
+
+		Vector4 missilePosition(
+				gameState->missiles[i].position.x - gameState->fortress.position.x,
+				gameState->missiles[i].position.z - gameState->fortress.position.z,
+				0.0f,
+				1.0f
+			);
+		Matrix4 missileMatrix;
+		missileMatrix.identity();
+
+		rotateMatrix(Vector3(0.0f, 0.0f, -1.0f), -radians(90.0f), missileMatrix);
+		rotateMatrix(Vector3(0.0f, 0.0f, -1.0f), -radians(gameState->fortress.rotation), missileMatrix);
+
+		scaleMatrix(
+				(actualSize.x / 2.0f - padding.x) / gameSystem->getFloat("radarRadius"),
+				(actualSize.y / 2.0f - padding.y) / gameSystem->getFloat("radarRadius"),
+				1.0f,
+				missileMatrix
+			);
+
+		translateMatrix(metrics->position.x, metrics->position.y, 0.0f, missileMatrix);
+
+		missilePosition = missilePosition * missileMatrix;
+
+		spotPosition = Vector2(missilePosition.x / missilePosition.w, missilePosition.y / missilePosition.w);
+
+		circleDrawer->execute(drawerArguments);
+	}
+*/
 	// draw EMP wave
 	if(gameState->fortress.emp > 0.0f && gameState->fortress.emp < 1.0f) {
 		insideColor = gameSystem->getColor("radarEMPColor");
