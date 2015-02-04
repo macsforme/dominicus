@@ -382,7 +382,10 @@ void DrawRadar::execute(DrawStackArgList argList) {
 				Vector2(missileCache[i].position.x, missileCache[i].position.z) -
 				Vector2(gameState->fortress.position.x, gameState->fortress.position.z)
 			);
-		if(missileAngle > lastRotation && missileAngle <= (currentRotation > lastRotation ? currentRotation : currentRotation + 360.0f))
+		if(
+				(missileAngle > lastRotation && missileAngle <= currentRotation) ||
+				(currentRotation < lastRotation && (missileAngle > lastRotation || missileAngle <= currentRotation))
+			)
 			missileCache.erase(missileCache.begin() + i);
 		else
 			++i;
@@ -402,7 +405,10 @@ void DrawRadar::execute(DrawStackArgList argList) {
 				Vector2(gameState->missiles[i].position.x, gameState->missiles[i].position.z) -
 				Vector2(gameState->fortress.position.x, gameState->fortress.position.z)
 			);
-		if(missileAngle > lastRotation && missileAngle <= (currentRotation > lastRotation ? currentRotation : currentRotation + 360.0f))
+		if(
+				(missileAngle > lastRotation && missileAngle <= currentRotation) ||
+				(currentRotation < lastRotation && (missileAngle > lastRotation || missileAngle <= currentRotation))
+			)
 			missileCache.push_back(gameState->missiles[i]);
 	}
 
