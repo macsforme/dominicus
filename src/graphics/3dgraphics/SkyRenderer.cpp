@@ -108,6 +108,4 @@ void SkyRenderer::execute(DrawStackArgList arguments) {
 	glDrawElements(GL_QUADS, 4, GL_UNSIGNED_SHORT, (GLvoid*) 0);
 
 	glDisableVertexAttribArray(glGetAttribLocation(gameGraphics->getProgramID("sky"), "position"));
-
-	// no state changes to undo
 }
