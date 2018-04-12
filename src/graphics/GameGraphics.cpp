@@ -212,7 +212,7 @@ GameGraphics::GameGraphics(bool fullScreen, bool testSystem) :
 		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
 		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, gameSystem->getFloat("displayMultisamplingLevel") == 2.0f ? 2 : 4);
 	}
-	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, (int) gameSystem->getFloat("displayColorDepth"));
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, (int) gameSystem->getFloat("displayDepthSize"));
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
 	SDL_Surface* surface = SDL_SetVideoMode(

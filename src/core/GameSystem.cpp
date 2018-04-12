@@ -147,6 +147,7 @@ GameSystem::GameSystem() {
 	setStandard("displayFramerateLimiting", (float) LIMIT_VSYNC, "How to limit framerate (vsync, fps count, or off).");
 	setStandard("displayStartFullscreen", false, "Whether or not to start the program in full screen mode.");
 	setStandard("displayColorDepth", 32.0f, "Color depth of display (may only affect full screen mode).");
+	setStandard("displayDepthSize", 32.0f, "Size of depth buffer.");
 	setStandard("displayMultisamplingLevel", 4.0f, "Multisampling level (0, 2, or 4).");
 	setStandard("colorClear", Vector4(174.0f / 255.0f, 187.0f / 255.0f, 224.0f / 255.0f, 1.0f), "Color of empty space.");
 
