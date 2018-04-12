@@ -42,7 +42,10 @@ $projectName = "Crucible Island";
 $headerSearchDirectory = "src/";
 $fileExtensions = Array(".h", ".cpp" /*, ".glsl"*/);
 $ignoreFiles = Array(".git/", "src/platform/macosx/SDLMain.h", "src/platform/macosx/SDLMain.m");
-$headerSectionFileWhitelist = Array("src/graphics/text/FontManager.h", "src/platform/OpenGLHeaders.h");
+$headerSectionFileWhitelist = Array(
+	"src/graphics/text/FontManager.h",
+	"src/platform/OpenGLHeaders.h"
+);
 $fileLineWhitelist = Array(
 	"src/graphics/3dgraphics/FortressRenderer.cpp:181",
 	"src/graphics/3dgraphics/MissileRenderer.cpp:117",
@@ -71,7 +74,7 @@ $systemHeaders = Array(
 	"cstdlib" => Array("rand()", "atof()", "atoi()", "atol()", "malloc()", "free()", "exit()", "NULL", "size_t"),
 	"cstdio" => Array("sprintf()"), // also stdio.h
 	"iostream" => Array("std::cout"),
-	"SDL.h" => Array("SDL_OpenAudio()", "SDL_LockAudio()", "SDL_SetVideoMode()", "SDL_WarpMouse()", "SDL_EnableUNICODE()", "SDL_GetVideoInfo()", "SDL_PollEvent()", "SDL_Event", "SDL_Init()", "SDL_AudioSpec", "SDLKey"),
+	"SDL/SDL.h" => Array("SDL_OpenAudio()", "SDL_LockAudio()", "SDL_SetVideoMode()", "SDL_WarpMouse()", "SDL_EnableUNICODE()", "SDL_GetVideoInfo()", "SDL_PollEvent()", "SDL_Event", "SDL_Init()", "SDL_AudioSpec", "SDLKey"),
 	"ft2build.h" => Array("FT_FREETYPE_H", "FT_Library", "FT_Face", "FT_Set_Char_Size()", "FT_UInt", "FT_Load_Glyph()", "FT_Render_Glyph()", "FT_Init_FreeType()", "FT_New_Face()")
 );
 $localHeaders = Array(
