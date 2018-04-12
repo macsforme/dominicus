@@ -69,13 +69,8 @@ Mesh::Mesh(std::string filename) {
 					unsigned int normal = 0;
 
 					if(sscanf(subjs[i], "%u/%u/%u", &vertex, &texCoord, &normal) == 3) {
-						// wavefront indices start at 1 but our indices start at 0
-						vertex -= 1;
-						texCoord -= 1;
-						normal -= 1;
-
 						// line has slashes and specifies all three
-						if(vertex >= vertices.size() || normal >= normals.size() || texCoord >= texCoords.size())
+						if(--vertex >= vertices.size() || --normal >= normals.size() || --texCoord >= texCoords.size())
 							gameSystem->log(GameSystem::LOG_FATAL, "Model face specification has out-of-bounds index.");
 
 						faceVertices[i] = vertex;
@@ -83,14 +78,14 @@ Mesh::Mesh(std::string filename) {
 						faceTexCoords[i] = texCoord;
 					} else if(sscanf(subjs[i], "%u//%u", &vertex, &normal) == 2) {
 						// line has slashes and specifies the vertex and normal
-						if(vertex > vertices.size() || normal > normals.size())
+						if(--vertex >= vertices.size() || --normal >= normals.size())
 							gameSystem->log(GameSystem::LOG_FATAL, "Model face specification has out-of-bounds index.");
 
 						faceVertices[i] = vertex;
 						faceNormals[i] = normal;
 					} else if(sscanf(subjs[i],"%u", &vertex)) {
 						// line has just the vertex
-						if(vertex > vertices.size())
+						if(--vertex >= vertices.size())
 							gameSystem->log(GameSystem::LOG_FATAL, "Model face specification has out-of-bounds index.");
 						faceVertices[i] = vertex;
 					} else {
