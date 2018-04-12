@@ -12,8 +12,6 @@
 inline float getAngle(Vector2 point) {
 	float angle = -degrees(atan2(point.y, point.x));
 	return angle < 0.0f ? angle += 360.0f : angle;
-
-	return angle;
 }
 
 inline Vector3 getNormal(Vector3 vec0, Vector3 vec1, Vector3 vec2) {
