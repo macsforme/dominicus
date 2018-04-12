@@ -4,7 +4,7 @@
 #ifndef KEYBOARD_H
 #define KEYBOARD_H
 
-#include <SDL.h>
+#include <SDL/SDL.h>
 #include <string>
 #include <vector>
 

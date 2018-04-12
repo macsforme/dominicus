@@ -3,7 +3,7 @@
 
 #include "input/InputHandler.h"
 
-#include <SDL.h>
+#include <SDL/SDL.h>
 
 #include "core/GameSystem.h"
 

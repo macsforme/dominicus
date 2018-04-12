@@ -4,7 +4,7 @@
 #include "core/GameSystem.h"
 
 #include <cstdio>
-#include <SDL.h>
+#include <SDL/SDL.h>
 #include <sstream>
 
 #include "math/MiscMath.h"

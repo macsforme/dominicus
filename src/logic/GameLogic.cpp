@@ -6,7 +6,7 @@
 #include <cmath>
 #include <cstdio>
 #include <map>
-#include <SDL.h>
+#include <SDL/SDL.h>
 #include <sstream>
 #include <utility>
 

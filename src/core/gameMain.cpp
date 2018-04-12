@@ -5,7 +5,7 @@
 
 #include <cstdlib>
 #include <map>
-#include <SDL.h>
+#include <SDL/SDL.h>
 
 #include "audio/GameAudio.h"
 #include "core/GameSystem.h"

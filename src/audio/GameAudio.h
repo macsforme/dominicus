@@ -5,7 +5,7 @@
 #define GAMEAUDIO_H
 
 #include <map>
-#include <SDL.h>
+#include <SDL/SDL.h>
 #include <stdint.h>
 #include <string>
 #include <vector>

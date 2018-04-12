@@ -7,7 +7,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <fstream>
-#include <SDL.h>
+#include <SDL/SDL.h>
 #include <sstream>
 #include <stdint.h>
 #include <string.h>
