@@ -18,7 +18,7 @@
 		0353219118C931EF002FC13A /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0353219018C931EF002FC13A /* Cocoa.framework */; };
 		0353219318C93204002FC13A /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0353219218C93204002FC13A /* OpenGL.framework */; };
 		0353219518C93216002FC13A /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0353219418C93216002FC13A /* SDL.framework */; };
-		0353219718C93238002FC13A /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0353219618C93238002FC13A /* libz.1.2.5.dylib */; };
+		0353219718C93238002FC13A /* libz.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0353219618C93238002FC13A /* libz.1.dylib */; };
 		0353219918C934A7002FC13A /* libbz2.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0353219818C934A7002FC13A /* libbz2.1.0.dylib */; };
 		0353219C18C936C9002FC13A /* SDL.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0353219418C93216002FC13A /* SDL.framework */; };
 		035466601912C17200F4953E /* DrawButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0354664B1912C17200F4953E /* DrawButton.cpp */; };
@@ -47,6 +47,7 @@
 		03BB9B9B131F3F50009DFC8B /* GameGraphics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03BB9B7E131F3F50009DFC8B /* GameGraphics.cpp */; };
 		03BB9D26131F5D39009DFC8B /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03BB9B88131F3F50009DFC8B /* Texture.cpp */; };
 		03BC5B001339F19900DD3F04 /* FontManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03BB9B81131F3F50009DFC8B /* FontManager.cpp */; };
+		03BDF0701E266DCC0085D322 /* libpng16.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03BDF06F1E266DCC0085D322 /* libpng16.a */; };
 		03C38F19197F5221007725F1 /* MissileTrailRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03C38F17197F5221007725F1 /* MissileTrailRenderer.cpp */; };
 		03C806CC130E500D0037D309 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		03C806CD130E50140037D309 /* crucible island.icns in Resources */ = {isa = PBXBuildFile; fileRef = 03D47B7D1263E27F001755A6 /* crucible island.icns */; };
@@ -111,11 +112,11 @@
 		034AF1221936D67F00272390 /* ShellRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShellRenderer.h; sourceTree = "<group>"; };
 		034AF124193C84C700272390 /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
 		034AF126193C85C100272390 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
-		0353219018C931EF002FC13A /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = ../../../../../../System/Library/Frameworks/Cocoa.framework; sourceTree = "<group>"; };
-		0353219218C93204002FC13A /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = ../../../../../../System/Library/Frameworks/OpenGL.framework; sourceTree = "<group>"; };
-		0353219418C93216002FC13A /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = ../../../../../../Library/Frameworks/SDL.framework; sourceTree = "<group>"; };
-		0353219618C93238002FC13A /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = ../../../../../../usr/lib/libz.1.2.5.dylib; sourceTree = "<group>"; };
-		0353219818C934A7002FC13A /* libbz2.1.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libbz2.1.0.dylib; path = ../../../../../../usr/lib/libbz2.1.0.dylib; sourceTree = "<group>"; };
+		0353219018C931EF002FC13A /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		0353219218C93204002FC13A /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
+		0353219418C93216002FC13A /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = /Library/Frameworks/SDL.framework; sourceTree = "<absolute>"; };
+		0353219618C93238002FC13A /* libz.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.dylib; path = /usr/lib/libz.1.dylib; sourceTree = "<absolute>"; };
+		0353219818C934A7002FC13A /* libbz2.1.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libbz2.1.0.dylib; path = /usr/lib/libbz2.1.0.dylib; sourceTree = "<absolute>"; };
 		0354664B1912C17200F4953E /* DrawButton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawButton.cpp; sourceTree = "<group>"; };
 		0354664C1912C17200F4953E /* DrawButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawButton.h; sourceTree = "<group>"; };
 		0354664D1912C17200F4953E /* DrawContainer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawContainer.cpp; sourceTree = "<group>"; };
@@ -176,6 +177,7 @@
 		03BB9B84131F3F50009DFC8B /* TextBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextBlock.h; sourceTree = "<group>"; };
 		03BB9B88131F3F50009DFC8B /* Texture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Texture.cpp; sourceTree = "<group>"; };
 		03BB9B89131F3F50009DFC8B /* Texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Texture.h; sourceTree = "<group>"; };
+		03BDF06F1E266DCC0085D322 /* libpng16.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpng16.a; path = /usr/local/lib/libpng16.a; sourceTree = "<absolute>"; };
 		03C38F17197F5221007725F1 /* MissileTrailRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MissileTrailRenderer.cpp; sourceTree = "<group>"; };
 		03C38F18197F5221007725F1 /* MissileTrailRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MissileTrailRenderer.h; sourceTree = "<group>"; };
 		03C806C7130E4FED0037D309 /* Crucible Island.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Crucible Island.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -202,9 +204,10 @@
 				0353219518C93216002FC13A /* SDL.framework in Frameworks */,
 				03C80756130E51C20037D309 /* libfreetype.a in Frameworks */,
 				0353219918C934A7002FC13A /* libbz2.1.0.dylib in Frameworks */,
-				0353219718C93238002FC13A /* libz.1.2.5.dylib in Frameworks */,
+				0353219718C93238002FC13A /* libz.1.dylib in Frameworks */,
 				0353219118C931EF002FC13A /* Cocoa.framework in Frameworks */,
 				0353219318C93204002FC13A /* OpenGL.framework in Frameworks */,
+				03BDF0701E266DCC0085D322 /* libpng16.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -305,8 +308,9 @@
 				0353219218C93204002FC13A /* OpenGL.framework */,
 				0353219418C93216002FC13A /* SDL.framework */,
 				030F8F001264DBF300190225 /* libfreetype.a */,
+				03BDF06F1E266DCC0085D322 /* libpng16.a */,
 				0353219818C934A7002FC13A /* libbz2.1.0.dylib */,
-				0353219618C93238002FC13A /* libz.1.2.5.dylib */,
+				0353219618C93238002FC13A /* libz.1.dylib */,
 			);
 			name = frameworks;
 			sourceTree = "<group>";
