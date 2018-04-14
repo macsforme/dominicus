@@ -3244,6 +3244,16 @@ unsigned int GameLogic::execute(bool unScheduled) {
 				if(! gameState->empIsCharging && gameState->fortress.emp == 1.0f)
 					gameAudio->playSound("empEffect");
 			} else if(key == SDLK_RETURN) {
+				SDL_WarpMouse(
+						gameGraphics->resolutionX / 2,
+						gameGraphics->resolutionY / 2
+					);
+				inputHandler->execute();
+				mouseMotionListener->wasMoved();
+
+				mouseActive = false;
+				needReScheme = true;
+
 				mainLoopModules.erase(mainLoopModules.find(gameState));
 				delete gameState;
 				gameState = new GameState();
