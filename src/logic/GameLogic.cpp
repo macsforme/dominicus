@@ -1,5 +1,5 @@
 // GameLogic.cpp
-// Crucible Island
+// Dominicus
 
 #include "logic/GameLogic.h"
 
@@ -1988,7 +1988,7 @@ GameLogic::GameLogic() :
 	delete (float*) mainMenuTitleEntry.second["wrap"];
 	mainMenuTitleEntry.second.erase(mainMenuTitleEntry.second.find("wrap"));
 	*((Vector4*) mainMenuTitleEntry.second["fontColor"]) = gameSystem->getColor("fontColorLight");
-	*((std::string*) mainMenuTitleEntry.second["text"]) = "CRUCIBLE ISLAND";
+	*((std::string*) mainMenuTitleEntry.second["text"]) = "DOMINICUS";
 	((UIMetrics*) mainMenuTitleEntry.second["metrics"])->bearing1 = UIMetrics::BEARING_TOP;
 
 	logoEntry.first = "texture";

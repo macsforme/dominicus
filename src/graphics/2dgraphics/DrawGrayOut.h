@@ -1,5 +1,5 @@
 // DrawGrayOut.h
-// Crucible Island
+// Dominicus
 
 #ifndef DRAWGRAYOUT_H
 #define DRAWGRAYOUT_H

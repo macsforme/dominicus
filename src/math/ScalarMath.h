@@ -1,5 +1,5 @@
 // ScalarMath.h
-// Crucible Island
+// Dominicus
 
 #ifndef SCALARMATH_H
 #define SCALARMATH_H

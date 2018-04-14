@@ -1,5 +1,5 @@
 // DrawGaugePanel.h
-// Crucible Island
+// Dominicus
 
 #ifndef DRAWGAUGEPANEL_H
 #define DRAWGAUGEPANEL_H

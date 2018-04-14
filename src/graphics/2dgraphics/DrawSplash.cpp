@@ -1,5 +1,5 @@
 // DrawSplash.cpp
-// Crucible Island
+// Dominicus
 
 #include "graphics/2dgraphics/DrawSplash.h"
 

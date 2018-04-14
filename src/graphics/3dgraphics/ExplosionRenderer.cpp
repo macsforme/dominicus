@@ -1,5 +1,5 @@
 // ExplosionRenderer.cpp
-// Crucible Island
+// Dominicus
 
 #include "graphics/3dgraphics/ExplosionRenderer.h"
 

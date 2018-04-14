@@ -1,5 +1,5 @@
 // UILayoutAuthority.h
-// Crucible Island
+// Dominicus
 
 #ifndef UILAYOUTAUTHORITY_H
 #define UILAYOUTAUTHORITY_H

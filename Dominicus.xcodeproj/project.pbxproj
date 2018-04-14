@@ -50,7 +50,7 @@
 		03BDF0701E266DCC0085D322 /* libpng16.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03BDF06F1E266DCC0085D322 /* libpng16.a */; };
 		03C38F19197F5221007725F1 /* MissileTrailRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03C38F17197F5221007725F1 /* MissileTrailRenderer.cpp */; };
 		03C806CC130E500D0037D309 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
-		03C806CD130E50140037D309 /* crucible island.icns in Resources */ = {isa = PBXBuildFile; fileRef = 03D47B7D1263E27F001755A6 /* crucible island.icns */; };
+		03C806CD130E50140037D309 /* Dominicus.icns in Resources */ = {isa = PBXBuildFile; fileRef = 03D47B7D1263E27F001755A6 /* Dominicus.icns */; };
 		03C806CE130E50340037D309 /* shaders in Resources */ = {isa = PBXBuildFile; fileRef = 030F8DEC1264C00100190225 /* shaders */; };
 		03C806CF130E50340037D309 /* data in Resources */ = {isa = PBXBuildFile; fileRef = 030F8DEF1264C01100190225 /* data */; };
 		03C806D5130E509E0037D309 /* Platform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 030F8E8C1264CD8D00190225 /* Platform.cpp */; };
@@ -180,10 +180,10 @@
 		03BDF06F1E266DCC0085D322 /* libpng16.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpng16.a; path = /usr/local/lib/libpng16.a; sourceTree = "<absolute>"; };
 		03C38F17197F5221007725F1 /* MissileTrailRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MissileTrailRenderer.cpp; sourceTree = "<group>"; };
 		03C38F18197F5221007725F1 /* MissileTrailRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MissileTrailRenderer.h; sourceTree = "<group>"; };
-		03C806C7130E4FED0037D309 /* Crucible Island.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Crucible Island.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		03C806C7130E4FED0037D309 /* Dominicus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Dominicus.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		03C9206A13693A51000C4373 /* GameState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameState.h; path = src/state/GameState.h; sourceTree = "<group>"; };
 		03C9206B13693A51000C4373 /* GameState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameState.cpp; path = src/state/GameState.cpp; sourceTree = "<group>"; };
-		03D47B7D1263E27F001755A6 /* crucible island.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = "crucible island.icns"; sourceTree = "<group>"; };
+		03D47B7D1263E27F001755A6 /* Dominicus.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = "Dominicus.icns"; sourceTree = "<group>"; };
 		03E508F818FE1B340056ECE6 /* FortressRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FortressRenderer.cpp; sourceTree = "<group>"; };
 		03E508F918FE1B340056ECE6 /* FortressRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FortressRenderer.h; sourceTree = "<group>"; };
 		03EA67A619832D7E0067196A /* ExplosionRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExplosionRenderer.cpp; sourceTree = "<group>"; };
@@ -193,7 +193,7 @@
 		03FEC83019C053CD00B4596B /* DrawRoundedTriangle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawRoundedTriangle.cpp; sourceTree = "<group>"; };
 		03FEC83119C053CD00B4596B /* DrawRoundedTriangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawRoundedTriangle.h; sourceTree = "<group>"; };
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		8D1107310486CEB800E47090 /* crucible island.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "crucible island.plist"; sourceTree = "<group>"; };
+		8D1107310486CEB800E47090 /* Dominicus.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Dominicus.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -432,7 +432,7 @@
 			path = texture;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA /* dominicus */ = {
+		29B97314FDCFA39411CA2CEA /* Dominicus */ = {
 			isa = PBXGroup;
 			children = (
 				030F8E0F1264C0FF00190225 /* core */,
@@ -447,23 +447,23 @@
 				034AF124193C84C700272390 /* COPYING */,
 				039DC975194FC6A8002251C5 /* DEVELOPMENT */,
 				034AF126193C85C100272390 /* README */,
-				03D47B7D1263E27F001755A6 /* crucible island.icns */,
-				8D1107310486CEB800E47090 /* crucible island.plist */,
+				03D47B7D1263E27F001755A6 /* Dominicus.icns */,
+				8D1107310486CEB800E47090 /* Dominicus.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				030F8DEC1264C00100190225 /* shaders */,
 				030F8DEF1264C01100190225 /* data */,
 				032B8AE812639AC900DDE564 /* frameworks */,
-				03C806C7130E4FED0037D309 /* Crucible Island.app */,
+				03C806C7130E4FED0037D309 /* Dominicus.app */,
 			);
-			name = dominicus;
+			name = Dominicus;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		03C806C6130E4FED0037D309 /* Crucible Island */ = {
+		03C806C6130E4FED0037D309 /* Dominicus */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 03C806CB130E500B0037D309 /* Build configuration list for PBXNativeTarget "Crucible Island" */;
+			buildConfigurationList = 03C806CB130E500B0037D309 /* Build configuration list for PBXNativeTarget "Dominicus" */;
 			buildPhases = (
 				03C806C3130E4FED0037D309 /* Resources */,
 				03C806C4130E4FED0037D309 /* Sources */,
@@ -474,9 +474,9 @@
 			);
 			dependencies = (
 			);
-			name = "Crucible Island";
-			productName = dominicus;
-			productReference = 03C806C7130E4FED0037D309 /* Crucible Island.app */;
+			name = "Dominicus";
+			productName = Dominicus;
+			productReference = 03C806C7130E4FED0037D309 /* Dominicus.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -488,19 +488,19 @@
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = "Joshua Bodine";
 			};
-			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "crucible island" */;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Dominicus" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
 				en,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA /* dominicus */;
-			productRefGroup = 29B97314FDCFA39411CA2CEA /* dominicus */;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* Dominicus */;
+			productRefGroup = 29B97314FDCFA39411CA2CEA /* Dominicus */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				03C806C6130E4FED0037D309 /* Crucible Island */,
+				03C806C6130E4FED0037D309 /* Dominicus */,
 			);
 		};
 /* End PBXProject section */
@@ -512,7 +512,7 @@
 			files = (
 				034AF127193C85C100272390 /* README in Resources */,
 				03C806CC130E500D0037D309 /* InfoPlist.strings in Resources */,
-				03C806CD130E50140037D309 /* crucible island.icns in Resources */,
+				03C806CD130E50140037D309 /* Dominicus.icns in Resources */,
 				039DC976194FC6A8002251C5 /* DEVELOPMENT in Resources */,
 				03C806CE130E50340037D309 /* shaders in Resources */,
 				034AF125193C84C700272390 /* COPYING in Resources */,
@@ -602,12 +602,12 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
-				INFOPLIST_FILE = "$(SRCROOT)/crucible island.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Dominicus.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				OTHER_LDFLAGS = "";
 				PREBINDING = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "us.joshb.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "Crucible Island";
+				PRODUCT_NAME = "Dominicus";
 			};
 			name = Debug;
 		};
@@ -623,12 +623,12 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
-				INFOPLIST_FILE = "$(SRCROOT)/crucible island.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Dominicus.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				OTHER_LDFLAGS = "";
 				PREBINDING = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "us.joshb.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "Crucible Island";
+				PRODUCT_NAME = "Dominicus";
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -683,7 +683,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		03C806CB130E500B0037D309 /* Build configuration list for PBXNativeTarget "Crucible Island" */ = {
+		03C806CB130E500B0037D309 /* Build configuration list for PBXNativeTarget "Dominicus" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				03C806C9130E4FED0037D309 /* Debug */,
@@ -692,7 +692,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "crucible island" */ = {
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Dominicus" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,

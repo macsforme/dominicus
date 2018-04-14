@@ -1,5 +1,5 @@
 // MainLoopMember.h
-// Crucible Island
+// Dominicus
 
 #ifndef MAINLOOPMEMBER_H
 #define MAINLOOPMEMBER_H

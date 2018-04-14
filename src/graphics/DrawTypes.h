@@ -1,5 +1,5 @@
 // DrawTypes.h
-// Crucible Island
+// Dominicus
 
 #ifndef DRAWTYPES_H
 #define DRAWTYPES_H

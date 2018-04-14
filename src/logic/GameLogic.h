@@ -1,5 +1,5 @@
 // GameLogic.h
-// Crucible Island
+// Dominicus
 
 #ifndef GAMELOGIC_H
 #define GAMELOGIC_H

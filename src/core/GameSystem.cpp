@@ -1,5 +1,5 @@
 // GameSystem.cpp
-// Crucible Island
+// Dominicus
 
 #include "core/GameSystem.h"
 

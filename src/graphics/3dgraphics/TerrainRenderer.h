@@ -1,5 +1,5 @@
 // TerrainRenderer.h
-// Crucible Island
+// Dominicus
 
 #ifndef TERRAINRENDERER_H
 #define TERRAINRENDERER_H

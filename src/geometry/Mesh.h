@@ -1,5 +1,5 @@
 // Mesh.h
-// Crucible Island
+// Dominicus
 
 #ifndef MESH_H
 #define MESH_H

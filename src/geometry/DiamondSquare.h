@@ -1,5 +1,5 @@
 // DiamondSquare.h
-// Crucible Island
+// Dominicus
 //
 // RIP Sergeant Sean Drenth #6894, Phoenix Police, EOW 10-18-2010.
 

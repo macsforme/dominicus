@@ -1,5 +1,5 @@
 // DrawTexture.h
-// Crucible Island
+// Dominicus
 
 #ifndef DRAWTEXTURE_H
 #define DRAWTEXTURE_H

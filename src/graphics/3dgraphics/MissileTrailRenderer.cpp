@@ -1,5 +1,5 @@
 // MissileTrailRenderer.cpp
-// Crucible Island
+// Dominicus
 
 #include "graphics/3dgraphics/MissileTrailRenderer.h"
 

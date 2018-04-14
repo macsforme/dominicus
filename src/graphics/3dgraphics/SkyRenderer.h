@@ -1,5 +1,5 @@
 // SkyRenderer.h
-// Crucible Island
+// Dominicus
 
 #ifndef SKYRENDERER_H
 #define SKYRENDERER_H

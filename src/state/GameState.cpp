@@ -1,5 +1,5 @@
 // GameState.cpp
-// Crucible Island
+// Dominicus
 
 #include "state/GameState.h"
 

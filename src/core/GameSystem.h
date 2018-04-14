@@ -1,11 +1,11 @@
 // GameSystem.h
-// Crucible Island
+// Dominicus
 
 #ifndef GAMESYSTEM_H
 #define GAMESYSTEM_H
 
 // Game identifier string
-#define PROGRAM_IDENTIFIER "Crucible Island"
+#define PROGRAM_IDENTIFIER "Dominicus"
 
 // Version number (positive integer increased by 1 at each release)
 #define PROGRAM_VERSION "1"

@@ -1,5 +1,5 @@
 // Platform.cpp
-// Crucible Island
+// Dominicus
 
 #include <CoreFoundation/CoreFoundation.h>
 #include <cstdlib>

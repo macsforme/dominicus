@@ -1,5 +1,5 @@
 // DrawMissileIndicators.h
-// Crucible Island
+// Dominicus
 
 #ifndef DRAWMISSILEINDICATORS_H
 #define DRAWMISSILEINDICATORS_H

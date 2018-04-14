@@ -1,5 +1,5 @@
 // DrawSplash.h
-// Crucible Island
+// Dominicus
 
 #ifndef DRAWSPLASH_H
 #define DRAWSPLASH_H

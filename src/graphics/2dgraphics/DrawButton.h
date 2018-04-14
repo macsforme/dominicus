@@ -1,5 +1,5 @@
 // DrawButton.h
-// Crucible Island
+// Dominicus
 
 #ifndef DRAWBUTTON_H
 #define DRAWBUTTON_H

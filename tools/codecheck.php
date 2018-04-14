@@ -38,7 +38,7 @@ function customSort($a, $b) {
 }
 
 // define settings
-$projectName = "Crucible Island";
+$projectName = "Dominicus";
 $headerSearchDirectory = "src/";
 $fileExtensions = Array(".h", ".cpp" /*, ".glsl"*/);
 $ignoreFiles = Array(".git/", "src/platform/macosx/SDLMain.h", "src/platform/macosx/SDLMain.m");

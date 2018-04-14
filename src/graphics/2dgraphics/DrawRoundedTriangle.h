@@ -1,5 +1,5 @@
 // DrawRoundedTriangle.h
-// Crucible Island
+// Dominicus
 
 #ifndef DRAWROUNDEDTRIANGLE_H
 #define DRAWROUNDEDTRIANGLE_H

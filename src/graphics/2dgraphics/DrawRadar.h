@@ -1,5 +1,5 @@
 // DrawRadar.h
-// Crucible Island
+// Dominicus
 
 #ifndef DRAWRADAR_H
 #define DRAWRADAR_H

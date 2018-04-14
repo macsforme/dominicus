@@ -1,5 +1,5 @@
 // DrawRadar.cpp
-// Crucible Island
+// Dominicus
 
 #include "graphics/2dgraphics/DrawRadar.h"
 

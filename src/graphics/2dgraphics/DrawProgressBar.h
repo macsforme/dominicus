@@ -1,5 +1,5 @@
 // DrawProgressBar.h
-// Crucible Island
+// Dominicus
 
 #ifndef DRAWPROGRESSBAR_H
 #define DRAWPROGRESSBAR_H

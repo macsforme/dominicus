@@ -1,5 +1,5 @@
 // Texture.cpp
-// Crucible Island
+// Dominicus
 
 #include "graphics/texture/Texture.h"
 

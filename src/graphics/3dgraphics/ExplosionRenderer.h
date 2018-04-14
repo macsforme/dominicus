@@ -1,5 +1,5 @@
 // ExplosionRenderer.h
-// Crucible Island
+// Dominicus
 
 #ifndef EXPLOSIONRENDERER_H
 #define EXPLOSIONRENDERER_H

@@ -1,5 +1,5 @@
 // ShellRenderer.h
-// Crucible Island
+// Dominicus
 
 #ifndef SHELLRENDERER_H
 #define SHELLRENDERER_H

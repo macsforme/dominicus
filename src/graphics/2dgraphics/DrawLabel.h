@@ -1,5 +1,5 @@
 // DrawLabel.h
-// Crucible Island
+// Dominicus
 
 #ifndef DRAWLABEL_H
 #define DRAWLABEL_H

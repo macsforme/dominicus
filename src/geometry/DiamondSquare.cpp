@@ -1,5 +1,5 @@
 // DiamondSquare.cpp
-// Crucible Island
+// Dominicus
 
 #include "geometry/DiamondSquare.h"
 

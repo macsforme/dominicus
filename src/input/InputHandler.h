@@ -1,5 +1,5 @@
 // InputHandler.h
-// Crucible Island
+// Dominicus
 
 #ifndef INPUTHANDLER_H
 #define INPUTHANDLER_H

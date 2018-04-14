@@ -1,5 +1,5 @@
 // Sphere.cpp
-// Crucible Island
+// Dominicus
 
 #include "geometry/Sphere.h"
 

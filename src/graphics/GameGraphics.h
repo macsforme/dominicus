@@ -1,5 +1,5 @@
 // GameGraphics.h
-// Crucible Island
+// Dominicus
 
 #ifndef GAMEGRAPHICS_H
 #define GAMEGRAPHICS_H

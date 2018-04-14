@@ -1,5 +1,5 @@
 // GameGraphics.cpp
-// Crucible Island
+// Dominicus
 
 #include "graphics/GameGraphics.h"
 

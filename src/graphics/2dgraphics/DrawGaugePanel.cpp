@@ -1,5 +1,5 @@
 // DrawGaugePanel.cpp
-// Crucible Island
+// Dominicus
 
 #include "graphics/2dgraphics/DrawGaugePanel.h"
 

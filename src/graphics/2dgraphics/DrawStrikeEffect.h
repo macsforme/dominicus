@@ -1,5 +1,5 @@
 // DrawStrikeEffect.h
-// Crucible Island
+// Dominicus
 
 #ifndef DRAWSTRIKEEFFECT_H
 #define DRAWSTRIKEEFFECT_H

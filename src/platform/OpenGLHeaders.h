@@ -1,5 +1,5 @@
 // OpenGLHeaders.h
-// Crucible Island
+// Dominicus
 
 #ifndef OPENGLHEADERS_H
 #define OPENGLHEADERS_H

@@ -1,5 +1,5 @@
 // Texture.h
-// Crucible Island
+// Dominicus
 
 #ifndef TEXTURE_H
 #define TEXTURE_H

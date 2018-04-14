@@ -1,5 +1,5 @@
 // DrawCircle.h
-// Crucible Island
+// Dominicus
 
 #ifndef DRAWCIRCLE_H
 #define DRAWCIRCLE_H

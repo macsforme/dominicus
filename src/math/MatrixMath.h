@@ -1,5 +1,5 @@
 // MatrixMath.h
-// Crucible Island
+// Dominicus
 
 #ifndef MATRIXMATH_H
 #define MATRIXMATH_H

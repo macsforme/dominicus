@@ -1,5 +1,5 @@
 // DrawingMaster.h
-// Crucible Island
+// Dominicus
 
 #ifndef DRAWINGMASTER_H
 #define DRAWINGMASTER_H

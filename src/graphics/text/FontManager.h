@@ -1,5 +1,5 @@
 // FontManager.h
-// Crucible Island
+// Dominicus
 
 #ifndef FONTMANAGER_H
 #define FONTMANAGER_H

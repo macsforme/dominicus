@@ -1,5 +1,5 @@
 // MiscMath.h
-// Crucible Island
+// Dominicus
 
 #ifndef MISCMATH_H
 #define MISCMATH_H

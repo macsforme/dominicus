@@ -1,5 +1,5 @@
 // VectorMath.h
-// Crucible Island
+// Dominicus
 
 #ifndef VECTORMATH_H
 #define VECTORMATH_H

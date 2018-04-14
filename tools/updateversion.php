@@ -40,7 +40,7 @@ if(! $replacementCount)
 if(! file_put_contents("src/core/GameSystem.h", $gameSystemFile))
      exit("Unable to write updated source file\n");
 
-$macPlistFile = file_get_contents("crucible island.plist");
+$macPlistFile = file_get_contents("Dominicus.plist");
 
 // replace mac plist short version number
 $replacementCount = 0;
@@ -55,7 +55,7 @@ if(! $replacementCount)
      exit("Unable to substitute whole version number into mac plist file\n");
 
 // write out the file
-if(! file_put_contents("crucible island.plist", $macPlistFile))
+if(! file_put_contents("Dominicus.plist", $macPlistFile))
 	exit("Unable to write updated mac plist file\n");
 
 $copyingFile = file_get_contents("COPYING");
@@ -78,10 +78,10 @@ else if($matches[2] == "a") $prettyVersion = $matches[1]." Alpha ".$matches[3];
 else if($matches[2] == "b") $prettyVersion = $matches[1]." Beta ".$matches[3];
 else $prettyVersion = $matches[1]." Stable";
 echo "Source code version updated to ".$prettyVersion."\n";
-if(exec("git status src/core/GameSystem.h crucible\ island.plist COPYING") == "nothing to commit, working directory clean") {
+if(exec("git status src/core/GameSystem.h Dominicus.plist COPYING") == "nothing to commit, working directory clean") {
 	echo "However, no changes resulted from this update.\n";
 } else {
-	$commitCommand = "git commit src/core/GameSystem.h crucible\ island.plist COPYING -m \"Version updated to ".$prettyVersion.".\"\n";
+	$commitCommand = "git commit src/core/GameSystem.h Dominicus.plist COPYING -m \"Version updated to ".$prettyVersion.".\"\n";
 	$tagCommand = "git tag -a v".$matches[0]." -m \"Version ".$prettyVersion;
 	if($matches[2] == "s") {
 		echo "This is a stable commit/tag. Please enter a list of changes to be logged.\n";

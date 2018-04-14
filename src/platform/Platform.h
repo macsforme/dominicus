@@ -1,5 +1,5 @@
 // Platform.h
-// Crucible Island
+// Dominicus
 
 #ifndef PLATFORM_H
 #define PLATFORM_H

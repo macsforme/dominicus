@@ -1,5 +1,5 @@
 // UILayoutAuthority.cpp
-// Crucible Island
+// Dominicus
 
 #include "graphics/UILayoutAuthority.h"
 

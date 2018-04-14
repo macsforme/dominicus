@@ -1,5 +1,5 @@
 // WaterRenderer.h
-// Crucible Island
+// Dominicus
 
 #ifndef WATERRENDERER_H
 #define WATERRENDERER_H

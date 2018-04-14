@@ -1,5 +1,5 @@
 // FortressRenderer.h
-// Crucible Island
+// Dominicus
 
 #ifndef FORTRESSRENDERER_H
 #define FORTRESSRENDERER_H

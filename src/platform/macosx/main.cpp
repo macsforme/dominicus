@@ -1,5 +1,5 @@
 // main.cpp
-// Crucible Island
+// Dominicus
 
 #include <cstdlib>
 #include <iostream>

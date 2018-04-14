@@ -1,5 +1,5 @@
 // SkyRenderer.cpp
-// Crucible Island
+// Dominicus
 
 #include "graphics/3dgraphics/SkyRenderer.h"
 

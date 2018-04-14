@@ -1,5 +1,5 @@
 // Sphere.h
-// Crucible Island
+// Dominicus
 
 #ifndef SPHERE_H
 #define SPHERE_H

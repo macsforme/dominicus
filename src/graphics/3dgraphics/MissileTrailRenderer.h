@@ -1,5 +1,5 @@
 // MissileTrailRenderer.h
-// Crucible Island
+// Dominicus
 
 #ifndef MISSILETRAILRENDERER_H
 #define MISSILETRAILRENDERER_H

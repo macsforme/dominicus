@@ -1,5 +1,5 @@
 // gameMain.h
-// Crucible Island
+// Dominicus
 
 #ifndef GAMEMAIN_H
 #define GAMEMAIN_H

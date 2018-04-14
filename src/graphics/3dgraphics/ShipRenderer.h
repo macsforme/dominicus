@@ -1,5 +1,5 @@
 // ShipRenderer.h
-// Crucible Island
+// Dominicus
 
 #ifndef SHIPRENDERER_H
 #define SHIPRENDERER_H

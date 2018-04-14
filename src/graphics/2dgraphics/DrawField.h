@@ -1,5 +1,5 @@
 // DrawField.h
-// Crucible Island
+// Dominicus
 
 #ifndef DRAWFIELD_H
 #define DRAWFIELD_H
