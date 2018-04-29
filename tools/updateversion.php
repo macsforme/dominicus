@@ -14,7 +14,7 @@ if(! is_file("src/core/GameSystem.h") || ! is_file("COPYING"))
      exit("Please run this script from the main source directory\n");
 
 // ensure no uncommitted changes to any files
-if(exec("git status") != "nothing to commit, working directory clean")
+if(preg_match("/nothing to commit, working tree clean/", exec("git status")) != 1)
      exit("Source tree has uncommitted changes\n");
 
 $gameSystemFile = file_get_contents("src/core/GameSystem.h");
