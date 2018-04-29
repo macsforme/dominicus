@@ -6,9 +6,11 @@ https://github.com/macsforme/dominicus
 
 Dominicus is a first-person shooter tower defense game. The goal of the game is to defend your tower by shooting down missiles fired at you by enemy ships, and to accumulate as many points as possible. Dominicus is currently available on Mac OS X 10.6 and up.
 
-This game evolved out of the author's attempt to learn how to program 3D simulation using OpenGL. It has been in development in one form or another since March of 2010. Dominicus has been designed to be OpenGL 2.0 compatible, meaning that the game should run on most dedicated graphics cards made around or after 2006 (assuming full operating system and driver support for the required features), while allowing for the flexibility of modern shader-based drawing pipelines. While the author hopes players find the game enjoyable, the game began as and continues to be an exercise, experiment, and learning experience for implementing new graphical effects and techniques.
+This game evolved out of the author's attempt to learn how to program 3D simulation using OpenGL. It has been in development in one form or another since March of 2010. Dominicus has been designed to be OpenGL 2.0 compatible, meaning that the game should run on most dedicated graphics cards made around or after 2006 (assuming full operating system and driver support for the required features), while allowing for the flexibility of modern shader-based drawing pipelines.
 
-Although it has been primarily created by a single author, Dominicus is free and open-source software. The source code is available on GitHub at the address at the top of this file.
+Please note that because this project was basically one big learning experience, it should NOT be used as a model for well-written, elegant, or efficient C++ code. While attention to detail has been given when writing this software, in retrospect there are many flawed designs and inefficiencies which are not worth imitating.
+
+Dominicus is free and open-source software. The source code is available on GitHub at the address at the top of this file.
 
 
 /////////////////////////////////// LICENSE ///////////////////////////////////
@@ -18,7 +20,7 @@ Dominicus source code and release products (binaries and application packages) a
 
 ////////////////////////// OBTAINING BINARY RELEASES //////////////////////////
 
-Binary releases are made available through the Apple App Store, or through GitHub (https://github.com/macsforme/dominicus/releases).
+Binary releases are made available through GitHub (https://github.com/macsforme/dominicus/releases). Additional distribution methods are possible in the future.
 
 
 //////////////////////////// OBTAINING SOURCE CODE ////////////////////////////
@@ -31,39 +33,21 @@ Dominicus source code may be obtained by cloning the public GitHub repository (h
 Dominicus build project files are currently maintained for Mac OS X using the Xcode IDE version 4.2 or later with a deployment target of Mac OS X 10.6 (Xcode 3.2 may also work, but a bug in the Mac OS X 10.6 SDK in some versions requires that you add the directory "/Library/Frameworks/Frameworks" to your "Framework Search Paths" setting before building). Dominicus has the following external dependencies:
 
 * Simple DirectMedia Layer (SDL) 1.2
+* libpng
 * FreeType 2
 
-Dominicus should build successfully with the most current stable version of these libraries. If it does not, please create an issue on GitHub at https://github.com/macsforme/dominicus/issues and I will take a look.
+There is a pre-built dependencies package available from https://github.com/macsforme/dominicus-dependencies. Download the latest release package and expand it in the dominicus source directory (you should have a directory named "dependencies" in the dominicus source directory). This should put all your dependencies in the place where the Xcode project can find them.
 
-The Xcode project file is set to look for required library files in certain locations. If you install them elsewhere, you will need to edit the project file.
-
-To set up SDL, download the Mac OS X framework from http://www.libsdl.org/download-1.2.php (make sure you select the latest SDL 1.2 build). Place the SDL.framework file in the /Library/Frameworks/ directory. Copy the corresponding SDLMain.h and SDLMain.m files into the Dominicus source directory at src/platform/macosx/. These files are not tracked by version control as they must match the version of the SDL framework you have installed.
-
-To set up FreeType 2, download the latest stable release from http://sourceforge.net/projects/freetype/files/freetype2/ to your computer. SourceForge may suggest the latest version to download near the top of the screen.
-
-When you have downloaded FreeType 2, execute the following commands (or appropriate alternatives, as desired) in a shell to build and install the software (substitute the appropriate version number in the filename):
-
-# cd ~/Downloads
-# tar -xf freetype-2.5.3.tar.bz2			(substitute correct version)
-# sudo mv freetype-2.5.3 /usr/local/src/	(substitute correct version)
-# rm freetype-2.5.3.tar.bz2					(substitute correct version)
-# cd /usr/local/src/freetype-2.5.3			(substitute correct version)
-# CFLAGS="-isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -mmacosx-version-min=10.6 -arch i386 -arch x86_64" LDFLAGS="-isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -mmacosx-version-min=10.6 -arch i386 -arch x86_64" ./configure --disable-shared --with-png=no	(substitute latest Mac OS X SDK version)
-# CFLAGS="-isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -mmacosx-version-min=10.6 -arch i386 -arch x86_64" LDFLAGS="-isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -mmacosx-version-min=10.6 -arch i386 -arch x86_64" make	(substitute latest Mac OS X SDK version)
-# sudo make install
-
-Freetype 2 should now be installed where the Dominicus Xcode project file can find it.
-
-To build Dominicus, open the file "Dominicus.xcodeproj" in the source directory. Expand the "frameworks" group near the bottom of the files panel on the left, and verify that the files "SDL.framework," "libfreetype.a," and "libpng.a" are not shown in red text. This will show you that you installed the dependencies correctly. Press the keys Command-B, or select "Build" from the Product menu, to build the project. When you activate the Utilities pane (using the icon in the upper-right corner of the Xcode window) and click on the "Dominicus.app" in the Navigator pane, the full path to the application bundle should be shown in the Utilities pane.
+To build Dominicus, open the file "Dominicus.xcodeproj" in the source directory. Expand the "Frameworks" group near the bottom of the files panel on the left, and verify that the files "libfreetype.a," "libpng16.a," and "libSDL.a" are not shown in red text. This will show you that you set up the dependencies correctly. Press the keys Command-B, or select "Build" from the Product menu, to build the project. When you activate the Utilities pane (using the icon in the upper-right corner of the Xcode window) and click on the "Dominicus.app" in the Navigator pane, the full path to the application bundle should be shown in the Utilities pane.
 
 
 ///////////////////////////////// BUG REPORTS /////////////////////////////////
 
-I would love to hear of any issues or bugs you encounter when using this game so I can correct them. Please bring up any problems on the issue tracker (https://github.com/macsforme/dominicus/issues). If the game has crashed, you should get a notice that the application quit unexpectedly. Please click "Report..." and on the following prompt click "Show Details" (please DO NOT click "Send to Apple"). Please copy the entire output under "Problem Details and System Configuration," and include this at the bottom of your issue report. This will help me tremendously when I try to determine what caused the problem and attempt to reproduce it.
+Please bring up any problems on the issue tracker (https://github.com/macsforme/dominicus/issues). If the game has crashed, you should get a notice that the application quit unexpectedly. Please click "Report..." and on the following prompt click "Show Details" (please DO NOT click "Send to Apple"). Please copy the entire output under "Problem Details and System Configuration," and include this at the bottom of your issue report. This will help me tremendously when I try to determine what caused the problem and attempt to reproduce it.
 
 
 ////////////////////////////////// COMMENTS ///////////////////////////////////
 
-I intend to be receptive to any suggestions and constructive criticism you may have to offer. I may often be reached via IRC on the FreeNode network (I go by Constitution). Figuring out my e-mail address is not difficult and is left as an exercise to the reader.
+I intend to be receptive to any suggestions and constructive criticism you may have to offer. I may often be reached via IRC on the FreeNode network (I go by macsforme). My email address is also available in the commit log.
 
 Thank you for your interest in this game. I hope you find it enjoyable.
