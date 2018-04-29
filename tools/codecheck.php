@@ -41,7 +41,7 @@ function customSort($a, $b) {
 $projectName = "Dominicus";
 $headerSearchDirectory = "src/";
 $fileExtensions = Array(".h", ".cpp" /*, ".glsl"*/);
-$ignoreFiles = Array(".git/", "src/platform/macosx/SDLMain.h", "src/platform/macosx/SDLMain.m");
+$ignoreFiles = Array(".git/", "src/platform/macosx/SDLMain.h", "src/platform/macosx/SDLMain.m", "dependencies/");
 $headerSectionFileWhitelist = Array(
 	"src/graphics/text/FontManager.h",
 	"src/platform/OpenGLHeaders.h"
@@ -75,7 +75,8 @@ $systemHeaders = Array(
 	"cstdio" => Array("sprintf()"), // also stdio.h
 	"iostream" => Array("std::cout"),
 	"SDL/SDL.h" => Array("SDL_OpenAudio()", "SDL_LockAudio()", "SDL_SetVideoMode()", "SDL_WarpMouse()", "SDL_EnableUNICODE()", "SDL_GetVideoInfo()", "SDL_PollEvent()", "SDL_Event", "SDL_Init()", "SDL_AudioSpec", "SDLKey"),
-	"ft2build.h" => Array("FT_FREETYPE_H", "FT_Library", "FT_Face", "FT_Set_Char_Size()", "FT_UInt", "FT_Load_Glyph()", "FT_Render_Glyph()", "FT_Init_FreeType()", "FT_New_Face()")
+	"ft2build.h" => Array("FT_FREETYPE_H", "FT_Library", "FT_Face", "FT_Set_Char_Size()", "FT_UInt", "FT_Load_Glyph()", "FT_Render_Glyph()", "FT_Init_FreeType()", "FT_New_Face()"),
+	"png.h" => Array("png_bytep", "png_image", "PNG_IMAGE_VERSION", "png_image_begin_read_from_file()", "PNG_FORMAT_RGBA", "PNG_IMAGE_SIZE()", "png_image_finish_read()")
 );
 $localHeaders = Array(
 	$headerSearchDirectory."platform/OpenGLHeaders.h" => Array("glBindBuffer()", "glGenBuffers()", "glBufferData()", "glEnable()", "glDisable()", "glBlendFunc()", "glUseProgram()", "glShaderSource()", "glCompileShader()", "glGetString()", "glClear()", "GLfloat", "GLint", "GLuint", "GLushort", "GLchar")
