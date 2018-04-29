@@ -68,7 +68,7 @@ GameSystem::GameSystem() {
 	displayResolutionY = (unsigned short int) vidInfo->current_h;
 
 	// window and element scaling
-	setStandard("displayWindowedResolutions", "800x600,1024x768,1152x864,1280x1024,1600x1200", "Supported resolutions for windowed mode.");
+	setStandard("displayWindowedResolutions", "800x600,1024x768,1152x864,1280x960,1600x1200,2560x1920,3200x2400,4096x3072", "Supported resolutions for windowed mode.");
 	setStandard("displayWindowedMaxPortion", 0.9f, "Maximum portion of vertical screen resolution to take up in windowed mode.");
 
 	std::vector< std::pair<unsigned int, unsigned int> > allowedResolutions = getAllowedWindowResolutions();
@@ -245,9 +245,9 @@ GameSystem::GameSystem() {
 	setStandard("islandTerrainSink", 0.5f, "Island terrain generation sink to sea level factor.");
 
 	// text strings
-	setStandard("textControls", "Move Turret:\tArrow Keys / Mouse Movement\nFire Cannon:\tSpace / Left Mouse Button / Mouse Wheel\nCharge / Fire EMP:\tTab / Right Mouse Button\nToggle Binoculars:\tShift / Middle Mouse Button\nPause / Resume:\tesc\nToggle Fullscreen:\tF1\nFast Quit:\tF12", "Controls help text.");
+	setStandard("textControls", "Move Turret:\tArrow Keys / Mouse Movement\nFire Cannon:\tSpace / Left Mouse Button / Mouse Wheel\nCharge / Fire EMP:\tTab / Right Mouse Button\nToggle Binoculars:\tShift / Middle Mouse Button\nPause / Resume:\tEsc\nToggle Fullscreen:\tF1\nFast Quit:\tF12", "Controls help text.");
 	setStandard("textInstructions", "You occupy a cannon tower atop an island mountain. You must destroy enemy missiles fired at you by orbiting ships. Your first weapon is a cannon which fires shells, depleting your ammunition reservoir. Your second weapon is an electromagnetic pulse device, which will destroy all missiles within its radius. An electromagnetic pulse requires a charging period, and depletes both your health and ammunition reservoirs.\n\nYou gain a certain number of points (based on the difficulty setting) for each missile you destroy. As the game progresses, the number of enemy ships will increase. When your health level drops below zero, the game is over. Good luck!");
-	setStandard("textCredits", "Dedicated to Sergeant Sean Drenth #6894 of the Phoenix Police Department; EOW October 18, 2010.\n\nCreated by Joshua Bodine.\n\nMusic and sound effects by Michael Birch (http://flexstylemusic.com).\n\nThis software uses the Titillium Web font by Accademia di Belle Arti di Urbino and students of MA course of Visual design.\n\nPortions of this software are copyright (c) 2014 The FreeType Project (www.freetype.org). All rights reserved.\n\nThis software uses the Simple DirectMedia Layer library (http://www.libsdl.org/).", "Credits text.");
+	setStandard("textCredits", "Dedicated to Sergeant Sean Drenth #6894 of the Phoenix Police Department; EOW October 18, 2010.\n\nCreated by Joshua Bodine.\n\nMusic and sound effects by Michael Birch (http://flexstylemusic.com).\n\nThis software uses the Titillium Web font by Accademia di Belle Arti di Urbino and students of MA course of Visual design.\n\nPortions of this software are copyright (c) 2018 The FreeType Project (www.freetype.org). All rights reserved.\n\nThis software uses the Simple DirectMedia Layer library (http://www.libsdl.org/).", "Credits text.");
 
 	// load standards from preferences (or save standard preferences if no file)
 	if(platform->getPreferenceFloat("preferencesVersion") == getFloat("preferencesVersion")) {
