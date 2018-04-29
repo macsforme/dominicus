@@ -4,12 +4,13 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
+#include <png.h>
 #include <stdint.h>
 #include <string>
 
 class Texture {
 private:
-	void* pixelData;
+	png_bytep pixelData;
 
 public:
 	enum PixelFormat {

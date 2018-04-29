@@ -520,7 +520,7 @@ Texture* GameGraphics::getTexture(std::string filename) {
 			platform->dataPath <<
 			"/data/textures/" <<
 			filename <<
-			".bmp";
+			".png";
 	textures[filename] = new Texture(filenameStream.str().c_str());
 
 	return textures[filename];
@@ -536,7 +536,7 @@ GLuint GameGraphics::getTextureID(std::string filename) {
 			platform->dataPath <<
 			"/data/textures/" <<
 			filename <<
-			".bmp";
+			".png";
 	Texture texture(filenameStream.str().c_str());
 
 	// load the texture into OpenGL

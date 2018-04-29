@@ -5,7 +5,6 @@
 
 #include <cstdlib>
 #include <cstring>
-#include <fstream>
 #include <sstream>
 
 #include "core/GameSystem.h"
@@ -17,272 +16,65 @@ Texture::Texture(uint32_t newWidth, uint32_t newHeight, PixelFormat newFormat) {
 	height = newHeight;
 	format = newFormat;
 
-	pixelData = calloc(
- 			width *
+	size_t memSize =
+			width *
 			height *
 			(format == FORMAT_RGBA ? 4 : 3) +
 			height * (
-						(width * (format == FORMAT_RGBA ? 4 : 3) % 4) > 0 ?
-						4 - (width * (format == FORMAT_RGBA ? 4 : 3) % 4) : 0
-				),
-			sizeof(uint8_t)
-		);
+					(width * (format == FORMAT_RGBA ? 4 : 3) % 4) > 0 ?
+					4 - (width * (format == FORMAT_RGBA ? 4 : 3) % 4) : 0
+				);
+
+	pixelData = new uint8_t[memSize];
+
+	memset(pixelData, 0, memSize);
 }
 
 Texture::Texture(std::string filename) {
-	// ===== Opening and reading the file =====
+	png_image pngImage;
 
-	// open the file
-	std::ifstream fileStream;
-	fileStream.open(filename.c_str(), std::ios::binary);
+	memset(&pngImage, 0, (sizeof pngImage));
 
-	// ensure the file was successfully opened
-	if(! fileStream.is_open()) {
+	pngImage.version = PNG_IMAGE_VERSION;
+
+	if(! png_image_begin_read_from_file(&pngImage, filename.c_str()))
 		gameSystem->log(
 				GameSystem::LOG_FATAL,
-				std::string("The BMP image file " +
+				std::string("The PNG image file " +
 						std::string(filename) +
 						" could not be opened for reading.").c_str()
 			);
-	}
 
-	// get length of the file
-	fileStream.seekg(0, std::ios::end);
-	size_t length = (size_t)fileStream.tellg();
+	pngImage.format = PNG_FORMAT_RGBA;
 
-	fileStream.seekg(0, std::ios::beg);
+	png_bytep dataBuffer = new unsigned char[PNG_IMAGE_SIZE(pngImage)];
 
-	// allocate memory for the data we're about to read
-	uint8_t* fileContents = (uint8_t*) malloc(length);
-
-	// read the contents
-	fileStream.read((char*) fileContents, length);
-
-	// close the file
-	fileStream.close();
-
-	// ===== Data storage structs =====
-
-	// file type check
-	struct {
-			char magic[2];
-		} fileMagic;
-
-	// BMP file header
-	struct {
-			uint32_t fileSize;
-			uint16_t reserved1;
-			uint16_t reserved2;
-			uint32_t dataOffset;
-		} fileBMPHeader;
-
-	// DIB file header
-	struct {
-			uint32_t headerSize;
-			uint32_t imageWidth;
-			uint32_t imageHeight;	// does not support upside-down images
-			uint16_t colorPlanes;
-			uint16_t bpp;
-			uint32_t compressionMethod;
-			uint32_t imageDataSize;
-			uint32_t horizontalDPI;
-			uint32_t verticalDPI;
-			uint32_t numIndexedColors;
-			uint32_t numImportantIndexedColors;
-		} fileDIBHeader;
-
-	// ===== Extracting headers =====
-
-	// Extract magic header
-	memcpy(
-			(void*) &fileMagic,
-			(void*) &fileContents,
-			sizeof(fileMagic)
-		);
-
-	if(fileMagic.magic[0] == 'B' && fileMagic.magic[1] == 'M') {
+	if(dataBuffer == NULL || ! png_image_finish_read(&pngImage, NULL, dataBuffer, 0, NULL))
 		gameSystem->log(
 				GameSystem::LOG_FATAL,
-				std::string("The BMP image file " +
+				std::string("Could not read image data from PNG texture file " +
 						std::string(filename) +
-						" does not appear to be a valid BMP file.").c_str()
-				);
-	}
+						".").c_str()
+			);
 
-	// Extract BMP header
-	memcpy(
-			(void*) &fileBMPHeader,
-			(void*) (fileContents + sizeof(fileMagic)),
-			sizeof(fileBMPHeader)
-		);
+	// flip the image vertically
+	pixelData = new unsigned char[PNG_IMAGE_SIZE(pngImage)];
 
-	// We only support the BITMAPINFOHEADER file format (actually BITMAPV4HEADER seems to work too)
-	if(
-			fileBMPHeader.dataOffset - sizeof(fileMagic) - sizeof(fileBMPHeader) != 40 &&
-			fileBMPHeader.dataOffset - sizeof(fileMagic) - sizeof(fileBMPHeader) != 108
-		) {
-		gameSystem->log(
-				GameSystem::LOG_FATAL,
-				std::string("The BMP image file " +
-						std::string(filename) +
-						" appears to have an incorrect DIB header size.").c_str()
-				);
-	}
+	for(size_t y = 0; y < pngImage.height; ++y)
+		for(size_t x = 0; x < pngImage.width; ++x)
+			for(size_t i = 0; i < 4; ++i)
+				pixelData[(pngImage.height - 1 - y) * pngImage.width * 4 + x * 4 + i] =
+						dataBuffer[y * pngImage.width * 4 + x * 4 + i];
 
-	// Extract DIB header
-	memcpy(
-			(void*) &fileDIBHeader,
-			(void*) (fileContents + sizeof(fileMagic) + sizeof(fileBMPHeader)),
-			sizeof(fileDIBHeader)
-		);
+	delete[] dataBuffer;
 
-	// Check again that we are using the BITMAPINFOHEADER or BITMAPV4HEADER file format
-	if(fileDIBHeader.headerSize != 40 && fileDIBHeader.headerSize != 108) {
-		gameSystem->log(
-				GameSystem::LOG_FATAL,
-				std::string("The BMP image file " +
-						std::string(filename) +
-						" reports an incorrect DIB header size.").c_str()
-				);
-	}
-
-	// We don't support compressed bitmaps, only BI_RGB method
-	if(fileDIBHeader.compressionMethod != 0) {
-		gameSystem->log(
-				GameSystem::LOG_FATAL,
-				std::string("The BMP image file " +
-						std::string(filename) +
-						" DIB header reports an unsupported image compression method.").c_str()
-				);
-	}
-
-	// We will probably never use indexed bitmaps, so we don't support them
-	if(fileDIBHeader.numIndexedColors > 0) {
-		gameSystem->log(
-				GameSystem::LOG_FATAL,
-				std::string("The BMP image file " +
-						std::string(filename) +
-						" DIB header reports an unsupported color-indexed format.").c_str()
-				);
-	}
-
-	// Ensure a legal bits-per-pixel specification
-	if(
-			fileDIBHeader.bpp != 24 &&
-			fileDIBHeader.bpp != 32
-		) {
-		std::stringstream ss;
-		ss << "The BMP image file " << filename << " DIB header reports an unsupported pixel depth of " << fileDIBHeader.bpp << ".";
-		gameSystem->log(GameSystem::LOG_FATAL, ss.str().c_str());
-	}
-
-	// ===== Reading pixel data =====
-
-	// Here we read the pixel data according to the bits depth specification.
-	// Presently only 24 and 32-bit depths are supported, since these are the
-	// only types of images commonly used as textures.
-
-	// Note that widths are padded-out to a multiple of 4 if necessary, so
-	// that the RGB(A) data is read properly to OpenGL (this could also be
-	// solved by executing glPixelStorei(GL_UNPACK_ALIGNMENT, 1) for 1 byte.
-	size_t pixelSize = fileDIBHeader.bpp / 8;
-	uint32_t skipBytesPerRow =
-			((fileDIBHeader.imageWidth * pixelSize) % 4 > 0 ?
-					4 - (fileDIBHeader.imageWidth * pixelSize) % 4 : 0);
-
-	// Allocate and initialize the necessary memory
-	pixelData = calloc(
-			(
-					fileDIBHeader.imageHeight *
-					fileDIBHeader.imageWidth *
-					pixelSize
-				)
-			+ skipBytesPerRow * fileDIBHeader.imageHeight,
-			sizeof(uint8_t)
-		);
-
-	// Different depths require different extraction methods
-	switch(fileDIBHeader.bpp) {
-		case 24:
-		case 32:
-		{
-			// Create our marker pointer
-			uint8_t* dataMark = (fileContents + (size_t) fileBMPHeader.dataOffset);
-
-			// Loop through the entire stored data buffer, allocating pixel values
-			// Pixel data is stored from bottom to top, left to right
-			for(uint32_t y = 0;	y < fileDIBHeader.imageHeight; ++y) {
-				for(uint32_t x = 0; x < fileDIBHeader.imageWidth; ++x) {
-					// Make sure we aren't past the end of the pixel data
-					if(dataMark - (fileContents + fileBMPHeader.dataOffset)
-							> fileDIBHeader.imageDataSize) {
-						std::stringstream err;
-						err << "The BMP image file "
-								<< filename
-								<< " encountered a premature image data end at byte "
-								<< (dataMark - fileContents)
-								<< " (expected size "
-								<< fileDIBHeader.imageDataSize
-								<< ") at pixel "
-								<< x << "," << y
-								<< " (actual image size "
-								<< fileDIBHeader.imageWidth << ","
-								<< fileDIBHeader.imageHeight <<
-								").";
-
-						gameSystem->log(GameSystem::LOG_FATAL, err.str().c_str());
-					}
-
-					// Pixel data starting point
-					uint8_t* pixelStart =
-							(uint8_t*) pixelData +
-							y * (
-									fileDIBHeader.imageWidth * pixelSize + skipBytesPerRow
-								) +
-							x * pixelSize;
-
-					// Copy the colors into the pixel array
-					*(pixelStart + 2) = *(dataMark++);	// blue
-					*(pixelStart + 1) = *(dataMark++);	// green
-					*(pixelStart) = *(dataMark++);	// red
-					if(fileDIBHeader.bpp == 32)
-						*(pixelStart + 3) = *(dataMark++);	// alpha
-				}
-
-				// For 24-bpp images, pad the row out until the bytes are divisible by 4
-				if(fileDIBHeader.bpp == 24)
-					dataMark += fileDIBHeader.imageWidth % 4;
-			}
-
-			// Make sure we exactly at the end of the pixel data
-			int shortfall = (int)(fileContents + fileBMPHeader.fileSize - dataMark);
-			if(shortfall != 0) {
-				std::stringstream err;
-				err << "The BMP image file "
-						<< filename
-						<< " has image data "
-						<< (shortfall < 0 ? -shortfall : shortfall)
-						<< (shortfall < 0 ? " short of" : " in excess of")
-						<< " the expected data length.";
-
-				gameSystem->log(GameSystem::LOG_FATAL, err.str().c_str());
-			}
-
-			break;
-		}
-	}
-
-	// Free the file buffer
-	free(fileContents);
-
-	// Set the pixel storage format, image width, and image height
-	format = (fileDIBHeader.bpp == 32 ? FORMAT_RGBA : FORMAT_RGB);
-	width = fileDIBHeader.imageWidth;
-	height = fileDIBHeader.imageHeight;
+	format = FORMAT_RGBA;
+	width = pngImage.width;
+	height = pngImage.height;
 }
 
 Texture::~Texture() {
-	free(pixelData);
+	delete[] pixelData;
 }
 
 uint8_t Texture::getRedValueAt(uint32_t column, uint32_t row) {
