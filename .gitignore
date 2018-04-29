@@ -3,3 +3,6 @@
 
 # Xcode files not already under version control
 Dominicus.xcodeproj
+
+# Dependency package stuff
+dependencies
